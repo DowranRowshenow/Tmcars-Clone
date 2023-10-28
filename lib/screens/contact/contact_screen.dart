@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:tmcars/constants.dart';
 
 import '../../components/back_icon_button.dart';
 import '../../size_config.dart';
@@ -19,7 +20,6 @@ class _ContactScreenState extends State<ContactScreen> {
       resizeToAvoidBottomInset: true,
       appBar: AppBar(
         title: const Text("Administrator"),
-        backgroundColor: Colors.transparent,
         elevation: 0,
         leading: const BackIconButton(),
       ),
@@ -30,14 +30,15 @@ class _ContactScreenState extends State<ContactScreen> {
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              const Flexible(
+              Flexible(
                 child: TextField(
                   autocorrect: false,
-                  style: TextStyle(color: Colors.white, fontSize: 18),
+                  style:
+                      TextStyle(color: themeManager.textColor(), fontSize: 18),
                   keyboardType: TextInputType.visiblePassword,
                   decoration: InputDecoration.collapsed(
                     hintText: "Siziň hatyňyz...",
-                    hintStyle: TextStyle(color: Colors.white54),
+                    hintStyle: TextStyle(color: themeManager.textHintColor()),
                   ),
                 ),
               ),
@@ -48,7 +49,7 @@ class _ContactScreenState extends State<ContactScreen> {
                 color: Colors.transparent,
                 child: Icon(
                   Icons.send_outlined,
-                  color: Colors.white.withOpacity(0.5),
+                  color: themeManager.iconColor(),
                 ),
               ),
             ],

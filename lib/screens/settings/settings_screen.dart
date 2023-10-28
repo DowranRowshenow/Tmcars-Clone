@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:tmcars/constants.dart';
 
 import '../../components/back_icon_button.dart';
 
@@ -18,7 +19,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
       resizeToAvoidBottomInset: true,
       appBar: AppBar(
         title: const Text("Sazlamalar"),
-        backgroundColor: Colors.transparent,
         elevation: 0,
         leading: const BackIconButton(),
       ),
@@ -27,14 +27,14 @@ class _SettingsScreenState extends State<SettingsScreen> {
           ListTile(
             title: Text(
               "Umumy sazlamalar",
-              style: TextStyle(color: Colors.white.withOpacity(0.9)),
+              style: TextStyle(color: themeManager.text2Color()),
             ),
-            tileColor: Colors.white.withOpacity(0.1),
+            tileColor: themeManager.tileColor(),
           ),
           ListTile(
             title: Text(
               "Dil",
-              style: TextStyle(color: Colors.white.withOpacity(0.9)),
+              style: TextStyle(color: themeManager.textColor()),
             ),
             trailing: const Text("Türkmençe"),
             onTap: () {},
@@ -44,7 +44,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
               border: Border(
                 bottom: BorderSide(
                   width: 0.5,
-                  color: Colors.white.withOpacity(0.5),
+                  color: themeManager.isDark()
+                      ? Colors.white.withOpacity(0.5)
+                      : Colors.black.withOpacity(0.5),
                 ),
               ),
             ),
@@ -52,7 +54,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
           ListTile(
             title: Text(
               "Wersiýa",
-              style: TextStyle(color: Colors.white.withOpacity(0.9)),
+              style: TextStyle(color: themeManager.textColor()),
             ),
             trailing: const Text("0.1.0"),
             onTap: () {},
@@ -62,7 +64,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
               border: Border(
                 bottom: BorderSide(
                   width: 0.5,
-                  color: Colors.white.withOpacity(0.5),
+                  color: themeManager.isDark()
+                      ? Colors.white.withOpacity(0.5)
+                      : Colors.black.withOpacity(0.5),
                 ),
               ),
             ),
@@ -70,7 +74,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
           ListTile(
             title: Text(
               "Internet",
-              style: TextStyle(color: Colors.white.withOpacity(0.9)),
+              style: TextStyle(color: themeManager.textColor()),
             ),
             trailing: const Text("Standart"),
             onTap: () {},
@@ -80,7 +84,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
               border: Border(
                 bottom: BorderSide(
                   width: 0.5,
-                  color: Colors.white.withOpacity(0.5),
+                  color: themeManager.isDark()
+                      ? Colors.white.withOpacity(0.5)
+                      : Colors.black.withOpacity(0.5),
                 ),
               ),
             ),
@@ -88,7 +94,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
           ListTile(
             title: Text(
               "Saýlanan ýer",
-              style: TextStyle(color: Colors.white.withOpacity(0.9)),
+              style: TextStyle(color: themeManager.textColor()),
             ),
             trailing: const Text("Saýlanmadyk"),
             onTap: () {},
@@ -96,14 +102,14 @@ class _SettingsScreenState extends State<SettingsScreen> {
           ListTile(
             title: Text(
               "Goşmaça",
-              style: TextStyle(color: Colors.white.withOpacity(0.9)),
+              style: TextStyle(color: themeManager.text2Color()),
             ),
-            tileColor: Colors.white.withOpacity(0.1),
+            tileColor: themeManager.tileColor(),
           ),
           ListTile(
             title: Text(
               "Paýlaşmak",
-              style: TextStyle(color: Colors.white.withOpacity(0.9)),
+              style: TextStyle(color: themeManager.textColor()),
             ),
             trailing: SvgPicture.asset(
               "assets/icons/arrow_right.svg",
@@ -117,7 +123,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
               border: Border(
                 bottom: BorderSide(
                   width: 0.5,
-                  color: Colors.white.withOpacity(0.5),
+                  color: themeManager.isDark()
+                      ? Colors.white.withOpacity(0.5)
+                      : Colors.black.withOpacity(0.5),
                 ),
               ),
             ),
@@ -125,7 +133,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
           ListTile(
             title: Text(
               "Kömekçi",
-              style: TextStyle(color: Colors.white.withOpacity(0.9)),
+              style: TextStyle(color: themeManager.textColor()),
             ),
             trailing: const Text("Okamak maslahat berilýär"),
             onTap: () {},
@@ -135,7 +143,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
               border: Border(
                 bottom: BorderSide(
                   width: 0.5,
-                  color: Colors.white.withOpacity(0.5),
+                  color: themeManager.isDark()
+                      ? Colors.white.withOpacity(0.5)
+                      : Colors.black.withOpacity(0.5),
                 ),
               ),
             ),
@@ -143,7 +153,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
           ListTile(
             title: Text(
               "Düzgünnama",
-              style: TextStyle(color: Colors.white.withOpacity(0.9)),
+              style: TextStyle(color: themeManager.textColor()),
             ),
             trailing: const Text("Okap tanyş"),
             onTap: () {},
@@ -153,7 +163,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
               border: Border(
                 bottom: BorderSide(
                   width: 0.5,
-                  color: Colors.white.withOpacity(0.5),
+                  color: themeManager.isDark()
+                      ? Colors.white.withOpacity(0.5)
+                      : Colors.black.withOpacity(0.5),
                 ),
               ),
             ),
@@ -161,7 +173,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
           ListTile(
             title: Text(
               "Teswir ýazmak ylalaşygy",
-              style: TextStyle(color: Colors.white.withOpacity(0.9)),
+              style: TextStyle(color: themeManager.textColor()),
             ),
             trailing: const Text("Okap tanyş"),
             onTap: () {},
@@ -171,7 +183,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
               border: Border(
                 bottom: BorderSide(
                   width: 0.5,
-                  color: Colors.white.withOpacity(0.5),
+                  color: themeManager.isDark()
+                      ? Colors.white.withOpacity(0.5)
+                      : Colors.black.withOpacity(0.5),
                 ),
               ),
             ),
@@ -179,9 +193,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
           ListTile(
             title: Text(
               "Habarlaşmak üçin",
-              style: TextStyle(color: Colors.white.withOpacity(0.9)),
+              style: TextStyle(color: themeManager.textColor()),
             ),
-            trailing: const Text("dowranrowshenow.@gmail.com"),
+            trailing: const Text("dowranrowshenow@gmail.com"),
             onTap: () {},
           ),
           Container(
@@ -189,7 +203,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
               border: Border(
                 bottom: BorderSide(
                   width: 0.5,
-                  color: Colors.white.withOpacity(0.5),
+                  color: themeManager.isDark()
+                      ? Colors.white.withOpacity(0.5)
+                      : Colors.black.withOpacity(0.5),
                 ),
               ),
             ),

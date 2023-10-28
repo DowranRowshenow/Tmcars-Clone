@@ -46,7 +46,6 @@ class _HomeScreentate extends State<HomeScreen> {
       child: Scaffold(
         appBar: AppBar(
           title: const Text("Baş Sahypa"),
-          backgroundColor: Colors.transparent,
           elevation: 0,
           leading: const MenuIconButton(),
         ),

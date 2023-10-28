@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../enums.dart';
+import '../constants.dart';
 import '../screens/contact/contact_screen.dart';
 import '../screens/home/home_screen.dart';
 import '../screens/settings/settings_screen.dart';

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-import '../enums.dart';
 import '../constants.dart';
 import '../helper/navigate.dart';
 import '../size_config.dart';
@@ -18,24 +17,25 @@ class _CustomDrawerState extends State<CustomDrawer> {
   Widget build(BuildContext context) {
     return Drawer(
       width: getProportionateScreenWidth(260),
-      backgroundColor: blueGrey950,
+      backgroundColor: themeManager.drawerColor(),
       child: ListView(
         children: [
           Center(
             child: Column(
               children: [
                 SizedBox(height: getProportionateScreenWidth(20)),
-                const Image(
-                  image: AssetImage('assets/images/bl.webp'),
-                  height: 140,
+                Image(
+                  image: themeManager.isDark()
+                      ? const AssetImage('assets/images/drawer_logo_dark.webp')
+                      : const AssetImage(
+                          'assets/images/drawer_logo_light.webp'),
+                  height: 60,
                 ),
-                SizedBox(height: getProportionateScreenWidth(20)),
                 GestureDetector(
                   child: const Text(
                     'ULGAMA GIRMEK',
                     style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 16,
+                      fontSize: 14,
                       fontStyle: FontStyle.italic,
                       decoration: TextDecoration.underline,
                     ),
@@ -44,7 +44,15 @@ class _CustomDrawerState extends State<CustomDrawer> {
                     // Navigate to Register Screen
                   },
                 ),
-                const Padding(padding: EdgeInsets.all(10)),
+                const Text(
+                  '',
+                  style: TextStyle(
+                    fontSize: 12,
+                    fontStyle: FontStyle.italic,
+                    decoration: TextDecoration.underline,
+                  ),
+                ),
+                SizedBox(height: getProportionateScreenWidth(20)),
               ],
             ),
           ),

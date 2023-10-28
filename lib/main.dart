@@ -47,9 +47,18 @@ class _MyAppState extends State<MyApp> {
       title: 'Tmcars Clone',
       theme: ThemeData(
         brightness: Brightness.light,
+        appBarTheme: const AppBarTheme(
+          backgroundColor: colorPrimary,
+        ),
+        splashColor: Colors.transparent,
+        highlightColor: Colors.black.withOpacity(0.2),
+        splashFactory: InkRipple.splashFactory,
       ),
       darkTheme: ThemeData(
         brightness: Brightness.dark,
+        appBarTheme: const AppBarTheme(
+          backgroundColor: Colors.transparent,
+        ),
         scaffoldBackgroundColor: blueGrey950.withOpacity(1),
         splashColor: Colors.transparent,
         highlightColor: Colors.black.withOpacity(0.2),
