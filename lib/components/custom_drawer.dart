@@ -25,13 +25,10 @@ class _CustomDrawerState extends State<CustomDrawer> {
             child: Column(
               children: [
                 SizedBox(height: getProportionateScreenWidth(20)),
-                const FlutterLogo(size: 40),
-                /*
-                Image(
-                  image: AssetImage('assets/images/captains/cool.png'),
+                const Image(
+                  image: AssetImage('assets/images/bl.webp'),
                   height: 140,
                 ),
-                */
                 SizedBox(height: getProportionateScreenWidth(20)),
                 GestureDetector(
                   child: const Text(
@@ -117,21 +114,25 @@ class _CustomDrawerState extends State<CustomDrawer> {
             decoration: const BoxDecoration(
               border: Border(
                 bottom: BorderSide(
-                  width: 0.5,
+                  width: 0.3,
                   color: Colors.black,
                 ),
               ),
             ),
           ),
           ListTile(
-            title: const Text("Gara tema"),
-            leading: const Icon(Icons.dark_mode_outlined),
+            title: themeManager.isDark()
+                ? const Text("Gara tema")
+                : const Text("Ýagty tema"),
+            leading: themeManager.isDark()
+                ? const Icon(Icons.dark_mode_outlined)
+                : const Icon(Icons.light_mode_outlined),
             trailing: Switch(
-              value: isDark,
+              value: themeManager.themeMode == ThemeMode.dark,
               activeColor: Colors.lightBlueAccent,
               onChanged: (value) {
                 setState(() {
-                  isDark = !isDark;
+                  themeManager.toggleTheme(value);
                 });
               },
             ),

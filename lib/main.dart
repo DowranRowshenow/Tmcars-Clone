@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:tmcars/constants.dart';
 
+import 'constants.dart';
 import 'components/scroll_behavior.dart';
 import 'screens/home/home_screen.dart';
 
@@ -10,8 +10,31 @@ void main() {
   runApp(const MyApp());
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
   const MyApp({Key? key}) : super(key: key);
+
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  @override
+  void dispose() {
+    themeManager.removeListener(themeListener);
+    super.dispose();
+  }
+
+  @override
+  void initState() {
+    themeManager.addListener(themeListener);
+    super.initState();
+  }
+
+  themeListener() {
+    if (mounted) {
+      setState(() {});
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -24,7 +47,6 @@ class MyApp extends StatelessWidget {
       title: 'Tmcars Clone',
       theme: ThemeData(
         brightness: Brightness.light,
-        /* light theme settings */
       ),
       darkTheme: ThemeData(
         brightness: Brightness.dark,
@@ -32,13 +54,8 @@ class MyApp extends StatelessWidget {
         splashColor: Colors.transparent,
         highlightColor: Colors.black.withOpacity(0.2),
         splashFactory: InkRipple.splashFactory,
-        /* dark theme settings */
       ),
-      themeMode: ThemeMode.system,
-      /* ThemeMode.system to follow system theme, 
-         ThemeMode.light for light theme, 
-         ThemeMode.dark for dark theme
-      */
+      themeMode: themeManager.themeMode,
       builder: (context, child) {
         return ScrollConfiguration(
             behavior: GlowlessScrollBehavior(), child: child!);

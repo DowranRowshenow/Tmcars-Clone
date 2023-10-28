@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:tmcars/enums.dart';
 
+import 'enums.dart';
 import 'size_config.dart';
+import 'themes.dart';
 
 // Settings
-bool isDark = true;
 MenuState currentScreen = MenuState.home;
+ThemeManager themeManager = ThemeManager();
 
 // INTEGERS AND DOUBLES
 const double borderRadius = 7;
