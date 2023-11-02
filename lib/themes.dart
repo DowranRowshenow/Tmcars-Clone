@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:tmcars/constants.dart';
+
+import 'constants.dart';
 
 class ThemeManager with ChangeNotifier {
   ThemeMode _themeMode = ThemeMode.dark;

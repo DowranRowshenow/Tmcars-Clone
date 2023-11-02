@@ -19,7 +19,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
       resizeToAvoidBottomInset: true,
       appBar: AppBar(
         title: const Text("Sazlamalar"),
-        elevation: 0,
         leading: const BackIconButton(),
       ),
       body: ListView(
@@ -30,6 +29,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
               style: TextStyle(color: themeManager.text2Color()),
             ),
             tileColor: themeManager.tileColor(),
+            onTap: () {},
           ),
           ListTile(
             title: Text(
@@ -37,7 +37,24 @@ class _SettingsScreenState extends State<SettingsScreen> {
               style: TextStyle(color: themeManager.textColor()),
             ),
             trailing: const Text("Türkmençe"),
-            onTap: () {},
+            onTap: () {
+              showDialog(
+                context: context,
+                builder: (BuildContext context) {
+                  return AlertDialog(
+                    title: const Text("Dil saýla"),
+                    actions: [
+                      TextButton(
+                        child: const Text("Saýla"),
+                        onPressed: () {
+                          Navigator.of(context).pop(false);
+                        },
+                      ),
+                    ],
+                  );
+                },
+              );
+            },
           ),
           Container(
             decoration: BoxDecoration(

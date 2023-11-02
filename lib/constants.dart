@@ -1,19 +1,25 @@
 import 'package:flutter/material.dart';
 
 import 'themes.dart';
+import 'helper/navigate.dart';
 
 // SETTINGS
-MenuState currentScreen = MenuState.home;
 ThemeManager themeManager = ThemeManager();
+Navigate navigate = Navigate();
+GlobalKey<ScaffoldState> scaffold = GlobalKey();
 
 // ENUMS
-enum MenuState { home, settings, contact }
+enum MenuState { home, add, others }
+
+enum ScreenState { menu, settings, contact, register }
 
 // CONTROLLERS
-final searchController = TextEditingController();
+final phoneNumberController = TextEditingController();
+final emailAddressController = TextEditingController();
 
 // INTEGERS AND DOUBLES
 const double borderRadius = 7;
+const double buttonBorderRadius = 20;
 const double splashRadius = 18;
 
 // COLORS

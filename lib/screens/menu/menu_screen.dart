@@ -2,18 +2,20 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 
+import '../../constants.dart';
 import '../../components/custom_drawer.dart';
 import '../../components/menu_icon_button.dart';
 import '../../size_config.dart';
 
-class HomeScreen extends StatefulWidget {
-  const HomeScreen({Key? key}) : super(key: key);
+class MenuScreen extends StatefulWidget {
+  const MenuScreen({Key? key}) : super(key: key);
 
   @override
-  State<HomeScreen> createState() => _HomeScreentate();
+  // ignore: library_private_types_in_public_api
+  _MenuScreenState createState() => _MenuScreenState();
 }
 
-class _HomeScreentate extends State<HomeScreen> {
+class _MenuScreenState extends State<MenuScreen> {
   @override
   Widget build(BuildContext context) {
     SizeConfig().init(context);
@@ -44,13 +46,32 @@ class _HomeScreentate extends State<HomeScreen> {
         );
       },
       child: Scaffold(
+        key: scaffold,
         appBar: AppBar(
-          title: const Text("Baş Sahypa"),
-          elevation: 0,
+          title: Text(navigate.getMenuTitle()),
           leading: const MenuIconButton(),
+          actions: [
+            IconButton(
+              onPressed: () {},
+              splashRadius: splashRadius,
+              icon: const Icon(Icons.sort),
+            ),
+            IconButton(
+              onPressed: () {},
+              splashRadius: splashRadius,
+              icon: const Icon(Icons.star),
+            ),
+          ],
         ),
-        drawer: const CustomDrawer(),
-        body: Container(),
+        drawer: CustomDrawer(
+          onTap: (state) {
+            setState(() {
+              scaffold.currentState!.closeDrawer();
+              navigate.currentMenu = state;
+            });
+          },
+        ),
+        body: navigate.getCurrentMenu(),
       ),
     );
   }

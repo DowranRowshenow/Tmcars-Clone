@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
+import 'screens/menu/menu_screen.dart';
 import 'constants.dart';
 import 'components/scroll_behavior.dart';
-import 'screens/home/home_screen.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -49,6 +49,7 @@ class _MyAppState extends State<MyApp> {
         brightness: Brightness.light,
         appBarTheme: const AppBarTheme(
           backgroundColor: colorPrimary,
+          elevation: 1,
         ),
         splashColor: Colors.transparent,
         highlightColor: Colors.black.withOpacity(0.2),
@@ -56,9 +57,12 @@ class _MyAppState extends State<MyApp> {
       ),
       darkTheme: ThemeData(
         brightness: Brightness.dark,
-        appBarTheme: const AppBarTheme(
-          backgroundColor: Colors.transparent,
+        appBarTheme: AppBarTheme(
+          backgroundColor: blueGrey950.withOpacity(1),
+          elevation: 1,
         ),
+        primarySwatch: Colors.blue,
+        indicatorColor: Colors.black,
         scaffoldBackgroundColor: blueGrey950.withOpacity(1),
         splashColor: Colors.transparent,
         highlightColor: Colors.black.withOpacity(0.2),
@@ -69,7 +73,7 @@ class _MyAppState extends State<MyApp> {
         return ScrollConfiguration(
             behavior: GlowlessScrollBehavior(), child: child!);
       },
-      home: const HomeScreen(),
+      home: const MenuScreen(),
     );
   }
 }

@@ -20,7 +20,6 @@ class _ContactScreenState extends State<ContactScreen> {
       resizeToAvoidBottomInset: true,
       appBar: AppBar(
         title: const Text("Administrator"),
-        elevation: 0,
         leading: const BackIconButton(),
       ),
       body: Scaffold(

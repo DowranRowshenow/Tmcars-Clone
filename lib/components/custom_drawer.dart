@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 
 import '../constants.dart';
-import '../helper/navigate.dart';
 import '../size_config.dart';
 
 class CustomDrawer extends StatefulWidget {
-  const CustomDrawer({Key? key}) : super(key: key);
+  const CustomDrawer({Key? key, required this.onTap}) : super(key: key);
+  final Function onTap;
 
   @override
   // ignore: library_private_types_in_public_api
@@ -29,7 +29,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
                       ? const AssetImage('assets/images/drawer_logo_dark.webp')
                       : const AssetImage(
                           'assets/images/drawer_logo_light.webp'),
-                  height: 60,
+                  height: getProportionateScreenHeight(60),
                 ),
                 GestureDetector(
                   child: const Text(
@@ -41,7 +41,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
                     ),
                   ),
                   onTap: () {
-                    // Navigate to Register Screen
+                    navigate.changeScreen(context, ScreenState.register);
                   },
                 ),
                 const Text(
@@ -69,7 +69,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
           ),
           ListTile(
             onTap: () {
-              Navigate.changeScreen(context, MenuState.home);
+              widget.onTap(MenuState.home);
             },
             title: const Text("Baş sahypa"),
             leading: const Icon(Icons.home_outlined),
@@ -88,7 +88,9 @@ class _CustomDrawerState extends State<CustomDrawer> {
             selectedTileColor: Colors.white12,
           ),
           ListTile(
-            onTap: () {},
+            onTap: () {
+              widget.onTap(MenuState.others);
+            },
             title: const Text("Beýleki bildirişler"),
             leading: const Icon(Icons.shopping_basket_outlined),
             selectedTileColor: Colors.white12,
@@ -106,7 +108,9 @@ class _CustomDrawerState extends State<CustomDrawer> {
             selectedTileColor: Colors.white12,
           ),
           ListTile(
-            onTap: () {},
+            onTap: () {
+              widget.onTap(MenuState.add);
+            },
             title: const Text("Bildiriş goşmak"),
             leading: const Icon(Icons.add_box_outlined),
             selectedTileColor: Colors.white12,
@@ -148,7 +152,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
           ),
           ListTile(
             onTap: () {
-              Navigate.changeScreen(context, MenuState.settings);
+              navigate.changeScreen(context, ScreenState.settings);
             },
             title: const Text("Sazlamalar"),
             leading: const Icon(Icons.settings_outlined),
@@ -156,7 +160,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
           ),
           ListTile(
             onTap: () {
-              Navigate.changeScreen(context, MenuState.contact);
+              navigate.changeScreen(context, ScreenState.contact);
             },
             title: const Text("Habarlaşmak"),
             leading: const Icon(Icons.support_agent_outlined),
