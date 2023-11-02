@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
+import 'navigate.dart';
 import 'themes.dart';
-import 'helper/navigate.dart';
 
 // SETTINGS
 ThemeManager themeManager = ThemeManager();
@@ -16,6 +16,7 @@ enum ScreenState { menu, settings, contact, register }
 // CONTROLLERS
 final phoneNumberController = TextEditingController();
 final emailAddressController = TextEditingController();
+final searchBarController = TextEditingController();
 
 // INTEGERS AND DOUBLES
 const double borderRadius = 7;

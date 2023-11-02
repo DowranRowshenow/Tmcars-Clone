@@ -12,6 +12,7 @@ class RippleContainer extends StatelessWidget {
     this.text,
     this.color = Colors.blue,
     this.borderRadius = 0,
+    this.border = const Border(),
   }) : super(key: key);
 
   final double height;
@@ -23,6 +24,7 @@ class RippleContainer extends StatelessWidget {
   final Widget child;
   final String? text;
   final double borderRadius;
+  final Border border;
 
   @override
   Widget build(BuildContext context) {
@@ -40,10 +42,15 @@ class RippleContainer extends StatelessWidget {
                   padding: padding,
                   //width: width,
                   //height: height,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(borderRadius),
-                    color: Colors.transparent,
-                  ),
+                  decoration: border == const Border()
+                      ? BoxDecoration(
+                          borderRadius: BorderRadius.circular(borderRadius),
+                          color: Colors.transparent,
+                        )
+                      : BoxDecoration(
+                          color: Colors.transparent,
+                          border: border,
+                        ),
                   alignment: Alignment.center,
                   child: child),
             ),

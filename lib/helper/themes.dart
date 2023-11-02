@@ -19,13 +19,13 @@ class ThemeManager with ChangeNotifier {
   }
 
   Color drawerColor() {
-    Color color = blueGrey950;
+    Color color = Colors.transparent;
     _themeMode == ThemeMode.dark ? color = blueGrey950 : color = Colors.white;
     return color;
   }
 
   Color iconColor() {
-    Color color = Colors.white.withOpacity(0.5);
+    Color color = Colors.transparent;
     _themeMode == ThemeMode.dark
         ? color = Colors.white.withOpacity(0.5)
         : color = Colors.black.withOpacity(0.5);
@@ -33,7 +33,7 @@ class ThemeManager with ChangeNotifier {
   }
 
   Color textColor() {
-    Color color = Colors.white.withOpacity(0.5);
+    Color color = Colors.transparent;
     _themeMode == ThemeMode.dark
         ? color = Colors.white.withOpacity(0.8)
         : color = Colors.black.withOpacity(0.8);
@@ -41,7 +41,7 @@ class ThemeManager with ChangeNotifier {
   }
 
   Color textHintColor() {
-    Color color = Colors.white.withOpacity(0.5);
+    Color color = Colors.transparent;
     _themeMode == ThemeMode.dark
         ? color = Colors.white.withOpacity(0.5)
         : color = Colors.black.withOpacity(0.5);
@@ -49,15 +49,21 @@ class ThemeManager with ChangeNotifier {
   }
 
   Color text2Color() {
-    Color color = Colors.white.withOpacity(0.5);
+    Color color = Colors.transparent;
     _themeMode == ThemeMode.dark
         ? color = Colors.white.withOpacity(0.8)
         : color = colorPrimary;
     return color;
   }
 
+  Color productSubtitleColor() {
+    Color color = Colors.transparent;
+    _themeMode == ThemeMode.dark ? color = Colors.white : color = Colors.black;
+    return color;
+  }
+
   Color tileColor() {
-    Color color = Colors.white.withOpacity(0.1);
+    Color color = Colors.transparent;
     _themeMode == ThemeMode.dark
         ? color = Colors.white.withOpacity(0.1)
         : color = Colors.black.withOpacity(0.1);

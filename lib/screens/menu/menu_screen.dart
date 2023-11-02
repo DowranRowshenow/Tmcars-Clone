@@ -2,10 +2,10 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 
-import '../../constants.dart';
 import '../../components/custom_drawer.dart';
 import '../../components/menu_icon_button.dart';
-import '../../size_config.dart';
+import '../../helper/constants.dart';
+import '../../helper/size_config.dart';
 
 class MenuScreen extends StatefulWidget {
   const MenuScreen({Key? key}) : super(key: key);
@@ -51,16 +51,20 @@ class _MenuScreenState extends State<MenuScreen> {
           title: Text(navigate.getMenuTitle()),
           leading: const MenuIconButton(),
           actions: [
-            IconButton(
-              onPressed: () {},
-              splashRadius: splashRadius,
-              icon: const Icon(Icons.sort),
-            ),
-            IconButton(
-              onPressed: () {},
-              splashRadius: splashRadius,
-              icon: const Icon(Icons.star),
-            ),
+            navigate.currentMenu == MenuState.others
+                ? IconButton(
+                    onPressed: () {},
+                    splashRadius: splashRadius,
+                    icon: const Icon(Icons.sort),
+                  )
+                : Container(),
+            navigate.currentMenu == MenuState.others
+                ? IconButton(
+                    onPressed: () {},
+                    splashRadius: splashRadius,
+                    icon: const Icon(Icons.star),
+                  )
+                : Container(),
           ],
         ),
         drawer: CustomDrawer(

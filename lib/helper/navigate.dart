@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:tmcars/menus/others_menu/others_menu.dart';
 
+import '../menus/others_menu/others_menu.dart';
 import '../menus/add_menu/add_menu.dart';
 import '../menus/home_menu/home_menu.dart';
 import '../screens/menu/menu_screen.dart';
 import '../screens/register/register_screen.dart';
 import '../screens/contact/contact_screen.dart';
 import '../screens/settings/settings_screen.dart';
-import '../constants.dart';
+import 'constants.dart';
 
 class Navigate {
   ScreenState currentScreen = ScreenState.menu;

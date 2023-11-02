@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 
 import '../../components/ripple_container.dart';
 import '../../components/back_icon_button.dart';
-import '../../size_config.dart';
-import '../../constants.dart';
+import '../../helper/constants.dart';
+import '../../helper/size_config.dart';
 
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({Key? key}) : super(key: key);
@@ -63,7 +63,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                               hintStyle: TextStyle(),
                             ),
                           ),
-                        )
+                        ),
                       ],
                     )
                   : Row(

@@ -1,17 +1,16 @@
-// ignore_for_file: file_names
+// ignore: file_names
 
-import 'package:flutter/material.dart';
-import 'package:tmcars/server.dart';
+import '../helper/server.dart';
 
-class ProductBrand {
+class ProductLocation {
   final String name;
 
-  ProductBrand({
+  ProductLocation({
     required this.name,
   });
 
-  factory ProductBrand.fromJson(Map<String, dynamic> json) {
-    return ProductBrand(
+  factory ProductLocation.fromJson(Map<String, dynamic> json) {
+    return ProductLocation(
       name: json['name'],
     );
   }
@@ -45,76 +44,28 @@ class ProductImage {
   }
 }
 
-class ProductSize {
-  final int size;
-
-  ProductSize({
-    required this.size,
-  });
-
-  factory ProductSize.fromJson(Map<String, dynamic> json) {
-    return ProductSize(
-      size: json['size'],
-    );
-  }
-}
-
-class ProductColor {
-  final String name;
-  final Color color;
-
-  ProductColor({required this.name, required this.color});
-
-  factory ProductColor.fromJson(Map<String, dynamic> json) {
-    String name = json['name'] ?? 'Black';
-    Color color = name == "Black"
-        ? Colors.black
-        : name == "White"
-            ? Colors.white
-            : name == "Grey"
-                ? Colors.grey
-                : name == "Red"
-                    ? Colors.red
-                    : name == "Yellow"
-                        ? Colors.yellow
-                        : name == "Green"
-                            ? Colors.green
-                            : Colors.black;
-    return ProductColor(name: name, color: color);
-  }
-}
-
 class Product {
   final int id;
-  final String name, description, barcode;
-  final ProductBrand brand;
+  final String name, description, phone;
+  final ProductLocation location;
   final ProductCategory category;
   final List<ProductImage> images;
-  final List<ProductColor> colors;
-  final List<ProductSize> sizes;
-  final double price, salePrice;
-  final int countSold, quantity;
-
-  final bool isFavourite, isPopular;
-  final double rating;
+  final double price;
+  final int viewCount;
+  final String createdAt, updatedAt;
 
   Product({
     required this.id,
     required this.name,
+    required this.phone,
     required this.description,
-    required this.brand,
+    required this.location,
     required this.category,
-    required this.barcode,
-    required this.quantity,
     required this.price,
-    required this.salePrice,
-    required this.countSold,
+    required this.viewCount,
     required this.images,
-    required this.colors,
-    required this.sizes,
-    this.isFavourite = true,
-    this.isPopular = true,
-    this.rating = 4.5,
+    required this.createdAt,
+    required this.updatedAt,
   });
 
   factory Product.fromJson(Map<String, dynamic> json) {
@@ -124,32 +75,18 @@ class Product {
         images.add(ProductImage.fromJson(image));
       }
     }
-    List<ProductColor> colors = [];
-    if (json['colors'] != null) {
-      for (var color in json['colors']) {
-        colors.add(ProductColor.fromJson(color));
-      }
-    }
-    List<ProductSize> sizes = [];
-    if (json['sizes'] != null) {
-      for (var size in json['sizes']) {
-        sizes.add(ProductSize.fromJson(size));
-      }
-    }
     return Product(
       id: json['id'],
       name: json['name'],
+      phone: json['phone'],
       description: json['description'],
-      brand: ProductBrand.fromJson(json['brand']),
+      location: ProductLocation.fromJson(json['location']),
       category: ProductCategory.fromJson(json['category']),
-      quantity: json['quantity'],
       price: double.parse(json['price']),
-      salePrice: double.parse(json['price_on_ale'] ?? "0"),
-      barcode: json['barcode'],
-      countSold: json['count_sold'],
+      viewCount: json['view_count'],
       images: images,
-      colors: colors,
-      sizes: sizes,
+      createdAt: json['created_at'],
+      updatedAt: json['updated_at'],
     );
   }
 }

@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:tmcars/constants.dart';
 
 import '../../components/back_icon_button.dart';
-import '../../size_config.dart';
 import '../../components/ripple_container.dart';
+import '../../helper/constants.dart';
+import '../../helper/size_config.dart';
 
 class ContactScreen extends StatefulWidget {
   const ContactScreen({Key? key}) : super(key: key);
