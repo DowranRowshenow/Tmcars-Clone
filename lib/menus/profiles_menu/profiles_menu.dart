@@ -1,22 +1,21 @@
 import 'package:flutter/material.dart';
 
-import 'tabs/all_others_tab.dart';
-import 'tabs/category_others_tab.dart';
-import 'tabs/selection_others_tab.dart';
+import 'tabs/all_profiles_tab.dart';
+import 'tabs/profiles_category_tab.dart';
 
-class OthersMenu extends StatefulWidget {
-  const OthersMenu({Key? key}) : super(key: key);
+class ProfilesMenu extends StatefulWidget {
+  const ProfilesMenu({Key? key}) : super(key: key);
 
   @override
   // ignore: library_private_types_in_public_api
-  _OthersMenuState createState() => _OthersMenuState();
+  _ProfilesMenuState createState() => _ProfilesMenuState();
 }
 
-class _OthersMenuState extends State<OthersMenu> {
+class _ProfilesMenuState extends State<ProfilesMenu> {
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
-      length: 3,
+      length: 2,
       child: Scaffold(
         appBar: AppBar(
           elevation: 0,
@@ -26,16 +25,14 @@ class _OthersMenuState extends State<OthersMenu> {
             indicatorColor: Colors.white,
             tabs: [
               Tab(text: "HEMMESI"),
-              Tab(text: "SAÝLANAN"),
               Tab(text: "BÖLÜM"),
             ],
           ),
         ),
         body: const TabBarView(
           children: [
-            AllOthersTab(),
-            SelectionOthersTab(),
-            CategoryOthersTab(),
+            AllProfilesTab(),
+            ProfilesCategoryTab(),
           ],
         ),
       ),

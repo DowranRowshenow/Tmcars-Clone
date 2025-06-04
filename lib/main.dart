@@ -1,13 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:provider/provider.dart';
 
 import 'helper/constants.dart';
+import 'helper/themes.dart';
 import 'screens/menu/menu_screen.dart';
 import 'components/scroll_behavior.dart';
 
-void main() {
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  runApp(const MyApp());
+  runApp(ChangeNotifierProvider(
+    create: (_) => themeManager, // Use your global themeManager instance
+    child: const MyApp(),
+  ));
 }
 
 class MyApp extends StatefulWidget {
@@ -20,20 +25,8 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   @override
   void dispose() {
-    themeManager.removeListener(themeListener);
+    // No longer need to manually remove listener if using Provider for rebuilds
     super.dispose();
-  }
-
-  @override
-  void initState() {
-    themeManager.addListener(themeListener);
-    super.initState();
-  }
-
-  themeListener() {
-    if (mounted) {
-      setState(() {});
-    }
   }
 
   @override
@@ -42,38 +35,22 @@ class _MyAppState extends State<MyApp> {
       DeviceOrientation.portraitUp,
     ]);
 
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'Tmcars Clone',
-      theme: ThemeData(
-        brightness: Brightness.light,
-        appBarTheme: const AppBarTheme(
-          backgroundColor: colorPrimary,
-          elevation: 1,
-        ),
-        splashColor: Colors.transparent,
-        highlightColor: Colors.black.withOpacity(0.2),
-        splashFactory: InkRipple.splashFactory,
-      ),
-      darkTheme: ThemeData(
-        brightness: Brightness.dark,
-        appBarTheme: AppBarTheme(
-          backgroundColor: blueGrey950.withOpacity(1),
-          elevation: 1,
-        ),
-        primarySwatch: Colors.blue,
-        indicatorColor: Colors.black,
-        scaffoldBackgroundColor: blueGrey950.withOpacity(1),
-        splashColor: Colors.transparent,
-        highlightColor: Colors.black.withOpacity(0.2),
-        splashFactory: InkRipple.splashFactory,
-      ),
-      themeMode: themeManager.themeMode,
-      builder: (context, child) {
-        return ScrollConfiguration(
-            behavior: GlowlessScrollBehavior(), child: child!);
+    // Use Consumer or context.watch to rebuild MaterialApp when themeMode changes
+    return Consumer<ThemeManager>(
+      builder: (context, manager, child) {
+        return MaterialApp(
+          debugShowCheckedModeBanner: false,
+          title: 'Tmcars Clone',
+          theme: lightThemeData, // Use the ThemeData from themes.dart
+          darkTheme: darkThemeData, // Use the ThemeData from themes.dart
+          themeMode: manager.themeMode,
+          builder: (context, child) {
+            return ScrollConfiguration(
+                behavior: GlowlessScrollBehavior(), child: child!);
+          },
+          home: const MenuScreen(),
+        );
       },
-      home: const MenuScreen(),
     );
   }
 }

@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+//import 'package:share_plus/share_plus.dart';
 
 import '../../components/back_icon_button.dart';
 import '../../helper/constants.dart';
+import '../../helper/server.dart';
+import '../../helper/themes.dart';
 
 class SettingsScreen extends StatefulWidget {
   const SettingsScreen({Key? key}) : super(key: key);
@@ -15,6 +18,8 @@ class SettingsScreen extends StatefulWidget {
 class _SettingsScreenState extends State<SettingsScreen> {
   @override
   Widget build(BuildContext context) {
+    final appColors = Theme.of(context).extension<AppColors>()!;
+
     return Scaffold(
       resizeToAvoidBottomInset: true,
       appBar: AppBar(
@@ -26,15 +31,15 @@ class _SettingsScreenState extends State<SettingsScreen> {
           ListTile(
             title: Text(
               "Umumy sazlamalar",
-              style: TextStyle(color: themeManager.text2Color()),
+              style: TextStyle(color: appColors.textThemeColor),
             ),
-            tileColor: themeManager.tileColor(),
+            tileColor: appColors.tileThemeColor,
             onTap: () {},
           ),
           ListTile(
             title: Text(
               "Dil",
-              style: TextStyle(color: themeManager.textColor()),
+              style: TextStyle(color: appColors.textThemeColor),
             ),
             trailing: const Text("Türkmençe"),
             onTap: () {
@@ -71,9 +76,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
           ListTile(
             title: Text(
               "Wersiýa",
-              style: TextStyle(color: themeManager.textColor()),
+              style: TextStyle(color: appColors.textThemeColor),
             ),
-            trailing: const Text("0.1.0"),
+            trailing: const Text(packageVersion),
             onTap: () {},
           ),
           Container(
@@ -91,7 +96,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
           ListTile(
             title: Text(
               "Internet",
-              style: TextStyle(color: themeManager.textColor()),
+              style: TextStyle(color: appColors.textThemeColor),
             ),
             trailing: const Text("Standart"),
             onTap: () {},
@@ -111,7 +116,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
           ListTile(
             title: Text(
               "Saýlanan ýer",
-              style: TextStyle(color: themeManager.textColor()),
+              style: TextStyle(color: appColors.textThemeColor),
             ),
             trailing: const Text("Saýlanmadyk"),
             onTap: () {},
@@ -119,21 +124,31 @@ class _SettingsScreenState extends State<SettingsScreen> {
           ListTile(
             title: Text(
               "Goşmaça",
-              style: TextStyle(color: themeManager.text2Color()),
+              style: TextStyle(color: appColors.textThemeColor),
             ),
-            tileColor: themeManager.tileColor(),
+            tileColor: appColors.tileThemeColor,
           ),
           ListTile(
             title: Text(
               "Paýlaşmak",
-              style: TextStyle(color: themeManager.textColor()),
+              style: TextStyle(color: appColors.textThemeColor),
             ),
             trailing: SvgPicture.asset(
               "assets/icons/arrow_right.svg",
               color: Colors.grey,
               width: 6,
             ),
-            onTap: () {},
+            onTap: () {
+              // You can customize the text and link you want to share.
+              // For example, a link to your app on the app stores or your website.
+              /*
+              Share.share(
+                'Check out this awesome app: ${Server.SHARE_LINK}', // Replace with your desired link and message
+                subject:
+                    'Have a look at TMCARS App!', // Optional: subject for email sharing
+              );
+              */
+            },
           ),
           Container(
             decoration: BoxDecoration(
@@ -150,10 +165,17 @@ class _SettingsScreenState extends State<SettingsScreen> {
           ListTile(
             title: Text(
               "Kömekçi",
-              style: TextStyle(color: themeManager.textColor()),
+              style: TextStyle(color: appColors.textThemeColor),
             ),
             trailing: const Text("Okamak maslahat berilýär"),
-            onTap: () {},
+            onTap: () {
+              navigate.changeScreen(
+                context,
+                ScreenState.webview,
+                url: Server.ABOUT_US_URL,
+                title: 'Kömekçi',
+              );
+            },
           ),
           Container(
             decoration: BoxDecoration(
@@ -170,10 +192,44 @@ class _SettingsScreenState extends State<SettingsScreen> {
           ListTile(
             title: Text(
               "Düzgünnama",
-              style: TextStyle(color: themeManager.textColor()),
+              style: TextStyle(color: appColors.textThemeColor),
             ),
             trailing: const Text("Okap tanyş"),
-            onTap: () {},
+            onTap: () {
+              navigate.changeScreen(
+                context,
+                ScreenState.webview,
+                url: Server.PRIVACY_POLICY_URL,
+                title: 'Düzgünnama',
+              );
+            },
+          ),
+          Container(
+            decoration: BoxDecoration(
+              border: Border(
+                bottom: BorderSide(
+                  width: 0.5,
+                  color: themeManager.isDark()
+                      ? Colors.white.withOpacity(0.5)
+                      : Colors.black.withOpacity(0.5),
+                ),
+              ),
+            ),
+          ),
+          ListTile(
+            title: Text(
+              "Gizlinlik syýasaty",
+              style: TextStyle(color: appColors.textThemeColor),
+            ),
+            trailing: const Text("Okap tanyş"),
+            onTap: () {
+              navigate.changeScreen(
+                context,
+                ScreenState.webview,
+                url: Server.PRIVACY_POLICY_URL,
+                title: 'Gizlinlik syýasaty',
+              );
+            },
           ),
           Container(
             decoration: BoxDecoration(
@@ -190,10 +246,17 @@ class _SettingsScreenState extends State<SettingsScreen> {
           ListTile(
             title: Text(
               "Teswir ýazmak ylalaşygy",
-              style: TextStyle(color: themeManager.textColor()),
+              style: TextStyle(color: appColors.textThemeColor),
             ),
             trailing: const Text("Okap tanyş"),
-            onTap: () {},
+            onTap: () {
+              navigate.changeScreen(
+                context,
+                ScreenState.webview,
+                url: Server.COMMENT_POST_POLICY_URL,
+                title: 'Teswir ýazmak ylalaşygy',
+              );
+            },
           ),
           Container(
             decoration: BoxDecoration(
@@ -210,7 +273,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
           ListTile(
             title: Text(
               "Habarlaşmak üçin",
-              style: TextStyle(color: themeManager.textColor()),
+              style: TextStyle(color: appColors.textThemeColor),
             ),
             trailing: const Text("dowranrowshenow@gmail.com"),
             onTap: () {},

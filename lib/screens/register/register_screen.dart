@@ -3,7 +3,9 @@ import 'package:flutter/material.dart';
 import '../../components/ripple_container.dart';
 import '../../components/back_icon_button.dart';
 import '../../helper/constants.dart';
+import '../../helper/server.dart';
 import '../../helper/size_config.dart';
+import '../../helper/themes.dart';
 
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({Key? key}) : super(key: key);
@@ -20,6 +22,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final appColors = Theme.of(context).extension<AppColors>()!;
+
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
@@ -120,11 +124,21 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         isChecked = !isChecked;
                       });
                     }),
-                const Text(
-                  "Düzgünnamany okadym we kabul etdim",
-                  style: TextStyle(
-                    decoration: TextDecoration.underline,
+                GestureDetector(
+                  child: const Text(
+                    "Düzgünnamany okadym we kabul etdim",
+                    style: TextStyle(
+                      decoration: TextDecoration.underline,
+                    ),
                   ),
+                  onTap: () {
+                    navigate.changeScreen(
+                      context,
+                      ScreenState.webview,
+                      url: Server.PRIVACY_POLICY_RU_URL,
+                      title: 'Düzgünnama',
+                    );
+                  },
                 ),
               ],
             ),
@@ -147,7 +161,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         'Telefon belgisi bilen girmek',
                         style: TextStyle(
                           fontSize: 16,
-                          color: themeManager.text2Color(),
+                          color: appColors.text2ThemeColor,
                         ),
                       ),
                       onTap: () {
@@ -161,7 +175,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         'Email bilen girmek',
                         style: TextStyle(
                           fontSize: 16,
-                          color: themeManager.text2Color(),
+                          color: appColors.text2ThemeColor,
                         ),
                       ),
                       onTap: () {
@@ -176,7 +190,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
               "Ulgama girmek bilen, siz öz bildirişleriňizi we profiliňizi sazlap bilersiňiz, we özüňiziň başga telefonlaryňyza geçirip bilersiňiz",
               textAlign: TextAlign.center,
               style: TextStyle(
-                color: themeManager.textColor(),
+                color: appColors.textThemeColor,
               ),
             ),
           ],

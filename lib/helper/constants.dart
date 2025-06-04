@@ -3,15 +3,18 @@ import 'package:flutter/material.dart';
 import 'navigate.dart';
 import 'themes.dart';
 
+// APPLICATION
+const String packageVersion = '1.1.0';
+
 // SETTINGS
 ThemeManager themeManager = ThemeManager();
 Navigate navigate = Navigate();
 GlobalKey<ScaffoldState> scaffold = GlobalKey();
 
 // ENUMS
-enum MenuState { home, add, others }
+enum MenuState { home, add, others, comments, news, profiles, parts, cars }
 
-enum ScreenState { menu, settings, contact, register }
+enum ScreenState { menu, settings, contact, register, webview }
 
 // CONTROLLERS
 final phoneNumberController = TextEditingController();

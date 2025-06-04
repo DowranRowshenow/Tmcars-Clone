@@ -22,50 +22,46 @@ class _MenuScreenState extends State<MenuScreen> {
 
     return WillPopScope(
       onWillPop: () async {
-        return await showDialog(
-          context: context,
-          builder: (BuildContext context) {
-            return AlertDialog(
-              title: const Text("Çykmak isleýärsiňizmi?"),
-              actions: [
-                TextButton(
-                  child: const Text("Hawa"),
-                  onPressed: () {
-                    exit(0);
-                  },
-                ),
-                TextButton(
-                  child: const Text("Ýok"),
-                  onPressed: () {
-                    Navigator.of(context).pop(false);
-                  },
-                ),
-              ],
-            );
-          },
-        );
+        if (navigate.currentMenu == MenuState.home) {
+          return await showDialog(
+            context: context,
+            builder: (BuildContext context) {
+              return AlertDialog(
+                title: const Text("Çykmak isleýärsiňizmi?"),
+                actions: [
+                  TextButton(
+                    child: const Text("Hawa"),
+                    onPressed: () {
+                      exit(0);
+                    },
+                  ),
+                  TextButton(
+                    child: const Text("Ýok"),
+                    onPressed: () {
+                      Navigator.of(context).pop(false);
+                    },
+                  ),
+                ],
+              );
+            },
+          );
+        } else {
+          setState(() {
+            if (scaffold.currentState!.isDrawerOpen) {
+              scaffold.currentState!.closeDrawer();
+            } else {
+              navigate.changeMenu(MenuState.home);
+            }
+          });
+          return false;
+        }
       },
       child: Scaffold(
         key: scaffold,
         appBar: AppBar(
           title: Text(navigate.getMenuTitle()),
           leading: const MenuIconButton(),
-          actions: [
-            navigate.currentMenu == MenuState.others
-                ? IconButton(
-                    onPressed: () {},
-                    splashRadius: splashRadius,
-                    icon: const Icon(Icons.sort),
-                  )
-                : Container(),
-            navigate.currentMenu == MenuState.others
-                ? IconButton(
-                    onPressed: () {},
-                    splashRadius: splashRadius,
-                    icon: const Icon(Icons.star),
-                  )
-                : Container(),
-          ],
+          actions: navigate.getMenuTabs(),
         ),
         drawer: CustomDrawer(
           onTap: (state) {

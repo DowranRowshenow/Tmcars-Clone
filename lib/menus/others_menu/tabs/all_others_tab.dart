@@ -48,7 +48,6 @@ class _AllOthersTabState extends State<AllOthersTab> {
                   },
                 ),
               ),
-              // TODO: Implement search query
               const Icon(Icons.search),
             ],
           ),

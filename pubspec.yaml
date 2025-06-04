@@ -40,6 +40,14 @@ dependencies:
   shared_preferences: ^2.1.1
   flutter_svg: ^1.1.6
   flutter_localization: ^0.1.13
+  transparent_image: ^2.0.1
+  cached_network_image: ^3.2.1
+  webview_flutter: ^4.0.7
+  provider: 
+  #share_plus: ^6.0.1
+  #package_info_plus: ^3.1.2
+  #url_launcher: ^6.1.10
+
 
 dev_dependencies:
   flutter_test:

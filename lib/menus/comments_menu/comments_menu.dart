@@ -1,22 +1,21 @@
 import 'package:flutter/material.dart';
+import 'package:tmcars/menus/comments_menu/tabs/comments_tab.dart';
 
-import 'tabs/all_others_tab.dart';
-import 'tabs/category_others_tab.dart';
-import 'tabs/selection_others_tab.dart';
+import 'tabs/my_comments_tab.dart';
 
-class OthersMenu extends StatefulWidget {
-  const OthersMenu({Key? key}) : super(key: key);
+class CommentsMenu extends StatefulWidget {
+  const CommentsMenu({Key? key}) : super(key: key);
 
   @override
   // ignore: library_private_types_in_public_api
-  _OthersMenuState createState() => _OthersMenuState();
+  _CommentsMenuState createState() => _CommentsMenuState();
 }
 
-class _OthersMenuState extends State<OthersMenu> {
+class _CommentsMenuState extends State<CommentsMenu> {
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
-      length: 3,
+      length: 2,
       child: Scaffold(
         appBar: AppBar(
           elevation: 0,
@@ -25,17 +24,15 @@ class _OthersMenuState extends State<OthersMenu> {
           bottom: const TabBar(
             indicatorColor: Colors.white,
             tabs: [
-              Tab(text: "HEMMESI"),
-              Tab(text: "SAÝLANAN"),
-              Tab(text: "BÖLÜM"),
+              Tab(text: "MAŇA ÝAZYLANLAR"),
+              Tab(text: "MENIŇ ÝAZANLARYM"),
             ],
           ),
         ),
         body: const TabBarView(
           children: [
-            AllOthersTab(),
-            SelectionOthersTab(),
-            CategoryOthersTab(),
+            CommentsTab(),
+            MyCommentsTab(),
           ],
         ),
       ),
