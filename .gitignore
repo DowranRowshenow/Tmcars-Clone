@@ -1,3 +1,7 @@
+# Custom files and folders
+.tools/
+
+
 # Miscellaneous
 *.class
 *.log
@@ -5,11 +9,12 @@
 *.swp
 .DS_Store
 .atom/
+.build/
 .buildlog/
 .history
 .svn/
+.swiftpm/
 migrate_working_dir/
-.temp/
 
 # IntelliJ related
 *.iml
@@ -28,13 +33,9 @@ migrate_working_dir/
 .dart_tool/
 .flutter-plugins
 .flutter-plugins-dependencies
-.packages
 .pub-cache/
 .pub/
 /build/
-
-# Web related
-lib/generated_plugin_registrant.dart
 
 # Symbolication related
 app.*.symbols

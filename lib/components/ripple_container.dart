@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 class RippleContainer extends StatelessWidget {
   const RippleContainer({
-    Key? key,
+    super.key,
     required this.onTap,
     required this.child,
     this.margin = const EdgeInsets.all(0),
@@ -13,7 +13,7 @@ class RippleContainer extends StatelessWidget {
     this.color = Colors.blue,
     this.borderRadius = 0,
     this.border = const Border(),
-  }) : super(key: key);
+  });
 
   final double height;
   final double width;
@@ -39,20 +39,18 @@ class RippleContainer extends StatelessWidget {
               borderRadius: BorderRadius.circular(borderRadius),
               onTap: onTap,
               child: Container(
-                  padding: padding,
-                  //width: width,
-                  //height: height,
-                  decoration: border == const Border()
-                      ? BoxDecoration(
-                          borderRadius: BorderRadius.circular(borderRadius),
-                          color: Colors.transparent,
-                        )
-                      : BoxDecoration(
-                          color: Colors.transparent,
-                          border: border,
-                        ),
-                  alignment: Alignment.center,
-                  child: child),
+                padding: padding,
+                //width: width,
+                //height: height,
+                decoration: border == const Border()
+                    ? BoxDecoration(
+                        borderRadius: BorderRadius.circular(borderRadius),
+                        color: Colors.transparent,
+                      )
+                    : BoxDecoration(color: Colors.transparent, border: border),
+                alignment: Alignment.center,
+                child: child,
+              ),
             ),
           ),
           text != null

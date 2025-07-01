@@ -1,5 +1,3 @@
-// ignore_for_file: file_names
-
 class PopularProduct {
   final int id;
   final int activeAdvId;

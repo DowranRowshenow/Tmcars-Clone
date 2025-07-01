@@ -2,7 +2,7 @@ import 'dart:convert';
 
 import 'package:http/http.dart' as http;
 
-import '../models/Product.dart';
+import '../models/product_model.dart';
 
 class Server {
   static String host = "192.168.1.120:8000";

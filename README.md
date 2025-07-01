@@ -1,16 +1,31 @@
-# tmcars
+# TMCARS CLONE
 
-A new Flutter project.
+An Android FLutter Clone Project of TMCARS Mobile Application
 
-## Getting Started
+## Installation
 
-This project is a starting point for a Flutter application.
+### Prerequisites
+- [Flutter SDK](https://docs.flutter.dev/get-started/install) (`3.32.1`)
+- [Dart SDK](https://dart.dev/get-dart) (usually included with Flutter) (`3.8.1`)
+- Android Studio, VS Code, or another IDE (optional, but recommended)
+- Android/iOS emulator or a physical device
 
-A few resources to get you started if this is your first Flutter project:
+### Setup
+1. **Clone the repository:**
+   ```sh
+   git clone <repository-url>
+   cd tmcarsclone
+   ```
+2. **Install dependencies:**
+   ```sh
+   flutter pub get
+   ```
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+### Running the App
+1. **Start an emulator** or connect a physical device.
+2. **Run the app:**
+   ```sh
+   flutter run
+   ```
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+# ENJOY!

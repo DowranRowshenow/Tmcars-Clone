@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 
+import '../../helper/strings.dart';
 import 'tabs/add_car_parts_tab.dart';
 import 'tabs/add_others_tab.dart';
 import 'tabs/add_cars_tab.dart';
 
 class AddMenu extends StatefulWidget {
-  const AddMenu({Key? key}) : super(key: key);
+  const AddMenu({super.key});
 
   @override
   // ignore: library_private_types_in_public_api
@@ -22,21 +23,17 @@ class _AddMenuState extends State<AddMenu> {
           elevation: 0,
           toolbarHeight: 0,
           leading: Container(),
-          bottom: const TabBar(
+          bottom: TabBar(
             indicatorColor: Colors.white,
             tabs: [
-              Tab(text: "AWTOULAGLAR"),
-              Tab(text: "AWTOŞAÝLAR"),
-              Tab(text: "BEÝLEKILER"),
+              Tab(text: Localization.cars.toUpperCase()),
+              Tab(text: Localization.parts.toUpperCase()),
+              Tab(text: Localization.others.toUpperCase()),
             ],
           ),
         ),
         body: const TabBarView(
-          children: [
-            AddCarsTab(),
-            AddCarPartsTab(),
-            AddOthersTab(),
-          ],
+          children: [AddCarsTab(), AddCarPartsTab(), AddOthersTab()],
         ),
       ),
     );

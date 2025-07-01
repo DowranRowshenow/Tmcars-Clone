@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class MyCommentsTab extends StatefulWidget {
-  const MyCommentsTab({Key? key}) : super(key: key);
+  const MyCommentsTab({super.key});
 
   @override
   State<MyCommentsTab> createState() => _MyCommentsTabState();

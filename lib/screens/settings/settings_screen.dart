@@ -2,13 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 //import 'package:share_plus/share_plus.dart';
 
-import '../../components/back_icon_button.dart';
-import '../../helper/constants.dart';
+import '../../components/select_language_dialog.dart';
+import '../../helper/constants.dart' as constants;
 import '../../helper/server.dart';
-import '../../helper/themes.dart';
+import '../../helper/strings.dart';
 
 class SettingsScreen extends StatefulWidget {
-  const SettingsScreen({Key? key}) : super(key: key);
+  const SettingsScreen({super.key});
 
   @override
   // ignore: library_private_types_in_public_api
@@ -18,67 +18,41 @@ class SettingsScreen extends StatefulWidget {
 class _SettingsScreenState extends State<SettingsScreen> {
   @override
   Widget build(BuildContext context) {
-    final appColors = Theme.of(context).extension<AppColors>()!;
-
     return Scaffold(
       resizeToAvoidBottomInset: true,
       appBar: AppBar(
-        title: const Text("Sazlamalar"),
-        leading: const BackIconButton(),
+        title: const Text(Localization.settings),
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back),
+          onPressed: () => Navigator.pop(context),
+          splashRadius: constants.splashRadius,
+        ),
       ),
       body: ListView(
         children: [
           ListTile(
-            title: Text(
-              "Umumy sazlamalar",
-              style: TextStyle(color: appColors.textThemeColor),
-            ),
-            tileColor: appColors.tileThemeColor,
+            title: Text(Localization.generalSettings),
+            tileColor: constants.appColors.tileThemeColor,
             onTap: () {},
           ),
           ListTile(
-            title: Text(
-              "Dil",
-              style: TextStyle(color: appColors.textThemeColor),
-            ),
-            trailing: const Text("Türkmençe"),
-            onTap: () {
-              showDialog(
-                context: context,
-                builder: (BuildContext context) {
-                  return AlertDialog(
-                    title: const Text("Dil saýla"),
-                    actions: [
-                      TextButton(
-                        child: const Text("Saýla"),
-                        onPressed: () {
-                          Navigator.of(context).pop(false);
-                        },
-                      ),
-                    ],
-                  );
-                },
-              );
-            },
+            title: Text(Localization.language),
+            trailing: const Text(Localization.turkmen),
+            onTap: () => showSelectLanguageDialog(context: context),
           ),
           Container(
             decoration: BoxDecoration(
               border: Border(
                 bottom: BorderSide(
                   width: 0.5,
-                  color: themeManager.isDark()
-                      ? Colors.white.withOpacity(0.5)
-                      : Colors.black.withOpacity(0.5),
+                  color: constants.appColors.dividerColor!,
                 ),
               ),
             ),
           ),
           ListTile(
-            title: Text(
-              "Wersiýa",
-              style: TextStyle(color: appColors.textThemeColor),
-            ),
-            trailing: const Text(packageVersion),
+            title: Text(Localization.version),
+            trailing: const Text(constants.packageVersion),
             onTap: () {},
           ),
           Container(
@@ -86,19 +60,14 @@ class _SettingsScreenState extends State<SettingsScreen> {
               border: Border(
                 bottom: BorderSide(
                   width: 0.5,
-                  color: themeManager.isDark()
-                      ? Colors.white.withOpacity(0.5)
-                      : Colors.black.withOpacity(0.5),
+                  color: constants.appColors.dividerColor!,
                 ),
               ),
             ),
           ),
           ListTile(
-            title: Text(
-              "Internet",
-              style: TextStyle(color: appColors.textThemeColor),
-            ),
-            trailing: const Text("Standart"),
+            title: Text(Localization.internet),
+            trailing: const Text(Localization.standard),
             onTap: () {},
           ),
           Container(
@@ -106,41 +75,28 @@ class _SettingsScreenState extends State<SettingsScreen> {
               border: Border(
                 bottom: BorderSide(
                   width: 0.5,
-                  color: themeManager.isDark()
-                      ? Colors.white.withOpacity(0.5)
-                      : Colors.black.withOpacity(0.5),
+                  color: constants.appColors.dividerColor!,
                 ),
               ),
             ),
           ),
           ListTile(
-            title: Text(
-              "Saýlanan ýer",
-              style: TextStyle(color: appColors.textThemeColor),
-            ),
-            trailing: const Text("Saýlanmadyk"),
+            title: Text(Localization.selectedLocation),
+            trailing: const Text(Localization.notSelected),
             onTap: () {},
           ),
           ListTile(
-            title: Text(
-              "Goşmaça",
-              style: TextStyle(color: appColors.textThemeColor),
-            ),
-            tileColor: appColors.tileThemeColor,
+            title: Text(Localization.additional),
+            tileColor: constants.appColors.tileThemeColor,
           ),
           ListTile(
-            title: Text(
-              "Paýlaşmak",
-              style: TextStyle(color: appColors.textThemeColor),
-            ),
+            title: Text(Localization.share),
             trailing: SvgPicture.asset(
-              "assets/icons/arrow_right.svg",
-              color: Colors.grey,
+              constants.arrowRight,
+              colorFilter: ColorFilter.mode(Colors.grey, BlendMode.srcIn),
               width: 6,
             ),
             onTap: () {
-              // You can customize the text and link you want to share.
-              // For example, a link to your app on the app stores or your website.
               /*
               Share.share(
                 'Check out this awesome app: ${Server.SHARE_LINK}', // Replace with your desired link and message
@@ -155,25 +111,20 @@ class _SettingsScreenState extends State<SettingsScreen> {
               border: Border(
                 bottom: BorderSide(
                   width: 0.5,
-                  color: themeManager.isDark()
-                      ? Colors.white.withOpacity(0.5)
-                      : Colors.black.withOpacity(0.5),
+                  color: constants.appColors.dividerColor!,
                 ),
               ),
             ),
           ),
           ListTile(
-            title: Text(
-              "Kömekçi",
-              style: TextStyle(color: appColors.textThemeColor),
-            ),
-            trailing: const Text("Okamak maslahat berilýär"),
+            title: Text(Localization.helper),
+            trailing: const Text(Localization.mustRead),
             onTap: () {
-              navigate.changeScreen(
+              constants.navigate.changeScreen(
                 context,
-                ScreenState.webview,
+                constants.ScreenState.webview,
                 url: Server.ABOUT_US_URL,
-                title: 'Kömekçi',
+                title: Localization.helper,
               );
             },
           ),
@@ -182,25 +133,20 @@ class _SettingsScreenState extends State<SettingsScreen> {
               border: Border(
                 bottom: BorderSide(
                   width: 0.5,
-                  color: themeManager.isDark()
-                      ? Colors.white.withOpacity(0.5)
-                      : Colors.black.withOpacity(0.5),
+                  color: constants.appColors.dividerColor!,
                 ),
               ),
             ),
           ),
           ListTile(
-            title: Text(
-              "Düzgünnama",
-              style: TextStyle(color: appColors.textThemeColor),
-            ),
-            trailing: const Text("Okap tanyş"),
+            title: Text(Localization.policy),
+            trailing: const Text(Localization.read),
             onTap: () {
-              navigate.changeScreen(
+              constants.navigate.changeScreen(
                 context,
-                ScreenState.webview,
+                constants.ScreenState.webview,
                 url: Server.PRIVACY_POLICY_URL,
-                title: 'Düzgünnama',
+                title: Localization.policy,
               );
             },
           ),
@@ -209,25 +155,20 @@ class _SettingsScreenState extends State<SettingsScreen> {
               border: Border(
                 bottom: BorderSide(
                   width: 0.5,
-                  color: themeManager.isDark()
-                      ? Colors.white.withOpacity(0.5)
-                      : Colors.black.withOpacity(0.5),
+                  color: constants.appColors.dividerColor!,
                 ),
               ),
             ),
           ),
           ListTile(
-            title: Text(
-              "Gizlinlik syýasaty",
-              style: TextStyle(color: appColors.textThemeColor),
-            ),
-            trailing: const Text("Okap tanyş"),
+            title: Text(Localization.privacyPolicy),
+            trailing: const Text(Localization.read),
             onTap: () {
-              navigate.changeScreen(
+              constants.navigate.changeScreen(
                 context,
-                ScreenState.webview,
+                constants.ScreenState.webview,
                 url: Server.PRIVACY_POLICY_URL,
-                title: 'Gizlinlik syýasaty',
+                title: Localization.privacyPolicy,
               );
             },
           ),
@@ -236,25 +177,20 @@ class _SettingsScreenState extends State<SettingsScreen> {
               border: Border(
                 bottom: BorderSide(
                   width: 0.5,
-                  color: themeManager.isDark()
-                      ? Colors.white.withOpacity(0.5)
-                      : Colors.black.withOpacity(0.5),
+                  color: constants.appColors.dividerColor!,
                 ),
               ),
             ),
           ),
           ListTile(
-            title: Text(
-              "Teswir ýazmak ylalaşygy",
-              style: TextStyle(color: appColors.textThemeColor),
-            ),
-            trailing: const Text("Okap tanyş"),
+            title: Text(Localization.commentPolicy),
+            trailing: const Text(Localization.read),
             onTap: () {
-              navigate.changeScreen(
+              constants.navigate.changeScreen(
                 context,
-                ScreenState.webview,
+                constants.ScreenState.webview,
                 url: Server.COMMENT_POST_POLICY_URL,
-                title: 'Teswir ýazmak ylalaşygy',
+                title: Localization.commentPolicy,
               );
             },
           ),
@@ -263,19 +199,14 @@ class _SettingsScreenState extends State<SettingsScreen> {
               border: Border(
                 bottom: BorderSide(
                   width: 0.5,
-                  color: themeManager.isDark()
-                      ? Colors.white.withOpacity(0.5)
-                      : Colors.black.withOpacity(0.5),
+                  color: constants.appColors.dividerColor!,
                 ),
               ),
             ),
           ),
           ListTile(
-            title: Text(
-              "Habarlaşmak üçin",
-              style: TextStyle(color: appColors.textThemeColor),
-            ),
-            trailing: const Text("dowranrowshenow@gmail.com"),
+            title: Text(Localization.contact),
+            trailing: const Text(Localization.email),
             onTap: () {},
           ),
           Container(
@@ -283,9 +214,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
               border: Border(
                 bottom: BorderSide(
                   width: 0.5,
-                  color: themeManager.isDark()
-                      ? Colors.white.withOpacity(0.5)
-                      : Colors.black.withOpacity(0.5),
+                  color: constants.appColors.dividerColor!,
                 ),
               ),
             ),

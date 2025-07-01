@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 
+import '../../helper/strings.dart';
 import 'tabs/news_tab.dart';
 
 class NewsMenu extends StatefulWidget {
-  const NewsMenu({Key? key}) : super(key: key);
+  const NewsMenu({super.key});
 
   @override
   // ignore: library_private_types_in_public_api
@@ -20,18 +21,12 @@ class _NewsMenuState extends State<NewsMenu> {
           elevation: 0,
           toolbarHeight: 0,
           leading: Container(),
-          bottom: const TabBar(
+          bottom: TabBar(
             indicatorColor: Colors.white,
-            tabs: [
-              Tab(text: "HEMMESI"),
-            ],
+            tabs: [Tab(text: Localization.all.toUpperCase())],
           ),
         ),
-        body: const TabBarView(
-          children: [
-            NewsTab(),
-          ],
-        ),
+        body: const TabBarView(children: [NewsTab()]),
       ),
     );
   }

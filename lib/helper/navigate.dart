@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:tmcars/menus/profiles_menu/profiles_menu.dart';
 
+import '../menus/profiles_menu/profiles_menu.dart';
 import '../menus/comments_menu/comments_menu.dart';
 import '../menus/news_menu/news_menu.dart';
 import '../menus/others_menu/others_menu.dart';
@@ -121,8 +121,12 @@ class Navigate {
     currentMenu = state;
   }
 
-  void changeScreen(BuildContext context, ScreenState state,
-      {String url = Server.currentUrl, String title = 'NONE'}) {
+  void changeScreen(
+    BuildContext context,
+    ScreenState state, {
+    String url = Server.currentUrl,
+    String title = 'NONE',
+  }) {
     switch (state) {
       case ScreenState.menu:
         Navigator.push(

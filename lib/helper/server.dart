@@ -7,8 +7,8 @@ import 'dart:io';
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 
-import '../models/PopularProduct.dart';
-import '../models/Product.dart';
+import '../models/popular_product_model.dart';
+import '../models/product_model.dart';
 
 class Server {
   // Consider making this class abstract or using a service locator if it grows
@@ -38,9 +38,7 @@ class Server {
   static Future<List<PopularProduct>> getSettings() async {
     try {
       final http.Response response = await http
-          .get(
-            Uri.https(host, "/tmcars/setting/getAppSettingsV1"),
-          )
+          .get(Uri.https(host, "/tmcars/setting/getAppSettingsV1"))
           .timeout(const Duration(seconds: 10)); // Added timeout
 
       if (response.statusCode == 200) {
@@ -55,10 +53,12 @@ class Server {
       } else {
         if (kDebugMode) {
           print(
-              'Failed to load popular products: ${response.statusCode}, Body: ${response.body}');
+            'Failed to load popular products: ${response.statusCode}, Body: ${response.body}',
+          );
         }
         throw HttpException(
-            'Failed to load popular products: ${response.statusCode}');
+          'Failed to load popular products: ${response.statusCode}',
+        );
       }
     } on TimeoutException catch (e) {
       if (kDebugMode) {

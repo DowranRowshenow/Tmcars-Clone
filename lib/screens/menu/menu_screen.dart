@@ -1,14 +1,11 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 
 import '../../components/custom_drawer.dart';
-import '../../components/menu_icon_button.dart';
-import '../../helper/constants.dart';
-import '../../helper/size_config.dart';
+import '../../components/exit_dialog.dart';
+import '../../helper/constants.dart' as constants;
 
 class MenuScreen extends StatefulWidget {
-  const MenuScreen({Key? key}) : super(key: key);
+  const MenuScreen({super.key});
 
   @override
   // ignore: library_private_types_in_public_api
@@ -18,60 +15,44 @@ class MenuScreen extends StatefulWidget {
 class _MenuScreenState extends State<MenuScreen> {
   @override
   Widget build(BuildContext context) {
-    SizeConfig().init(context);
-
-    return WillPopScope(
-      onWillPop: () async {
-        if (navigate.currentMenu == MenuState.home) {
-          return await showDialog(
-            context: context,
-            builder: (BuildContext context) {
-              return AlertDialog(
-                title: const Text("Çykmak isleýärsiňizmi?"),
-                actions: [
-                  TextButton(
-                    child: const Text("Hawa"),
-                    onPressed: () {
-                      exit(0);
-                    },
-                  ),
-                  TextButton(
-                    child: const Text("Ýok"),
-                    onPressed: () {
-                      Navigator.of(context).pop(false);
-                    },
-                  ),
-                ],
-              );
-            },
-          );
+    return PopScope(
+      canPop: false,
+      onPopInvokedWithResult: (bool didPop, dynamic result) {
+        if (didPop) return;
+        if (constants.scaffold.currentState!.isDrawerOpen) {
+          constants.scaffold.currentState!.closeDrawer();
+          return;
         } else {
-          setState(() {
-            if (scaffold.currentState!.isDrawerOpen) {
-              scaffold.currentState!.closeDrawer();
-            } else {
-              navigate.changeMenu(MenuState.home);
-            }
-          });
-          return false;
+          if (constants.navigate.currentMenu == constants.MenuState.home) {
+            showExitDialog(context: context);
+          } else {
+            setState(
+              () => constants.navigate.changeMenu(constants.MenuState.home),
+            );
+            return;
+          }
         }
       },
       child: Scaffold(
-        key: scaffold,
+        key: constants.scaffold,
         appBar: AppBar(
-          title: Text(navigate.getMenuTitle()),
-          leading: const MenuIconButton(),
-          actions: navigate.getMenuTabs(),
+          title: Text(constants.navigate.getMenuTitle()),
+          leading: IconButton(
+            icon: const Icon(Icons.menu),
+            splashRadius: constants.splashRadius,
+            onPressed: () => constants.scaffold.currentState?.openDrawer(),
+          ),
+          actions: constants.navigate.getMenuTabs(),
         ),
         drawer: CustomDrawer(
           onTap: (state) {
             setState(() {
-              scaffold.currentState!.closeDrawer();
-              navigate.currentMenu = state;
+              constants.scaffold.currentState!.closeDrawer();
+              constants.navigate.currentMenu = state;
             });
           },
         ),
-        body: navigate.getCurrentMenu(),
+        body: constants.navigate.getCurrentMenu(),
       ),
     );
   }

@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 
+import '../../helper/strings.dart';
 import 'tabs/all_others_tab.dart';
 import 'tabs/category_others_tab.dart';
 import 'tabs/selection_others_tab.dart';
 
 class OthersMenu extends StatefulWidget {
-  const OthersMenu({Key? key}) : super(key: key);
+  const OthersMenu({super.key});
 
   @override
   // ignore: library_private_types_in_public_api
@@ -22,21 +23,17 @@ class _OthersMenuState extends State<OthersMenu> {
           elevation: 0,
           toolbarHeight: 0,
           leading: Container(),
-          bottom: const TabBar(
+          bottom: TabBar(
             indicatorColor: Colors.white,
             tabs: [
-              Tab(text: "HEMMESI"),
-              Tab(text: "SAÝLANAN"),
-              Tab(text: "BÖLÜM"),
+              Tab(text: Localization.all.toUpperCase()),
+              Tab(text: Localization.selected.toUpperCase()),
+              Tab(text: Localization.category.toUpperCase()),
             ],
           ),
         ),
         body: const TabBarView(
-          children: [
-            AllOthersTab(),
-            SelectionOthersTab(),
-            CategoryOthersTab(),
-          ],
+          children: [AllOthersTab(), SelectionOthersTab(), CategoryOthersTab()],
         ),
       ),
     );

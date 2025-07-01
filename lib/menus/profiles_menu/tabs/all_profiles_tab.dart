@@ -1,18 +1,16 @@
 import 'package:flutter/material.dart';
 
 import '../../../components/ripple_container.dart';
-import '../../../helper/themes.dart';
-import '../../../helper/size_config.dart';
+import '../../../helper/constants.dart' as constants;
+import '../../../helper/strings.dart';
 
 class AllProfilesTab extends StatelessWidget {
-  const AllProfilesTab({Key? key}) : super(key: key);
+  const AllProfilesTab({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final AppColors appColors = Theme.of(context).extension<AppColors>()!;
-
     return Container(
-      color: appColors.menuBackgroundColor,
+      color: constants.appColors.menuBackgroundColor,
       padding: const EdgeInsets.all(5),
       child: Column(
         children: [
@@ -20,51 +18,42 @@ class AllProfilesTab extends StatelessWidget {
           Container(
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(5), // Use appColors
-              color: appColors.themedSurface,
+              color: constants.appColors.themedSurface,
             ),
-            padding: EdgeInsets.all(getProportionateScreenWidth(5)),
+            padding: EdgeInsets.all(5),
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                SizedBox(width: getProportionateScreenWidth(10)),
+                SizedBox(width: 10),
                 Flexible(
                   child: TextField(
                     autocorrect: false,
-                    style: TextStyle(
-                      color: appColors.textThemeColor, // Use appColors
-                      fontSize: 18,
-                    ),
+                    style: TextStyle(fontSize: 18),
                     keyboardType: TextInputType.multiline,
                     maxLines: 1,
                     decoration: InputDecoration.collapsed(
-                      hintText: "Gözleg",
-                      hintStyle: TextStyle(
-                        color: appColors.textHintThemeColor, // Use appColors
-                      ),
+                      hintText: Localization.search,
                     ),
                   ),
                 ),
                 RippleContainer(
-                  padding: EdgeInsets.all(getProportionateScreenWidth(10)),
+                  padding: EdgeInsets.all(10),
                   onTap: () {},
                   borderRadius: 25,
                   color: Colors.transparent,
                   child: Icon(
                     Icons.search,
-                    color: appColors.iconThemeColor, // Use appColors
-                    size: getProportionateScreenWidth(24),
+                    color: constants.appColors.iconThemeColor, // Use appColors
+                    size: 24,
                   ),
                 ),
               ],
             ),
           ),
-          SizedBox(height: getProportionateScreenHeight(5)),
+          SizedBox(height: 5),
           // Refreshable list of profiles
           Expanded(
-            child: RefreshIndicator(
-              onRefresh: () async {},
-              child: ListView(),
-            ),
+            child: RefreshIndicator(onRefresh: () async {}, child: ListView()),
           ),
         ],
       ),

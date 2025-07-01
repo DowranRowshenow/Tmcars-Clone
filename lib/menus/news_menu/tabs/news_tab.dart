@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class NewsTab extends StatefulWidget {
-  const NewsTab({Key? key}) : super(key: key);
+  const NewsTab({super.key});
 
   @override
   State<NewsTab> createState() => _NewsTabState();

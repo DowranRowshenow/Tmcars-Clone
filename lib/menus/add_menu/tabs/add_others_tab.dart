@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class AddOthersTab extends StatefulWidget {
-  const AddOthersTab({Key? key}) : super(key: key);
+  const AddOthersTab({super.key});
 
   @override
   State<AddOthersTab> createState() => _AddOthersTabState();

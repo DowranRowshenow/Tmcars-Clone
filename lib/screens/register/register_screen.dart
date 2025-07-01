@@ -1,14 +1,12 @@
 import 'package:flutter/material.dart';
 
 import '../../components/ripple_container.dart';
-import '../../components/back_icon_button.dart';
-import '../../helper/constants.dart';
+import '../../helper/constants.dart' as constants;
 import '../../helper/server.dart';
-import '../../helper/size_config.dart';
-import '../../helper/themes.dart';
+import '../../helper/strings.dart';
 
 class RegisterScreen extends StatefulWidget {
-  const RegisterScreen({Key? key}) : super(key: key);
+  const RegisterScreen({super.key});
 
   @override
   // ignore: library_private_types_in_public_api
@@ -22,178 +20,162 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final appColors = Theme.of(context).extension<AppColors>()!;
+    final emailAddressController = TextEditingController();
+    final phoneNumberController = TextEditingController();
 
     return Scaffold(
-      resizeToAvoidBottomInset: false,
       appBar: AppBar(
-        title: const Text("Ulgama girmek"),
-        leading: const BackIconButton(),
+        title: const Text(Localization.register),
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back),
+          onPressed: () => Navigator.pop(context),
+          splashRadius: constants.splashRadius,
+        ),
       ),
-      body: Container(
-        padding: EdgeInsets.all(getProportionateScreenWidth(20)),
-        width: double.infinity,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            SizedBox(height: getProportionateScreenHeight(15)),
-            Container(
-              padding: EdgeInsets.all(getProportionateScreenWidth(25)),
-              child: Image(
-                image: themeManager.isDark()
-                    ? const AssetImage('assets/images/drawer_logo_dark.webp')
-                    : const AssetImage('assets/images/drawer_logo_light.webp'),
-                height: getProportionateScreenHeight(85),
+      body: SingleChildScrollView(
+        child: Container(
+          padding: EdgeInsets.all(20),
+          width: double.infinity,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              SizedBox(height: 15),
+              Container(
+                padding: EdgeInsets.all(25),
+                child: Image(
+                  image: AssetImage(constants.drawerLogoDark),
+                  height: 85,
+                ),
               ),
-            ),
-            SizedBox(height: getProportionateScreenHeight(15)),
-            Container(
-              child: isEmail
-                  ? Row(
-                      children: [
-                        const Text(
-                          "Email:",
-                          style: TextStyle(fontSize: 18),
-                        ),
-                        SizedBox(width: getProportionateScreenWidth(5)),
-                        Flexible(
-                          child: TextField(
-                            controller: emailAddressController,
-                            autocorrect: false,
-                            style: const TextStyle(fontSize: 18),
-                            keyboardType: TextInputType.emailAddress,
-                            decoration: const InputDecoration.collapsed(
-                              hintText: "example@gmail.com",
-                              hintStyle: TextStyle(),
+              SizedBox(height: 15),
+              Container(
+                child: isEmail
+                    ? Row(
+                        children: [
+                          const Text(
+                            Localization.emailField,
+                            style: TextStyle(fontSize: 18),
+                          ),
+                          SizedBox(width: 5),
+                          Flexible(
+                            child: TextField(
+                              key: const Key('emailAddressController'),
+                              controller: emailAddressController,
+                              autocorrect: false,
+                              style: const TextStyle(fontSize: 18),
+                              keyboardType: TextInputType.emailAddress,
+                              decoration: const InputDecoration.collapsed(
+                                hintText: Localization.exampleEmail,
+                              ),
                             ),
                           ),
-                        ),
-                      ],
-                    )
-                  : Row(
-                      children: [
-                        const Text(
-                          "+993",
-                          style: TextStyle(fontSize: 18),
-                        ),
-                        SizedBox(width: getProportionateScreenWidth(10)),
-                        Flexible(
-                          child: TextField(
-                            controller: phoneNumberController,
-                            autocorrect: false,
-                            style: const TextStyle(fontSize: 18),
-                            keyboardType: TextInputType.phone,
-                            decoration: const InputDecoration.collapsed(
-                              hintText: "Telefon belgiňiz",
-                              hintStyle: TextStyle(),
-                            ),
-                            onChanged: (value) {
-                              if (value.length <= 8) {
-                                phoneNumber = value;
-                              } else {
-                                phoneNumberController.text = phoneNumber;
-                              }
-                            },
+                        ],
+                      )
+                    : Row(
+                        children: [
+                          const Text(
+                            Localization.phoneCode,
+                            style: TextStyle(fontSize: 18),
                           ),
-                        )
-                      ],
-                    ),
-            ),
-            Container(
-              margin: EdgeInsets.only(
-                top: 5,
-                bottom: 5,
-                left: getProportionateScreenWidth(45),
+                          SizedBox(width: 10),
+                          Flexible(
+                            child: TextField(
+                              key: const Key('phoneNumberController'),
+                              controller: phoneNumberController,
+                              autocorrect: false,
+                              style: const TextStyle(fontSize: 18),
+                              keyboardType: TextInputType.phone,
+                              decoration: const InputDecoration.collapsed(
+                                hintText: Localization.phoneNumber,
+                              ),
+                              onChanged: (value) => value.length <= 8
+                                  ? phoneNumber = value
+                                  : phoneNumberController.text = phoneNumber,
+                            ),
+                          ),
+                        ],
+                      ),
               ),
-              decoration: const BoxDecoration(
-                border: Border(
-                  bottom: BorderSide(
-                    width: 0.5,
-                    color: Colors.black,
+              Container(
+                margin: EdgeInsets.only(top: 5, bottom: 5, left: 45),
+                decoration: const BoxDecoration(
+                  border: Border(
+                    bottom: BorderSide(width: 0.5, color: Colors.black),
                   ),
                 ),
               ),
-            ),
-            SizedBox(height: getProportionateScreenHeight(15)),
-            Row(
-              children: [
-                Checkbox(
+              SizedBox(height: 15),
+              Row(
+                children: [
+                  Checkbox(
                     value: isChecked,
-                    onChanged: (value) {
-                      setState(() {
-                        isChecked = !isChecked;
-                      });
-                    }),
-                GestureDetector(
-                  child: const Text(
-                    "Düzgünnamany okadym we kabul etdim",
-                    style: TextStyle(
-                      decoration: TextDecoration.underline,
+                    onChanged: (value) =>
+                        setState(() => isChecked = !isChecked),
+                  ),
+                  Flexible(
+                    child: GestureDetector(
+                      child: Text(
+                        Localization.acceptPolicy,
+                        style: const TextStyle(
+                          decoration: TextDecoration.underline,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                        maxLines: 1,
+                      ),
+                      onTap: () {
+                        constants.navigate.changeScreen(
+                          context,
+                          constants.ScreenState.webview,
+                          url: Server.PRIVACY_POLICY_RU_URL,
+                          title: Localization.policy,
+                        );
+                      },
                     ),
                   ),
-                  onTap: () {
-                    navigate.changeScreen(
-                      context,
-                      ScreenState.webview,
-                      url: Server.PRIVACY_POLICY_RU_URL,
-                      title: 'Düzgünnama',
-                    );
-                  },
+                ],
+              ),
+              SizedBox(height: 15),
+              RippleContainer(
+                onTap: () {},
+                color: constants.colorAccent,
+                padding: EdgeInsets.all(15),
+                borderRadius: constants.buttonBorderRadius,
+                child: Text(
+                  Localization.accept.toUpperCase(),
+                  style: TextStyle(fontSize: 16, color: Colors.white),
                 ),
-              ],
-            ),
-            SizedBox(height: getProportionateScreenHeight(15)),
-            RippleContainer(
-              onTap: () {},
-              color: colorAccent,
-              padding: EdgeInsets.all(getProportionateScreenHeight(15)),
-              borderRadius: buttonBorderRadius,
-              child: const Text(
-                "TASSYKLAMAK",
-                style: TextStyle(fontSize: 16, color: Colors.white),
               ),
-            ),
-            SizedBox(height: getProportionateScreenHeight(30)),
-            Container(
-              child: isEmail
-                  ? GestureDetector(
-                      child: Text(
-                        'Telefon belgisi bilen girmek',
-                        style: TextStyle(
-                          fontSize: 16,
-                          color: appColors.text2ThemeColor,
+              SizedBox(height: 30),
+              Container(
+                child: isEmail
+                    ? GestureDetector(
+                        child: Text(
+                          Localization.enterWithPhoneNumber,
+                          style: TextStyle(
+                            fontSize: 16,
+                            color: constants.appColors.text2ThemeColor,
+                          ),
                         ),
-                      ),
-                      onTap: () {
-                        setState(() {
-                          isEmail = false;
-                        });
-                      },
-                    )
-                  : GestureDetector(
-                      child: Text(
-                        'Email bilen girmek',
-                        style: TextStyle(
-                          fontSize: 16,
-                          color: appColors.text2ThemeColor,
+                        onTap: () => setState(() => isEmail = false),
+                      )
+                    : GestureDetector(
+                        child: Text(
+                          Localization.enterWithEmail,
+                          style: TextStyle(
+                            fontSize: 16,
+                            color: constants.appColors.text2ThemeColor,
+                          ),
                         ),
+                        onTap: () => setState(() => isEmail = true),
                       ),
-                      onTap: () {
-                        setState(() {
-                          isEmail = true;
-                        });
-                      },
-                    ),
-            ),
-            SizedBox(height: getProportionateScreenHeight(30)),
-            Text(
-              "Ulgama girmek bilen, siz öz bildirişleriňizi we profiliňizi sazlap bilersiňiz, we özüňiziň başga telefonlaryňyza geçirip bilersiňiz",
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                color: appColors.textThemeColor,
               ),
-            ),
-          ],
+              SizedBox(height: 30),
+              Text(
+                Localization.registerDescription,
+                textAlign: TextAlign.center,
+              ),
+            ],
+          ),
         ),
       ),
     );

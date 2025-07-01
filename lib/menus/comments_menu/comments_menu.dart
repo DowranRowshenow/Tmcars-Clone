@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:tmcars/menus/comments_menu/tabs/comments_tab.dart';
 
+import '../../helper/strings.dart';
+import 'tabs/comments_tab.dart';
 import 'tabs/my_comments_tab.dart';
 
 class CommentsMenu extends StatefulWidget {
-  const CommentsMenu({Key? key}) : super(key: key);
+  const CommentsMenu({super.key});
 
   @override
   // ignore: library_private_types_in_public_api
@@ -21,20 +22,15 @@ class _CommentsMenuState extends State<CommentsMenu> {
           elevation: 0,
           toolbarHeight: 0,
           leading: Container(),
-          bottom: const TabBar(
+          bottom: TabBar(
             indicatorColor: Colors.white,
             tabs: [
-              Tab(text: "MAŇA ÝAZYLANLAR"),
-              Tab(text: "MENIŇ ÝAZANLARYM"),
+              Tab(text: Localization.myComments.toUpperCase()),
+              Tab(text: Localization.writtenToMe.toUpperCase()),
             ],
           ),
         ),
-        body: const TabBarView(
-          children: [
-            CommentsTab(),
-            MyCommentsTab(),
-          ],
-        ),
+        body: const TabBarView(children: [CommentsTab(), MyCommentsTab()]),
       ),
     );
   }

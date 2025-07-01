@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class AddCarsTab extends StatefulWidget {
-  const AddCarsTab({Key? key}) : super(key: key);
+  const AddCarsTab({super.key});
 
   @override
   State<AddCarsTab> createState() => _AddCarsTabState();

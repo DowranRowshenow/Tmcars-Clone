@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
 
-import '../../components/back_icon_button.dart';
 import '../../components/ripple_container.dart';
-import '../../helper/size_config.dart';
-import '../../helper/themes.dart';
+import '../../helper/constants.dart' as constants;
+import '../../helper/strings.dart';
 
 class ContactScreen extends StatefulWidget {
-  const ContactScreen({Key? key}) : super(key: key);
+  const ContactScreen({super.key});
 
   @override
   // ignore: library_private_types_in_public_api
@@ -16,16 +15,15 @@ class ContactScreen extends StatefulWidget {
 class _ContactScreenState extends State<ContactScreen> {
   @override
   Widget build(BuildContext context) {
-    final appColors = Theme.of(context).extension<AppColors>()!;
     return Scaffold(
-      backgroundColor: appColors.themedSurface,
-      resizeToAvoidBottomInset: true,
       appBar: AppBar(
-        title: const Text("Administrator"),
-        leading: const BackIconButton(),
+        title: const Text(Localization.administrator),
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back),
+          onPressed: () => Navigator.pop(context),
+          splashRadius: constants.splashRadius,
+        ),
       ),
-      // The body will contain the message list and the input field at the bottom.
-      // Using a Column to stack the message area and the input field.
       body: Column(
         children: [
           Expanded(
@@ -49,8 +47,10 @@ class _ContactScreenState extends State<ContactScreen> {
           ),
           // This is your input field area.
           Container(
-            padding:
-                const EdgeInsets.symmetric(horizontal: 12.0, vertical: 8.0),
+            padding: const EdgeInsets.symmetric(
+              horizontal: 12.0,
+              vertical: 8.0,
+            ),
             decoration: const BoxDecoration(color: Colors.transparent),
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.center,
@@ -58,28 +58,20 @@ class _ContactScreenState extends State<ContactScreen> {
                 Flexible(
                   child: TextField(
                     autocorrect: false,
-                    style: TextStyle(
-                      color: appColors.textThemeColor,
-                      fontSize: 18,
-                    ),
+                    style: TextStyle(fontSize: 18),
                     keyboardType: TextInputType.multiline,
                     maxLines: 1,
                     decoration: InputDecoration.collapsed(
-                      hintText: "Siziň hatyňyz...",
-                      hintStyle: TextStyle(color: appColors.textHintThemeColor),
+                      hintText: Localization.yourMessage,
                     ),
                   ),
                 ),
                 RippleContainer(
-                  padding: EdgeInsets.all(getProportionateScreenWidth(10)),
+                  padding: EdgeInsets.all(10),
                   onTap: () {},
-                  borderRadius: 25, // Adjusted border radius
+                  borderRadius: 25,
                   color: Colors.transparent,
-                  child: Icon(
-                    Icons.send_outlined,
-                    color: appColors.iconThemeColor,
-                    size: getProportionateScreenWidth(24), // Explicit icon size
-                  ),
+                  child: Icon(Icons.send_outlined, size: 24),
                 ),
               ],
             ),

@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 
 import '../../../helper/constants.dart';
 import '../../../helper/server.dart';
-import '../../../helper/size_config.dart';
-import '../../../models/Product.dart';
+import '../../../helper/strings.dart';
+import '../../../models/product_model.dart';
 import '../../../components/product_card.dart';
 
 class AllOthersTab extends StatefulWidget {
-  const AllOthersTab({Key? key}) : super(key: key);
+  const AllOthersTab({super.key});
 
   @override
   // ignore: library_private_types_in_public_api
@@ -23,7 +23,7 @@ class _AllOthersTabState extends State<AllOthersTab> {
     return Column(
       children: [
         Container(
-          padding: EdgeInsets.all(getProportionateScreenHeight(10)),
+          padding: EdgeInsets.all(10),
           decoration: const BoxDecoration(
             border: Border(bottom: BorderSide(width: 0.5)),
           ),
@@ -36,8 +36,7 @@ class _AllOthersTabState extends State<AllOthersTab> {
                   style: const TextStyle(fontSize: 20),
                   keyboardType: TextInputType.text,
                   decoration: const InputDecoration.collapsed(
-                    hintText: "Gözleg",
-                    hintStyle: TextStyle(),
+                    hintText: Localization.search,
                   ),
                   onChanged: (value) {
                     if (value.length <= 255) {
@@ -59,9 +58,7 @@ class _AllOthersTabState extends State<AllOthersTab> {
               if (snapshot.hasData) {
                 products = snapshot.data as List<Product>;
                 return RefreshIndicator(
-                  onRefresh: () async {
-                    setState(() {});
-                  },
+                  onRefresh: () async => setState(() {}),
                   child: SingleChildScrollView(
                     physics: const AlwaysScrollableScrollPhysics(),
                     child: Column(
@@ -76,7 +73,7 @@ class _AllOthersTabState extends State<AllOthersTab> {
               } else {
                 return Column(
                   children: [
-                    SizedBox(height: getProportionateScreenWidth(40)),
+                    SizedBox(height: 40),
                     const Center(child: CircularProgressIndicator()),
                   ],
                 );

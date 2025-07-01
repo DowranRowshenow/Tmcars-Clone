@@ -1,46 +1,32 @@
-// ignore_for_file: file_names
-
 import '../helper/server.dart';
 
 class ProductLocation {
   final String name;
 
-  ProductLocation({
-    required this.name,
-  });
+  ProductLocation({required this.name});
 
   factory ProductLocation.fromJson(Map<String, dynamic> json) {
-    return ProductLocation(
-      name: json['name'],
-    );
+    return ProductLocation(name: json['name']);
   }
 }
 
 class ProductCategory {
   final String name;
 
-  ProductCategory({
-    required this.name,
-  });
+  ProductCategory({required this.name});
 
   factory ProductCategory.fromJson(Map<String, dynamic> json) {
-    return ProductCategory(
-      name: json['name'],
-    );
+    return ProductCategory(name: json['name']);
   }
 }
 
 class ProductImage {
   final String url;
 
-  ProductImage({
-    required this.url,
-  });
+  ProductImage({required this.url});
 
   factory ProductImage.fromJson(Map<String, dynamic> json) {
-    return ProductImage(
-      url: 'http://${Server.host}${json['image']}',
-    );
+    return ProductImage(url: 'http://${Server.host}${json['image']}');
   }
 }
 

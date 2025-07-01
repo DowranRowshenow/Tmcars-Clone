@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 
-import '../helper/constants.dart';
-import '../helper/size_config.dart';
+import '../helper/constants.dart' as constants;
+import '../helper/strings.dart';
 import '../helper/themes.dart';
 
 class CustomDrawer extends StatefulWidget {
-  const CustomDrawer({Key? key, required this.onTap}) : super(key: key);
+  const CustomDrawer({super.key, required this.onTap});
   final Function onTap;
 
   @override
@@ -16,37 +16,36 @@ class CustomDrawer extends StatefulWidget {
 class _CustomDrawerState extends State<CustomDrawer> {
   @override
   Widget build(BuildContext context) {
-    final appColors = Theme.of(context).extension<AppColors>()!;
+    constants.appColors = Theme.of(context).extension<AppColors>()!;
 
     return Drawer(
-      width: getProportionateScreenWidth(260),
-      backgroundColor: appColors.themedSurface, // Use appColors
+      width: 260,
+      backgroundColor: constants.appColors.themedSurface, // Use appColors
       child: ListView(
         children: [
           Center(
             child: Column(
               children: [
-                SizedBox(height: getProportionateScreenWidth(20)),
+                SizedBox(height: 20),
                 Image(
-                  image: Theme.of(context).brightness ==
-                          Brightness.dark // Use Theme.of(context).brightness
-                      ? const AssetImage('assets/images/drawer_logo_dark.webp')
-                      : const AssetImage(
-                          'assets/images/drawer_logo_light.webp'),
-                  height: getProportionateScreenHeight(60),
+                  image: constants.themeManager.isDark()
+                      ? const AssetImage(constants.drawerLogoDark)
+                      : const AssetImage(constants.drawerLogoLight),
+                  height: 60,
                 ),
                 GestureDetector(
-                  child: const Text(
-                    'ULGAMA GIRMEK',
+                  child: Text(
+                    Localization.login.toUpperCase(),
                     style: TextStyle(
                       fontSize: 14,
                       fontStyle: FontStyle.italic,
                       decoration: TextDecoration.underline,
                     ),
                   ),
-                  onTap: () {
-                    navigate.changeScreen(context, ScreenState.register);
-                  },
+                  onTap: () => constants.navigate.changeScreen(
+                    context,
+                    constants.ScreenState.register,
+                  ),
                 ),
                 const Text(
                   '',
@@ -56,7 +55,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
                     decoration: TextDecoration.underline,
                   ),
                 ),
-                SizedBox(height: getProportionateScreenWidth(20)),
+                SizedBox(height: 20),
               ],
             ),
           ),
@@ -64,70 +63,55 @@ class _CustomDrawerState extends State<CustomDrawer> {
             margin: const EdgeInsets.only(top: 5, bottom: 5),
             decoration: const BoxDecoration(
               border: Border(
-                bottom: BorderSide(
-                  width: 0.5,
-                  color: Colors.black,
-                ),
+                bottom: BorderSide(width: 0.5, color: Colors.black),
               ),
             ),
           ),
           ListTile(
-            onTap: () {
-              widget.onTap(MenuState.home);
-            },
-            title: const Text("Baş sahypa"),
+            onTap: () => widget.onTap(constants.MenuState.home),
+            title: Text(Localization.home),
             leading: const Icon(Icons.home_outlined),
             selectedTileColor: Colors.white12,
           ),
           ListTile(
-            onTap: () {},
-            title: const Text("Awtoulaglar"),
+            onTap: () => widget.onTap(constants.MenuState.cars),
+            title: Text(Localization.cars),
             leading: const Icon(Icons.car_repair_outlined),
             selectedTileColor: Colors.white12,
           ),
           ListTile(
-            onTap: () {},
-            title: const Text("Awtoşaýlar"),
+            onTap: () => widget.onTap(constants.MenuState.parts),
+            title: Text(Localization.parts),
             leading: const Icon(Icons.car_rental_outlined),
             selectedTileColor: Colors.white12,
           ),
           ListTile(
-            onTap: () {
-              widget.onTap(MenuState.others);
-            },
-            title: const Text("Beýleki bildirişler"),
+            onTap: () => widget.onTap(constants.MenuState.others),
+            title: Text(Localization.others),
             leading: const Icon(Icons.shopping_basket_outlined),
             selectedTileColor: Colors.white12,
           ),
           ListTile(
-            onTap: () {
-              widget.onTap(MenuState.profiles);
-            },
-            title: const Text("Biznez hasaplar"),
+            onTap: () => widget.onTap(constants.MenuState.profiles),
+            title: Text(Localization.profiles),
             leading: const Icon(Icons.star_border_outlined),
             selectedTileColor: Colors.white12,
           ),
           ListTile(
-            onTap: () {
-              widget.onTap(MenuState.news);
-            },
-            title: const Text("Habarlar"),
+            onTap: () => widget.onTap(constants.MenuState.news),
+            title: Text(Localization.news),
             leading: const Icon(Icons.newspaper_outlined),
             selectedTileColor: Colors.white12,
           ),
           ListTile(
-            onTap: () {
-              widget.onTap(MenuState.add);
-            },
-            title: const Text("Bildiriş goşmak"),
+            onTap: () => widget.onTap(constants.MenuState.add),
+            title: Text(Localization.add),
             leading: const Icon(Icons.add_box_outlined),
             selectedTileColor: Colors.white12,
           ),
           ListTile(
-            onTap: () {
-              widget.onTap(MenuState.comments);
-            },
-            title: const Text("Teswirler"),
+            onTap: () => widget.onTap(constants.MenuState.comments),
+            title: Text(Localization.comments),
             leading: const Icon(Icons.message_outlined),
             selectedTileColor: Colors.white12,
           ),
@@ -135,57 +119,61 @@ class _CustomDrawerState extends State<CustomDrawer> {
             margin: const EdgeInsets.only(top: 5, bottom: 5),
             decoration: const BoxDecoration(
               border: Border(
-                bottom: BorderSide(
-                  width: 0.3,
-                  color: Colors.black,
-                ),
+                bottom: BorderSide(width: 0.3, color: Colors.black),
               ),
             ),
           ),
           ListTile(
-            title: themeManager.isDark()
-                ? Text("Gara tema",
-                    style: TextStyle(
-                        color: appColors.textThemeColor)) // Use appColors
-                : Text("Ýagty tema",
-                    style: TextStyle(
-                        color: appColors.textThemeColor)), // Use appColors
-            leading: themeManager.isDark()
-                ? Icon(Icons.dark_mode_outlined,
-                    color: appColors.iconThemeColor)
-                : Icon(Icons.light_mode_outlined,
-                    color: appColors.iconThemeColor), // Use appColors
+            title: constants.themeManager.isDark()
+                ? Text(
+                    Localization.darkTheme,
+                    overflow: TextOverflow.ellipsis,
+                    style: TextStyle(overflow: TextOverflow.ellipsis),
+                  ) // Use appColors
+                : Text(
+                    Localization.lightTheme,
+                    overflow: TextOverflow.ellipsis,
+                    style: TextStyle(overflow: TextOverflow.ellipsis),
+                  ), // Use appColors
+            leading: constants.themeManager.isDark()
+                ? Icon(
+                    Icons.dark_mode_outlined,
+                    color: constants.appColors.iconThemeColor,
+                  )
+                : Icon(
+                    Icons.light_mode_outlined,
+                    color: constants.appColors.iconThemeColor,
+                  ), // Use appColors
             trailing: Switch(
-              value: themeManager.themeMode == ThemeMode.dark,
+              value: constants.themeManager.isDark(),
               activeColor: Colors.lightBlueAccent,
-              onChanged: (value) {
-                setState(() {
-                  themeManager.toggleTheme(value);
-                });
-              },
+              onChanged: (value) =>
+                  setState(() => constants.themeManager.toggleTheme()),
             ),
             selectedTileColor: Colors.white12,
           ),
           ListTile(
-            onTap: () {
-              navigate.changeScreen(context, ScreenState.settings);
-            },
-            title: Text("Sazlamalar",
-                style: TextStyle(
-                    color: appColors.textThemeColor)), // Use appColors
-            leading: Icon(Icons.settings_outlined,
-                color: appColors.iconThemeColor), // Use appColors
+            onTap: () => constants.navigate.changeScreen(
+              context,
+              constants.ScreenState.settings,
+            ),
+            title: Text(Localization.settings), // Use appColors
+            leading: Icon(
+              Icons.settings_outlined,
+              color: constants.appColors.iconThemeColor,
+            ), // Use appColors
             selectedTileColor: Colors.white12,
           ),
           ListTile(
-            onTap: () {
-              navigate.changeScreen(context, ScreenState.contact);
-            },
-            title: Text("Habarlaşmak",
-                style: TextStyle(
-                    color: appColors.textThemeColor)), // Use appColors
-            leading: Icon(Icons.support_agent_outlined,
-                color: appColors.iconThemeColor), // Use appColors
+            onTap: () => constants.navigate.changeScreen(
+              context,
+              constants.ScreenState.contact,
+            ),
+            title: Text(Localization.contactUs), // Use appColors
+            leading: Icon(
+              Icons.support_agent_outlined,
+              color: constants.appColors.iconThemeColor,
+            ), // Use appColors
             selectedTileColor: Colors.white12,
           ),
         ],
