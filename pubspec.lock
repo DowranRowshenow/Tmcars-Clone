@@ -142,18 +142,12 @@ packages:
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "6.0.0"
-  flutter_localization:
-    dependency: "direct main"
-    description:
-      name: flutter_localization
-      sha256: "578a73455a0deffc4169ef9372ba0562a3e2cff563e5c524ea87bc96daa519c0"
-      url: "https://pub.flutter-io.cn"
-    source: hosted
-    version: "0.3.3"
   flutter_localizations:
     dependency: "direct main"
-    description: flutter
-    source: sdk
+    description:
+      path: "pkgs/flutter_localizations"
+      relative: true
+    source: path
     version: "0.0.0"
   flutter_svg:
     dependency: "direct main"
@@ -190,19 +184,11 @@ packages:
     source: hosted
     version: "4.1.2"
   intl:
-    dependency: transitive
-    description:
-      name: intl
-      sha256: "3df61194eb431efc39c4ceba583b95633a403f46c9fd341e550ce0bfa50e9aa5"
-      url: "https://pub.flutter-io.cn"
-    source: hosted
-    version: "0.20.2"
-  intl_mod:
     dependency: "direct main"
     description:
-      name: intl_mod
-      url: "https://pub.flutter-io.cn"
-    source: hosted
+      path: "pkgs/intl"
+      relative: true
+    source: path
     version: "0.20.2"
   leak_tracker:
     dependency: transitive
@@ -561,14 +547,6 @@ packages:
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "1.4.0"
-  universal_io:
-    dependency: transitive
-    description:
-      name: universal_io
-      sha256: "1722b2dcc462b4b2f3ee7d188dad008b6eb4c40bbd03a3de451d82c78bba9aad"
-      url: "https://pub.flutter-io.cn"
-    source: hosted
-    version: "2.2.2"
   uuid:
     dependency: transitive
     description:
@@ -673,14 +651,6 @@ packages:
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "6.5.0"
-  yaml:
-    dependency: transitive
-    description:
-      name: yaml
-      sha256: b9da305ac7c39faa3f030eccd175340f968459dae4af175130b3fc47e40d76ce
-      url: "https://pub.flutter-io.cn"
-    source: hosted
-    version: "3.1.3"
 sdks:
   dart: ">=3.8.1 <4.0.0"
   flutter: ">=3.27.0"

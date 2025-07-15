@@ -31,15 +31,16 @@ dependencies:
   flutter:
     sdk: flutter
   flutter_localizations:
-    sdk: flutter
+    path: pkgs/flutter_localizations
+
+  intl:
+    path: pkgs/intl
 
   #flutter_bloc: ^9.1.1
-  intl_mod: ^0.20.2
   cupertino_icons: ^1.0.8
   http: ^1.4.0
   shared_preferences: ^2.5.3
   flutter_svg: ^2.2.0
-  flutter_localization: ^0.3.3
   transparent_image: ^2.0.1
   cached_network_image: ^3.4.1
   webview_flutter: ^4.13.0
