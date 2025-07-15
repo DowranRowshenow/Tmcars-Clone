@@ -38,7 +38,7 @@ class AppColors extends ThemeExtension<AppColors> {
   // Light theme custom colors
   static final AppColors light = AppColors(
     themedSurface: Colors.white,
-    menuBackgroundColor: Colors.grey.shade400,
+    menuBackgroundColor: Colors.grey.shade200,
     iconThemeColor: Colors.black.withValues(alpha: 0.5),
     textThemeColor: Colors.black.withValues(alpha: 0.8),
     textHintThemeColor: Colors.black.withValues(alpha: 0.5),
@@ -56,7 +56,7 @@ class AppColors extends ThemeExtension<AppColors> {
   // Dark theme custom colors
   static final AppColors dark = AppColors(
     themedSurface: constants.blueGrey950,
-    menuBackgroundColor: Colors.grey.shade800,
+    menuBackgroundColor: constants.blueGrey800.withValues(alpha: 0.2),
     iconThemeColor: Colors.white.withValues(alpha: 0.5),
     textThemeColor: Colors.white.withValues(alpha: 0.8),
     textHintThemeColor: Colors.white.withValues(alpha: 0.5),

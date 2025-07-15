@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../components/ripple_container.dart';
 import '../../helper/constants.dart' as constants;
-import '../../helper/strings.dart';
+import '../../l10n/app_localizations.dart';
 
 class ContactScreen extends StatefulWidget {
   const ContactScreen({super.key});
@@ -17,11 +17,12 @@ class _ContactScreenState extends State<ContactScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text(Localization.administrator),
+        title: Text(AppLocalizations.of(context)!.administrator),
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
           onPressed: () => Navigator.pop(context),
           splashRadius: constants.splashRadius,
+          splashColor: Colors.transparent,
         ),
       ),
       body: Column(
@@ -62,7 +63,7 @@ class _ContactScreenState extends State<ContactScreen> {
                     keyboardType: TextInputType.multiline,
                     maxLines: 1,
                     decoration: InputDecoration.collapsed(
-                      hintText: Localization.yourMessage,
+                      hintText: AppLocalizations.of(context)!.yourMessage,
                     ),
                   ),
                 ),

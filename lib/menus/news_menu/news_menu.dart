@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../helper/strings.dart';
+import '../../l10n/app_localizations.dart';
 import 'tabs/news_tab.dart';
 
 class NewsMenu extends StatefulWidget {
@@ -23,7 +23,7 @@ class _NewsMenuState extends State<NewsMenu> {
           leading: Container(),
           bottom: TabBar(
             indicatorColor: Colors.white,
-            tabs: [Tab(text: Localization.all.toUpperCase())],
+            tabs: [Tab(text: AppLocalizations.of(context)!.all.toUpperCase())],
           ),
         ),
         body: const TabBarView(children: [NewsTab()]),

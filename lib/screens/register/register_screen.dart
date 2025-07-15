@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import '../../components/ripple_container.dart';
 import '../../helper/constants.dart' as constants;
 import '../../helper/server.dart';
-import '../../helper/strings.dart';
+import '../../l10n/app_localizations.dart';
 
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({super.key});
@@ -25,11 +25,12 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text(Localization.register),
+        title: Text(AppLocalizations.of(context)!.register),
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
           onPressed: () => Navigator.pop(context),
           splashRadius: constants.splashRadius,
+          splashColor: Colors.transparent,
         ),
       ),
       body: SingleChildScrollView(
@@ -43,7 +44,11 @@ class _RegisterScreenState extends State<RegisterScreen> {
               Container(
                 padding: EdgeInsets.all(25),
                 child: Image(
-                  image: AssetImage(constants.drawerLogoDark),
+                  image: AssetImage(
+                    constants.themeManager.isDark()
+                        ? constants.drawerLogoDark
+                        : constants.drawerLogoLight,
+                  ),
                   height: 85,
                 ),
               ),
@@ -52,9 +57,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 child: isEmail
                     ? Row(
                         children: [
-                          const Text(
-                            Localization.emailField,
-                            style: TextStyle(fontSize: 18),
+                          Text(
+                            AppLocalizations.of(context)!.emailField,
+                            style: const TextStyle(fontSize: 18),
                           ),
                           SizedBox(width: 5),
                           Flexible(
@@ -64,8 +69,10 @@ class _RegisterScreenState extends State<RegisterScreen> {
                               autocorrect: false,
                               style: const TextStyle(fontSize: 18),
                               keyboardType: TextInputType.emailAddress,
-                              decoration: const InputDecoration.collapsed(
-                                hintText: Localization.exampleEmail,
+                              decoration: InputDecoration.collapsed(
+                                hintText: AppLocalizations.of(
+                                  context,
+                                )!.exampleEmail,
                               ),
                             ),
                           ),
@@ -74,7 +81,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     : Row(
                         children: [
                           const Text(
-                            Localization.phoneCode,
+                            constants.phoneCode,
                             style: TextStyle(fontSize: 18),
                           ),
                           SizedBox(width: 10),
@@ -85,8 +92,10 @@ class _RegisterScreenState extends State<RegisterScreen> {
                               autocorrect: false,
                               style: const TextStyle(fontSize: 18),
                               keyboardType: TextInputType.phone,
-                              decoration: const InputDecoration.collapsed(
-                                hintText: Localization.phoneNumber,
+                              decoration: InputDecoration.collapsed(
+                                hintText: AppLocalizations.of(
+                                  context,
+                                )!.phoneNumber,
                               ),
                               onChanged: (value) => value.length <= 8
                                   ? phoneNumber = value
@@ -115,7 +124,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   Flexible(
                     child: GestureDetector(
                       child: Text(
-                        Localization.acceptPolicy,
+                        AppLocalizations.of(context)!.acceptPolicy,
                         style: const TextStyle(
                           decoration: TextDecoration.underline,
                           overflow: TextOverflow.ellipsis,
@@ -127,7 +136,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           context,
                           constants.ScreenState.webview,
                           url: Server.PRIVACY_POLICY_RU_URL,
-                          title: Localization.policy,
+                          title: AppLocalizations.of(context)!.policy,
                         );
                       },
                     ),
@@ -141,7 +150,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 padding: EdgeInsets.all(15),
                 borderRadius: constants.buttonBorderRadius,
                 child: Text(
-                  Localization.accept.toUpperCase(),
+                  AppLocalizations.of(context)!.accept.toUpperCase(),
                   style: TextStyle(fontSize: 16, color: Colors.white),
                 ),
               ),
@@ -150,7 +159,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 child: isEmail
                     ? GestureDetector(
                         child: Text(
-                          Localization.enterWithPhoneNumber,
+                          AppLocalizations.of(context)!.enterWithPhoneNumber,
                           style: TextStyle(
                             fontSize: 16,
                             color: constants.appColors.text2ThemeColor,
@@ -160,7 +169,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       )
                     : GestureDetector(
                         child: Text(
-                          Localization.enterWithEmail,
+                          AppLocalizations.of(context)!.enterWithEmail,
                           style: TextStyle(
                             fontSize: 16,
                             color: constants.appColors.text2ThemeColor,
@@ -171,7 +180,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
               ),
               SizedBox(height: 30),
               Text(
-                Localization.registerDescription,
+                AppLocalizations.of(context)!.registerDescription,
                 textAlign: TextAlign.center,
               ),
             ],

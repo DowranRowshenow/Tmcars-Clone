@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../helper/strings.dart';
+import '../../l10n/app_localizations.dart';
 import 'tabs/add_car_parts_tab.dart';
 import 'tabs/add_others_tab.dart';
 import 'tabs/add_cars_tab.dart';
@@ -26,9 +26,9 @@ class _AddMenuState extends State<AddMenu> {
           bottom: TabBar(
             indicatorColor: Colors.white,
             tabs: [
-              Tab(text: Localization.cars.toUpperCase()),
-              Tab(text: Localization.parts.toUpperCase()),
-              Tab(text: Localization.others.toUpperCase()),
+              Tab(text: AppLocalizations.of(context)!.cars.toUpperCase()),
+              Tab(text: AppLocalizations.of(context)!.parts.toUpperCase()),
+              Tab(text: AppLocalizations.of(context)!.others.toUpperCase()),
             ],
           ),
         ),

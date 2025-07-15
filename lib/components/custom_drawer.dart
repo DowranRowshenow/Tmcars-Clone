@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:tmcarsclone/l10n/app_localizations.dart';
 
 import '../helper/constants.dart' as constants;
-import '../helper/strings.dart';
 import '../helper/themes.dart';
 
 class CustomDrawer extends StatefulWidget {
@@ -17,6 +18,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
   @override
   Widget build(BuildContext context) {
     constants.appColors = Theme.of(context).extension<AppColors>()!;
+    constants.themeManager = Provider.of<ThemeManager>(context);
 
     return Drawer(
       width: 260,
@@ -35,7 +37,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
                 ),
                 GestureDetector(
                   child: Text(
-                    Localization.login.toUpperCase(),
+                    AppLocalizations.of(context)!.login.toUpperCase(),
                     style: TextStyle(
                       fontSize: 14,
                       fontStyle: FontStyle.italic,
@@ -69,49 +71,49 @@ class _CustomDrawerState extends State<CustomDrawer> {
           ),
           ListTile(
             onTap: () => widget.onTap(constants.MenuState.home),
-            title: Text(Localization.home),
+            title: Text(AppLocalizations.of(context)!.home),
             leading: const Icon(Icons.home_outlined),
             selectedTileColor: Colors.white12,
           ),
           ListTile(
             onTap: () => widget.onTap(constants.MenuState.cars),
-            title: Text(Localization.cars),
+            title: Text(AppLocalizations.of(context)!.cars),
             leading: const Icon(Icons.car_repair_outlined),
             selectedTileColor: Colors.white12,
           ),
           ListTile(
             onTap: () => widget.onTap(constants.MenuState.parts),
-            title: Text(Localization.parts),
+            title: Text(AppLocalizations.of(context)!.parts),
             leading: const Icon(Icons.car_rental_outlined),
             selectedTileColor: Colors.white12,
           ),
           ListTile(
             onTap: () => widget.onTap(constants.MenuState.others),
-            title: Text(Localization.others),
+            title: Text(AppLocalizations.of(context)!.others),
             leading: const Icon(Icons.shopping_basket_outlined),
             selectedTileColor: Colors.white12,
           ),
           ListTile(
             onTap: () => widget.onTap(constants.MenuState.profiles),
-            title: Text(Localization.profiles),
+            title: Text(AppLocalizations.of(context)!.profiles),
             leading: const Icon(Icons.star_border_outlined),
             selectedTileColor: Colors.white12,
           ),
           ListTile(
             onTap: () => widget.onTap(constants.MenuState.news),
-            title: Text(Localization.news),
+            title: Text(AppLocalizations.of(context)!.news),
             leading: const Icon(Icons.newspaper_outlined),
             selectedTileColor: Colors.white12,
           ),
           ListTile(
             onTap: () => widget.onTap(constants.MenuState.add),
-            title: Text(Localization.add),
+            title: Text(AppLocalizations.of(context)!.add),
             leading: const Icon(Icons.add_box_outlined),
             selectedTileColor: Colors.white12,
           ),
           ListTile(
             onTap: () => widget.onTap(constants.MenuState.comments),
-            title: Text(Localization.comments),
+            title: Text(AppLocalizations.of(context)!.comments),
             leading: const Icon(Icons.message_outlined),
             selectedTileColor: Colors.white12,
           ),
@@ -126,12 +128,12 @@ class _CustomDrawerState extends State<CustomDrawer> {
           ListTile(
             title: constants.themeManager.isDark()
                 ? Text(
-                    Localization.darkTheme,
+                    AppLocalizations.of(context)!.darkTheme,
                     overflow: TextOverflow.ellipsis,
                     style: TextStyle(overflow: TextOverflow.ellipsis),
                   ) // Use appColors
                 : Text(
-                    Localization.lightTheme,
+                    AppLocalizations.of(context)!.lightTheme,
                     overflow: TextOverflow.ellipsis,
                     style: TextStyle(overflow: TextOverflow.ellipsis),
                   ), // Use appColors
@@ -147,8 +149,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
             trailing: Switch(
               value: constants.themeManager.isDark(),
               activeColor: Colors.lightBlueAccent,
-              onChanged: (value) =>
-                  setState(() => constants.themeManager.toggleTheme()),
+              onChanged: (value) => constants.themeManager.toggleTheme(),
             ),
             selectedTileColor: Colors.white12,
           ),
@@ -157,7 +158,9 @@ class _CustomDrawerState extends State<CustomDrawer> {
               context,
               constants.ScreenState.settings,
             ),
-            title: Text(Localization.settings), // Use appColors
+            title: Text(
+              AppLocalizations.of(context)!.settings,
+            ), // Use appColors
             leading: Icon(
               Icons.settings_outlined,
               color: constants.appColors.iconThemeColor,
@@ -169,7 +172,9 @@ class _CustomDrawerState extends State<CustomDrawer> {
               context,
               constants.ScreenState.contact,
             ),
-            title: Text(Localization.contactUs), // Use appColors
+            title: Text(
+              AppLocalizations.of(context)!.contactUs,
+            ), // Use appColors
             leading: Icon(
               Icons.support_agent_outlined,
               color: constants.appColors.iconThemeColor,

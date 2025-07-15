@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:provider/provider.dart';
 
+import 'helper/locale.dart';
+import 'l10n/app_localizations.dart';
 import 'helper/constants.dart' as constants;
 import 'helper/size_config.dart';
 import 'helper/storage.dart';
@@ -11,7 +14,11 @@ import 'components/scroll_behavior.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Storage().loadThemeMode();
+  await Storage().getThemeMode();
+
+  // Load saved locale
+  constants.locale = await Storage().getLocale();
+
   // Enable edge-to-edge display for the app
   /*
   await SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
@@ -22,8 +29,13 @@ void main() async {
     ),
   );*/
   runApp(
-    ChangeNotifierProvider(
-      create: (_) => constants.themeManager,
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (_) => constants.themeManager),
+        ChangeNotifierProvider(
+          create: (_) => LocaleManager()..setLocale(constants.locale),
+        ),
+      ],
       child: const TmcarsClone(),
     ),
   );
@@ -39,7 +51,6 @@ class TmcarsClone extends StatefulWidget {
 class _TmcarsCloneState extends State<TmcarsClone> {
   @override
   void dispose() {
-    // No longer need to manually remove listener if using Provider for rebuilds
     super.dispose();
   }
 
@@ -48,17 +59,26 @@ class _TmcarsCloneState extends State<TmcarsClone> {
     SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
 
     // Use Consumer or context.watch to rebuild MaterialApp when themeMode changes
-    return Consumer<ThemeManager>(
-      builder: (context, manager, child) {
+    return Consumer2<ThemeManager, LocaleManager>(
+      builder: (context, themeManager, localeManager, child) {
         return MaterialApp(
           debugShowCheckedModeBanner: false,
           title: constants.appName,
-          theme: lightThemeData, // Use the ThemeData from themes.dart
-          darkTheme: darkThemeData, // Use the ThemeData from themes.dart
-          themeMode: manager.themeMode,
+          theme: lightThemeData,
+          darkTheme: darkThemeData,
+          themeMode: themeManager.themeMode,
+          localizationsDelegates: const [
+            AppLocalizations.delegate,
+            GlobalMaterialLocalizations.delegate,
+            GlobalWidgetsLocalizations.delegate,
+            GlobalCupertinoLocalizations.delegate,
+          ],
+          supportedLocales: AppLocalizations.supportedLocales,
+          locale: localeManager.locale,
           builder: (context, child) {
             // Initializing Configures and Variables
             constants.appColors = Theme.of(context).extension<AppColors>()!;
+            //LocaleManager().setLocale(constants.locale);
             SizeConfig().init(context);
             return ScrollConfiguration(
               behavior: GlowlessScrollBehavior(),

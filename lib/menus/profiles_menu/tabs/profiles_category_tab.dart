@@ -1,18 +1,16 @@
 import 'package:flutter/material.dart';
 
 import '../../../helper/constants.dart' as constants;
+import '../../../helper/themes.dart';
 import '../components/profile_category_card.dart';
 
-class ProfilesCategoryTab extends StatefulWidget {
+class ProfilesCategoryTab extends StatelessWidget {
   const ProfilesCategoryTab({super.key});
 
   @override
-  State<ProfilesCategoryTab> createState() => _ProfilesCategoryTabState();
-}
-
-class _ProfilesCategoryTabState extends State<ProfilesCategoryTab> {
-  @override
   Widget build(BuildContext context) {
+    constants.appColors = Theme.of(context).extension<AppColors>()!;
+
     return Container(
       color: constants.appColors.menuBackgroundColor,
       padding: const EdgeInsets.all(5),

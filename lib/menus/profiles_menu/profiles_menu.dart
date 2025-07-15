@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../helper/strings.dart';
+import '../../l10n/app_localizations.dart';
 import 'tabs/all_profiles_tab.dart';
 import 'tabs/profiles_category_tab.dart';
 
@@ -25,8 +25,8 @@ class _ProfilesMenuState extends State<ProfilesMenu> {
           bottom: TabBar(
             indicatorColor: Colors.white,
             tabs: [
-              Tab(text: Localization.all.toUpperCase()),
-              Tab(text: Localization.category.toUpperCase()),
+              Tab(text: AppLocalizations.of(context)!.all.toUpperCase()),
+              Tab(text: AppLocalizations.of(context)!.category.toUpperCase()),
             ],
           ),
         ),

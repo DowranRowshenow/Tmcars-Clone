@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../helper/strings.dart';
+import '../../l10n/app_localizations.dart';
 import 'tabs/all_others_tab.dart';
 import 'tabs/category_others_tab.dart';
 import 'tabs/selection_others_tab.dart';
@@ -26,9 +26,9 @@ class _OthersMenuState extends State<OthersMenu> {
           bottom: TabBar(
             indicatorColor: Colors.white,
             tabs: [
-              Tab(text: Localization.all.toUpperCase()),
-              Tab(text: Localization.selected.toUpperCase()),
-              Tab(text: Localization.category.toUpperCase()),
+              Tab(text: AppLocalizations.of(context)!.all.toUpperCase()),
+              Tab(text: AppLocalizations.of(context)!.selected.toUpperCase()),
+              Tab(text: AppLocalizations.of(context)!.category.toUpperCase()),
             ],
           ),
         ),

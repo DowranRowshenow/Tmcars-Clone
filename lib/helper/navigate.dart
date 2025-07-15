@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:tmcarsclone/l10n/app_localizations.dart';
 
 import '../menus/profiles_menu/profiles_menu.dart';
 import '../menus/comments_menu/comments_menu.dart';
@@ -18,24 +19,24 @@ class Navigate {
   ScreenState currentScreen = ScreenState.menu;
   MenuState currentMenu = MenuState.home;
 
-  String getMenuTitle() {
+  String getMenuTitle(BuildContext context) {
     switch (currentMenu) {
       case MenuState.home:
-        return "Baş sahypa";
+        return AppLocalizations.of(context)!.home;
       case MenuState.others:
-        return "Beýleki bildirişler";
+        return AppLocalizations.of(context)!.others;
       case MenuState.add:
-        return "Bildiriş goşmak";
+        return AppLocalizations.of(context)!.add;
       case MenuState.comments:
-        return "Teswirler";
+        return AppLocalizations.of(context)!.comments;
       case MenuState.news:
-        return "Habarlar";
+        return AppLocalizations.of(context)!.news;
       case MenuState.profiles:
-        return "Biznes hasaplar";
+        return AppLocalizations.of(context)!.profiles;
       case MenuState.parts:
-        return "Awtoşaýlar";
+        return AppLocalizations.of(context)!.parts;
       case MenuState.cars:
-        return "Awtoulaglar";
+        return AppLocalizations.of(context)!.cars;
     }
   }
 
@@ -158,7 +159,7 @@ class Navigate {
           MaterialPageRoute(
             builder: (context) => WebViewScreen(
               url: url,
-              title: title == 'NONE' ? getMenuTitle() : title,
+              title: title == 'NONE' ? getMenuTitle(context) : title,
             ),
           ),
         );

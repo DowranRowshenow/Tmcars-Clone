@@ -58,6 +58,7 @@ class _WebViewScreenState extends State<WebViewScreen> {
           icon: const Icon(Icons.arrow_back),
           onPressed: () => Navigator.pop(context),
           splashRadius: constants.splashRadius,
+          splashColor: Colors.transparent,
         ),
       ),
       body: Stack(

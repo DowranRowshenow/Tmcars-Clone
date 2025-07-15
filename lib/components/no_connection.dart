@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../helper/strings.dart';
+import '../l10n/app_localizations.dart';
 
 class NoConnection extends StatelessWidget {
   const NoConnection({super.key, required this.onTap});
@@ -25,16 +25,19 @@ class NoConnection extends StatelessWidget {
             children: [
               const Icon(Icons.wifi_off, size: 50),
               SizedBox(height: 10),
-              const Text(
-                Localization.noInternet,
-                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+              Text(
+                AppLocalizations.of(context)!.noInternet,
+                style: const TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 18,
+                ),
               ),
               SizedBox(height: 10),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
-                children: const [
-                  Icon(Icons.refresh, size: 16),
-                  Text(Localization.tryAgain),
+                children: [
+                  const Icon(Icons.refresh, size: 16),
+                  Text(AppLocalizations.of(context)!.tryAgain),
                 ],
               ),
             ],

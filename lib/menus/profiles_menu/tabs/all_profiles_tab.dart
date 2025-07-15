@@ -2,13 +2,16 @@ import 'package:flutter/material.dart';
 
 import '../../../components/ripple_container.dart';
 import '../../../helper/constants.dart' as constants;
-import '../../../helper/strings.dart';
+import '../../../helper/themes.dart';
+import '../../../l10n/app_localizations.dart';
 
 class AllProfilesTab extends StatelessWidget {
   const AllProfilesTab({super.key});
 
   @override
   Widget build(BuildContext context) {
+    constants.appColors = Theme.of(context).extension<AppColors>()!;
+
     return Container(
       color: constants.appColors.menuBackgroundColor,
       padding: const EdgeInsets.all(5),
@@ -32,7 +35,7 @@ class AllProfilesTab extends StatelessWidget {
                     keyboardType: TextInputType.multiline,
                     maxLines: 1,
                     decoration: InputDecoration.collapsed(
-                      hintText: Localization.search,
+                      hintText: AppLocalizations.of(context)!.search,
                     ),
                   ),
                 ),

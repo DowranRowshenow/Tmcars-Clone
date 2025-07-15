@@ -4,7 +4,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:transparent_image/transparent_image.dart';
 
 import '../../../helper/constants.dart' as constants;
-import '../../../helper/strings.dart';
+import '../../../l10n/app_localizations.dart';
 
 class ProfileCategoryCard extends StatefulWidget {
   const ProfileCategoryCard({super.key});
@@ -65,7 +65,7 @@ class _ProfileCategoryCardState extends State<ProfileCategoryCard> {
               Padding(
                 padding: const EdgeInsets.all(5.0),
                 child: Text(
-                  Localization.carsAndParts,
+                  AppLocalizations.of(context)!.carsAndParts,
                   overflow: TextOverflow.ellipsis,
                   style: TextStyle(color: constants.appColors.textThemeColor),
                 ),

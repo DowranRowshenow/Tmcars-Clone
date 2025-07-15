@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../components/no_connection.dart';
 import '../../helper/server.dart';
-import '../../helper/strings.dart';
+import '../../l10n/app_localizations.dart';
 import '../../models/popular_product_model.dart';
 import 'components/popular_product_card.dart';
 
@@ -62,7 +62,9 @@ class _HomeMenuState extends State<HomeMenu> {
           );
         }
         // Fallback, should ideally not be reached if other states are handled.
-        return const Center(child: Text(Localization.somethingWentWrong));
+        return Center(
+          child: Text(AppLocalizations.of(context)!.somethingWentWrong),
+        );
       },
     );
   }

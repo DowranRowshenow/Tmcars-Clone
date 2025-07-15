@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 
-import '../../../helper/constants.dart';
 import '../../../helper/server.dart';
-import '../../../helper/strings.dart';
+import '../../../l10n/app_localizations.dart';
 import '../../../models/product_model.dart';
 import '../../../components/product_card.dart';
 
@@ -17,6 +16,7 @@ class AllOthersTab extends StatefulWidget {
 class _AllOthersTabState extends State<AllOthersTab> {
   String searchText = "";
   late List<Product> products;
+  final TextEditingController searchBarController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -35,8 +35,8 @@ class _AllOthersTabState extends State<AllOthersTab> {
                   autocorrect: false,
                   style: const TextStyle(fontSize: 20),
                   keyboardType: TextInputType.text,
-                  decoration: const InputDecoration.collapsed(
-                    hintText: Localization.search,
+                  decoration: InputDecoration.collapsed(
+                    hintText: AppLocalizations.of(context)!.search,
                   ),
                   onChanged: (value) {
                     if (value.length <= 255) {
@@ -58,7 +58,7 @@ class _AllOthersTabState extends State<AllOthersTab> {
               if (snapshot.hasData) {
                 products = snapshot.data as List<Product>;
                 return RefreshIndicator(
-                  onRefresh: () async => setState(() {}),
+                  onRefresh: () async {},
                   child: SingleChildScrollView(
                     physics: const AlwaysScrollableScrollPhysics(),
                     child: Column(

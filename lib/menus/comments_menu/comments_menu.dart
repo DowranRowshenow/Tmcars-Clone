@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../helper/strings.dart';
+import '../../l10n/app_localizations.dart';
 import 'tabs/comments_tab.dart';
 import 'tabs/my_comments_tab.dart';
 
@@ -25,8 +25,10 @@ class _CommentsMenuState extends State<CommentsMenu> {
           bottom: TabBar(
             indicatorColor: Colors.white,
             tabs: [
-              Tab(text: Localization.myComments.toUpperCase()),
-              Tab(text: Localization.writtenToMe.toUpperCase()),
+              Tab(text: AppLocalizations.of(context)!.myComments.toUpperCase()),
+              Tab(
+                text: AppLocalizations.of(context)!.writtenToMe.toUpperCase(),
+              ),
             ],
           ),
         ),

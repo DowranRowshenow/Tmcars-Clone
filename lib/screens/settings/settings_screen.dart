@@ -5,7 +5,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import '../../components/select_language_dialog.dart';
 import '../../helper/constants.dart' as constants;
 import '../../helper/server.dart';
-import '../../helper/strings.dart';
+import '../../l10n/app_localizations.dart';
 
 class SettingsScreen extends StatefulWidget {
   const SettingsScreen({super.key});
@@ -21,23 +21,24 @@ class _SettingsScreenState extends State<SettingsScreen> {
     return Scaffold(
       resizeToAvoidBottomInset: true,
       appBar: AppBar(
-        title: const Text(Localization.settings),
+        title: Text(AppLocalizations.of(context)!.settings),
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
           onPressed: () => Navigator.pop(context),
           splashRadius: constants.splashRadius,
+          splashColor: Colors.transparent,
         ),
       ),
       body: ListView(
         children: [
           ListTile(
-            title: Text(Localization.generalSettings),
+            title: Text(AppLocalizations.of(context)!.generalSettings),
             tileColor: constants.appColors.tileThemeColor,
             onTap: () {},
           ),
           ListTile(
-            title: Text(Localization.language),
-            trailing: const Text(Localization.turkmen),
+            title: Text(AppLocalizations.of(context)!.language),
+            trailing: Text(AppLocalizations.of(context)!.lang),
             onTap: () => showSelectLanguageDialog(context: context),
           ),
           Container(
@@ -51,7 +52,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
             ),
           ),
           ListTile(
-            title: Text(Localization.version),
+            title: Text(AppLocalizations.of(context)!.version),
             trailing: const Text(constants.packageVersion),
             onTap: () {},
           ),
@@ -66,8 +67,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
             ),
           ),
           ListTile(
-            title: Text(Localization.internet),
-            trailing: const Text(Localization.standard),
+            title: Text(AppLocalizations.of(context)!.internet),
+            trailing: Text(AppLocalizations.of(context)!.standard),
             onTap: () {},
           ),
           Container(
@@ -81,16 +82,16 @@ class _SettingsScreenState extends State<SettingsScreen> {
             ),
           ),
           ListTile(
-            title: Text(Localization.selectedLocation),
-            trailing: const Text(Localization.notSelected),
+            title: Text(AppLocalizations.of(context)!.selectedLocation),
+            trailing: Text(AppLocalizations.of(context)!.notSelected),
             onTap: () {},
           ),
           ListTile(
-            title: Text(Localization.additional),
+            title: Text(AppLocalizations.of(context)!.additional),
             tileColor: constants.appColors.tileThemeColor,
           ),
           ListTile(
-            title: Text(Localization.share),
+            title: Text(AppLocalizations.of(context)!.share),
             trailing: SvgPicture.asset(
               constants.arrowRight,
               colorFilter: ColorFilter.mode(Colors.grey, BlendMode.srcIn),
@@ -117,14 +118,14 @@ class _SettingsScreenState extends State<SettingsScreen> {
             ),
           ),
           ListTile(
-            title: Text(Localization.helper),
-            trailing: const Text(Localization.mustRead),
+            title: Text(AppLocalizations.of(context)!.helper),
+            trailing: Text(AppLocalizations.of(context)!.mustRead),
             onTap: () {
               constants.navigate.changeScreen(
                 context,
                 constants.ScreenState.webview,
                 url: Server.ABOUT_US_URL,
-                title: Localization.helper,
+                title: AppLocalizations.of(context)!.helper,
               );
             },
           ),
@@ -139,14 +140,14 @@ class _SettingsScreenState extends State<SettingsScreen> {
             ),
           ),
           ListTile(
-            title: Text(Localization.policy),
-            trailing: const Text(Localization.read),
+            title: Text(AppLocalizations.of(context)!.policy),
+            trailing: Text(AppLocalizations.of(context)!.read),
             onTap: () {
               constants.navigate.changeScreen(
                 context,
                 constants.ScreenState.webview,
                 url: Server.PRIVACY_POLICY_URL,
-                title: Localization.policy,
+                title: AppLocalizations.of(context)!.policy,
               );
             },
           ),
@@ -161,14 +162,14 @@ class _SettingsScreenState extends State<SettingsScreen> {
             ),
           ),
           ListTile(
-            title: Text(Localization.privacyPolicy),
-            trailing: const Text(Localization.read),
+            title: Text(AppLocalizations.of(context)!.privacyPolicy),
+            trailing: Text(AppLocalizations.of(context)!.read),
             onTap: () {
               constants.navigate.changeScreen(
                 context,
                 constants.ScreenState.webview,
                 url: Server.PRIVACY_POLICY_URL,
-                title: Localization.privacyPolicy,
+                title: AppLocalizations.of(context)!.privacyPolicy,
               );
             },
           ),
@@ -183,14 +184,14 @@ class _SettingsScreenState extends State<SettingsScreen> {
             ),
           ),
           ListTile(
-            title: Text(Localization.commentPolicy),
-            trailing: const Text(Localization.read),
+            title: Text(AppLocalizations.of(context)!.commentPolicy),
+            trailing: Text(AppLocalizations.of(context)!.read),
             onTap: () {
               constants.navigate.changeScreen(
                 context,
                 constants.ScreenState.webview,
                 url: Server.COMMENT_POST_POLICY_URL,
-                title: Localization.commentPolicy,
+                title: AppLocalizations.of(context)!.commentPolicy,
               );
             },
           ),
@@ -205,8 +206,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
             ),
           ),
           ListTile(
-            title: Text(Localization.contact),
-            trailing: const Text(Localization.email),
+            title: Text(AppLocalizations.of(context)!.contact),
+            trailing: const Text(constants.email),
             onTap: () {},
           ),
           Container(
