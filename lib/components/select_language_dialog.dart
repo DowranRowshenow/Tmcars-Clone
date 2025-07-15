@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:tmcarsclone/l10n/app_localizations_en.dart';
-import 'package:tmcarsclone/l10n/app_localizations_ru.dart';
-import 'package:tmcarsclone/l10n/app_localizations_tk.dart';
-import 'package:tmcarsclone/l10n/app_localizations_tr.dart';
 
+import '../l10n/app_localizations_en.dart';
+import '../l10n/app_localizations_ru.dart';
+import '../l10n/app_localizations_tk.dart';
+import '../l10n/app_localizations_tr.dart';
+import '../l10n/app_localizations.dart';
 import '../helper/constants.dart';
 import '../helper/locale.dart';
-import '../l10n/app_localizations.dart';
 import 'language_option.dart';
 
 Future<T?> showSelectLanguageDialog<T>({
@@ -23,7 +23,7 @@ Future<T?> showSelectLanguageDialog<T>({
     barrierColor: barrierColor ?? Colors.black.withValues(alpha: blurAlpha),
     builder: (BuildContext dialogContext) {
       final localeManager = Provider.of<LocaleManager>(context, listen: false);
-      Locale? selectedLocale = localeManager.locale;
+      String selectedLocale = localeManager.locale!.languageCode;
 
       return StatefulBuilder(
         builder: (context, setState) {
@@ -42,37 +42,37 @@ Future<T?> showSelectLanguageDialog<T>({
                 children: [
                   LanguageOption(
                     appLocalizations: AppLocalizationsEn(),
-                    isSelected: selectedLocale?.languageCode == 'en',
+                    isSelected: selectedLocale == 'en',
                     onTap: () {
                       setState(() {
-                        selectedLocale = const Locale('en');
+                        selectedLocale = 'en';
                       });
                     },
                   ),
                   LanguageOption(
                     appLocalizations: AppLocalizationsRu(),
-                    isSelected: selectedLocale?.languageCode == 'ru',
+                    isSelected: selectedLocale == 'ru',
                     onTap: () {
                       setState(() {
-                        selectedLocale = const Locale('ru');
+                        selectedLocale = 'ru';
                       });
                     },
                   ),
                   LanguageOption(
                     appLocalizations: AppLocalizationsTk(),
-                    isSelected: selectedLocale?.languageCode == 'tk',
+                    isSelected: selectedLocale == 'tk',
                     onTap: () {
                       setState(() {
-                        selectedLocale = const Locale('tk');
+                        selectedLocale = 'tk';
                       });
                     },
                   ),
                   LanguageOption(
                     appLocalizations: AppLocalizationsTr(),
-                    isSelected: selectedLocale?.languageCode == 'tr',
+                    isSelected: selectedLocale == 'tr',
                     onTap: () {
                       setState(() {
-                        selectedLocale = const Locale('tr');
+                        selectedLocale = 'tr';
                       });
                     },
                   ),
@@ -89,9 +89,7 @@ Future<T?> showSelectLanguageDialog<T>({
                   style: TextStyle(color: colorPrimary),
                 ),
                 onPressed: () {
-                  if (selectedLocale != null) {
-                    localeManager.setLocale(selectedLocale!);
-                  }
+                  localeManager.setLocale(Locale(selectedLocale));
                   Navigator.of(context).pop();
                 },
               ),

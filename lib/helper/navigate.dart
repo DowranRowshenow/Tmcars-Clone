@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:tmcarsclone/l10n/app_localizations.dart';
 
+import '../l10n/app_localizations.dart';
+import '../menus/car_parts_menu/car_parts_menu.dart';
+import '../menus/cars_menu/cars_menu.dart';
 import '../menus/profiles_menu/profiles_menu.dart';
 import '../menus/comments_menu/comments_menu.dart';
 import '../menus/news_menu/news_menu.dart';
@@ -53,9 +55,9 @@ class Navigate {
       case MenuState.news:
         return const NewsMenu();
       case MenuState.parts:
-        return const CommentsMenu();
+        return const CarPartsMenu();
       case MenuState.cars:
-        return const CommentsMenu();
+        return const CarsMenu();
       case MenuState.profiles:
         return const ProfilesMenu();
     }

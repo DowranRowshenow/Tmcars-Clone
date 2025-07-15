@@ -2,22 +2,23 @@ import 'package:flutter/material.dart';
 
 import '../../l10n/app_localizations.dart';
 import '../../helper/constants.dart' as constants;
-import 'tabs/all_profiles_tab.dart';
-import 'tabs/profiles_category_tab.dart';
+import 'tabs/all_car_parts_tab.dart';
+import 'tabs/selection_car_parts_tab.dart';
+import 'tabs/category_car_parth_tab.dart';
 
-class ProfilesMenu extends StatefulWidget {
-  const ProfilesMenu({super.key});
+class CarPartsMenu extends StatefulWidget {
+  const CarPartsMenu({super.key});
 
   @override
   // ignore: library_private_types_in_public_api
-  _ProfilesMenuState createState() => _ProfilesMenuState();
+  _CarPartsMenuState createState() => _CarPartsMenuState();
 }
 
-class _ProfilesMenuState extends State<ProfilesMenu> {
+class _CarPartsMenuState extends State<CarPartsMenu> {
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
-      length: 2,
+      length: 3,
       child: Scaffold(
         appBar: AppBar(
           elevation: 0,
@@ -25,15 +26,21 @@ class _ProfilesMenuState extends State<ProfilesMenu> {
           leading: Container(),
           bottom: TabBar(
             textScaler: TextScaler.linear(constants.tabTextScale),
+
             indicatorColor: Colors.white,
             tabs: [
-              Tab(text: AppLocalizations.of(context)!.all.toUpperCase()),
+              Tab(text: AppLocalizations.of(context)!.cars.toUpperCase()),
+              Tab(text: AppLocalizations.of(context)!.selected.toUpperCase()),
               Tab(text: AppLocalizations.of(context)!.category.toUpperCase()),
             ],
           ),
         ),
         body: const TabBarView(
-          children: [AllProfilesTab(), ProfilesCategoryTab()],
+          children: [
+            AllCarPartsTab(),
+            SelectionCarPartsTab(),
+            CategoryCarPartsTab(),
+          ],
         ),
       ),
     );

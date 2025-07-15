@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../l10n/app_localizations.dart';
+import '../../helper/constants.dart' as constants;
 import 'tabs/all_others_tab.dart';
 import 'tabs/category_others_tab.dart';
 import 'tabs/selection_others_tab.dart';
@@ -24,6 +25,8 @@ class _OthersMenuState extends State<OthersMenu> {
           toolbarHeight: 0,
           leading: Container(),
           bottom: TabBar(
+            textScaler: TextScaler.linear(constants.tabTextScale),
+
             indicatorColor: Colors.white,
             tabs: [
               Tab(text: AppLocalizations.of(context)!.all.toUpperCase()),

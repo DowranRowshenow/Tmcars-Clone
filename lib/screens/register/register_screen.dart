@@ -17,12 +17,11 @@ class _RegisterScreenState extends State<RegisterScreen> {
   bool isChecked = false;
   bool isEmail = false;
   String phoneNumber = "";
+  final emailAddressController = TextEditingController();
+  final phoneNumberController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
-    final emailAddressController = TextEditingController();
-    final phoneNumberController = TextEditingController();
-
     return Scaffold(
       appBar: AppBar(
         title: Text(AppLocalizations.of(context)!.register),

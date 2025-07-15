@@ -21,20 +21,26 @@ class LanguageOption extends StatelessWidget {
       minTileHeight: 0,
       title: Text(
         appLocalizations.lang,
+        overflow: TextOverflow.ellipsis,
+        softWrap: false,
         style: TextStyle(
+          overflow: TextOverflow.ellipsis,
           color: appColors.textThemeColor,
           fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
         ),
       ),
       subtitle: Text(
         appLocalizations.langEn,
+        overflow: TextOverflow.ellipsis,
+        softWrap: false,
         style: TextStyle(
+          overflow: TextOverflow.ellipsis,
           color: appColors.textThemeColor?.withValues(alpha: 0.7),
         ),
       ),
       leading: Radio<Locale>(
         value: Locale(appLocalizations.locale),
-        groupValue: isSelected ? locale : null,
+        groupValue: isSelected ? Locale(appLocalizations.locale) : null,
         onChanged: (Locale? value) {
           onTap();
         },

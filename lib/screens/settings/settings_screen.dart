@@ -21,7 +21,12 @@ class _SettingsScreenState extends State<SettingsScreen> {
     return Scaffold(
       resizeToAvoidBottomInset: true,
       appBar: AppBar(
-        title: Text(AppLocalizations.of(context)!.settings),
+        title: Text(
+          AppLocalizations.of(context)!.settings,
+          overflow: TextOverflow.ellipsis,
+          softWrap: false,
+          style: TextStyle(overflow: TextOverflow.ellipsis),
+        ),
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
           onPressed: () => Navigator.pop(context),
@@ -32,13 +37,28 @@ class _SettingsScreenState extends State<SettingsScreen> {
       body: ListView(
         children: [
           ListTile(
-            title: Text(AppLocalizations.of(context)!.generalSettings),
+            title: Text(
+              AppLocalizations.of(context)!.generalSettings,
+              overflow: TextOverflow.ellipsis,
+              softWrap: false,
+              style: TextStyle(overflow: TextOverflow.ellipsis),
+            ),
             tileColor: constants.appColors.tileThemeColor,
             onTap: () {},
           ),
           ListTile(
-            title: Text(AppLocalizations.of(context)!.language),
-            trailing: Text(AppLocalizations.of(context)!.lang),
+            title: Text(
+              AppLocalizations.of(context)!.language,
+              overflow: TextOverflow.ellipsis,
+              softWrap: false,
+              style: TextStyle(overflow: TextOverflow.ellipsis),
+            ),
+            trailing: Text(
+              AppLocalizations.of(context)!.lang,
+              overflow: TextOverflow.ellipsis,
+              softWrap: false,
+              style: TextStyle(overflow: TextOverflow.ellipsis),
+            ),
             onTap: () => showSelectLanguageDialog(context: context),
           ),
           Container(
@@ -52,8 +72,18 @@ class _SettingsScreenState extends State<SettingsScreen> {
             ),
           ),
           ListTile(
-            title: Text(AppLocalizations.of(context)!.version),
-            trailing: const Text(constants.packageVersion),
+            title: Text(
+              AppLocalizations.of(context)!.version,
+              overflow: TextOverflow.ellipsis,
+              softWrap: false,
+              style: TextStyle(overflow: TextOverflow.ellipsis),
+            ),
+            trailing: const Text(
+              constants.packageVersion,
+              overflow: TextOverflow.ellipsis,
+              softWrap: false,
+              style: TextStyle(overflow: TextOverflow.ellipsis),
+            ),
             onTap: () {},
           ),
           Container(
@@ -67,8 +97,18 @@ class _SettingsScreenState extends State<SettingsScreen> {
             ),
           ),
           ListTile(
-            title: Text(AppLocalizations.of(context)!.internet),
-            trailing: Text(AppLocalizations.of(context)!.standard),
+            title: Text(
+              AppLocalizations.of(context)!.internet,
+              overflow: TextOverflow.ellipsis,
+              softWrap: false,
+              style: TextStyle(overflow: TextOverflow.ellipsis),
+            ),
+            trailing: Text(
+              AppLocalizations.of(context)!.standard,
+              overflow: TextOverflow.ellipsis,
+              softWrap: false,
+              style: TextStyle(overflow: TextOverflow.ellipsis),
+            ),
             onTap: () {},
           ),
           Container(
@@ -82,16 +122,36 @@ class _SettingsScreenState extends State<SettingsScreen> {
             ),
           ),
           ListTile(
-            title: Text(AppLocalizations.of(context)!.selectedLocation),
-            trailing: Text(AppLocalizations.of(context)!.notSelected),
+            title: Text(
+              AppLocalizations.of(context)!.selectedLocation,
+              overflow: TextOverflow.ellipsis,
+              softWrap: false,
+              style: TextStyle(overflow: TextOverflow.ellipsis),
+            ),
+            trailing: Text(
+              AppLocalizations.of(context)!.notSelected,
+              overflow: TextOverflow.ellipsis,
+              softWrap: false,
+              style: TextStyle(overflow: TextOverflow.ellipsis),
+            ),
             onTap: () {},
           ),
           ListTile(
-            title: Text(AppLocalizations.of(context)!.additional),
+            title: Text(
+              AppLocalizations.of(context)!.additional,
+              overflow: TextOverflow.ellipsis,
+              softWrap: false,
+              style: TextStyle(overflow: TextOverflow.ellipsis),
+            ),
             tileColor: constants.appColors.tileThemeColor,
           ),
           ListTile(
-            title: Text(AppLocalizations.of(context)!.share),
+            title: Text(
+              AppLocalizations.of(context)!.share,
+              overflow: TextOverflow.ellipsis,
+              softWrap: false,
+              style: TextStyle(overflow: TextOverflow.ellipsis),
+            ),
             trailing: SvgPicture.asset(
               constants.arrowRight,
               colorFilter: ColorFilter.mode(Colors.grey, BlendMode.srcIn),
@@ -118,8 +178,18 @@ class _SettingsScreenState extends State<SettingsScreen> {
             ),
           ),
           ListTile(
-            title: Text(AppLocalizations.of(context)!.helper),
-            trailing: Text(AppLocalizations.of(context)!.mustRead),
+            title: Text(
+              AppLocalizations.of(context)!.helper,
+              overflow: TextOverflow.ellipsis,
+              softWrap: false,
+              style: TextStyle(overflow: TextOverflow.ellipsis),
+            ),
+            trailing: Text(
+              AppLocalizations.of(context)!.mustRead,
+              overflow: TextOverflow.ellipsis,
+              softWrap: false,
+              style: TextStyle(overflow: TextOverflow.ellipsis),
+            ),
             onTap: () {
               constants.navigate.changeScreen(
                 context,
@@ -140,8 +210,18 @@ class _SettingsScreenState extends State<SettingsScreen> {
             ),
           ),
           ListTile(
-            title: Text(AppLocalizations.of(context)!.policy),
-            trailing: Text(AppLocalizations.of(context)!.read),
+            title: Text(
+              AppLocalizations.of(context)!.policy,
+              overflow: TextOverflow.ellipsis,
+              softWrap: false,
+              style: TextStyle(overflow: TextOverflow.ellipsis),
+            ),
+            trailing: Text(
+              AppLocalizations.of(context)!.read,
+              overflow: TextOverflow.ellipsis,
+              softWrap: false,
+              style: TextStyle(overflow: TextOverflow.ellipsis),
+            ),
             onTap: () {
               constants.navigate.changeScreen(
                 context,
@@ -162,8 +242,18 @@ class _SettingsScreenState extends State<SettingsScreen> {
             ),
           ),
           ListTile(
-            title: Text(AppLocalizations.of(context)!.privacyPolicy),
-            trailing: Text(AppLocalizations.of(context)!.read),
+            title: Text(
+              AppLocalizations.of(context)!.privacyPolicy,
+              overflow: TextOverflow.ellipsis,
+              softWrap: false,
+              style: TextStyle(overflow: TextOverflow.ellipsis),
+            ),
+            trailing: Text(
+              AppLocalizations.of(context)!.read,
+              overflow: TextOverflow.ellipsis,
+              softWrap: false,
+              style: TextStyle(overflow: TextOverflow.ellipsis),
+            ),
             onTap: () {
               constants.navigate.changeScreen(
                 context,
@@ -184,8 +274,18 @@ class _SettingsScreenState extends State<SettingsScreen> {
             ),
           ),
           ListTile(
-            title: Text(AppLocalizations.of(context)!.commentPolicy),
-            trailing: Text(AppLocalizations.of(context)!.read),
+            title: Text(
+              AppLocalizations.of(context)!.commentPolicy,
+              overflow: TextOverflow.ellipsis,
+              softWrap: false,
+              style: TextStyle(overflow: TextOverflow.ellipsis),
+            ),
+            trailing: Text(
+              AppLocalizations.of(context)!.read,
+              overflow: TextOverflow.ellipsis,
+              softWrap: false,
+              style: TextStyle(overflow: TextOverflow.ellipsis),
+            ),
             onTap: () {
               constants.navigate.changeScreen(
                 context,
@@ -206,8 +306,18 @@ class _SettingsScreenState extends State<SettingsScreen> {
             ),
           ),
           ListTile(
-            title: Text(AppLocalizations.of(context)!.contact),
-            trailing: const Text(constants.email),
+            title: Text(
+              AppLocalizations.of(context)!.contact,
+              overflow: TextOverflow.ellipsis,
+              softWrap: false,
+              maxLines: 1,
+              style: TextStyle(overflow: TextOverflow.ellipsis),
+            ),
+            trailing: SvgPicture.asset(
+              constants.arrowRight,
+              colorFilter: ColorFilter.mode(Colors.grey, BlendMode.srcIn),
+              width: 6,
+            ),
             onTap: () {},
           ),
           Container(

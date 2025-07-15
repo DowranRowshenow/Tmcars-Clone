@@ -19,7 +19,7 @@ enum ScreenState { menu, settings, contact, register, webview }
 // STRINGS
 const String packageVersion = '0.3.0';
 const String appName = 'Tmcars Clone';
-const String email = "dowranrowshenow@gmail.com";
+const String email = "dowranrowshenow";
 const String phoneCode = "+993";
 const String arrowRight = 'assets/icons/arrow_right.svg';
 const String drawerLogoDark = 'assets/images/drawer_logo_dark.webp';
@@ -29,6 +29,7 @@ const String tempImageUrl =
 
 // INTEGERS AND DOUBLES
 const int animationDuration = 300;
+const double tabTextScale = 0.85;
 const double blurAlpha = 0.7;
 const double borderRadius = 7.0;
 const double buttonBorderRadius = 20.0;

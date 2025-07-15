@@ -3,8 +3,8 @@ import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:provider/provider.dart';
 
-import 'helper/locale.dart';
 import 'l10n/app_localizations.dart';
+import 'helper/locale.dart';
 import 'helper/constants.dart' as constants;
 import 'helper/size_config.dart';
 import 'helper/storage.dart';

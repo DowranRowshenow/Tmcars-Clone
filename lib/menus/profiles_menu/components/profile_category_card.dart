@@ -3,20 +3,17 @@ import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:transparent_image/transparent_image.dart';
 
+import '../../../helper/themes.dart';
 import '../../../helper/constants.dart' as constants;
 import '../../../l10n/app_localizations.dart';
 
-class ProfileCategoryCard extends StatefulWidget {
+class ProfileCategoryCard extends StatelessWidget {
   const ProfileCategoryCard({super.key});
 
   @override
-  // ignore: library_private_types_in_public_api
-  _ProfileCategoryCardState createState() => _ProfileCategoryCardState();
-}
-
-class _ProfileCategoryCardState extends State<ProfileCategoryCard> {
-  @override
   Widget build(BuildContext context) {
+    constants.appColors = Theme.of(context).extension<AppColors>()!;
+
     // Use InkWell for splash effect
     return Card(
       // Card provides elevation and rounded corners by default if not overridden
