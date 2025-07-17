@@ -192,6 +192,9 @@ class AppLocalizationsTr extends AppLocalizations {
   String get notifications => 'Bildirimler';
 
   @override
+  String get notification => 'Bildirim';
+
+  @override
   String get econom => 'Ekonomik fotoğrafsız';
 
   @override
@@ -214,6 +217,15 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get lebap => 'Lebap vilayeti';
+
+  @override
+  String get favorite => 'Favori';
+
+  @override
+  String get notRegistered => 'Hesabınıza giriş yapmadınız! Giriş yaparak ilan ekleyebilir, kendi ilanlarınızı ve profilinizi düzenleyebilir ve verilerinizi diğer telefonlarınıza aktarabilirsiniz.';
+
+  @override
+  String get shouldRegister => 'Yazdığınız yorumları ve size yazılan yorumları görmek için giriş yapmalısınız!';
 
   @override
   String get shareText => 'Arabalar ve yedek parçaların bir araya geldiği en büyük Android uygulaması TMCARS';

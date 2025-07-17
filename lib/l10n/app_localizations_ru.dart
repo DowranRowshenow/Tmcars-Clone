@@ -192,6 +192,9 @@ class AppLocalizationsRu extends AppLocalizations {
   String get notifications => 'Уведомления';
 
   @override
+  String get notification => 'Уведомление';
+
+  @override
   String get econom => 'Эконом без фото';
 
   @override
@@ -214,6 +217,15 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get lebap => 'Лебапский велаят';
+
+  @override
+  String get favorite => 'Избранное';
+
+  @override
+  String get notRegistered => 'Вы не вошли в систему! Войдя в систему, вы сможете добавлять объявления, управлять своими объявлениями и профилем, а также переносить свои данные на другие телефоны.';
+
+  @override
+  String get shouldRegister => 'Чтобы увидеть свои комментарии и комментарии, которые вы написали, вам нужно войти в систему!';
 
   @override
   String get shareText => 'Крупнейшее Android-приложение, объединяющее автомобили и автозапчасти TMCARS';

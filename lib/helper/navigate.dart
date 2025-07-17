@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:tmcarsclone/components/should_register_dialog.dart';
+import 'package:tmcarsclone/screens/search_news/search_news_screen.dart';
 
 import '../l10n/app_localizations.dart';
 import '../menus/car_parts_menu/car_parts_menu.dart';
@@ -15,6 +17,7 @@ import '../screens/contact/contact_screen.dart';
 import '../screens/settings/settings_screen.dart';
 import '../screens/webview/webview_screen.dart';
 import 'constants.dart';
+import 'constants.dart' as constants;
 import 'server.dart';
 
 class Navigate {
@@ -63,14 +66,33 @@ class Navigate {
     }
   }
 
-  List<Widget> getMenuTabs() {
+  List<Widget> getMenuTabs(BuildContext context) {
     switch (navigate.currentMenu) {
       case MenuState.comments:
         return [];
+      case MenuState.home:
+        return [
+          IconButton(
+            onPressed: () {
+              constants.navigate.changeScreen(
+                context,
+                constants.ScreenState.searchNews,
+              );
+            },
+            splashRadius: splashRadius,
+            icon: const Icon(Icons.notifications),
+            splashColor: Colors.transparent,
+          ),
+        ];
       case MenuState.news:
         return [
           IconButton(
-            onPressed: () {},
+            onPressed: () {
+              constants.navigate.changeScreen(
+                context,
+                constants.ScreenState.searchNews,
+              );
+            },
             splashRadius: splashRadius,
             icon: const Icon(Icons.search),
             splashColor: Colors.transparent,
@@ -85,7 +107,9 @@ class Navigate {
             splashColor: Colors.transparent,
           ),
           IconButton(
-            onPressed: () {},
+            onPressed: () {
+              shouldRegisterDialog(context: context);
+            },
             splashRadius: splashRadius,
             icon: const Icon(Icons.star),
             splashColor: Colors.transparent,
@@ -100,7 +124,9 @@ class Navigate {
             splashColor: Colors.transparent,
           ),
           IconButton(
-            onPressed: () {},
+            onPressed: () {
+              shouldRegisterDialog(context: context);
+            },
             splashRadius: splashRadius,
             icon: const Icon(Icons.star),
             splashColor: Colors.transparent,
@@ -115,7 +141,9 @@ class Navigate {
             splashColor: Colors.transparent,
           ),
           IconButton(
-            onPressed: () {},
+            onPressed: () {
+              shouldRegisterDialog(context: context);
+            },
             splashRadius: splashRadius,
             icon: const Icon(Icons.star),
             splashColor: Colors.transparent,
@@ -137,7 +165,14 @@ class Navigate {
     String url = Server.currentUrl,
     String title = 'NONE',
   }) {
+    constants.scaffold.currentState!.closeDrawer();
     switch (state) {
+      case ScreenState.searchNews:
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => const SearchNewsScreen()),
+        );
+        break;
       case ScreenState.menu:
         Navigator.push(
           context,

@@ -60,6 +60,7 @@
   "add": "İlan ekle",
   "comments": "Yorumlar",
   "notifications": "Bildirimler",
+  "notification": "Bildirim",
   "standard": "Standart",
   "econom": "Ekonomik fotoğrafsız",
   "selectedLocation": "Seçilen yer",
@@ -71,5 +72,8 @@
   "mary": "Mari vilayeti",
   "dashoguz": "Daşoğuz vilayeti",
   "lebap": "Lebap vilayeti",
+  "favorite": "Favori",
+  "notRegistered": "Hesabınıza giriş yapmadınız! Giriş yaparak ilan ekleyebilir, kendi ilanlarınızı ve profilinizi düzenleyebilir ve verilerinizi diğer telefonlarınıza aktarabilirsiniz.",
+  "shouldRegister": "Yazdığınız yorumları ve size yazılan yorumları görmek için giriş yapmalısınız!",
   "shareText": "Arabalar ve yedek parçaların bir araya geldiği en büyük Android uygulaması TMCARS"
 }

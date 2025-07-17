@@ -26,7 +26,6 @@ class _CarPartsMenuState extends State<CarPartsMenu> {
           leading: Container(),
           bottom: TabBar(
             textScaler: TextScaler.linear(constants.tabTextScale),
-
             indicatorColor: Colors.white,
             tabs: [
               Tab(text: AppLocalizations.of(context)!.cars.toUpperCase()),

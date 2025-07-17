@@ -465,6 +465,12 @@ abstract class AppLocalizations {
   /// **'Notifications'**
   String get notifications;
 
+  /// No description provided for @notification.
+  ///
+  /// In en, this message translates to:
+  /// **'Notification'**
+  String get notification;
+
   /// No description provided for @econom.
   ///
   /// In en, this message translates to:
@@ -512,6 +518,24 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Lebap region'**
   String get lebap;
+
+  /// No description provided for @favorite.
+  ///
+  /// In en, this message translates to:
+  /// **'Favorite'**
+  String get favorite;
+
+  /// No description provided for @notRegistered.
+  ///
+  /// In en, this message translates to:
+  /// **'You are not logged in! By logging in, you can add notifications, manage your notifications and profile, and transfer your data to other phones.'**
+  String get notRegistered;
+
+  /// No description provided for @shouldRegister.
+  ///
+  /// In en, this message translates to:
+  /// **'You need to log in to see your comments and the comments you have written!'**
+  String get shouldRegister;
 
   /// No description provided for @shareText.
   ///

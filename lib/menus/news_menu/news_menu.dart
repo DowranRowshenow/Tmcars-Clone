@@ -16,19 +16,33 @@ class _NewsMenuState extends State<NewsMenu> {
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
-      length: 1,
+      length: 2,
       child: Scaffold(
         appBar: AppBar(
           elevation: 0,
           toolbarHeight: 0,
-          leading: Container(),
+          leading: IconButton(
+            onPressed: () {
+              constants.navigate.changeScreen(
+                context,
+                constants.ScreenState.searchNews,
+              );
+            },
+            splashRadius: constants.splashRadius,
+            icon: const Icon(Icons.search),
+            splashColor: Colors.transparent,
+          ),
           bottom: TabBar(
             indicatorColor: Colors.white,
             textScaler: TextScaler.linear(constants.tabTextScale),
-            tabs: [Tab(text: AppLocalizations.of(context)!.all.toUpperCase())],
+            tabs: [
+              Tab(text: AppLocalizations.of(context)!.all.toUpperCase()),
+              Tab(text: AppLocalizations.of(context)!.favorite.toUpperCase()),
+            ],
           ),
+          actions: [],
         ),
-        body: const TabBarView(children: [NewsTab()]),
+        body: const TabBarView(children: [NewsTab(), NewsTab()]),
       ),
     );
   }

@@ -60,6 +60,7 @@
   "add": "Add ad",
   "comments": "Comments",
   "notifications": "Notifications",
+  "notification": "Notification",
   "standard": "Standard",
   "econom": "Econom without photo",
   "selectedLocation": "Selected location",
@@ -71,5 +72,8 @@
   "mary": "Mary region",
   "dashoguz": "Dashoguz region",
   "lebap": "Lebap region",
+  "favorite": "Favorite",
+  "notRegistered": "You are not logged in! By logging in, you can add notifications, manage your notifications and profile, and transfer your data to other phones.",
+  "shouldRegister": "You need to log in to see your comments and the comments you have written!",
   "shareText": "The largest Android app gathering cars and car parts TMCARS"
 }

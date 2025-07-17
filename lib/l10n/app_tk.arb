@@ -3,7 +3,7 @@
   "lang": "Türkmençe",
   "langEn": "Turkmen",
   "confirmExit": "Çykmak isleýärsiňizmi?",
-  "cancel": "Ýapmak",
+  "cancel": "Goýbolsun",
   "yes": "Hawa",
   "no": "Ýok",
   "settings": "Sazlamalar",
@@ -60,6 +60,7 @@
   "add": "Bildiriş goşmak",
   "comments": "Teswirler",
   "notifications": "Habarnamalar",
+  "notification": "Habarnama",
   "standard": "Standart",
   "econom": "Ekonom suratsyz",
   "selectedLocation": "Saýlanan ýer",
@@ -71,5 +72,8 @@
   "mary": "Mary welaýaty",
   "dashoguz": "Daşoguz welaýaty",
   "lebap": "Lebap welaýaty",
+  "favorite": "Halanan",
+  "notRegistered": "Siz ulgama girmändirsiňiz! Ulgama girip, siz bildiriş goşup bilersiňiz, öz bildirişleriňizi we profiliňizi sazlap bilersiňiz, we özüňiziň başga telefonlaryňyza geçirip bilersiňiz.",
+  "shouldRegister": "Size ýazylan we siziň ýazan teswirleriňizi görmek üçin ulgama girmelisiňiz!",
   "shareText": "Iň uly awtoulag we awtoşaýlaryň jemlenen android programmasy TMCARS"
 }

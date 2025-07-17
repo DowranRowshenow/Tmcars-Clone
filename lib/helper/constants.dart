@@ -4,6 +4,7 @@ import 'navigate.dart';
 import 'themes.dart';
 
 // GLOBAL VARIABLAES
+bool isRegistered = false;
 int trafficMode = 0;
 String location = '';
 late Locale locale;
@@ -16,7 +17,7 @@ GlobalKey<ScaffoldState> scaffold = GlobalKey();
 // ENUMS
 enum MenuState { home, add, others, comments, news, profiles, parts, cars }
 
-enum ScreenState { menu, settings, contact, register, webview }
+enum ScreenState { menu, settings, contact, register, webview, searchNews }
 
 // STRINGS
 const String packageVersion = '0.3.0';

@@ -56,7 +56,7 @@ class AppColors extends ThemeExtension<AppColors> {
   // Dark theme custom colors
   static final AppColors dark = AppColors(
     themedSurface: constants.blueGrey950,
-    menuBackgroundColor: constants.blueGrey800.withValues(alpha: 0.2),
+    menuBackgroundColor: Color.fromARGB(145, 102, 102, 102),
     iconThemeColor: Colors.white.withValues(alpha: 0.5),
     textThemeColor: Colors.white.withValues(alpha: 0.8),
     textHintThemeColor: Colors.white.withValues(alpha: 0.5),

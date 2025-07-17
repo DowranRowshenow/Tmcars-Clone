@@ -44,7 +44,7 @@ class _MenuScreenState extends State<MenuScreen> {
             onPressed: () => constants.scaffold.currentState?.openDrawer(),
             splashColor: Colors.transparent,
           ),
-          actions: constants.navigate.getMenuTabs(),
+          actions: constants.navigate.getMenuTabs(context),
         ),
         drawer: CustomDrawer(
           onTap: (state) {

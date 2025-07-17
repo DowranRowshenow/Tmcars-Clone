@@ -21,7 +21,7 @@ class AppLocalizationsTk extends AppLocalizations {
   String get confirmExit => 'Çykmak isleýärsiňizmi?';
 
   @override
-  String get cancel => 'Ýapmak';
+  String get cancel => 'Goýbolsun';
 
   @override
   String get yes => 'Hawa';
@@ -192,6 +192,9 @@ class AppLocalizationsTk extends AppLocalizations {
   String get notifications => 'Habarnamalar';
 
   @override
+  String get notification => 'Habarnama';
+
+  @override
   String get econom => 'Ekonom suratsyz';
 
   @override
@@ -214,6 +217,15 @@ class AppLocalizationsTk extends AppLocalizations {
 
   @override
   String get lebap => 'Lebap welaýaty';
+
+  @override
+  String get favorite => 'Halanan';
+
+  @override
+  String get notRegistered => 'Siz ulgama girmändirsiňiz! Ulgama girip, siz bildiriş goşup bilersiňiz, öz bildirişleriňizi we profiliňizi sazlap bilersiňiz, we özüňiziň başga telefonlaryňyza geçirip bilersiňiz.';
+
+  @override
+  String get shouldRegister => 'Size ýazylan we siziň ýazan teswirleriňizi görmek üçin ulgama girmelisiňiz!';
 
   @override
   String get shareText => 'Iň uly awtoulag we awtoşaýlaryň jemlenen android programmasy TMCARS';

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:tmcarsclone/components/should_register_dialog.dart';
 
+import '../../helper/constants.dart' as constants;
 import '../../l10n/app_localizations.dart';
 import 'tabs/add_car_parts_tab.dart';
 import 'tabs/add_others_tab.dart';
@@ -24,6 +26,7 @@ class _AddMenuState extends State<AddMenu> {
           toolbarHeight: 0,
           leading: Container(),
           bottom: TabBar(
+            textScaler: TextScaler.linear(constants.tabTextScale),
             indicatorColor: Colors.white,
             tabs: [
               Tab(text: AppLocalizations.of(context)!.cars.toUpperCase()),
@@ -34,6 +37,13 @@ class _AddMenuState extends State<AddMenu> {
         ),
         body: const TabBarView(
           children: [AddCarsTab(), AddCarPartsTab(), AddOthersTab()],
+        ),
+        floatingActionButton: FloatingActionButton(
+          backgroundColor: constants.colorPrimary,
+          child: Icon(Icons.add),
+          onPressed: () {
+            shouldRegisterDialog(context: context);
+          },
         ),
       ),
     );

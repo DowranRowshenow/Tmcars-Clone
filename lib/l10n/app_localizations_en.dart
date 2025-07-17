@@ -192,6 +192,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get notifications => 'Notifications';
 
   @override
+  String get notification => 'Notification';
+
+  @override
   String get econom => 'Econom without photo';
 
   @override
@@ -214,6 +217,15 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get lebap => 'Lebap region';
+
+  @override
+  String get favorite => 'Favorite';
+
+  @override
+  String get notRegistered => 'You are not logged in! By logging in, you can add notifications, manage your notifications and profile, and transfer your data to other phones.';
+
+  @override
+  String get shouldRegister => 'You need to log in to see your comments and the comments you have written!';
 
   @override
   String get shareText => 'The largest Android app gathering cars and car parts TMCARS';
