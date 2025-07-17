@@ -399,7 +399,7 @@ class _DateFormatPatternField extends _DateFormatField {
   }
 
   String formatYear(DateTime date) {
-    // TODO(alanknight): Proper handling of years <= 0
+    // (alanknight): Proper handling of years <= 0
     var year = date.year;
     if (year < 0) {
       year = -year;
@@ -664,7 +664,7 @@ class _DateFormatPatternField extends _DateFormatField {
       /// "Narrow" - `T` for en-US
       == 5 => symbols.NARROWWEEKDAYS,
 
-      ///TODO(mosum): Introduce "Short" - `Tu` for en-US
+      ///(mosum): Introduce "Short" - `Tu` for en-US
       >= 6 =>
         throw UnsupportedError('"Short" weekdays are currently not supported.'),
       int() => throw AssertionError('unreachable'),

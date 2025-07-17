@@ -18,7 +18,7 @@ part 'date_format_field.dart';
 // Suppress naming issues as changes would breaking.
 // ignore_for_file: non_constant_identifier_names, constant_identifier_names
 
-// TODO(efortuna): Customized pattern system -- suggested by i18n needs
+// (efortuna): Customized pattern system -- suggested by i18n needs
 // feedback on appropriateness.
 /// DateFormat is for formatting and parsing dates in a locale-sensitive
 /// manner.
@@ -124,7 +124,7 @@ part 'date_format_field.dart';
 ///      MINUTE_SECOND                ms
 ///      SECOND                       s
 //
-// TODO(https://github.com/dart-lang/intl/issues/74): Update table above.
+// (https://github.com/dart-lang/intl/issues/74): Update table above.
 ///
 /// Examples Using the US Locale:
 ///
@@ -170,7 +170,7 @@ part 'date_format_field.dart';
 ///     '        escape for text        (Delimiter)        'Date='
 ///     ''       single quote           (Literal)          'o''clock'
 ///
-//  TODO(https://github.com/dart-lang/intl/issues/74): Merge tables.
+//  (https://github.com/dart-lang/intl/issues/74): Merge tables.
 //
 /// The following characters are reserved and currently are unimplemented:
 ///
@@ -211,7 +211,7 @@ part 'date_format_field.dart';
 ///     'h:mm a'                          12:08 PM
 ///     'yyyyy.MMMM.dd GGG hh:mm aaa'     01996.July.10 AD 12:08 PM
 //
-// TODO(https://github.com/dart-lang/intl/issues/74): Merge tables.
+// (https://github.com/dart-lang/intl/issues/74): Merge tables.
 //
 //      NOT YET IMPLEMENTED
 //      -------------------
@@ -265,7 +265,7 @@ class DateFormat {
   /// [ArgumentError] is thrown.
   DateFormat([String? newPattern, String? locale])
       : _locale = helpers.verifiedLocale(locale, localeExists, null)! {
-    // TODO(alanknight): It should be possible to specify multiple skeletons eg
+    // (alanknight): It should be possible to specify multiple skeletons eg
     // date, time, timezone all separately. Adding many or named parameters to
     // the constructor seems awkward, especially with the possibility of
     // confusion with the locale. A 'fluent' interface with cascading on an
@@ -296,7 +296,7 @@ class DateFormat {
   /// Return a string representing [date] formatted according to our locale
   /// and internal format.
   String format(DateTime date) {
-    // TODO(efortuna): read optional TimeZone argument (or similar)?
+    // (efortuna): read optional TimeZone argument (or similar)?
     var result = StringBuffer();
     for (var field in _formatFields) {
       result.write(field.format(date));
@@ -438,7 +438,7 @@ class DateFormat {
   }
 
   DateTime _parse(String inputString, {bool utc = false, bool strict = false}) {
-    // TODO(alanknight): The Closure code refers to special parsing of numeric
+    // (alanknight): The Closure code refers to special parsing of numeric
     // values with no delimiters, which we currently don't do. Should we?
     var dateFields = DateBuilder(locale, dateTimeConstructor);
     if (utc) dateFields.utc = true;
@@ -560,19 +560,19 @@ class DateFormat {
   DateFormat.jms([locale]) : this('jms', locale);
 
   /// NOT YET IMPLEMENTED.
-  // TODO(https://github.com/dart-lang/intl/issues/74)
+  // (https://github.com/dart-lang/intl/issues/74)
   DateFormat.jmv([locale]) : this('jmv', locale);
 
   /// NOT YET IMPLEMENTED.
-  // TODO(https://github.com/dart-lang/intl/issues/74)
+  // (https://github.com/dart-lang/intl/issues/74)
   DateFormat.jmz([locale]) : this('jmz', locale);
 
   /// NOT YET IMPLEMENTED.
-  // TODO(https://github.com/dart-lang/intl/issues/74)
+  // (https://github.com/dart-lang/intl/issues/74)
   DateFormat.jv([locale]) : this('jv', locale);
 
   /// NOT YET IMPLEMENTED.
-  // TODO(https://github.com/dart-lang/intl/issues/74)
+  // (https://github.com/dart-lang/intl/issues/74)
   DateFormat.jz([locale]) : this('jz', locale);
   DateFormat.m([locale]) : this('m', locale);
   DateFormat.ms([locale]) : this('ms', locale);
@@ -623,19 +623,19 @@ class DateFormat {
   DateFormat add_jms() => addPattern('jms');
 
   /// NOT YET IMPLEMENTED.
-  // TODO(https://github.com/dart-lang/intl/issues/74)
+  // (https://github.com/dart-lang/intl/issues/74)
   DateFormat add_jmv() => addPattern('jmv');
 
   /// NOT YET IMPLEMENTED.
-  // TODO(https://github.com/dart-lang/intl/issues/74)
+  // (https://github.com/dart-lang/intl/issues/74)
   DateFormat add_jmz() => addPattern('jmz');
 
   /// NOT YET IMPLEMENTED.
-  // TODO(https://github.com/dart-lang/intl/issues/74)
+  // (https://github.com/dart-lang/intl/issues/74)
   DateFormat add_jv() => addPattern('jv');
 
   /// NOT YET IMPLEMENTED.
-  // TODO(https://github.com/dart-lang/intl/issues/74)
+  // (https://github.com/dart-lang/intl/issues/74)
   DateFormat add_jz() => addPattern('jz');
   DateFormat add_m() => addPattern('m');
   DateFormat add_ms() => addPattern('ms');
@@ -679,19 +679,19 @@ class DateFormat {
   static const String HOUR_MINUTE_SECOND = 'jms';
 
   /// NOT YET IMPLEMENTED.
-  // TODO(https://github.com/dart-lang/intl/issues/74)
+  // (https://github.com/dart-lang/intl/issues/74)
   static const String HOUR_MINUTE_GENERIC_TZ = 'jmv';
 
   /// NOT YET IMPLEMENTED.
-  // TODO(https://github.com/dart-lang/intl/issues/74)
+  // (https://github.com/dart-lang/intl/issues/74)
   static const String HOUR_MINUTE_TZ = 'jmz';
 
   /// NOT YET IMPLEMENTED.
-  // TODO(https://github.com/dart-lang/intl/issues/74)
+  // (https://github.com/dart-lang/intl/issues/74)
   static const String HOUR_GENERIC_TZ = 'jv';
 
   /// NOT YET IMPLEMENTED.
-  // TODO(https://github.com/dart-lang/intl/issues/74)
+  // (https://github.com/dart-lang/intl/issues/74)
   static const String HOUR_TZ = 'jz';
   static const String MINUTE = 'm';
   static const String MINUTE_SECOND = 'ms';
@@ -757,7 +757,7 @@ class DateFormat {
   /// for this locale.  If it's not, then treat [inputPattern] as an explicit
   /// pattern.
   DateFormat addPattern(String? inputPattern, [String separator = ' ']) {
-    // TODO(alanknight): This is an expensive operation. Caching recently used
+    // (alanknight): This is an expensive operation. Caching recently used
     // formats, or possibly introducing an entire 'locale' object that would
     // cache patterns for that locale could be a good optimization.
     // If we have already parsed the format fields, reset them.

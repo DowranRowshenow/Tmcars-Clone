@@ -515,7 +515,7 @@ class Intl {
   ///       Intl.withLocale('zh', Timer(Duration(milliseconds:10),
   ///           () => print(hello('World')));
   static dynamic withLocale<T>(String? locale, T Function() function) {
-    // TODO(alanknight): Make this return T. This requires work because T might
+    // (alanknight): Make this return T. This requires work because T might
     // be Future and the caller could get an unawaited Future.  Which is
     // probably an error in their code, but the change is semi-breaking.
     var canonical = Intl.canonicalizedLocale(locale);
@@ -550,9 +550,9 @@ T toBeginningOfSentenceCase<T extends String?>(T input, [String? locale]) {
 /// and the dotted i in Turkish/Azeri.
 ///
 /// Private to the implementation of [toBeginningOfSentenceCase].
-// TODO(alanknight): Consider hard-coding other important cases.
+// (alanknight): Consider hard-coding other important cases.
 // See http://www.unicode.org/Public/UNIDATA/SpecialCasing.txt
-// TODO(alanknight): Alternatively, consider toLocaleUpperCase in browsers.
+// (alanknight): Alternatively, consider toLocaleUpperCase in browsers.
 // See also https://github.com/dart-lang/sdk/issues/6706
 String _upperCaseLetter(String input, String? locale) {
   // Hard-code the important edge case of i->İ

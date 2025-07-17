@@ -28,6 +28,6 @@
   "cutButtonLabel": "Cortar",
   "copyButtonLabel": "Copiar",
   "pasteButtonLabel": "Pegar",
-  "selectAllButtonLabel": "Seleccionar todo",
+  "selectAllButtonLabel": "Seleccionar ",
   "modalBarrierDismissLabel": "Descartar"
 }

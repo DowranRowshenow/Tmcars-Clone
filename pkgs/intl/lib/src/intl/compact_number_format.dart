@@ -265,7 +265,7 @@ class _CompactNumberFormat extends NumberFormat {
       bool lookupSimpleCurrencySymbol = false,
       bool isForCurrency = false}) {
     // Initialization copied from `NumberFormat` constructor.
-    // TODO(davidmorgan): deduplicate.
+    // (davidmorgan): deduplicate.
     locale = helpers.verifiedLocale(locale, NumberFormat.localeExists, null)!;
     var symbols = numberFormatSymbols[locale]!;
     var localeZero = symbols.ZERO_DIGIT.codeUnitAt(0);
@@ -474,7 +474,7 @@ class _CompactNumberFormat extends NumberFormat {
       // Cannot be compacted.
       return _defaultCompactStyle;
     }
-    var rounded = number.toDouble(); // No rounding yet...
+    var rounded = number.uble(); // No rounding yet...
     var digitLength = NumberFormat.numberOfIntegerDigits(number);
     var divisor = 1; // Default.
 

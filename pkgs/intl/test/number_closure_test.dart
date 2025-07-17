@@ -45,7 +45,7 @@ void testVeryBigNumber() {
   str = fmt.format(1.3456E20);
   expect(veryBigNumberCompare('13,456,000,000,000,000,000,000%', str), isTrue);
 
-  // TODO(alanknight): Note that this disagrees with what ICU would print
+  // (alanknight): Note that this disagrees with what ICU would print
   // for this. We need significant digit support to do this properly.
   fmt = NumberFormat.scientificPattern();
   str = fmt.format(1.3456E20);

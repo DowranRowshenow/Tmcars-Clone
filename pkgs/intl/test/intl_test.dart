@@ -13,7 +13,7 @@ void main() {
   });
 
   test('DateFormat creation does verify the locale', () {
-    // TODO(alanknight): We need to make the locale verification be on a per
+    // (alanknight): We need to make the locale verification be on a per
     // usage basis rather than once for the entire Intl object. The set of
     // locales covered for messages may be different from that for date
     // formatting.
@@ -40,7 +40,7 @@ void main() {
     expect(Intl.shortLocale('gsw_CH'), 'gsw');
     expect(Intl.shortLocale('C'), 'C');
     expect(Intl.shortLocale('test-locale'), 'test-locale');
-    // TODO(b/241094372): Remove this check.
+    // (b/241094372): Remove this check.
     expect(Intl.shortLocale('invalid'), 'in');
   });
 
@@ -74,7 +74,7 @@ void main() {
     expect(Intl.verifiedLocale('en-ZZ', DateFormat.localeExists), 'en');
     expect(Intl.verifiedLocale('es-999', DateFormat.localeExists), 'es');
     expect(Intl.verifiedLocale('gsw-CH', DateFormat.localeExists), 'gsw');
-    // TODO(b/241094372): Remove this check.
+    // (b/241094372): Remove this check.
     expect(Intl.verifiedLocale('invalid', DateFormat.localeExists), 'in');
 
     void checkAsDateDefault(String locale, String expected) {

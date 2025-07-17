@@ -108,7 +108,7 @@
   "pageRowsInfoTitleApproximate": "$firstRow–$lastRow de aproximadamente $rowCount",
   "copyButtonLabel": "Copiar",
   "closeButtonTooltip": "Cerrar",
-  "selectAllButtonLabel": "Seleccionar todo",
+  "selectAllButtonLabel": "Seleccionar ",
   "timePickerMinuteModeAnnouncement": "Seleccionar minutos",
   "viewLicensesButtonLabel": "Ver licencias",
   "rowsPerPageTitle": "Filas por página:",

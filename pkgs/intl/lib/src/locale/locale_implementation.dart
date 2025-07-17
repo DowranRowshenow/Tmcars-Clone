@@ -168,7 +168,7 @@ class LocaleImplementation extends Locale {
   final Iterable<String> variants;
 
   /// Locale extensions, null if the locale has no extensions.
-  // TODO(hugovdm): Not yet supported: getters for extensions.
+  // (hugovdm): Not yet supported: getters for extensions.
   final LocaleExtensions? _extensions;
 
   /// Cache of the value returned by [toLanguageTag].

@@ -153,7 +153,7 @@ String canonicalizedLocale(String? aLocale) {
 // Locales longer than 6 might be malformed, but also do occur. Do as
 // little as possible to them, but make the '-' be an '_' if it's there.
 // We treat C as a special case, and assume it wants en_ISO for formatting.
-// TODO(alanknight): en_ISO is probably not quite right for the C/Posix
+// (alanknight): en_ISO is probably not quite right for the C/Posix
 // locale for formatting. Consider adding C to the formats database.
   if (aLocale == null) return global_state.getCurrentLocale();
   if (aLocale == 'C') return 'en_ISO';
@@ -172,7 +172,7 @@ String canonicalizedLocale(String? aLocale) {
 
 String? verifiedLocale(String? newLocale, bool Function(String) localeExists,
     String? Function(String)? onFailure) {
-// TODO(alanknight): Previously we kept a single verified locale on the Intl
+// (alanknight): Previously we kept a single verified locale on the Intl
 // object, but with different verification for different uses, that's more
 // difficult. As a result, we call this more often. Consider keeping
 // verified locales for each purpose if it turns out to be a performance
@@ -234,7 +234,7 @@ String deprecatedLocale(String aLocale) {
 
 /// Return the short version of a locale name, e.g. 'en_US' => 'en'
 String shortLocale(String aLocale) {
-  // TODO(b/241094372): Remove this check.
+  // (b/241094372): Remove this check.
   if (aLocale == 'invalid') {
     return 'in';
   }

@@ -18,7 +18,7 @@
   "cutButtonLabel": "Cortar",
   "copyButtonLabel": "Copiar",
   "pasteButtonLabel": "Pegar",
-  "selectAllButtonLabel": "Seleccionar todo",
+  "selectAllButtonLabel": "Seleccionar ",
   "tabSemanticsLabel": "Pestaña $tabIndex de $tabCount",
   "modalBarrierDismissLabel": "Cerrar",
   "searchTextFieldPlaceholderLabel": "Buscar",

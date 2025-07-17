@@ -20,7 +20,7 @@ import '../cupertino_localizations.dart';
 // bottom of this file, and used by the [_GlobalCupertinoLocalizationsDelegate.load]
 // method defined in `flutter_localizations/lib/src/cupertino_localizations.dart`.
 
-// TODO(goderbauer): Extend the generator to properly format the output.
+// (goderbauer): Extend the generator to properly format the output.
 // dart format off
 
 /// The translations for Afrikaans (`af`).
@@ -3323,7 +3323,7 @@ class CupertinoLocalizationEs extends GlobalCupertinoLocalizations {
   String get searchWebButtonLabel => 'Buscar en la Web';
 
   @override
-  String get selectAllButtonLabel => 'Seleccionar todo';
+  String get selectAllButtonLabel => 'Seleccionar ';
 
   @override
   String get shareButtonLabel => 'Compartir...';
@@ -5493,7 +5493,7 @@ class CupertinoLocalizationGl extends GlobalCupertinoLocalizations {
   String get searchWebButtonLabel => 'Buscar na Web';
 
   @override
-  String get selectAllButtonLabel => 'Seleccionar todo';
+  String get selectAllButtonLabel => 'Seleccionar ';
 
   @override
   String get shareButtonLabel => 'Compartir…';

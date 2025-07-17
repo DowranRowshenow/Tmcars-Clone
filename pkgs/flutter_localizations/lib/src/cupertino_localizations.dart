@@ -490,17 +490,20 @@ abstract class GlobalCupertinoLocalizations implements CupertinoLocalizations {
   ///   // ...
   /// )
   /// ```
-  static const List<LocalizationsDelegate<dynamic>> delegates = <LocalizationsDelegate<dynamic>>[
-    GlobalCupertinoLocalizations.delegate,
-    GlobalWidgetsLocalizations.delegate,
-  ];
+  static const List<LocalizationsDelegate<dynamic>> delegates =
+      <LocalizationsDelegate<dynamic>>[
+        GlobalCupertinoLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+      ];
 }
 
-class _GlobalCupertinoLocalizationsDelegate extends LocalizationsDelegate<CupertinoLocalizations> {
+class _GlobalCupertinoLocalizationsDelegate
+    extends LocalizationsDelegate<CupertinoLocalizations> {
   const _GlobalCupertinoLocalizationsDelegate();
 
   @override
-  bool isSupported(Locale locale) => kCupertinoSupportedLanguages.contains(locale.languageCode);
+  bool isSupported(Locale locale) =>
+      kCupertinoSupportedLanguages.contains(locale.languageCode);
 
   static final Map<Locale, Future<CupertinoLocalizations>> _loadedTranslations =
       <Locale, Future<CupertinoLocalizations>>{};
@@ -511,7 +514,9 @@ class _GlobalCupertinoLocalizationsDelegate extends LocalizationsDelegate<Cupert
     return _loadedTranslations.putIfAbsent(locale, () {
       util.loadDateIntlDataIfNotLoaded();
 
-      final String localeName = intl.Intl.canonicalizedLocale(locale.toString());
+      final String localeName = intl.Intl.canonicalizedLocale(
+        locale.toString(),
+      );
       assert(
         locale.toString() == localeName,
         'Flutter does not support the non-standard locale form $locale (which '
@@ -535,7 +540,7 @@ class _GlobalCupertinoLocalizationsDelegate extends LocalizationsDelegate<Cupert
         dayFormat = intl.DateFormat.d(locale);
         weekdayFormat = intl.DateFormat.E(locale);
         mediumDateFormat = intl.DateFormat.MMMEd(locale);
-        // TODO(xster): fix when https://github.com/dart-lang/intl/issues/207 is resolved.
+        // (xster): fix when https://github.com/dart-lang/intl/issues/207 is resolved.
         singleDigitHourFormat = intl.DateFormat('HH', locale);
         singleDigitMinuteFormat = intl.DateFormat.m(locale);
         doubleDigitMinuteFormat = intl.DateFormat('mm', locale);

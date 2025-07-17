@@ -8,7 +8,7 @@ import 'package:test/test.dart';
 
 void main() {
   test('Find system locale in browser', () {
-    // TODO (alanknight): This only verifies that we found some locale. We
+    //  (alanknight): This only verifies that we found some locale. We
     // should find a way to force the system locale before the test is run
     // and then verify that it's actually the correct value.
     Intl.systemLocale = 'xx_YY';

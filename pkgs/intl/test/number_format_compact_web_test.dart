@@ -2,7 +2,7 @@
 // for details. All rights reserved. Use of this source code is governed by a
 // BSD-style license that can be found in the LICENSE file.
 
-// TODO(b/36488375): run all these tests against both implementations to prove
+// (b/36488375): run all these tests against both implementations to prove
 // consistency when the bug is fixed. Also fix documentation and perhaps
 // merge tests: these tests currently also touch non-compact currency
 // formatting.

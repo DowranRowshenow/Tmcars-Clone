@@ -18,7 +18,7 @@ import '../widgets_localizations.dart';
 // bottom of this file, and used by the [_WidgetsLocalizationsDelegate.load]
 // method defined in `flutter_localizations/lib/src/widgets_localizations.dart`.
 
-// TODO(goderbauer): Extend the generator to properly format the output.
+// (goderbauer): Extend the generator to properly format the output.
 // dart format off
 
 /// The translations for Afrikaans (`af`).
@@ -955,7 +955,7 @@ class WidgetsLocalizationEs extends GlobalWidgetsLocalizations {
   String get searchWebButtonLabel => 'Buscar en la Web';
 
   @override
-  String get selectAllButtonLabel => 'Seleccionar todo';
+  String get selectAllButtonLabel => 'Seleccionar ';
 
   @override
   String get shareButtonLabel => 'Compartir';
@@ -1581,7 +1581,7 @@ class WidgetsLocalizationGl extends GlobalWidgetsLocalizations {
   String get searchWebButtonLabel => 'Buscar na Web';
 
   @override
-  String get selectAllButtonLabel => 'Seleccionar todo';
+  String get selectAllButtonLabel => 'Seleccionar ';
 
   @override
   String get shareButtonLabel => 'Compartir';

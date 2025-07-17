@@ -47,9 +47,9 @@ Map<String, double> testExponential = const {
   '1.23E0': 1.23
 };
 
-// TODO(alanknight): Test against currency, which requires generating data
+// (alanknight): Test against currency, which requires generating data
 // for the three different forms that this now supports.
-// TODO(alanknight): Test against scientific, which requires significant
+// (alanknight): Test against scientific, which requires significant
 // digit support.
 List<NumberFormat> standardFormats(String locale) {
   return [

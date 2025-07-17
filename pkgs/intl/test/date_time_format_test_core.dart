@@ -40,7 +40,7 @@ List<String> formatsToTest = const [
   DateFormat.YEAR_MONTH,
   DateFormat.YEAR_MONTH_DAY,
   DateFormat.YEAR_MONTH_WEEKDAY_DAY,
-  // TODO(alanknight): CLDR and ICU appear to disagree on these for Japanese
+  // (alanknight): CLDR and ICU appear to disagree on these for Japanese
   //    DateFormat.YEAR_ABBR_QUARTER,
   //    DateFormat.YEAR_QUARTER,
   DateFormat.HOUR24,
@@ -49,7 +49,7 @@ List<String> formatsToTest = const [
   DateFormat.HOUR,
   DateFormat.HOUR_MINUTE,
   DateFormat.HOUR_MINUTE_SECOND,
-  // TODO(alanknight): Time zone support
+  // (alanknight): Time zone support
   //    DateFormat.HOUR_MINUTE_GENERIC_TZ,
   //    DateFormat.HOUR_MINUTE_TZ,
   //    DateFormat.HOUR_GENERIC_TZ,
@@ -93,7 +93,7 @@ List<String> icuFormatNamesToTest = const [
   'YEAR_MONTH',
   'YEAR_MONTH_DAY',
   'YEAR_MONTH_WEEKDAY_DAY',
-  // TODO(alanknight): CLDR and ICU appear to disagree on these for Japanese.
+  // (alanknight): CLDR and ICU appear to disagree on these for Japanese.
   // omit for the time being
   //    'YEAR_ABBR_QUARTER',
   //    'YEAR_QUARTER',
@@ -103,7 +103,7 @@ List<String> icuFormatNamesToTest = const [
   'HOUR',
   'HOUR_MINUTE',
   'HOUR_MINUTE_SECOND',
-  // TODO(alanknight): Time zone support
+  // (alanknight): Time zone support
   //    'HOUR_MINUTE_GENERIC_TZ',
   //    'HOUR_MINUTE_TZ',
   //    'HOUR_GENERIC_TZ',
@@ -181,7 +181,7 @@ List<String> get subset {
   return _subsetValue ??= _subsetFunc!();
 }
 
-// TODO(alanknight): Run specific tests for the en_ISO locale which isn't
+// (alanknight): Run specific tests for the en_ISO locale which isn't
 // included in CLDR, and check that our patterns for it are correct (they
 // very likely aren't).
 void runDateTests(SubsetFuncType subsetFunc) {
@@ -269,7 +269,7 @@ void runDateTests(SubsetFuncType subsetFunc) {
     }
   });
 
-  // TODO(alanknight): The coverage for patterns and symbols differs
+  // (alanknight): The coverage for patterns and symbols differs
   // at the source, in CLDR 25, so we can't guarantee that all patterns
   // have symbols or vice versa. Wish we could.
 
@@ -426,7 +426,7 @@ void runDateTests(SubsetFuncType subsetFunc) {
             // offset to the previous day in time zones where the daylight
             // savings transition happens at midnight (e.g. Brazil).
             var result = DateTime(year, 1, day, 3);
-            // TODO(alanknight): This is a workaround for dartbug.com/15560.
+            // (alanknight): This is a workaround for dartbug.com/15560.
             if (result.toUtc() == result) result = DateTime(year, 1, day);
             return result;
           })

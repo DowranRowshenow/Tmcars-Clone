@@ -179,7 +179,7 @@ class DateBuilder {
   /// Return a date built using our values. If no date portion is set,
   /// use the 'Epoch' of January 1, 1970.
   DateTime asDate({int retries = 3}) {
-    // TODO(alanknight): Validate the date, especially for things which
+    // (alanknight): Validate the date, especially for things which
     // can crash the VM, e.g. large month values.
     if (_date != null) return _date!;
     DateTime preliminaryResult = _dateTimeConstructor(
