@@ -458,6 +458,66 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Comments'**
   String get comments;
+
+  /// No description provided for @notifications.
+  ///
+  /// In en, this message translates to:
+  /// **'Notifications'**
+  String get notifications;
+
+  /// No description provided for @econom.
+  ///
+  /// In en, this message translates to:
+  /// **'Econom without photo'**
+  String get econom;
+
+  /// No description provided for @ashgabat.
+  ///
+  /// In en, this message translates to:
+  /// **'Ashgabat'**
+  String get ashgabat;
+
+  /// No description provided for @arkadag.
+  ///
+  /// In en, this message translates to:
+  /// **'Arkadag'**
+  String get arkadag;
+
+  /// No description provided for @ahal.
+  ///
+  /// In en, this message translates to:
+  /// **'Ahal region'**
+  String get ahal;
+
+  /// No description provided for @balkan.
+  ///
+  /// In en, this message translates to:
+  /// **'Balkan region'**
+  String get balkan;
+
+  /// No description provided for @mary.
+  ///
+  /// In en, this message translates to:
+  /// **'Mary region'**
+  String get mary;
+
+  /// No description provided for @dashoguz.
+  ///
+  /// In en, this message translates to:
+  /// **'Dashoguz region'**
+  String get dashoguz;
+
+  /// No description provided for @lebap.
+  ///
+  /// In en, this message translates to:
+  /// **'Lebap region'**
+  String get lebap;
+
+  /// No description provided for @shareText.
+  ///
+  /// In en, this message translates to:
+  /// **'The largest Android app gathering cars and car parts TMCARS'**
+  String get shareText;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

@@ -58,5 +58,18 @@
   "profiles": "İş hesapları",
   "news": "Haberler",
   "add": "İlan ekle",
-  "comments": "Yorumlar"
+  "comments": "Yorumlar",
+  "notifications": "Bildirimler",
+  "standard": "Standart",
+  "econom": "Ekonomik fotoğrafsız",
+  "selectedLocation": "Seçilen yer",
+  "notSelected": "Seçilmedi",
+  "ashgabat": "Aşkabat",
+  "arkadag": "Arkadag",
+  "ahal": "Ahal vilayeti",
+  "balkan": "Balkan vilayeti",
+  "mary": "Mari vilayeti",
+  "dashoguz": "Daşoğuz vilayeti",
+  "lebap": "Lebap vilayeti",
+  "shareText": "Arabalar ve yedek parçaların bir araya geldiği en büyük Android uygulaması TMCARS"
 }

@@ -187,4 +187,34 @@ class AppLocalizationsTk extends AppLocalizations {
 
   @override
   String get comments => 'Teswirler';
+
+  @override
+  String get notifications => 'Habarnamalar';
+
+  @override
+  String get econom => 'Ekonom suratsyz';
+
+  @override
+  String get ashgabat => 'Aşgabat';
+
+  @override
+  String get arkadag => 'Arkadag';
+
+  @override
+  String get ahal => 'Ahal welaýaty';
+
+  @override
+  String get balkan => 'Balkan welaýaty';
+
+  @override
+  String get mary => 'Mary welaýaty';
+
+  @override
+  String get dashoguz => 'Daşoguz welaýaty';
+
+  @override
+  String get lebap => 'Lebap welaýaty';
+
+  @override
+  String get shareText => 'Iň uly awtoulag we awtoşaýlaryň jemlenen android programmasy TMCARS';
 }

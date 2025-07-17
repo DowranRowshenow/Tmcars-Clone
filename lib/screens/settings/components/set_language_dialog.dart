@@ -1,26 +1,27 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../l10n/app_localizations_en.dart';
-import '../l10n/app_localizations_ru.dart';
-import '../l10n/app_localizations_tk.dart';
-import '../l10n/app_localizations_tr.dart';
-import '../l10n/app_localizations.dart';
-import '../helper/constants.dart';
-import '../helper/locale.dart';
+import '../../../l10n/app_localizations_en.dart';
+import '../../../l10n/app_localizations_ru.dart';
+import '../../../l10n/app_localizations_tk.dart';
+import '../../../l10n/app_localizations_tr.dart';
+import '../../../l10n/app_localizations.dart';
+import '../../../helper/constants.dart' as constants;
+import '../../../helper/locale.dart';
 import 'language_option.dart';
 
-Future<T?> showSelectLanguageDialog<T>({
+Future<T?> showSetLanguageDialog<T>({
   required BuildContext context,
   Color? barrierColor,
-  double blurSigmaX = blurSigmaX,
-  double blurSigmaY = blurSigmaY,
+  double blurSigmaX = constants.blurSigmaX,
+  double blurSigmaY = constants.blurSigmaY,
   bool barrierDismissible = true,
 }) {
   return showDialog<T>(
     context: context,
     barrierDismissible: barrierDismissible,
-    barrierColor: barrierColor ?? Colors.black.withValues(alpha: blurAlpha),
+    barrierColor:
+        barrierColor ?? Colors.black.withValues(alpha: constants.blurAlpha),
     builder: (BuildContext dialogContext) {
       final localeManager = Provider.of<LocaleManager>(context, listen: false);
       String selectedLocale = localeManager.locale!.languageCode;
@@ -28,12 +29,12 @@ Future<T?> showSelectLanguageDialog<T>({
       return StatefulBuilder(
         builder: (context, setState) {
           return AlertDialog(
-            contentPadding: EdgeInsets.fromLTRB(20, 20, 20, 0),
-            backgroundColor: appColors.themedSurface,
-            elevation: elevation,
+            contentPadding: EdgeInsets.fromLTRB(10, 20, 0, 0),
+            backgroundColor: constants.appColors.themedSurface,
+            elevation: constants.elevation,
             title: Text(
               AppLocalizations.of(context)!.selectLanguage,
-              style: TextStyle(color: appColors.textThemeColor),
+              style: TextStyle(color: constants.appColors.textThemeColor),
             ),
             content: SizedBox(
               width: double.maxFinite,
@@ -86,7 +87,7 @@ Future<T?> showSelectLanguageDialog<T>({
                 ),
                 child: Text(
                   AppLocalizations.of(context)!.select,
-                  style: TextStyle(color: colorPrimary),
+                  style: TextStyle(color: constants.colorPrimary),
                 ),
                 onPressed: () {
                   localeManager.setLocale(Locale(selectedLocale));
@@ -99,7 +100,7 @@ Future<T?> showSelectLanguageDialog<T>({
                 ),
                 child: Text(
                   AppLocalizations.of(context)!.cancel,
-                  style: TextStyle(color: colorPrimary),
+                  style: TextStyle(color: constants.colorPrimary),
                 ),
                 onPressed: () => Navigator.of(context).pop(),
               ),

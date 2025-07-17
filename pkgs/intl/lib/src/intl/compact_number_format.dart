@@ -474,7 +474,7 @@ class _CompactNumberFormat extends NumberFormat {
       // Cannot be compacted.
       return _defaultCompactStyle;
     }
-    var rounded = number.uble(); // No rounding yet...
+    var rounded = number.toDouble(); // No rounding yet...
     var digitLength = NumberFormat.numberOfIntegerDigits(number);
     var divisor = 1; // Default.
 

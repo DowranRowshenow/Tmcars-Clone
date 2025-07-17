@@ -73,6 +73,7 @@ class Navigate {
             onPressed: () {},
             splashRadius: splashRadius,
             icon: const Icon(Icons.search),
+            splashColor: Colors.transparent,
           ),
         ];
       case MenuState.others:
@@ -81,11 +82,13 @@ class Navigate {
             onPressed: () {},
             splashRadius: splashRadius,
             icon: const Icon(Icons.sort),
+            splashColor: Colors.transparent,
           ),
           IconButton(
             onPressed: () {},
             splashRadius: splashRadius,
             icon: const Icon(Icons.star),
+            splashColor: Colors.transparent,
           ),
         ];
       case MenuState.parts:
@@ -94,11 +97,13 @@ class Navigate {
             onPressed: () {},
             splashRadius: splashRadius,
             icon: const Icon(Icons.sort),
+            splashColor: Colors.transparent,
           ),
           IconButton(
             onPressed: () {},
             splashRadius: splashRadius,
             icon: const Icon(Icons.star),
+            splashColor: Colors.transparent,
           ),
         ];
       case MenuState.cars:
@@ -107,11 +112,13 @@ class Navigate {
             onPressed: () {},
             splashRadius: splashRadius,
             icon: const Icon(Icons.sort),
+            splashColor: Colors.transparent,
           ),
           IconButton(
             onPressed: () {},
             splashRadius: splashRadius,
             icon: const Icon(Icons.star),
+            splashColor: Colors.transparent,
           ),
         ];
       default:

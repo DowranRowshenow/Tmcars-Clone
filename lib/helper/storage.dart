@@ -40,4 +40,24 @@ class Storage extends ChangeNotifier {
       languageCode: sharedPreferences.getString('locale') ?? "en",
     );
   }
+
+  Future<void> setTrafficMode(int value) async {
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    await sharedPreferences.setInt('traffic', value);
+  }
+
+  Future<int> getTrafficMode() async {
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    return sharedPreferences.getInt('traffic') ?? 0;
+  }
+
+  Future<void> setLocation(String value) async {
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    await sharedPreferences.setString('location', value);
+  }
+
+  Future<String> getLocation() async {
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    return sharedPreferences.getString('location') ?? "";
+  }
 }

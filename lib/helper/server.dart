@@ -17,7 +17,8 @@ class Server {
 
   // ENDPOINTS
   static const String currentUrl = '';
-
+  static const String CONTACT_URL =
+      'https://dowranrowshenow.pythonanywhere.com';
   static const String SHARE_LINK =
       'https://play.google.com/store/apps/details?id=com.tm.car';
   static const String ABOUT_US_URL = 'https://tmcars.info/tm/aboutUs';

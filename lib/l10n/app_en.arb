@@ -58,5 +58,18 @@
   "profiles": "Business accounts",
   "news": "News",
   "add": "Add ad",
-  "comments": "Comments"
+  "comments": "Comments",
+  "notifications": "Notifications",
+  "standard": "Standard",
+  "econom": "Econom without photo",
+  "selectedLocation": "Selected location",
+  "notSelected": "Not selected",
+  "ashgabat": "Ashgabat",
+  "arkadag": "Arkadag",
+  "ahal": "Ahal region",
+  "balkan": "Balkan region",
+  "mary": "Mary region",
+  "dashoguz": "Dashoguz region",
+  "lebap": "Lebap region",
+  "shareText": "The largest Android app gathering cars and car parts TMCARS"
 }

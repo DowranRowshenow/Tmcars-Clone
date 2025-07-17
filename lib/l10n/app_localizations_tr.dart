@@ -57,7 +57,7 @@ class AppLocalizationsTr extends AppLocalizations {
   String get standard => 'Standart';
 
   @override
-  String get selectedLocation => 'Seçilen konum';
+  String get selectedLocation => 'Seçilen yer';
 
   @override
   String get notSelected => 'Seçilmedi';
@@ -187,4 +187,34 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get comments => 'Yorumlar';
+
+  @override
+  String get notifications => 'Bildirimler';
+
+  @override
+  String get econom => 'Ekonomik fotoğrafsız';
+
+  @override
+  String get ashgabat => 'Aşkabat';
+
+  @override
+  String get arkadag => 'Arkadag';
+
+  @override
+  String get ahal => 'Ahal vilayeti';
+
+  @override
+  String get balkan => 'Balkan vilayeti';
+
+  @override
+  String get mary => 'Mari vilayeti';
+
+  @override
+  String get dashoguz => 'Daşoğuz vilayeti';
+
+  @override
+  String get lebap => 'Lebap vilayeti';
+
+  @override
+  String get shareText => 'Arabalar ve yedek parçaların bir araya geldiği en büyük Android uygulaması TMCARS';
 }

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-import '../l10n/app_localizations.dart';
-import '../helper/constants.dart';
+import '../../../l10n/app_localizations.dart';
+import '../../../helper/constants.dart';
 
 class LanguageOption extends StatelessWidget {
   final AppLocalizations appLocalizations;
@@ -19,6 +19,7 @@ class LanguageOption extends StatelessWidget {
   Widget build(BuildContext context) {
     return ListTile(
       minTileHeight: 0,
+      horizontalTitleGap: 0,
       title: Text(
         appLocalizations.lang,
         overflow: TextOverflow.ellipsis,

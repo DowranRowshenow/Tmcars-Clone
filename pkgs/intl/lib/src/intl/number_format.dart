@@ -620,14 +620,14 @@ class NumberFormat {
       // (alanknight): Do this more efficiently. If IntX had floor and
       // round we could avoid this.
       var basic = _floor(number);
-      var fraction = (number - basic).uble().round();
+      var fraction = (number - basic).toDouble().round();
       return fraction == 0 ? number : number + fraction;
     }
   }
 
   // Return the number of digits left of the decimal place in [number].
   static int numberOfIntegerDigits(dynamic number) {
-    var simpleNumber = (number.uble() as double).abs();
+    var simpleNumber = (number.toDouble() as double).abs();
     // It's unfortunate that we have to do this, but we get precision errors
     // that affect the result if we use logs, e.g. 1000000
     if (simpleNumber < 10) return 1;

@@ -412,7 +412,7 @@ void _validateLong(String locale, List<List<String>> expected) {
 }
 
 void _validateNumber(dynamic number, NumberFormat format, String expected) {
-  var numberDouble = number.uble();
+  var numberDouble = number.toDouble();
   var formatted = format.format(number);
 
   expect('$formatted ${formatted.codeUnits}', '$expected ${expected.codeUnits}',

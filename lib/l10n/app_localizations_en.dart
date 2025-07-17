@@ -187,4 +187,34 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get comments => 'Comments';
+
+  @override
+  String get notifications => 'Notifications';
+
+  @override
+  String get econom => 'Econom without photo';
+
+  @override
+  String get ashgabat => 'Ashgabat';
+
+  @override
+  String get arkadag => 'Arkadag';
+
+  @override
+  String get ahal => 'Ahal region';
+
+  @override
+  String get balkan => 'Balkan region';
+
+  @override
+  String get mary => 'Mary region';
+
+  @override
+  String get dashoguz => 'Dashoguz region';
+
+  @override
+  String get lebap => 'Lebap region';
+
+  @override
+  String get shareText => 'The largest Android app gathering cars and car parts TMCARS';
 }

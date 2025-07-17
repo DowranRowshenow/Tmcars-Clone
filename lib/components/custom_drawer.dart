@@ -149,7 +149,10 @@ class _CustomDrawerState extends State<CustomDrawer> {
             trailing: Switch(
               value: constants.themeManager.isDark(),
               activeColor: Colors.lightBlueAccent,
-              onChanged: (value) => constants.themeManager.toggleTheme(),
+              onChanged: (value) => Provider.of<ThemeManager>(
+                context,
+                listen: false,
+              ).toggleTheme(),
             ),
             selectedTileColor: Colors.white12,
           ),

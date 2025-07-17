@@ -58,5 +58,18 @@
   "profiles": "Biznez hasaplar",
   "news": "Habarlar",
   "add": "Bildiriş goşmak",
-  "comments": "Teswirler"
+  "comments": "Teswirler",
+  "notifications": "Habarnamalar",
+  "standard": "Standart",
+  "econom": "Ekonom suratsyz",
+  "selectedLocation": "Saýlanan ýer",
+  "notSelected": "Saýlanmadyk",
+  "ashgabat": "Aşgabat",
+  "arkadag": "Arkadag",
+  "ahal": "Ahal welaýaty",
+  "balkan": "Balkan welaýaty",
+  "mary": "Mary welaýaty",
+  "dashoguz": "Daşoguz welaýaty",
+  "lebap": "Lebap welaýaty",
+  "shareText": "Iň uly awtoulag we awtoşaýlaryň jemlenen android programmasy TMCARS"
 }

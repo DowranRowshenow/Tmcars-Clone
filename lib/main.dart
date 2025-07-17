@@ -15,8 +15,7 @@ import 'components/scroll_behavior.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Storage().getThemeMode();
-
-  // Load saved locale
+  constants.trafficMode = await Storage().getTrafficMode();
   constants.locale = await Storage().getLocale();
 
   // Enable edge-to-edge display for the app
@@ -82,7 +81,13 @@ class _TmcarsCloneState extends State<TmcarsClone> {
             SizeConfig().init(context);
             return ScrollConfiguration(
               behavior: GlowlessScrollBehavior(),
-              child: child!,
+              child: AnimatedTheme(
+                data: themeManager.themeMode == ThemeMode.light
+                    ? lightThemeData
+                    : darkThemeData,
+                duration: Duration(milliseconds: 300),
+                child: child!,
+              ),
             );
           },
           home: LayoutBuilder(

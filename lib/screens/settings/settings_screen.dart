@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-//import 'package:share_plus/share_plus.dart';
+import 'package:share_plus/share_plus.dart';
+import 'package:url_launcher/url_launcher.dart';
 
-import '../../components/select_language_dialog.dart';
+import 'components/set_traffic_dialog.dart';
+import 'components/set_language_dialog.dart';
+import 'components/set_location_dialog.dart';
 import '../../helper/constants.dart' as constants;
 import '../../helper/server.dart';
 import '../../l10n/app_localizations.dart';
@@ -16,6 +19,12 @@ class SettingsScreen extends StatefulWidget {
 }
 
 class _SettingsScreenState extends State<SettingsScreen> {
+  Future<void> _launchUrl() async {
+    if (!await launchUrl(Uri.parse(Server.CONTACT_URL))) {
+      throw Exception('Could not launch');
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -59,7 +68,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
               softWrap: false,
               style: TextStyle(overflow: TextOverflow.ellipsis),
             ),
-            onTap: () => showSelectLanguageDialog(context: context),
+            onTap: () => showSetLanguageDialog(context: context),
           ),
           Container(
             decoration: BoxDecoration(
@@ -109,7 +118,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
               softWrap: false,
               style: TextStyle(overflow: TextOverflow.ellipsis),
             ),
-            onTap: () {},
+            onTap: () {
+              showSetTrafficDialog(context: context);
+            },
           ),
           Container(
             decoration: BoxDecoration(
@@ -134,7 +145,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
               softWrap: false,
               style: TextStyle(overflow: TextOverflow.ellipsis),
             ),
-            onTap: () {},
+            onTap: () {
+              showSetLocationDialog(context: context);
+            },
           ),
           ListTile(
             title: Text(
@@ -158,13 +171,12 @@ class _SettingsScreenState extends State<SettingsScreen> {
               width: 6,
             ),
             onTap: () {
-              /*
-              Share.share(
-                'Check out this awesome app: ${Server.SHARE_LINK}', // Replace with your desired link and message
-                subject:
-                    'Have a look at TMCARS App!', // Optional: subject for email sharing
+              SharePlus.instance.share(
+                ShareParams(
+                  text:
+                      '${AppLocalizations.of(context)!.shareText}: ${Server.SHARE_LINK}',
+                ),
               );
-              */
             },
           ),
           Container(
@@ -318,7 +330,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
               colorFilter: ColorFilter.mode(Colors.grey, BlendMode.srcIn),
               width: 6,
             ),
-            onTap: () {},
+            onTap: _launchUrl,
           ),
           Container(
             decoration: BoxDecoration(

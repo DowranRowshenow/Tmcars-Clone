@@ -4,6 +4,8 @@ import 'navigate.dart';
 import 'themes.dart';
 
 // GLOBAL VARIABLAES
+int trafficMode = 0;
+String location = '';
 late Locale locale;
 late AppColors appColors;
 ThemeMode appThemeMode = ThemeMode.system;

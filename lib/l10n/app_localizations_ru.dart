@@ -60,7 +60,7 @@ class AppLocalizationsRu extends AppLocalizations {
   String get selectedLocation => 'Выбранное место';
 
   @override
-  String get notSelected => 'Не выбрано';
+  String get notSelected => 'Не выбран';
 
   @override
   String get additional => 'Дополнительно';
@@ -187,4 +187,34 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get comments => 'Комментарии';
+
+  @override
+  String get notifications => 'Уведомления';
+
+  @override
+  String get econom => 'Эконом без фото';
+
+  @override
+  String get ashgabat => 'Ашхабад';
+
+  @override
+  String get arkadag => 'Аркадаг';
+
+  @override
+  String get ahal => 'Ахалский велаят';
+
+  @override
+  String get balkan => 'Балканский велаят';
+
+  @override
+  String get mary => 'Марыйский велаят';
+
+  @override
+  String get dashoguz => 'Дашогузский велаят';
+
+  @override
+  String get lebap => 'Лебапский велаят';
+
+  @override
+  String get shareText => 'Крупнейшее Android-приложение, объединяющее автомобили и автозапчасти TMCARS';
 }
