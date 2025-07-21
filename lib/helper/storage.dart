@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
-
+import 'dart:convert';
+import 'dart:io';
+import 'package:path_provider/path_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../models/article_category_model.dart';
 import 'constants.dart' as constants;
 
 class Storage extends ChangeNotifier {
@@ -59,5 +62,20 @@ class Storage extends ChangeNotifier {
   Future<String> getLocation() async {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
     return sharedPreferences.getString('location') ?? "";
+  }
+
+  Future<void> setArticleCategories(String data) async {
+    final dir = await getApplicationDocumentsDirectory();
+    final file = File('${dir.path}/articleCategories.json');
+    await file.writeAsString(data);
+  }
+
+  Future<List<ArticleCategory>> getArticleCategories() async {
+    final dir = await getApplicationDocumentsDirectory();
+    final file = File('${dir.path}/articleCategories.json');
+    if (!await file.exists()) return [];
+    final jsonString = await file.readAsString();
+    final List<dynamic> jsonList = jsonDecode(jsonString);
+    return jsonList.map((json) => ArticleCategory.fromJson(json)).toList();
   }
 }

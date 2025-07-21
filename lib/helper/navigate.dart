@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:tmcarsclone/components/should_register_dialog.dart';
-import 'package:tmcarsclone/screens/search_news/search_news_screen.dart';
 
+import '../screens/notifications/notifications_screen.dart';
+import '../components/should_register_dialog.dart';
+import '../screens/search_articles/search_articles_screen.dart';
 import '../l10n/app_localizations.dart';
 import '../menus/car_parts_menu/car_parts_menu.dart';
 import '../menus/cars_menu/cars_menu.dart';
 import '../menus/profiles_menu/profiles_menu.dart';
 import '../menus/comments_menu/comments_menu.dart';
-import '../menus/news_menu/news_menu.dart';
+import '../menus/articles_menu/articles_menu.dart';
 import '../menus/others_menu/others_menu.dart';
 import '../menus/add_menu/add_menu.dart';
 import '../menus/home_menu/home_menu.dart';
@@ -16,135 +17,142 @@ import '../screens/register/register_screen.dart';
 import '../screens/contact/contact_screen.dart';
 import '../screens/settings/settings_screen.dart';
 import '../screens/webview/webview_screen.dart';
-import 'constants.dart';
 import 'constants.dart' as constants;
 import 'server.dart';
 
 class Navigate {
-  ScreenState currentScreen = ScreenState.menu;
-  MenuState currentMenu = MenuState.home;
+  constants.ScreenState currentScreen = constants.ScreenState.menu;
+  constants.MenuState currentMenu = constants.MenuState.home;
 
   String getMenuTitle(BuildContext context) {
     switch (currentMenu) {
-      case MenuState.home:
+      case constants.MenuState.home:
         return AppLocalizations.of(context)!.home;
-      case MenuState.others:
+      case constants.MenuState.others:
         return AppLocalizations.of(context)!.others;
-      case MenuState.add:
+      case constants.MenuState.add:
         return AppLocalizations.of(context)!.add;
-      case MenuState.comments:
+      case constants.MenuState.comments:
         return AppLocalizations.of(context)!.comments;
-      case MenuState.news:
+      case constants.MenuState.articles:
         return AppLocalizations.of(context)!.news;
-      case MenuState.profiles:
+      case constants.MenuState.profiles:
         return AppLocalizations.of(context)!.profiles;
-      case MenuState.parts:
+      case constants.MenuState.parts:
         return AppLocalizations.of(context)!.parts;
-      case MenuState.cars:
+      case constants.MenuState.cars:
         return AppLocalizations.of(context)!.cars;
     }
   }
 
   Widget getCurrentMenu() {
     switch (currentMenu) {
-      case MenuState.home:
+      case constants.MenuState.home:
         return const HomeMenu();
-      case MenuState.add:
+      case constants.MenuState.add:
         return const AddMenu();
-      case MenuState.others:
+      case constants.MenuState.others:
         return const OthersMenu();
-      case MenuState.comments:
+      case constants.MenuState.comments:
         return const CommentsMenu();
-      case MenuState.news:
+      case constants.MenuState.articles:
         return const NewsMenu();
-      case MenuState.parts:
+      case constants.MenuState.parts:
         return const CarPartsMenu();
-      case MenuState.cars:
+      case constants.MenuState.cars:
         return const CarsMenu();
-      case MenuState.profiles:
+      case constants.MenuState.profiles:
         return const ProfilesMenu();
     }
   }
 
   List<Widget> getMenuTabs(BuildContext context) {
-    switch (navigate.currentMenu) {
-      case MenuState.comments:
+    switch (constants.navigate.currentMenu) {
+      case constants.MenuState.comments:
         return [];
-      case MenuState.home:
+      case constants.MenuState.home:
         return [
           IconButton(
+            color: Colors.white,
             onPressed: () {
               constants.navigate.changeScreen(
                 context,
-                constants.ScreenState.searchNews,
+                constants.ScreenState.notifications,
               );
             },
-            splashRadius: splashRadius,
+            splashRadius: constants.splashRadius,
             icon: const Icon(Icons.notifications),
             splashColor: Colors.transparent,
           ),
         ];
-      case MenuState.news:
+      case constants.MenuState.articles:
         return [
           IconButton(
+            color: Colors.white,
             onPressed: () {
               constants.navigate.changeScreen(
                 context,
-                constants.ScreenState.searchNews,
+                constants.ScreenState.searchArticles,
               );
             },
-            splashRadius: splashRadius,
+            splashRadius: constants.splashRadius,
             icon: const Icon(Icons.search),
             splashColor: Colors.transparent,
           ),
         ];
-      case MenuState.others:
+      case constants.MenuState.others:
         return [
           IconButton(
+            color: Colors.white,
             onPressed: () {},
-            splashRadius: splashRadius,
+            splashRadius: constants.splashRadius,
             icon: const Icon(Icons.sort),
             splashColor: Colors.transparent,
           ),
           IconButton(
+            color: Colors.white,
             onPressed: () {
               shouldRegisterDialog(context: context);
             },
-            splashRadius: splashRadius,
+            splashRadius: constants.splashRadius,
             icon: const Icon(Icons.star),
             splashColor: Colors.transparent,
           ),
         ];
-      case MenuState.parts:
+      case constants.MenuState.parts:
         return [
           IconButton(
+            color: Colors.white,
             onPressed: () {},
-            splashRadius: splashRadius,
+            splashRadius: constants.splashRadius,
             icon: const Icon(Icons.sort),
             splashColor: Colors.transparent,
           ),
           IconButton(
+            color: Colors.white,
             onPressed: () {
               shouldRegisterDialog(context: context);
             },
-            splashRadius: splashRadius,
+            splashRadius: constants.splashRadius,
             icon: const Icon(Icons.star),
             splashColor: Colors.transparent,
           ),
         ];
-      case MenuState.cars:
+      case constants.MenuState.cars:
         return [
           IconButton(
+            color: Colors.white,
             onPressed: () {},
-            splashRadius: splashRadius,
+            splashRadius: constants.splashRadius,
             icon: const Icon(Icons.sort),
             splashColor: Colors.transparent,
           ),
           IconButton(
+            color: Colors.white,
             onPressed: () {
               shouldRegisterDialog(context: context);
             },
-            splashRadius: splashRadius,
+            splashRadius: constants.splashRadius,
             icon: const Icon(Icons.star),
             splashColor: Colors.transparent,
           ),
@@ -155,49 +163,55 @@ class Navigate {
     return [Container()];
   }
 
-  void changeMenu(MenuState state) {
+  void changeMenu(constants.MenuState state) {
     currentMenu = state;
   }
 
   void changeScreen(
     BuildContext context,
-    ScreenState state, {
+    constants.ScreenState state, {
     String url = Server.currentUrl,
     String title = 'NONE',
   }) {
     constants.scaffold.currentState!.closeDrawer();
     switch (state) {
-      case ScreenState.searchNews:
+      case constants.ScreenState.notifications:
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => const SearchNewsScreen()),
+          MaterialPageRoute(builder: (context) => const NotificationsScreen()),
         );
         break;
-      case ScreenState.menu:
+      case constants.ScreenState.searchArticles:
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => const SearchArticlesScreen()),
+        );
+        break;
+      case constants.ScreenState.menu:
         Navigator.push(
           context,
           MaterialPageRoute(builder: (context) => const MenuScreen()),
         );
         break;
-      case ScreenState.settings:
+      case constants.ScreenState.settings:
         Navigator.push(
           context,
           MaterialPageRoute(builder: (context) => const SettingsScreen()),
         );
         break;
-      case ScreenState.contact:
+      case constants.ScreenState.contact:
         Navigator.push(
           context,
           MaterialPageRoute(builder: (context) => const ContactScreen()),
         );
         break;
-      case ScreenState.register:
+      case constants.ScreenState.register:
         Navigator.push(
           context,
           MaterialPageRoute(builder: (context) => const RegisterScreen()),
         );
         break;
-      case ScreenState.webview:
+      case constants.ScreenState.webview:
         Navigator.push(
           context,
           MaterialPageRoute(

@@ -7,8 +7,11 @@ import 'dart:io';
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 
+import '../models/article_category_model.dart';
 import '../models/popular_product_model.dart';
 import '../models/product_model.dart';
+import '../models/article_model.dart';
+import 'storage.dart';
 
 class Server {
   // Consider making this class abstract or using a service locator if it grows
@@ -74,6 +77,19 @@ class Server {
     }
   }
 
+  static Future<List<ArticleCategory>> getArticleCategories() async {
+    final response = await http.get(
+      Uri.https(host, "/tmcars/articleCategory/categories"),
+    );
+    if (response.statusCode == 200) {
+      final List<dynamic> data = json.decode(response.body);
+      Storage().setArticleCategories(response.body);
+      return data.map((e) => ArticleCategory.fromJson(e)).toList();
+    } else {
+      throw Exception('Failed to load news categories');
+    }
+  }
+
   static Future<List<Product>> getProducts({
     String name = '',
     String category = '',
@@ -114,5 +130,23 @@ class Server {
     } catch (e) {
       throw Exception('Error fetching data: $e');
     }*/
+  }
+
+  static Future<List<Article>> getArticles({
+    int offset = 0,
+    String mask = "",
+  }) async {
+    final response = await http.get(
+      Uri.https(host, "/tmcars/article/articles", {
+        "offset": offset.toString(),
+        "mask": mask,
+      }),
+    );
+    if (response.statusCode == 200) {
+      final List<dynamic> data = json.decode(response.body);
+      return data.map((e) => Article.fromJson(e)).toList();
+    } else {
+      throw Exception('Failed to load articles');
+    }
   }
 }

@@ -1,19 +1,19 @@
 import 'package:flutter/material.dart';
 
+import '../../menus/articles_menu/tabs/articles_tab.dart';
 import '../../helper/constants.dart' as constants;
 import '../../l10n/app_localizations.dart';
 
-class SearchNewsScreen extends StatefulWidget {
-  const SearchNewsScreen({super.key});
+class SearchArticlesScreen extends StatefulWidget {
+  const SearchArticlesScreen({super.key});
 
   @override
   // ignore: library_private_types_in_public_api
-  _SearchNewsScreenState createState() => _SearchNewsScreenState();
+  _SearchArticlesScreenState createState() => _SearchArticlesScreenState();
 }
 
-class _SearchNewsScreenState extends State<SearchNewsScreen> {
+class _SearchArticlesScreenState extends State<SearchArticlesScreen> {
   TextEditingController searchBarController = TextEditingController();
-  String searchText = "";
 
   @override
   Widget build(BuildContext context) {
@@ -29,10 +29,16 @@ class _SearchNewsScreenState extends State<SearchNewsScreen> {
           ),
           onChanged: (value) {
             if (value.length <= 50) {
-              searchText = value;
-              setState(() {});
+              setState(() {}); // This will rebuild the widget on every change
             } else {
-              searchBarController.text = searchText;
+              // Optionally prevent input longer than 50 chars
+              searchBarController.text = searchBarController.text.substring(
+                0,
+                50,
+              );
+              searchBarController.selection = TextSelection.fromPosition(
+                TextPosition(offset: searchBarController.text.length),
+              );
             }
           },
         ),
@@ -43,20 +49,22 @@ class _SearchNewsScreenState extends State<SearchNewsScreen> {
           splashColor: Colors.transparent,
         ),
         actions: [
-          searchBarController.text != ""
+          searchBarController.text.isNotEmpty
               ? IconButton(
                   onPressed: () {
-                    searchBarController.text = "";
+                    searchBarController.clear();
                     setState(() {});
                   },
                   splashRadius: constants.splashRadius,
                   icon: const Icon(Icons.close),
                   splashColor: Colors.transparent,
                 )
-              : SizedBox(width: 20, child: null),
+              : const SizedBox(width: 20),
         ],
       ),
-      body: SingleChildScrollView(child: Container()),
+      body: searchBarController.text.isEmpty
+          ? Container()
+          : ArticlesTab(mask: searchBarController.text),
     );
   }
 }

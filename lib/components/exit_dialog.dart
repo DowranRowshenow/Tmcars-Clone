@@ -19,6 +19,8 @@ Future<T?> showExitDialog<T>({
         barrierColor ?? Colors.black.withValues(alpha: constants.blurAlpha),
     builder: (BuildContext dialogContext) {
       return AlertDialog(
+        insetPadding: EdgeInsets.all(constants.dialogPadding),
+
         backgroundColor: constants.appColors.themedSurface,
         elevation: constants.elevation,
         title: Text(

@@ -17,6 +17,8 @@ Future<T?> shouldRegisterDialog<T>({
         barrierColor ?? Colors.black.withValues(alpha: constants.blurAlpha),
     builder: (BuildContext dialogContext) {
       return AlertDialog(
+        insetPadding: EdgeInsets.all(constants.dialogPadding),
+
         backgroundColor: constants.appColors.themedSurface,
         elevation: constants.elevation,
         contentPadding: EdgeInsets.fromLTRB(30, 30, 30, 0),

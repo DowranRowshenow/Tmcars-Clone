@@ -25,6 +25,28 @@ class _SettingsScreenState extends State<SettingsScreen> {
     }
   }
 
+  String getLocation(String location) {
+    switch (location) {
+      case '':
+        return AppLocalizations.of(context)!.notSelected;
+      case 'ashgabat':
+        return AppLocalizations.of(context)!.ashgabat;
+      case 'arkadag':
+        return AppLocalizations.of(context)!.arkadag;
+      case 'ahal':
+        return AppLocalizations.of(context)!.ahal;
+      case 'balkan':
+        return AppLocalizations.of(context)!.balkan;
+      case 'mary':
+        return AppLocalizations.of(context)!.mary;
+      case 'dashoguz':
+        return AppLocalizations.of(context)!.dashoguz;
+      case 'lebap':
+        return AppLocalizations.of(context)!.lebap;
+    }
+    return AppLocalizations.of(context)!.notSelected;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -53,7 +75,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
               style: TextStyle(overflow: TextOverflow.ellipsis),
             ),
             tileColor: constants.appColors.tileThemeColor,
-            onTap: () {},
           ),
           ListTile(
             title: Text(
@@ -113,13 +134,17 @@ class _SettingsScreenState extends State<SettingsScreen> {
               style: TextStyle(overflow: TextOverflow.ellipsis),
             ),
             trailing: Text(
-              AppLocalizations.of(context)!.standard,
+              constants.trafficMode == 0
+                  ? AppLocalizations.of(context)!.standard
+                  : AppLocalizations.of(context)!.econom,
               overflow: TextOverflow.ellipsis,
               softWrap: false,
               style: TextStyle(overflow: TextOverflow.ellipsis),
             ),
             onTap: () {
-              showSetTrafficDialog(context: context);
+              showSetTrafficDialog(context: context).then((onValue) {
+                setState(() {});
+              });
             },
           ),
           Container(
@@ -140,13 +165,15 @@ class _SettingsScreenState extends State<SettingsScreen> {
               style: TextStyle(overflow: TextOverflow.ellipsis),
             ),
             trailing: Text(
-              AppLocalizations.of(context)!.notSelected,
+              getLocation(constants.location),
               overflow: TextOverflow.ellipsis,
               softWrap: false,
               style: TextStyle(overflow: TextOverflow.ellipsis),
             ),
             onTap: () {
-              showSetLocationDialog(context: context);
+              showSetLocationDialog(context: context).then((onValue) {
+                setState(() {});
+              });
             },
           ),
           ListTile(

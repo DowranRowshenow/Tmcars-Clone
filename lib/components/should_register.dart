@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:tmcarsclone/l10n/app_localizations.dart';
 
+import '../l10n/app_localizations.dart';
 import '../helper/constants.dart' as constants;
 
 class ShouldRegister extends StatefulWidget {

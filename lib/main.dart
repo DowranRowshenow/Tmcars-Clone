@@ -3,20 +3,31 @@ import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:provider/provider.dart';
 
+import 'helper/server.dart';
 import 'l10n/app_localizations.dart';
 import 'helper/locale.dart';
 import 'helper/constants.dart' as constants;
 import 'helper/size_config.dart';
 import 'helper/storage.dart';
 import 'helper/themes.dart';
+import 'models/article_category_model.dart';
 import 'screens/menu/menu_screen.dart';
 import 'components/scroll_behavior.dart';
 
 void main() async {
+  Future<List<ArticleCategory>> loadCategories() async {
+    List<ArticleCategory> cats = await Storage().getArticleCategories();
+    if (cats.isEmpty) {
+      cats = await Server.getArticleCategories();
+    }
+    return cats;
+  }
+
   WidgetsFlutterBinding.ensureInitialized();
   await Storage().getThemeMode();
   constants.trafficMode = await Storage().getTrafficMode();
   constants.locale = await Storage().getLocale();
+  constants.articleCategory = loadCategories();
 
   // Enable edge-to-edge display for the app
   /*
@@ -77,7 +88,6 @@ class _TmcarsCloneState extends State<TmcarsClone> {
           builder: (context, child) {
             // Initializing Configures and Variables
             constants.appColors = Theme.of(context).extension<AppColors>()!;
-            //LocaleManager().setLocale(constants.locale);
             SizeConfig().init(context);
             return ScrollConfiguration(
               behavior: GlowlessScrollBehavior(),

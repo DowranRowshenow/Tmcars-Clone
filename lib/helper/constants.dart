@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../models/article_category_model.dart';
 import 'navigate.dart';
 import 'themes.dart';
 
@@ -13,16 +14,24 @@ ThemeMode appThemeMode = ThemeMode.system;
 ThemeManager themeManager = ThemeManager();
 Navigate navigate = Navigate();
 GlobalKey<ScaffoldState> scaffold = GlobalKey();
+late Future<List<ArticleCategory>> articleCategory;
 
 // ENUMS
-enum MenuState { home, add, others, comments, news, profiles, parts, cars }
+enum MenuState { home, add, others, comments, articles, profiles, parts, cars }
 
-enum ScreenState { menu, settings, contact, register, webview, searchNews }
+enum ScreenState {
+  menu,
+  settings,
+  contact,
+  register,
+  webview,
+  searchArticles,
+  notifications,
+}
 
 // STRINGS
-const String packageVersion = '0.3.0';
+const String packageVersion = '0.3.1';
 const String appName = 'Tmcars Clone';
-const String email = "dowranrowshenow";
 const String phoneCode = "+993";
 const String arrowRight = 'assets/icons/arrow_right.svg';
 const String drawerLogoDark = 'assets/images/drawer_logo_dark.webp';
@@ -44,6 +53,7 @@ const double elevation = 1.0;
 const double radius = 3.0;
 const double margin = 20.0;
 const double margin_2 = 15.0;
+const double dialogPadding = 15.0;
 
 // COLORS
 const colorAccent = Color(0xFF4e82ab);

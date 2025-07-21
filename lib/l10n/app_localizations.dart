@@ -525,6 +525,12 @@ abstract class AppLocalizations {
   /// **'Favorite'**
   String get favorite;
 
+  /// No description provided for @noResult.
+  ///
+  /// In en, this message translates to:
+  /// **'No Result'**
+  String get noResult;
+
   /// No description provided for @notRegistered.
   ///
   /// In en, this message translates to:

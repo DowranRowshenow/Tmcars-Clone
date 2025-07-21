@@ -29,7 +29,9 @@ class _MenuScreenState extends State<MenuScreen> {
           if (constants.navigate.currentMenu == constants.MenuState.home) {
             showExitDialog(context: context);
           } else {
-            constants.navigate.changeMenu(constants.MenuState.home);
+            setState(() {
+              constants.navigate.changeMenu(constants.MenuState.home);
+            });
             return;
           }
         }

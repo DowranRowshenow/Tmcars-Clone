@@ -222,6 +222,9 @@ class AppLocalizationsTk extends AppLocalizations {
   String get favorite => 'Halanan';
 
   @override
+  String get noResult => 'Netije Ýok';
+
+  @override
   String get notRegistered => 'Siz ulgama girmändirsiňiz! Ulgama girip, siz bildiriş goşup bilersiňiz, öz bildirişleriňizi we profiliňizi sazlap bilersiňiz, we özüňiziň başga telefonlaryňyza geçirip bilersiňiz.';
 
   @override

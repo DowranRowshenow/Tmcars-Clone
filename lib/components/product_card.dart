@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 
+import '../models/popular_product_model.dart';
+import '../helper/constants.dart' as constants;
 import 'ripple_container.dart';
-import '../models/product_model.dart';
 
 class ProductCard extends StatefulWidget {
   const ProductCard({super.key, required this.product});
-  final Product product;
+  final PopularProduct product;
 
   @override
   State<ProductCard> createState() => _ProductCardState();
@@ -22,7 +23,7 @@ class _ProductCardState extends State<ProductCard> {
       child: Row(
         children: [
           Image.network(
-            widget.product.images[0].url,
+            widget.product.img,
             height: 90,
             width: 90,
             fit: BoxFit.fitHeight,
@@ -33,10 +34,15 @@ class _ProductCardState extends State<ProductCard> {
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(widget.product.name, style: const TextStyle(fontSize: 16)),
+                Text(
+                  widget.product.title,
+                  style: const TextStyle(fontSize: 16),
+                ),
                 SizedBox(height: 5),
                 Text(
-                  "${widget.product.location.name}, ${widget.product.updatedAt}",
+                  constants.locale == Locale('ru')
+                      ? widget.product.timeLocationRu
+                      : widget.product.timeLocation,
                   softWrap: true,
                   textWidthBasis: TextWidthBasis.parent,
                   overflow: TextOverflow.clip,
@@ -46,7 +52,7 @@ class _ProductCardState extends State<ProductCard> {
                   ),
                 ),
                 SizedBox(height: 5),
-                Text("${widget.product.price} TMT"),
+                Text("${widget.product.p} TMT"),
                 SizedBox(height: 5),
                 Text(
                   widget.product.description,

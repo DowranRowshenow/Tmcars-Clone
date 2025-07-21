@@ -18,11 +18,12 @@ Future<T?> showSetTrafficDialog<T>({
     barrierColor:
         barrierColor ?? Colors.black.withValues(alpha: constants.blurAlpha),
     builder: (BuildContext dialogContext) {
-      int selectedTrafficMode = 0;
+      int selectedTrafficMode = constants.trafficMode;
 
       return StatefulBuilder(
         builder: (context, setState) {
           return AlertDialog(
+            insetPadding: EdgeInsets.all(constants.dialogPadding),
             contentPadding: EdgeInsets.fromLTRB(0, 20, 0, 0),
             backgroundColor: constants.appColors.themedSurface,
             elevation: constants.elevation,
@@ -38,20 +39,20 @@ Future<T?> showSetTrafficDialog<T>({
                   TrafficOption(
                     text: AppLocalizations.of(context)!.standard,
                     value: 0,
-                    selectedValue: selectedTrafficMode,
+                    selectedValue: constants.trafficMode,
                     onTap: () {
                       setState(() {
-                        selectedTrafficMode = 0;
+                        constants.trafficMode = 0;
                       });
                     },
                   ),
                   TrafficOption(
                     text: AppLocalizations.of(context)!.econom,
                     value: 1,
-                    selectedValue: selectedTrafficMode,
+                    selectedValue: constants.trafficMode,
                     onTap: () {
                       setState(() {
-                        selectedTrafficMode = 1;
+                        constants.trafficMode = 1;
                       });
                     },
                   ),

@@ -1,7 +1,5 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:transparent_image/transparent_image.dart';
 
 import '../../../components/ripple_container.dart';
 import '../../../helper/constants.dart' as constants;
@@ -28,26 +26,30 @@ class PopularProductCard extends StatelessWidget {
             height: 90,
             width: 90,
             fit: BoxFit.fitHeight,
-            placeholder: (context, url) => Center(
-              child: Image.memory(kTransparentImage),
-              /*child: CircularProgressIndicator(
-                      valueColor: AlwaysStoppedAnimation<Color>(
-                          Theme.of(context).primaryColor),
-                    ),*/
-            ),
-            errorWidget: (context, url, error) {
-              if (kDebugMode) {
-                print('Error loading image: $url, error: $error');
-              }
+            placeholder: (context, url) {
               return Container(
                 width: 90,
                 height: 90,
-                color: Colors.grey[300],
+                color: constants.appColors.tileThemeColor,
                 child: Center(
                   child: Icon(
                     Icons.broken_image_outlined,
-                    size: 40,
-                    color: Colors.grey[600],
+                    size: 50,
+                    color: Colors.grey[700]!,
+                  ),
+                ),
+              );
+            },
+            errorWidget: (context, url, error) {
+              return Container(
+                width: 90,
+                height: 90,
+                color: constants.appColors.tileThemeColor,
+                child: Center(
+                  child: Icon(
+                    Icons.broken_image_outlined,
+                    size: 50,
+                    color: Colors.grey[700]!,
                   ),
                 ),
               );
@@ -67,7 +69,9 @@ class PopularProductCard extends StatelessWidget {
                 ),
                 SizedBox(height: 3),
                 Text(
-                  product.description,
+                  constants.locale == Locale('ru')
+                      ? product.descriptionRu
+                      : product.description,
                   overflow: TextOverflow.ellipsis,
                   maxLines: 2,
                   style: TextStyle(
@@ -78,7 +82,9 @@ class PopularProductCard extends StatelessWidget {
                 ),
                 SizedBox(height: 3),
                 Text(
-                  product.timeLocation,
+                  constants.locale == Locale('ru')
+                      ? product.timeLocationRu
+                      : product.timeLocation,
                   maxLines: 1,
                   softWrap: true,
                   textWidthBasis: TextWidthBasis.parent,

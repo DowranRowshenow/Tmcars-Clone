@@ -222,6 +222,9 @@ class AppLocalizationsTr extends AppLocalizations {
   String get favorite => 'Favori';
 
   @override
+  String get noResult => 'Sonuç Ýok';
+
+  @override
   String get notRegistered => 'Hesabınıza giriş yapmadınız! Giriş yaparak ilan ekleyebilir, kendi ilanlarınızı ve profilinizi düzenleyebilir ve verilerinizi diğer telefonlarınıza aktarabilirsiniz.';
 
   @override

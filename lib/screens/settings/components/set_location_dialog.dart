@@ -20,6 +20,7 @@ Future<T?> showSetLocationDialog<T>({
       return StatefulBuilder(
         builder: (context, setState) {
           return AlertDialog(
+            insetPadding: EdgeInsets.all(constants.dialogPadding),
             contentPadding: EdgeInsets.fromLTRB(20, 20, 20, 0),
             backgroundColor: constants.appColors.themedSurface,
             elevation: constants.elevation,
@@ -37,65 +38,67 @@ Future<T?> showSetLocationDialog<T>({
                     onTap: () {
                       constants.location = '';
                       Storage().setLocation('');
+                      Navigator.of(context).pop();
                     },
                   ),
                   ListTile(
                     title: Text(AppLocalizations.of(context)!.ashgabat),
                     onTap: () {
-                      constants.location = AppLocalizations.of(
-                        context,
-                      )!.ashgabat;
+                      constants.location = 'ashgabat';
                       Storage().setLocation('ashgabat');
+                      Navigator.of(context).pop();
                     },
                   ),
                   ListTile(
                     title: Text(AppLocalizations.of(context)!.arkadag),
                     onTap: () {
-                      constants.location = AppLocalizations.of(
-                        context,
-                      )!.arkadag;
+                      constants.location = 'arkadag';
                       Storage().setLocation('arkadag');
+                      Navigator.of(context).pop();
                     },
                   ),
 
                   ListTile(
                     title: Text(AppLocalizations.of(context)!.ahal),
                     onTap: () {
-                      constants.location = AppLocalizations.of(context)!.ahal;
+                      constants.location = 'ahal';
                       Storage().setLocation('ahal');
+                      Navigator.of(context).pop();
                     },
                   ),
 
                   ListTile(
                     title: Text(AppLocalizations.of(context)!.balkan),
                     onTap: () {
-                      constants.location = AppLocalizations.of(context)!.balkan;
+                      constants.location = 'balkan';
                       Storage().setLocation('balkan');
+                      Navigator.of(context).pop();
                     },
                   ),
 
                   ListTile(
                     title: Text(AppLocalizations.of(context)!.mary),
                     onTap: () {
-                      constants.location = AppLocalizations.of(context)!.mary;
+                      constants.location = 'mary';
                       Storage().setLocation('mary');
+                      Navigator.of(context).pop();
                     },
                   ),
 
                   ListTile(
                     title: Text(AppLocalizations.of(context)!.dashoguz),
                     onTap: () {
-                      constants.location = AppLocalizations.of(
-                        context,
-                      )!.dashoguz;
+                      constants.location = 'dashoguz';
                       Storage().setLocation('dashoguz');
+                      Navigator.of(context).pop();
                     },
                   ),
                   ListTile(
                     title: Text(AppLocalizations.of(context)!.lebap),
                     onTap: () {
-                      constants.location = AppLocalizations.of(context)!.lebap;
+                      constants.location = 'lebap';
                       Storage().setLocation('lebap');
+                      Navigator.of(context).pop();
                     },
                   ),
                 ],

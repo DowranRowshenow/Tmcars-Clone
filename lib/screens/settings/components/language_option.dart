@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../../l10n/app_localizations.dart';
-import '../../../helper/constants.dart';
+import '../../../helper/constants.dart' as constants;
 
 class LanguageOption extends StatelessWidget {
   final AppLocalizations appLocalizations;
@@ -26,7 +26,7 @@ class LanguageOption extends StatelessWidget {
         softWrap: false,
         style: TextStyle(
           overflow: TextOverflow.ellipsis,
-          color: appColors.textThemeColor,
+          color: constants.appColors.textThemeColor,
           fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
         ),
       ),
@@ -36,7 +36,7 @@ class LanguageOption extends StatelessWidget {
         softWrap: false,
         style: TextStyle(
           overflow: TextOverflow.ellipsis,
-          color: appColors.textThemeColor?.withValues(alpha: 0.7),
+          color: constants.appColors.textThemeColor?.withValues(alpha: 0.7),
         ),
       ),
       leading: Radio<Locale>(
@@ -45,7 +45,7 @@ class LanguageOption extends StatelessWidget {
         onChanged: (Locale? value) {
           onTap();
         },
-        activeColor: colorPrimary,
+        activeColor: constants.colorPrimary,
       ),
       onTap: onTap,
     );

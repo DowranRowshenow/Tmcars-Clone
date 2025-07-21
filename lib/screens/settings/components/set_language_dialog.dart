@@ -29,7 +29,8 @@ Future<T?> showSetLanguageDialog<T>({
       return StatefulBuilder(
         builder: (context, setState) {
           return AlertDialog(
-            contentPadding: EdgeInsets.fromLTRB(10, 20, 0, 0),
+            insetPadding: EdgeInsets.all(constants.dialogPadding),
+            contentPadding: EdgeInsets.fromLTRB(0, 20, 0, 0),
             backgroundColor: constants.appColors.themedSurface,
             elevation: constants.elevation,
             title: Text(
@@ -90,7 +91,8 @@ Future<T?> showSetLanguageDialog<T>({
                   style: TextStyle(color: constants.colorPrimary),
                 ),
                 onPressed: () {
-                  localeManager.setLocale(Locale(selectedLocale));
+                  constants.locale = Locale(selectedLocale);
+                  localeManager.setLocale(constants.locale);
                   Navigator.of(context).pop();
                 },
               ),

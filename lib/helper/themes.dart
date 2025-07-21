@@ -178,6 +178,9 @@ final ThemeData lightThemeData = ThemeData.light(useMaterial3: false).copyWith(
   focusColor: AppColors.light.focusColor,
   extensions: <ThemeExtension<dynamic>>[AppColors.light],
   splashFactory: InkSparkle.splashFactory,
+  iconButtonTheme: IconButtonThemeData(
+    style: ButtonStyle(iconColor: WidgetStateProperty.all(Colors.white)),
+  ),
   progressIndicatorTheme: ProgressIndicatorThemeData(
     color: AppColors.light.progressIndicatorColor,
   ),
@@ -258,6 +261,9 @@ final ThemeData darkThemeData = ThemeData.dark(useMaterial3: false).copyWith(
   iconTheme: IconThemeData(color: AppColors.dark.iconThemeColor),
   extensions: <ThemeExtension<dynamic>>[AppColors.dark],
   splashFactory: InkSparkle.splashFactory,
+  iconButtonTheme: IconButtonThemeData(
+    style: ButtonStyle(iconColor: WidgetStateProperty.all(Colors.white)),
+  ),
   progressIndicatorTheme: ProgressIndicatorThemeData(
     color: AppColors.dark.progressIndicatorColor,
   ),

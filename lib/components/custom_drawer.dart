@@ -100,7 +100,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
             selectedTileColor: Colors.white12,
           ),
           ListTile(
-            onTap: () => widget.onTap(constants.MenuState.news),
+            onTap: () => widget.onTap(constants.MenuState.articles),
             title: Text(AppLocalizations.of(context)!.news),
             leading: const Icon(Icons.newspaper_outlined),
             selectedTileColor: Colors.white12,

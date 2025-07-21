@@ -222,6 +222,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get favorite => 'Favorite';
 
   @override
+  String get noResult => 'No Result';
+
+  @override
   String get notRegistered => 'You are not logged in! By logging in, you can add notifications, manage your notifications and profile, and transfer your data to other phones.';
 
   @override

@@ -1,4 +1,3 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:transparent_image/transparent_image.dart';
@@ -41,9 +40,6 @@ class ProfileCategoryCard extends StatelessWidget {
                     //child: CircularProgressIndicator(),
                   ),
                   errorWidget: (context, url, error) {
-                    if (kDebugMode) {
-                      print('Error loading image: $url, error: $error');
-                    }
                     return Container(
                       width: 90,
                       height: 90,
@@ -51,7 +47,7 @@ class ProfileCategoryCard extends StatelessWidget {
                       child: Center(
                         child: Icon(
                           Icons.broken_image_outlined,
-                          size: 100,
+                          size: 50,
                           color: Colors.grey[700]!,
                         ),
                       ),

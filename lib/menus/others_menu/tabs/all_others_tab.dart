@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 
+import '../../../models/popular_product_model.dart';
+import '../../../components/no_connection.dart';
 import '../../../helper/server.dart';
 import '../../../l10n/app_localizations.dart';
-import '../../../models/product_model.dart';
-import '../../../components/product_card.dart';
+import '../../home_menu/components/popular_product_card.dart';
 
 class AllOthersTab extends StatefulWidget {
   const AllOthersTab({super.key});
@@ -15,8 +16,23 @@ class AllOthersTab extends StatefulWidget {
 
 class _AllOthersTabState extends State<AllOthersTab> {
   String searchText = "";
-  late List<Product> products;
   final TextEditingController searchBarController = TextEditingController();
+  late Future<List<PopularProduct>> _popularProductsFuture;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadPopularProducts();
+  }
+
+  void _loadPopularProducts() {
+    _popularProductsFuture = Server.getSettings();
+    setState(() {});
+  }
+
+  Future<void> _handleRefresh() async {
+    _loadPopularProducts();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -52,32 +68,41 @@ class _AllOthersTabState extends State<AllOthersTab> {
           ),
         ),
         Expanded(
-          child: FutureBuilder<List<Product>>(
-            future: Server.getProducts(name: searchBarController.text),
+          child: FutureBuilder<List<PopularProduct>>(
+            future: _popularProductsFuture,
             builder: (context, snapshot) {
-              if (snapshot.hasData) {
-                products = snapshot.data as List<Product>;
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return Center(child: CircularProgressIndicator());
+              } else if (snapshot.hasError) {
+                return NoConnection(onTap: () => _handleRefresh());
+              } else if (snapshot.hasData) {
+                final popularProducts = snapshot.data!;
+                if (popularProducts.isEmpty) {
+                  return NoConnection(onTap: () => _handleRefresh());
+                }
                 return RefreshIndicator(
-                  onRefresh: () async {},
+                  onRefresh: _handleRefresh,
                   child: SingleChildScrollView(
                     physics: const AlwaysScrollableScrollPhysics(),
-                    child: Column(
-                      children: [
-                        ...List.generate(products.length, (index) {
-                          return ProductCard(product: products[index]);
-                        }),
-                      ],
+                    child: ListView.builder(
+                      shrinkWrap:
+                          true, // Important when inside another scrollable
+                      physics:
+                          const NeverScrollableScrollPhysics(), // Delegate scrolling
+                      itemCount: popularProducts.length,
+                      itemBuilder: (context, index) {
+                        return PopularProductCard(
+                          product: popularProducts[index],
+                        );
+                      },
                     ),
                   ),
                 );
-              } else {
-                return Column(
-                  children: [
-                    SizedBox(height: 40),
-                    const Center(child: CircularProgressIndicator()),
-                  ],
-                );
               }
+              // Fallback, should ideally not be reached if other states are handled.
+              return Center(
+                child: Text(AppLocalizations.of(context)!.somethingWentWrong),
+              );
             },
           ),
         ),
