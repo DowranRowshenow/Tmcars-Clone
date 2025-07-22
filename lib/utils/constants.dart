@@ -1,20 +1,15 @@
 import 'package:flutter/material.dart';
 
-import '../models/article_category_model.dart';
 import 'navigate.dart';
 import 'themes.dart';
 
 // GLOBAL VARIABLAES
 bool isRegistered = false;
-int trafficMode = 0;
-String location = '';
-late Locale locale;
 late AppColors appColors;
 ThemeMode appThemeMode = ThemeMode.system;
 ThemeManager themeManager = ThemeManager();
 Navigate navigate = Navigate();
 GlobalKey<ScaffoldState> scaffold = GlobalKey();
-late Future<List<ArticleCategory>> articleCategory;
 
 // ENUMS
 enum MenuState { home, add, others, comments, articles, profiles, parts, cars }

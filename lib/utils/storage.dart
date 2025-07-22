@@ -32,9 +32,9 @@ class Storage extends ChangeNotifier {
     return constants.appThemeMode;
   }
 
-  Future<void> setLocale(Locale locale) async {
+  Future<void> setLocale(String localeCode) async {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-    await sharedPreferences.setString('locale', locale.languageCode);
+    await sharedPreferences.setString('locale', localeCode);
   }
 
   Future<Locale> getLocale() async {

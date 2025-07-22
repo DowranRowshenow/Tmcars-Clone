@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
-import '../../../utils/storage.dart';
 import '../../../l10n/app_localizations.dart';
 import '../../../utils/constants.dart' as constants;
+import '../../../utils/location.dart';
 
 Future<T?> showSetLocationDialog<T>({
   required BuildContext context,
@@ -36,24 +37,21 @@ Future<T?> showSetLocationDialog<T>({
                   ListTile(
                     title: Text(AppLocalizations.of(context)!.notSelected),
                     onTap: () {
-                      constants.location = '';
-                      Storage().setLocation('');
+                      context.read<LocationManager>().setLocation('');
                       Navigator.of(context).pop();
                     },
                   ),
                   ListTile(
                     title: Text(AppLocalizations.of(context)!.ashgabat),
                     onTap: () {
-                      constants.location = 'ashgabat';
-                      Storage().setLocation('ashgabat');
+                      context.read<LocationManager>().setLocation('ashgabat');
                       Navigator.of(context).pop();
                     },
                   ),
                   ListTile(
                     title: Text(AppLocalizations.of(context)!.arkadag),
                     onTap: () {
-                      constants.location = 'arkadag';
-                      Storage().setLocation('arkadag');
+                      context.read<LocationManager>().setLocation('arkadag');
                       Navigator.of(context).pop();
                     },
                   ),
@@ -61,8 +59,7 @@ Future<T?> showSetLocationDialog<T>({
                   ListTile(
                     title: Text(AppLocalizations.of(context)!.ahal),
                     onTap: () {
-                      constants.location = 'ahal';
-                      Storage().setLocation('ahal');
+                      context.read<LocationManager>().setLocation('ahal');
                       Navigator.of(context).pop();
                     },
                   ),
@@ -70,8 +67,7 @@ Future<T?> showSetLocationDialog<T>({
                   ListTile(
                     title: Text(AppLocalizations.of(context)!.balkan),
                     onTap: () {
-                      constants.location = 'balkan';
-                      Storage().setLocation('balkan');
+                      context.read<LocationManager>().setLocation('balkan');
                       Navigator.of(context).pop();
                     },
                   ),
@@ -79,8 +75,7 @@ Future<T?> showSetLocationDialog<T>({
                   ListTile(
                     title: Text(AppLocalizations.of(context)!.mary),
                     onTap: () {
-                      constants.location = 'mary';
-                      Storage().setLocation('mary');
+                      context.read<LocationManager>().setLocation('mary');
                       Navigator.of(context).pop();
                     },
                   ),
@@ -88,16 +83,14 @@ Future<T?> showSetLocationDialog<T>({
                   ListTile(
                     title: Text(AppLocalizations.of(context)!.dashoguz),
                     onTap: () {
-                      constants.location = 'dashoguz';
-                      Storage().setLocation('dashoguz');
+                      context.read<LocationManager>().setLocation('dashoguz');
                       Navigator.of(context).pop();
                     },
                   ),
                   ListTile(
                     title: Text(AppLocalizations.of(context)!.lebap),
                     onTap: () {
-                      constants.location = 'lebap';
-                      Storage().setLocation('lebap');
+                      context.read<LocationManager>().setLocation('lebap');
                       Navigator.of(context).pop();
                     },
                   ),

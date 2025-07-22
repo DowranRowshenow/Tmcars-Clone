@@ -39,17 +39,17 @@ class AppColors extends ThemeExtension<AppColors> {
   static final AppColors light = AppColors(
     themedSurface: Colors.white,
     menuBackgroundColor: Colors.grey.shade200,
-    iconThemeColor: Colors.black.withValues(alpha: 0.5),
-    textThemeColor: Colors.black.withValues(alpha: 0.8),
-    textHintThemeColor: Colors.black.withValues(alpha: 0.5),
+    iconThemeColor: Colors.black.withAlpha(128), // 50% opacity
+    textThemeColor: Colors.black.withAlpha(204), // 80% opacity
+    textHintThemeColor: Colors.black.withAlpha(128), // 50% opacity
     text2ThemeColor:
         constants.colorPrimary, // Assuming colorPrimary is for light theme
     productSubtitleThemeColor: Colors.black,
-    tileThemeColor: Colors.black.withValues(alpha: 0.1),
+    tileThemeColor: Colors.black.withAlpha(26), // 10% opacity
     scaffoldBackgroundThemeColor: Colors.white,
     focusColor: Colors.blue,
     tintColor: const Color.fromARGB(255, 233, 223, 231),
-    dividerColor: Colors.black.withValues(alpha: 0.5),
+    dividerColor: Colors.black.withAlpha(128), // 50% opacity
     progressIndicatorColor: constants.colorPrimary,
   );
 
@@ -57,19 +57,17 @@ class AppColors extends ThemeExtension<AppColors> {
   static final AppColors dark = AppColors(
     themedSurface: constants.blueGrey950,
     menuBackgroundColor: Color.fromARGB(145, 102, 102, 102),
-    iconThemeColor: Colors.white.withValues(alpha: 0.5),
-    textThemeColor: Colors.white.withValues(alpha: 0.8),
-    textHintThemeColor: Colors.white.withValues(alpha: 0.5),
-    text2ThemeColor: Colors.white.withValues(
-      alpha: 0.8,
-    ), // Assuming this for dark theme
+    iconThemeColor: Colors.white.withAlpha(128), // 50% opacity
+    textThemeColor: Colors.white.withAlpha(204), // 80% opacity
+    textHintThemeColor: Colors.white.withAlpha(128), // 50% opacity
+    text2ThemeColor: Colors.white.withAlpha(204), // 80% opacity
     productSubtitleThemeColor: Colors.white,
-    tileThemeColor: Colors.white.withValues(alpha: 0.1),
+    tileThemeColor: Colors.white.withAlpha(26), // 10% opacity
     scaffoldBackgroundThemeColor:
         constants.blueGrey950, // A common dark background
     focusColor: const Color.fromARGB(255, 1, 89, 161),
     tintColor: const Color.fromARGB(255, 71, 59, 71),
-    dividerColor: Colors.white.withValues(alpha: 0.5),
+    dividerColor: Colors.white.withAlpha(128), // 50% opacity
     progressIndicatorColor: Colors.black54,
   );
 
@@ -140,7 +138,7 @@ class AppColors extends ThemeExtension<AppColors> {
         t,
       ),
       focusColor: Color.lerp(focusColor, other.focusColor, t),
-      tintColor: Color.lerp(tintColor, other.focusColor, t),
+      tintColor: Color.lerp(tintColor, other.tintColor, t),
       dividerColor: Color.lerp(dividerColor, other.dividerColor, t),
       progressIndicatorColor: Color.lerp(
         progressIndicatorColor,
@@ -152,14 +150,20 @@ class AppColors extends ThemeExtension<AppColors> {
 }
 
 class ThemeManager with ChangeNotifier {
-  ThemeMode? _themeMode = constants.appThemeMode;
+  ThemeMode _themeMode = constants.appThemeMode;
 
-  ThemeMode? get themeMode => _themeMode;
+  ThemeMode get themeMode => _themeMode;
+
+  void setThemeMode(ThemeMode themeMode) {
+    if (_themeMode == themeMode) return;
+    _themeMode = themeMode;
+    notifyListeners();
+    Storage().setThemeMode(_themeMode);
+  }
 
   void toggleTheme() {
-    _themeMode = isDark() ? ThemeMode.light : ThemeMode.dark;
-    notifyListeners();
-    Storage().setThemeMode(_themeMode!);
+    final newMode = isDark() ? ThemeMode.light : ThemeMode.dark;
+    setThemeMode(newMode);
   }
 
   bool isDark() {
@@ -178,9 +182,6 @@ final ThemeData lightThemeData = ThemeData.light(useMaterial3: false).copyWith(
   focusColor: AppColors.light.focusColor,
   extensions: <ThemeExtension<dynamic>>[AppColors.light],
   splashFactory: InkSparkle.splashFactory,
-  iconButtonTheme: IconButtonThemeData(
-    style: ButtonStyle(iconColor: WidgetStateProperty.all(Colors.white)),
-  ),
   progressIndicatorTheme: ProgressIndicatorThemeData(
     color: AppColors.light.progressIndicatorColor,
   ),

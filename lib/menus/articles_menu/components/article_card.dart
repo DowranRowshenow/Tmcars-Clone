@@ -1,7 +1,9 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import '../../../utils/constants.dart' as constants;
+import '../../../utils/locale.dart';
 import '../../../utils/themes.dart';
 import '../../../models/article_model.dart';
 
@@ -33,7 +35,7 @@ class _ArticleCardState extends State<ArticleCard> {
         onTap: () {},
         titleAlignment: ListTileTitleAlignment.center,
         title: Text(
-          constants.locale == Locale('ru')
+          context.watch<LocaleManager>().locale == Locale('ru')
               ? widget.article.titleRu
               : widget.article.title,
           maxLines: 3,
@@ -43,7 +45,7 @@ class _ArticleCardState extends State<ArticleCard> {
         subtitle: Container(
           padding: EdgeInsets.only(top: 5),
           child: Text(
-            constants.locale == Locale('ru')
+            context.watch<LocaleManager>().locale == Locale('ru')
                 ? widget.article.elapsedTimeRu
                 : widget.article.elapsedTime,
             maxLines: 1,

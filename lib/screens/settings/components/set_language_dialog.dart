@@ -1,14 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../../../l10n/app_localizations_en.dart';
-import '../../../l10n/app_localizations_ru.dart';
-import '../../../l10n/app_localizations_tk.dart';
-import '../../../l10n/app_localizations_tr.dart';
 import '../../../l10n/app_localizations.dart';
 import '../../../utils/constants.dart' as constants;
 import '../../../utils/locale.dart';
-import 'language_option.dart';
 
 Future<T?> showSetLanguageDialog<T>({
   required BuildContext context,
@@ -17,14 +12,22 @@ Future<T?> showSetLanguageDialog<T>({
   double blurSigmaY = constants.blurSigmaY,
   bool barrierDismissible = true,
 }) {
+  // A map to hold the native names for each supported language.
+  // This is much cleaner than creating instances of AppLocalizations.
+  const languageNames = <String, String>{
+    'en': 'English',
+    'ru': 'Русский',
+    'tk': 'Türkmen',
+    'tr': 'Türkçe',
+  };
   return showDialog<T>(
     context: context,
     barrierDismissible: barrierDismissible,
     barrierColor:
         barrierColor ?? Colors.black.withValues(alpha: constants.blurAlpha),
     builder: (BuildContext dialogContext) {
-      final localeManager = Provider.of<LocaleManager>(context, listen: false);
-      String selectedLocale = localeManager.locale!.languageCode;
+      final localeManager = context.watch<LocaleManager>();
+      String selectedLanguageCode = localeManager.locale.languageCode;
 
       return StatefulBuilder(
         builder: (context, setState) {
@@ -41,44 +44,22 @@ Future<T?> showSetLanguageDialog<T>({
               width: double.maxFinite,
               child: ListView(
                 shrinkWrap: true,
-                children: [
-                  LanguageOption(
-                    appLocalizations: AppLocalizationsEn(),
-                    isSelected: selectedLocale == 'en',
-                    onTap: () {
+                // Generate the list dynamically from supported locales.
+                children: AppLocalizations.supportedLocales.map((locale) {
+                  final langCode = locale.languageCode;
+                  return RadioListTile<bool>(
+                    title: Text(languageNames[langCode] ?? langCode),
+                    value: true,
+                    groupValue: selectedLanguageCode == langCode,
+                    onChanged: (bool? value) {
                       setState(() {
-                        selectedLocale = 'en';
+                        selectedLanguageCode = langCode;
                       });
                     },
-                  ),
-                  LanguageOption(
-                    appLocalizations: AppLocalizationsRu(),
-                    isSelected: selectedLocale == 'ru',
-                    onTap: () {
-                      setState(() {
-                        selectedLocale = 'ru';
-                      });
-                    },
-                  ),
-                  LanguageOption(
-                    appLocalizations: AppLocalizationsTk(),
-                    isSelected: selectedLocale == 'tk',
-                    onTap: () {
-                      setState(() {
-                        selectedLocale = 'tk';
-                      });
-                    },
-                  ),
-                  LanguageOption(
-                    appLocalizations: AppLocalizationsTr(),
-                    isSelected: selectedLocale == 'tr',
-                    onTap: () {
-                      setState(() {
-                        selectedLocale = 'tr';
-                      });
-                    },
-                  ),
-                ],
+                    activeColor: constants.colorPrimary,
+                    controlAffinity: ListTileControlAffinity.leading,
+                  );
+                }).toList(),
               ),
             ),
             actions: [
@@ -91,9 +72,10 @@ Future<T?> showSetLanguageDialog<T>({
                   style: TextStyle(color: constants.colorPrimary),
                 ),
                 onPressed: () {
-                  constants.locale = Locale(selectedLocale);
-                  localeManager.setLocale(constants.locale);
-                  Navigator.of(context).pop();
+                  // Use context.read inside a callback.
+                  // Set the new locale and pop the dialog.
+                  context.read<LocaleManager>().setLocale(selectedLanguageCode);
+                  Navigator.of(dialogContext).pop();
                 },
               ),
               TextButton(
@@ -104,7 +86,7 @@ Future<T?> showSetLanguageDialog<T>({
                   AppLocalizations.of(context)!.cancel,
                   style: TextStyle(color: constants.colorPrimary),
                 ),
-                onPressed: () => Navigator.of(context).pop(),
+                onPressed: () => Navigator.of(dialogContext).pop(),
               ),
             ],
           );

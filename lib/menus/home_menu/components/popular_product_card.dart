@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:provider/provider.dart';
 
 import '../../../components/ripple_container.dart';
 import '../../../utils/constants.dart' as constants;
+import '../../../utils/locale.dart';
 import '../../../utils/themes.dart';
 import '../../../models/popular_product_model.dart';
 
@@ -69,7 +71,7 @@ class PopularProductCard extends StatelessWidget {
                 ),
                 SizedBox(height: 3),
                 Text(
-                  constants.locale == Locale('ru')
+                  context.watch<LocaleManager>().locale == Locale('ru')
                       ? product.descriptionRu
                       : product.description,
                   overflow: TextOverflow.ellipsis,
@@ -82,7 +84,7 @@ class PopularProductCard extends StatelessWidget {
                 ),
                 SizedBox(height: 3),
                 Text(
-                  constants.locale == Locale('ru')
+                  context.watch<LocaleManager>().locale == Locale('ru')
                       ? product.timeLocationRu
                       : product.timeLocation,
                   maxLines: 1,

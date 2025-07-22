@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:provider/provider.dart';
 import 'package:share_plus/share_plus.dart';
+import 'package:tmcarsclone/utils/location.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+import '../../utils/traffic.dart';
 import 'components/set_traffic_dialog.dart';
 import 'components/set_language_dialog.dart';
 import 'components/set_location_dialog.dart';
@@ -134,7 +137,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
               style: TextStyle(overflow: TextOverflow.ellipsis),
             ),
             trailing: Text(
-              constants.trafficMode == 0
+              context.watch<TrafficManager>().getTrafficMode == 0
                   ? AppLocalizations.of(context)!.standard
                   : AppLocalizations.of(context)!.econom,
               overflow: TextOverflow.ellipsis,
@@ -165,7 +168,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
               style: TextStyle(overflow: TextOverflow.ellipsis),
             ),
             trailing: Text(
-              getLocation(constants.location),
+              getLocation(context.watch<LocationManager>().location),
               overflow: TextOverflow.ellipsis,
               softWrap: false,
               style: TextStyle(overflow: TextOverflow.ellipsis),

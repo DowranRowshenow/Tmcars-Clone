@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
-import '../../../utils/storage.dart';
 import '../../../l10n/app_localizations.dart';
 import '../../../utils/constants.dart' as constants;
-import 'traffic_option.dart';
+import '../../../utils/traffic.dart';
 
 Future<T?> showSetTrafficDialog<T>({
   required BuildContext context,
@@ -18,7 +18,7 @@ Future<T?> showSetTrafficDialog<T>({
     barrierColor:
         barrierColor ?? Colors.black.withValues(alpha: constants.blurAlpha),
     builder: (BuildContext dialogContext) {
-      int selectedTrafficMode = constants.trafficMode;
+      int selectedTrafficMode = context.watch<TrafficManager>().getTrafficMode;
 
       return StatefulBuilder(
         builder: (context, setState) {
@@ -36,25 +36,29 @@ Future<T?> showSetTrafficDialog<T>({
               child: ListView(
                 shrinkWrap: true,
                 children: [
-                  TrafficOption(
-                    text: AppLocalizations.of(context)!.standard,
+                  RadioListTile<int>(
+                    title: Text(AppLocalizations.of(context)!.standard),
                     value: 0,
-                    selectedValue: constants.trafficMode,
-                    onTap: () {
+                    groupValue: selectedTrafficMode,
+                    onChanged: (int? value) {
                       setState(() {
-                        constants.trafficMode = 0;
+                        selectedTrafficMode = 0;
                       });
                     },
+                    activeColor: constants.colorPrimary,
+                    controlAffinity: ListTileControlAffinity.leading,
                   ),
-                  TrafficOption(
-                    text: AppLocalizations.of(context)!.econom,
+                  RadioListTile<int>(
+                    title: Text(AppLocalizations.of(context)!.econom),
                     value: 1,
-                    selectedValue: constants.trafficMode,
-                    onTap: () {
+                    groupValue: selectedTrafficMode,
+                    onChanged: (int? value) {
                       setState(() {
-                        constants.trafficMode = 1;
+                        selectedTrafficMode = 1;
                       });
                     },
+                    activeColor: constants.colorPrimary,
+                    controlAffinity: ListTileControlAffinity.leading,
                   ),
                 ],
               ),
@@ -69,7 +73,9 @@ Future<T?> showSetTrafficDialog<T>({
                   style: TextStyle(color: constants.colorPrimary),
                 ),
                 onPressed: () {
-                  Storage().setTrafficMode(selectedTrafficMode);
+                  context.read<TrafficManager>().setTrafficMode(
+                    selectedTrafficMode,
+                  );
                   Navigator.of(context).pop();
                 },
               ),

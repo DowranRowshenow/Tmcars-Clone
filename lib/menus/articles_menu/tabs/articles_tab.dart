@@ -1,13 +1,16 @@
 import 'package:flutter/material.dart';
 
+import '../../../components/no_connection.dart';
 import '../../../components/no_result.dart';
+import '../../../models/article_category_model.dart';
 import '../../../models/article_model.dart';
 import '../../../utils/server.dart';
 import '../components/article_card.dart';
 
 class ArticlesTab extends StatefulWidget {
-  const ArticlesTab({super.key, this.mask});
+  const ArticlesTab({super.key, this.category, this.mask});
   final String? mask;
+  final ArticleCategory? category;
   @override
   State<ArticlesTab> createState() => _ArticlesTabState();
 }
@@ -18,6 +21,7 @@ class _ArticlesTabState extends State<ArticlesTab> {
   int _offset = 0;
   bool _isLoading = false;
   bool _hasMore = true;
+  bool _hasError = false;
 
   @override
   void initState() {
@@ -34,7 +38,12 @@ class _ArticlesTabState extends State<ArticlesTab> {
 
   Future<void> _loadArticles({bool refresh = false}) async {
     if (_isLoading) return;
-    setState(() => _isLoading = true);
+    setState(() {
+      _isLoading = true;
+      if (refresh) {
+        _hasError = false; // Reset error state on refresh
+      }
+    });
 
     if (refresh) {
       _offset = 0;
@@ -43,17 +52,26 @@ class _ArticlesTabState extends State<ArticlesTab> {
     }
 
     try {
+      // Use the direct mask if provided, otherwise use the category's code.
+      final String effectiveMask = widget.mask ?? widget.category?.code ?? "";
+
       final newArticles = await Server.getArticles(
         offset: _offset,
-        mask: widget.mask ?? "",
+        mask: effectiveMask,
       );
-      setState(() {
-        _articles.addAll(newArticles);
-        _offset += newArticles.length;
-        _hasMore = newArticles.isNotEmpty;
-      });
+      if (mounted) {
+        setState(() {
+          _articles.addAll(newArticles);
+          _offset += newArticles.length;
+          _hasMore = newArticles.isNotEmpty;
+          _hasError = false; // Data loaded successfully
+        });
+      }
     } catch (e) {
-      // Handle error
+      // If an error occurs, set the error flag.
+      if (mounted) {
+        setState(() => _hasError = true);
+      }
     } finally {
       if (mounted) {
         setState(() => _isLoading = false);
@@ -73,8 +91,9 @@ class _ArticlesTabState extends State<ArticlesTab> {
   @override
   void didUpdateWidget(covariant ArticlesTab oldWidget) {
     super.didUpdateWidget(oldWidget);
-    if (oldWidget.mask != widget.mask) {
-      // Mask changed, reload articles
+    // If the direct mask or the category has changed, reload the articles.
+    if (oldWidget.mask != widget.mask ||
+        oldWidget.category?.id != widget.category?.id) {
       _loadArticles(refresh: true);
     }
   }
@@ -85,12 +104,22 @@ class _ArticlesTabState extends State<ArticlesTab> {
 
   @override
   Widget build(BuildContext context) {
+    // If there's an error and we have no articles, show the NoConnection widget.
+    if (_hasError && _articles.isEmpty) {
+      return NoConnection(onTap: _handleRefresh);
+    }
+
+    // Show a loading indicator on initial load.
     if (_articles.isEmpty && _isLoading) {
       return const Center(child: CircularProgressIndicator());
     }
-    if (_articles.isEmpty) {
+
+    // If loading is finished and there are no articles, show NoResult.
+    if (_articles.isEmpty && !_isLoading) {
       return NoResult();
     }
+
+    // Otherwise, display the list of articles.
     return RefreshIndicator(
       onRefresh: _handleRefresh,
       child: ListView.builder(

@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import '../models/popular_product_model.dart';
-import '../utils/constants.dart' as constants;
+import '../utils/locale.dart';
 import 'ripple_container.dart';
 
 class ProductCard extends StatefulWidget {
@@ -40,7 +41,7 @@ class _ProductCardState extends State<ProductCard> {
                 ),
                 SizedBox(height: 5),
                 Text(
-                  constants.locale == Locale('ru')
+                  context.watch<LocaleManager>().locale == Locale('ru')
                       ? widget.product.timeLocationRu
                       : widget.product.timeLocation,
                   softWrap: true,
