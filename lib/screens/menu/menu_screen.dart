@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 
 import '../../components/custom_drawer.dart';
 import '../../components/exit_dialog.dart';
-import '../../helper/constants.dart' as constants;
-import '../../helper/themes.dart';
+import '../../utils/constants.dart' as constants;
+import '../../utils/themes.dart';
 
 class MenuScreen extends StatefulWidget {
   const MenuScreen({super.key});

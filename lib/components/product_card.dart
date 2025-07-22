@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../models/popular_product_model.dart';
-import '../helper/constants.dart' as constants;
+import '../utils/constants.dart' as constants;
 import 'ripple_container.dart';
 
 class ProductCard extends StatefulWidget {

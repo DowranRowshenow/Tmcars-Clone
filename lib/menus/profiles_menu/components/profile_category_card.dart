@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:transparent_image/transparent_image.dart';
 
-import '../../../helper/themes.dart';
-import '../../../helper/constants.dart' as constants;
+import '../../../utils/themes.dart';
+import '../../../utils/constants.dart' as constants;
 import '../../../l10n/app_localizations.dart';
 
 class ProfileCategoryCard extends StatelessWidget {

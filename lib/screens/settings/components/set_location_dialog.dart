@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
-import '../../../helper/storage.dart';
+import '../../../utils/storage.dart';
 import '../../../l10n/app_localizations.dart';
-import '../../../helper/constants.dart' as constants;
+import '../../../utils/constants.dart' as constants;
 
 Future<T?> showSetLocationDialog<T>({
   required BuildContext context,

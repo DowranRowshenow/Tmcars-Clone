@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 
 import '../../../components/ripple_container.dart';
-import '../../../helper/constants.dart' as constants;
-import '../../../helper/themes.dart';
+import '../../../utils/constants.dart' as constants;
+import '../../../utils/themes.dart';
 import '../../../models/popular_product_model.dart';
 
 class PopularProductCard extends StatelessWidget {

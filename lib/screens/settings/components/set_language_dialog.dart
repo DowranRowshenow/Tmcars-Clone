@@ -6,8 +6,8 @@ import '../../../l10n/app_localizations_ru.dart';
 import '../../../l10n/app_localizations_tk.dart';
 import '../../../l10n/app_localizations_tr.dart';
 import '../../../l10n/app_localizations.dart';
-import '../../../helper/constants.dart' as constants;
-import '../../../helper/locale.dart';
+import '../../../utils/constants.dart' as constants;
+import '../../../utils/locale.dart';
 import 'language_option.dart';
 
 Future<T?> showSetLanguageDialog<T>({

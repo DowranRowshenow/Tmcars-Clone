@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../../components/no_result.dart';
 import '../../../models/article_model.dart';
-import '../../../helper/server.dart';
+import '../../../utils/server.dart';
 import '../components/article_card.dart';
 
 class ArticlesTab extends StatefulWidget {

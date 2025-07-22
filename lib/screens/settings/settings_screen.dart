@@ -6,8 +6,8 @@ import 'package:url_launcher/url_launcher.dart';
 import 'components/set_traffic_dialog.dart';
 import 'components/set_language_dialog.dart';
 import 'components/set_location_dialog.dart';
-import '../../helper/constants.dart' as constants;
-import '../../helper/server.dart';
+import '../../utils/constants.dart' as constants;
+import '../../utils/server.dart';
 import '../../l10n/app_localizations.dart';
 
 class SettingsScreen extends StatefulWidget {

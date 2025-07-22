@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
 import '../../../components/ripple_container.dart';
-import '../../../helper/constants.dart' as constants;
-import '../../../helper/themes.dart';
+import '../../../utils/constants.dart' as constants;
+import '../../../utils/themes.dart';
 import '../../../l10n/app_localizations.dart';
 
 class AllProfilesTab extends StatelessWidget {

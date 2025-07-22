@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../components/no_connection.dart';
-import '../../helper/constants.dart' as constants;
+import '../../utils/constants.dart' as constants;
 import '../../models/article_category_model.dart';
 import 'tabs/articles_tab.dart';
 

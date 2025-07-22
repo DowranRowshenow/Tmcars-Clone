@@ -2,7 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 
-import '../helper/constants.dart' as constants;
+import '../utils/constants.dart' as constants;
 import '../l10n/app_localizations.dart';
 
 Future<T?> showExitDialog<T>({

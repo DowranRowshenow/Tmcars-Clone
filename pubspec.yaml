@@ -36,7 +36,7 @@ dependencies:
   intl:
     path: pkgs/intl
 
-  #flutter_bloc: ^9.1.1
+  flutter_bloc: ^9.1.1
   url_launcher: ^6.3.2
   share_plus: ^11.0.0
   cupertino_icons: ^1.0.8

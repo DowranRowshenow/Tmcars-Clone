@@ -1,4 +1,4 @@
-import '../helper/server.dart';
+import '../utils/server.dart';
 
 class ProductLocation {
   final String name;

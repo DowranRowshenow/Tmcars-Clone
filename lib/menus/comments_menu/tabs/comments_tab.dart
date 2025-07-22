@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../../components/should_register.dart';
-import '../../../helper/constants.dart' as constants;
+import '../../../utils/constants.dart' as constants;
 
 class CommentsTab extends StatefulWidget {
   const CommentsTab({super.key});

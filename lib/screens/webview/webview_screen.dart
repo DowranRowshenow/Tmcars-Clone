@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
 import '../../components/no_connection.dart';
-import '../../helper/constants.dart' as constants;
+import '../../utils/constants.dart' as constants;
 
 class WebViewScreen extends StatefulWidget {
   final String title;

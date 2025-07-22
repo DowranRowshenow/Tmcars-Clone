@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../../helper/constants.dart' as constants;
+import '../../../utils/constants.dart' as constants;
 
 class TrafficOption extends StatelessWidget {
   final String text;

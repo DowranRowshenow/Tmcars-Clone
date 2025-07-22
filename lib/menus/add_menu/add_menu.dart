@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../components/should_register_dialog.dart';
-import '../../helper/constants.dart' as constants;
+import '../../utils/constants.dart' as constants;
 import '../../l10n/app_localizations.dart';
 import 'tabs/add_car_parts_tab.dart';
 import 'tabs/add_others_tab.dart';

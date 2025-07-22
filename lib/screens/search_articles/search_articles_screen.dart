@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../menus/articles_menu/tabs/articles_tab.dart';
-import '../../helper/constants.dart' as constants;
+import '../../utils/constants.dart' as constants;
 import '../../l10n/app_localizations.dart';
 
 class SearchArticlesScreen extends StatefulWidget {

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../../l10n/app_localizations.dart';
-import '../../../helper/constants.dart' as constants;
+import '../../../utils/constants.dart' as constants;
 
 class LanguageOption extends StatelessWidget {
   final AppLocalizations appLocalizations;

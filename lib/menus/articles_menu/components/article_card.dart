@@ -1,8 +1,8 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 
-import '../../../helper/constants.dart' as constants;
-import '../../../helper/themes.dart';
+import '../../../utils/constants.dart' as constants;
+import '../../../utils/themes.dart';
 import '../../../models/article_model.dart';
 
 class ArticleCard extends StatefulWidget {

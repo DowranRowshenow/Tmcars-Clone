@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../l10n/app_localizations.dart';
-import '../../helper/constants.dart' as constants;
+import '../../utils/constants.dart' as constants;
 import 'tabs/all_car_parts_tab.dart';
 import 'tabs/selection_car_parts_tab.dart';
 import 'tabs/category_car_parth_tab.dart';
