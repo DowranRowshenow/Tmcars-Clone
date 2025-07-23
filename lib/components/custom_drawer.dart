@@ -2,21 +2,22 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../l10n/app_localizations.dart';
-import '../utils/constants.dart' as constants;
+import '../utils/constants.dart';
+import '../utils/navigation.dart';
 import '../utils/themes.dart';
 
 class CustomDrawer extends StatelessWidget {
   const CustomDrawer({super.key, required this.onTap});
-  final void Function(constants.MenuState) onTap;
+  final void Function(MenuState) onTap;
 
   @override
   Widget build(BuildContext context) {
-    final appColors = Theme.of(context).extension<AppColors>()!;
+    final AppColors appColors = Theme.of(context).extension<AppColors>()!;
     final ThemeManager themeManager = context.watch<ThemeManager>();
+
     return Drawer(
       elevation: 0,
       shadowColor: Colors.transparent,
-      width: 260,
       backgroundColor: appColors.themedSurface, // Use appColors
       child: ListView(
         children: [
@@ -26,8 +27,8 @@ class CustomDrawer extends StatelessWidget {
                 SizedBox(height: 20),
                 Image(
                   image: themeManager.isDark()
-                      ? const AssetImage(constants.drawerLogoDark)
-                      : const AssetImage(constants.drawerLogoLight),
+                      ? const AssetImage(Constants.drawerLogoDark)
+                      : const AssetImage(Constants.drawerLogoLight),
                   height: 60,
                 ),
                 GestureDetector(
@@ -39,9 +40,9 @@ class CustomDrawer extends StatelessWidget {
                       decoration: TextDecoration.underline,
                     ),
                   ),
-                  onTap: () => constants.navigate.changeScreen(
+                  onTap: () => context.read<NavigationManager>().setScreen(
                     context,
-                    constants.ScreenState.register,
+                    ScreenState.register,
                   ),
                 ),
                 const Text(
@@ -65,52 +66,52 @@ class CustomDrawer extends StatelessWidget {
             ),
           ),
           ListTile(
-            onTap: () => onTap(constants.MenuState.home),
+            onTap: () => onTap(MenuState.home),
             title: Text(AppLocalizations.of(context)!.home),
             leading: const Icon(Icons.home_outlined),
-            selectedTileColor: constants.colorPrimary.withAlpha(50),
+            selectedTileColor: Constants.colorPrimary.withAlpha(50),
           ),
           ListTile(
-            onTap: () => onTap(constants.MenuState.cars),
+            onTap: () => onTap(MenuState.cars),
             title: Text(AppLocalizations.of(context)!.cars),
             leading: const Icon(Icons.car_repair_outlined),
-            selectedTileColor: constants.colorPrimary.withAlpha(50),
+            selectedTileColor: Constants.colorPrimary.withAlpha(50),
           ),
           ListTile(
-            onTap: () => onTap(constants.MenuState.parts),
+            onTap: () => onTap(MenuState.parts),
             title: Text(AppLocalizations.of(context)!.parts),
             leading: const Icon(Icons.car_rental_outlined),
-            selectedTileColor: constants.colorPrimary.withAlpha(50),
+            selectedTileColor: Constants.colorPrimary.withAlpha(50),
           ),
           ListTile(
-            onTap: () => onTap(constants.MenuState.others),
+            onTap: () => onTap(MenuState.others),
             title: Text(AppLocalizations.of(context)!.others),
             leading: const Icon(Icons.shopping_basket_outlined),
-            selectedTileColor: constants.colorPrimary.withAlpha(50),
+            selectedTileColor: Constants.colorPrimary.withAlpha(50),
           ),
           ListTile(
-            onTap: () => onTap(constants.MenuState.profiles),
+            onTap: () => onTap(MenuState.profiles),
             title: Text(AppLocalizations.of(context)!.profiles),
             leading: const Icon(Icons.star_border_outlined),
-            selectedTileColor: constants.colorPrimary.withAlpha(50),
+            selectedTileColor: Constants.colorPrimary.withAlpha(50),
           ),
           ListTile(
-            onTap: () => onTap(constants.MenuState.articles),
+            onTap: () => onTap(MenuState.articles),
             title: Text(AppLocalizations.of(context)!.news),
             leading: const Icon(Icons.newspaper_outlined),
-            selectedTileColor: constants.colorPrimary.withAlpha(50),
+            selectedTileColor: Constants.colorPrimary.withAlpha(50),
           ),
           ListTile(
-            onTap: () => onTap(constants.MenuState.add),
+            onTap: () => onTap(MenuState.add),
             title: Text(AppLocalizations.of(context)!.add),
             leading: const Icon(Icons.add_box_outlined),
-            selectedTileColor: constants.colorPrimary.withAlpha(50),
+            selectedTileColor: Constants.colorPrimary.withAlpha(50),
           ),
           ListTile(
-            onTap: () => onTap(constants.MenuState.comments),
+            onTap: () => onTap(MenuState.comments),
             title: Text(AppLocalizations.of(context)!.comments),
             leading: const Icon(Icons.message_outlined),
-            selectedTileColor: constants.colorPrimary.withAlpha(50),
+            selectedTileColor: Constants.colorPrimary.withAlpha(50),
           ),
           Container(
             margin: const EdgeInsets.only(top: 5, bottom: 5),
@@ -137,9 +138,9 @@ class CustomDrawer extends StatelessWidget {
             ),
           ),
           ListTile(
-            onTap: () => constants.navigate.changeScreen(
+            onTap: () => context.read<NavigationManager>().setScreen(
               context,
-              constants.ScreenState.settings,
+              ScreenState.settings,
             ),
             title: Text(
               AppLocalizations.of(context)!.settings,
@@ -147,9 +148,9 @@ class CustomDrawer extends StatelessWidget {
             leading: Icon(Icons.settings_outlined),
           ),
           ListTile(
-            onTap: () => constants.navigate.changeScreen(
+            onTap: () => context.read<NavigationManager>().setScreen(
               context,
-              constants.ScreenState.contact,
+              ScreenState.contact,
             ),
             title: Text(
               AppLocalizations.of(context)!.contactUs,

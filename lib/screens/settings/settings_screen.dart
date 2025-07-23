@@ -5,11 +5,13 @@ import 'package:share_plus/share_plus.dart';
 import 'package:tmcarsclone/utils/location.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+import '../../utils/navigation.dart';
+import '../../utils/themes.dart';
 import '../../utils/traffic.dart';
 import 'components/set_traffic_dialog.dart';
 import 'components/set_language_dialog.dart';
 import 'components/set_location_dialog.dart';
-import '../../utils/constants.dart' as constants;
+import '../../utils/constants.dart';
 import '../../utils/server.dart';
 import '../../l10n/app_localizations.dart';
 
@@ -52,6 +54,10 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final AppColors appColors = Theme.of(context).extension<AppColors>()!;
+    final NavigationManager navigationManager = context
+        .read<NavigationManager>();
+
     return Scaffold(
       resizeToAvoidBottomInset: true,
       appBar: AppBar(
@@ -64,7 +70,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
           onPressed: () => Navigator.pop(context),
-          splashRadius: constants.splashRadius,
+          splashRadius: Constants.splashRadius,
           splashColor: Colors.transparent,
         ),
       ),
@@ -77,7 +83,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
               softWrap: false,
               style: TextStyle(overflow: TextOverflow.ellipsis),
             ),
-            tileColor: constants.appColors.tileThemeColor,
+            tileColor: appColors.tileThemeColor,
           ),
           ListTile(
             title: Text(
@@ -97,10 +103,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
           Container(
             decoration: BoxDecoration(
               border: Border(
-                bottom: BorderSide(
-                  width: 0.5,
-                  color: constants.appColors.dividerColor!,
-                ),
+                bottom: BorderSide(width: 0.5, color: appColors.dividerColor!),
               ),
             ),
           ),
@@ -112,7 +115,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
               style: TextStyle(overflow: TextOverflow.ellipsis),
             ),
             trailing: const Text(
-              constants.packageVersion,
+              Constants.packageVersion,
               overflow: TextOverflow.ellipsis,
               softWrap: false,
               style: TextStyle(overflow: TextOverflow.ellipsis),
@@ -122,10 +125,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
           Container(
             decoration: BoxDecoration(
               border: Border(
-                bottom: BorderSide(
-                  width: 0.5,
-                  color: constants.appColors.dividerColor!,
-                ),
+                bottom: BorderSide(width: 0.5, color: appColors.dividerColor!),
               ),
             ),
           ),
@@ -153,10 +153,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
           Container(
             decoration: BoxDecoration(
               border: Border(
-                bottom: BorderSide(
-                  width: 0.5,
-                  color: constants.appColors.dividerColor!,
-                ),
+                bottom: BorderSide(width: 0.5, color: appColors.dividerColor!),
               ),
             ),
           ),
@@ -186,7 +183,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
               softWrap: false,
               style: TextStyle(overflow: TextOverflow.ellipsis),
             ),
-            tileColor: constants.appColors.tileThemeColor,
+            tileColor: appColors.tileThemeColor,
           ),
           ListTile(
             title: Text(
@@ -196,7 +193,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
               style: TextStyle(overflow: TextOverflow.ellipsis),
             ),
             trailing: SvgPicture.asset(
-              constants.arrowRight,
+              Constants.arrowRight,
               colorFilter: ColorFilter.mode(Colors.grey, BlendMode.srcIn),
               width: 6,
             ),
@@ -212,10 +209,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
           Container(
             decoration: BoxDecoration(
               border: Border(
-                bottom: BorderSide(
-                  width: 0.5,
-                  color: constants.appColors.dividerColor!,
-                ),
+                bottom: BorderSide(width: 0.5, color: appColors.dividerColor!),
               ),
             ),
           ),
@@ -233,9 +227,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
               style: TextStyle(overflow: TextOverflow.ellipsis),
             ),
             onTap: () {
-              constants.navigate.changeScreen(
+              navigationManager.setScreen(
                 context,
-                constants.ScreenState.webview,
+                ScreenState.webview,
                 url: Server.ABOUT_US_URL,
                 title: AppLocalizations.of(context)!.helper,
               );
@@ -244,10 +238,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
           Container(
             decoration: BoxDecoration(
               border: Border(
-                bottom: BorderSide(
-                  width: 0.5,
-                  color: constants.appColors.dividerColor!,
-                ),
+                bottom: BorderSide(width: 0.5, color: appColors.dividerColor!),
               ),
             ),
           ),
@@ -265,9 +256,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
               style: TextStyle(overflow: TextOverflow.ellipsis),
             ),
             onTap: () {
-              constants.navigate.changeScreen(
+              navigationManager.setScreen(
                 context,
-                constants.ScreenState.webview,
+                ScreenState.webview,
                 url: Server.PRIVACY_POLICY_URL,
                 title: AppLocalizations.of(context)!.policy,
               );
@@ -276,10 +267,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
           Container(
             decoration: BoxDecoration(
               border: Border(
-                bottom: BorderSide(
-                  width: 0.5,
-                  color: constants.appColors.dividerColor!,
-                ),
+                bottom: BorderSide(width: 0.5, color: appColors.dividerColor!),
               ),
             ),
           ),
@@ -297,9 +285,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
               style: TextStyle(overflow: TextOverflow.ellipsis),
             ),
             onTap: () {
-              constants.navigate.changeScreen(
+              navigationManager.setScreen(
                 context,
-                constants.ScreenState.webview,
+                ScreenState.webview,
                 url: Server.PRIVACY_POLICY_URL,
                 title: AppLocalizations.of(context)!.privacyPolicy,
               );
@@ -308,10 +296,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
           Container(
             decoration: BoxDecoration(
               border: Border(
-                bottom: BorderSide(
-                  width: 0.5,
-                  color: constants.appColors.dividerColor!,
-                ),
+                bottom: BorderSide(width: 0.5, color: appColors.dividerColor!),
               ),
             ),
           ),
@@ -329,9 +314,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
               style: TextStyle(overflow: TextOverflow.ellipsis),
             ),
             onTap: () {
-              constants.navigate.changeScreen(
+              navigationManager.setScreen(
                 context,
-                constants.ScreenState.webview,
+                ScreenState.webview,
                 url: Server.COMMENT_POST_POLICY_URL,
                 title: AppLocalizations.of(context)!.commentPolicy,
               );
@@ -340,10 +325,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
           Container(
             decoration: BoxDecoration(
               border: Border(
-                bottom: BorderSide(
-                  width: 0.5,
-                  color: constants.appColors.dividerColor!,
-                ),
+                bottom: BorderSide(width: 0.5, color: appColors.dividerColor!),
               ),
             ),
           ),
@@ -356,7 +338,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
               style: TextStyle(overflow: TextOverflow.ellipsis),
             ),
             trailing: SvgPicture.asset(
-              constants.arrowRight,
+              Constants.arrowRight,
               colorFilter: ColorFilter.mode(Colors.grey, BlendMode.srcIn),
               width: 6,
             ),
@@ -365,10 +347,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
           Container(
             decoration: BoxDecoration(
               border: Border(
-                bottom: BorderSide(
-                  width: 0.5,
-                  color: constants.appColors.dividerColor!,
-                ),
+                bottom: BorderSide(width: 0.5, color: appColors.dividerColor!),
               ),
             ),
           ),

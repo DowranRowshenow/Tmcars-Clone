@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 
-import 'constants.dart' as constants;
+import 'constants.dart';
 import 'storage.dart';
 
 @immutable
 class AppColors extends ThemeExtension<AppColors> {
   const AppColors({
+    required this.appBarBackgroundColor,
+    required this.appBarForegroundColor,
     required this.themedSurface,
     required this.menuBackgroundColor,
     required this.iconThemeColor,
@@ -21,6 +23,8 @@ class AppColors extends ThemeExtension<AppColors> {
     required this.progressIndicatorColor,
   });
 
+  final Color? appBarBackgroundColor;
+  final Color? appBarForegroundColor;
   final Color? themedSurface;
   final Color? menuBackgroundColor;
   final Color? iconThemeColor;
@@ -37,25 +41,29 @@ class AppColors extends ThemeExtension<AppColors> {
 
   // Light theme custom colors
   static final AppColors light = AppColors(
+    appBarBackgroundColor: Constants.colorPrimary,
+    appBarForegroundColor: Colors.white,
     themedSurface: Colors.white,
     menuBackgroundColor: Colors.grey.shade200,
     iconThemeColor: Colors.black.withAlpha(128), // 50% opacity
     textThemeColor: Colors.black.withAlpha(204), // 80% opacity
     textHintThemeColor: Colors.black.withAlpha(128), // 50% opacity
     text2ThemeColor:
-        constants.colorPrimary, // Assuming colorPrimary is for light theme
+        Constants.colorPrimary, // Assuming colorPrimary is for light theme
     productSubtitleThemeColor: Colors.black,
     tileThemeColor: Colors.black.withAlpha(26), // 10% opacity
-    scaffoldBackgroundThemeColor: Colors.white,
+    scaffoldBackgroundThemeColor: Constants.baseTintColor,
     focusColor: Colors.blue,
     tintColor: const Color.fromARGB(255, 233, 223, 231),
     dividerColor: Colors.black.withAlpha(128), // 50% opacity
-    progressIndicatorColor: constants.colorPrimary,
+    progressIndicatorColor: Constants.colorPrimary,
   );
 
   // Dark theme custom colors
   static final AppColors dark = AppColors(
-    themedSurface: constants.blueGrey950,
+    appBarBackgroundColor: Constants.blueGrey950,
+    appBarForegroundColor: Colors.white,
+    themedSurface: Constants.blueGrey950,
     menuBackgroundColor: Color.fromARGB(145, 102, 102, 102),
     iconThemeColor: Colors.white.withAlpha(128), // 50% opacity
     textThemeColor: Colors.white.withAlpha(204), // 80% opacity
@@ -64,15 +72,17 @@ class AppColors extends ThemeExtension<AppColors> {
     productSubtitleThemeColor: Colors.white,
     tileThemeColor: Colors.white.withAlpha(26), // 10% opacity
     scaffoldBackgroundThemeColor:
-        constants.blueGrey950, // A common dark background
+        Constants.blueGrey950, // A common dark background
     focusColor: const Color.fromARGB(255, 1, 89, 161),
     tintColor: const Color.fromARGB(255, 71, 59, 71),
     dividerColor: Colors.white.withAlpha(128), // 50% opacity
-    progressIndicatorColor: Colors.black54,
+    progressIndicatorColor: Colors.white54,
   );
 
   @override
   AppColors copyWith({
+    Color? appBarBackgroundColor,
+    Color? appBarForegroundColor,
     Color? themedSurface,
     Color? menuBackgroundColor,
     Color? iconThemeColor,
@@ -88,6 +98,10 @@ class AppColors extends ThemeExtension<AppColors> {
     Color? progressIndicatorColor,
   }) {
     return AppColors(
+      appBarBackgroundColor:
+          appBarBackgroundColor ?? this.appBarBackgroundColor,
+      appBarForegroundColor:
+          appBarForegroundColor ?? this.appBarForegroundColor,
       themedSurface: themedSurface ?? this.themedSurface,
       menuBackgroundColor: menuBackgroundColor ?? this.menuBackgroundColor,
       iconThemeColor: iconThemeColor ?? this.iconThemeColor,
@@ -112,6 +126,16 @@ class AppColors extends ThemeExtension<AppColors> {
     if (other is! AppColors) return this;
 
     return AppColors(
+      appBarBackgroundColor: Color.lerp(
+        appBarBackgroundColor,
+        other.appBarBackgroundColor,
+        t,
+      ),
+      appBarForegroundColor: Color.lerp(
+        appBarForegroundColor,
+        other.appBarForegroundColor,
+        t,
+      ),
       themedSurface: Color.lerp(themedSurface, other.themedSurface, t),
       menuBackgroundColor: Color.lerp(
         menuBackgroundColor,
@@ -150,7 +174,7 @@ class AppColors extends ThemeExtension<AppColors> {
 }
 
 class ThemeManager with ChangeNotifier {
-  ThemeMode _themeMode = constants.appThemeMode;
+  ThemeMode _themeMode = ThemeMode.system;
 
   ThemeMode get themeMode => _themeMode;
 
@@ -176,7 +200,7 @@ final ThemeData lightThemeData = ThemeData.light(useMaterial3: false).copyWith(
   primaryColor: AppColors.light.focusColor,
   primaryColorLight: AppColors.light.focusColor,
   tabBarTheme: TabBarThemeData(indicatorColor: AppColors.light.focusColor),
-  scaffoldBackgroundColor: constants.baseTintColor,
+  scaffoldBackgroundColor: AppColors.light.scaffoldBackgroundThemeColor,
   hintColor: AppColors.light.textHintThemeColor,
   iconTheme: IconThemeData(color: AppColors.light.iconThemeColor),
   focusColor: AppColors.light.focusColor,
@@ -186,13 +210,14 @@ final ThemeData lightThemeData = ThemeData.light(useMaterial3: false).copyWith(
     color: AppColors.light.progressIndicatorColor,
   ),
   appBarTheme: AppBarTheme(
+    backgroundColor: AppColors.light.appBarBackgroundColor,
+    foregroundColor: AppColors.light.appBarForegroundColor,
     surfaceTintColor: Colors.transparent,
-    backgroundColor: constants.colorPrimary,
-    elevation: constants.elevation,
+    elevation: Constants.elevation,
     /*
     systemOverlayStyle: SystemUiOverlayStyle(
       statusBarIconBrightness: Brightness.dark,
-      systemNavigationBarColor: constants.baseTintColor.withAlpha(153),
+      systemNavigationBarColor: Constants.baseTintColor.withAlpha(153),
       systemNavigationBarIconBrightness: Brightness.dark,
       systemNavigationBarContrastEnforced: false,
     ),
@@ -242,13 +267,13 @@ final ThemeData lightThemeData = ThemeData.light(useMaterial3: false).copyWith(
   floatingActionButtonTheme: FloatingActionButtonThemeData(
     backgroundColor: AppColors.light.focusColor,
     shape: const CircleBorder(),
-    elevation: constants.elevation,
+    elevation: Constants.elevation,
     splashColor: Colors.transparent,
     hoverColor: Colors.transparent,
     focusColor: Colors.transparent,
-    focusElevation: constants.elevation,
-    hoverElevation: constants.elevation,
-    highlightElevation: constants.elevation,
+    focusElevation: Constants.elevation,
+    hoverElevation: Constants.elevation,
+    highlightElevation: Constants.elevation,
   ),
 );
 
@@ -262,16 +287,14 @@ final ThemeData darkThemeData = ThemeData.dark(useMaterial3: false).copyWith(
   iconTheme: IconThemeData(color: AppColors.dark.iconThemeColor),
   extensions: <ThemeExtension<dynamic>>[AppColors.dark],
   splashFactory: InkSparkle.splashFactory,
-  iconButtonTheme: IconButtonThemeData(
-    style: ButtonStyle(iconColor: WidgetStateProperty.all(Colors.white)),
-  ),
   progressIndicatorTheme: ProgressIndicatorThemeData(
     color: AppColors.dark.progressIndicatorColor,
   ),
   appBarTheme: AppBarTheme(
+    backgroundColor: AppColors.dark.appBarBackgroundColor,
+    foregroundColor: AppColors.dark.appBarForegroundColor,
     surfaceTintColor: Colors.transparent,
-    backgroundColor: AppColors.dark.themedSurface,
-    elevation: constants.elevation,
+    elevation: Constants.elevation,
     /*
     systemOverlayStyle: const SystemUiOverlayStyle(
       statusBarColor: Colors.transparent,
@@ -328,12 +351,12 @@ final ThemeData darkThemeData = ThemeData.dark(useMaterial3: false).copyWith(
     backgroundColor: AppColors.dark.focusColor,
     shape: const CircleBorder(),
     foregroundColor: AppColors.dark.textThemeColor,
-    elevation: constants.elevation,
+    elevation: Constants.elevation,
     splashColor: Colors.transparent,
     hoverColor: Colors.transparent,
     focusColor: Colors.transparent,
-    focusElevation: constants.elevation,
-    hoverElevation: constants.elevation,
-    highlightElevation: constants.elevation,
+    focusElevation: Constants.elevation,
+    hoverElevation: Constants.elevation,
+    highlightElevation: Constants.elevation,
   ),
 );

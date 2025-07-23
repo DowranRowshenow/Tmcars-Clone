@@ -10,7 +10,7 @@ class LocaleManager extends ChangeNotifier {
   Locale get locale => _locale;
 
   Future<void> setLocale(String localeCode) async {
-    if (_locale == locale) return; // Avoid unnecessary notifications and saves
+    if (_locale.languageCode == localeCode) return;
 
     _locale = Locale(localeCode);
     notifyListeners();

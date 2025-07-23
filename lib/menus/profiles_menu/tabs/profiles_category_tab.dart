@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-import '../../../utils/constants.dart' as constants;
 import '../../../utils/themes.dart';
 import '../components/profile_category_card.dart';
 
@@ -9,10 +8,10 @@ class ProfilesCategoryTab extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    constants.appColors = Theme.of(context).extension<AppColors>()!;
+    final AppColors appColors = Theme.of(context).extension<AppColors>()!;
 
     return Container(
-      color: constants.appColors.menuBackgroundColor,
+      color: appColors.menuBackgroundColor,
       padding: const EdgeInsets.all(5),
       // Using GridView.builder for dynamic content
       child: GridView.builder(

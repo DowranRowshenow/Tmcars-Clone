@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../utils/constants.dart' as constants;
+import '../../utils/constants.dart';
 import '../../l10n/app_localizations.dart';
 
 class NotificationsScreen extends StatefulWidget {
@@ -20,7 +20,7 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
           onPressed: () => Navigator.pop(context),
-          splashRadius: constants.splashRadius,
+          splashRadius: Constants.splashRadius,
           splashColor: Colors.transparent,
         ),
       ),

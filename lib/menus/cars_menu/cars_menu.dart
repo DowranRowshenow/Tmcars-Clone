@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../l10n/app_localizations.dart';
-import '../../utils/constants.dart' as constants;
+import '../../utils/constants.dart';
 import 'tabs/all_cars_tab.dart';
 import 'tabs/categeory_cars_tab.dart';
 import 'tabs/selection_cars_tab.dart';
@@ -25,7 +25,7 @@ class _CarsMenuState extends State<CarsMenu> {
           toolbarHeight: 0,
           leading: Container(),
           bottom: TabBar(
-            textScaler: TextScaler.linear(constants.tabTextScale),
+            textScaler: TextScaler.linear(Constants.tabTextScale),
             indicatorColor: Colors.white,
             tabs: [
               Tab(text: AppLocalizations.of(context)!.cars.toUpperCase()),

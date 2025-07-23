@@ -2,7 +2,6 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../../../utils/constants.dart' as constants;
 import '../../../utils/locale.dart';
 import '../../../utils/themes.dart';
 import '../../../models/article_model.dart';
@@ -18,15 +17,12 @@ class ArticleCard extends StatefulWidget {
 class _ArticleCardState extends State<ArticleCard> {
   @override
   Widget build(BuildContext context) {
-    constants.appColors = Theme.of(context).extension<AppColors>()!;
+    final AppColors appColors = Theme.of(context).extension<AppColors>()!;
 
     return Container(
       decoration: BoxDecoration(
         border: Border(
-          bottom: BorderSide(
-            color: constants.appColors.dividerColor!,
-            width: 1,
-          ),
+          bottom: BorderSide(color: appColors.dividerColor!, width: 1),
         ),
       ),
       child: ListTile(
@@ -53,7 +49,7 @@ class _ArticleCardState extends State<ArticleCard> {
             overflow: TextOverflow.clip,
             style: TextStyle(
               fontSize: 12,
-              color: constants.appColors.textHintThemeColor,
+              color: appColors.textHintThemeColor,
               fontWeight: FontWeight.w400,
             ),
           ),
@@ -68,7 +64,7 @@ class _ArticleCardState extends State<ArticleCard> {
             return Container(
               width: 90,
               height: 90,
-              color: constants.appColors.tileThemeColor,
+              color: appColors.tileThemeColor,
               child: Center(
                 child: Icon(
                   Icons.broken_image_outlined,
@@ -82,7 +78,7 @@ class _ArticleCardState extends State<ArticleCard> {
             return Container(
               width: 90,
               height: 90,
-              color: constants.appColors.tileThemeColor,
+              color: appColors.tileThemeColor,
               child: Center(
                 child: Icon(
                   Icons.broken_image_outlined,

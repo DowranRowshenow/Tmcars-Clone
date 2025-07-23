@@ -1,17 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import '../l10n/app_localizations.dart';
-import '../utils/constants.dart' as constants;
+import '../utils/constants.dart';
+import '../utils/navigation.dart';
 
-class ShouldRegister extends StatefulWidget {
+class ShouldRegister extends StatelessWidget {
   const ShouldRegister({super.key});
 
-  @override
-  // ignore: library_private_types_in_public_api
-  _ShouldRegisterState createState() => _ShouldRegisterState();
-}
-
-class _ShouldRegisterState extends State<ShouldRegister> {
   @override
   Widget build(BuildContext context) {
     return Center(
@@ -30,18 +26,18 @@ class _ShouldRegisterState extends State<ShouldRegister> {
             ElevatedButton(
               style: ButtonStyle(
                 backgroundColor: WidgetStateProperty.all(
-                  constants.colorPrimary,
+                  Constants.colorPrimary,
                 ),
               ),
               onPressed: () {
-                constants.navigate.changeScreen(
+                context.read<NavigationManager>().setScreen(
                   context,
-                  constants.ScreenState.register,
+                  ScreenState.register,
                 );
               },
               child: Text(
                 AppLocalizations.of(context)!.register.toUpperCase(),
-                style: TextStyle(color: constants.appColors.textThemeColor),
+                style: TextStyle(color: Colors.white),
               ),
             ),
           ],

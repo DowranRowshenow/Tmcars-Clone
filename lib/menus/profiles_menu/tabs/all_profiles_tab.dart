@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
 import '../../../components/ripple_container.dart';
-import '../../../utils/constants.dart' as constants;
 import '../../../utils/themes.dart';
 import '../../../l10n/app_localizations.dart';
 
@@ -10,10 +9,10 @@ class AllProfilesTab extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    constants.appColors = Theme.of(context).extension<AppColors>()!;
+    final AppColors appColors = Theme.of(context).extension<AppColors>()!;
 
     return Container(
-      color: constants.appColors.menuBackgroundColor,
+      color: appColors.menuBackgroundColor,
       padding: const EdgeInsets.all(5),
       child: Column(
         children: [
@@ -21,7 +20,7 @@ class AllProfilesTab extends StatelessWidget {
           Container(
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(5), // Use appColors
-              color: constants.appColors.themedSurface,
+              color: appColors.themedSurface,
             ),
             padding: EdgeInsets.all(5),
             child: Row(
@@ -46,7 +45,7 @@ class AllProfilesTab extends StatelessWidget {
                   color: Colors.transparent,
                   child: Icon(
                     Icons.search,
-                    color: constants.appColors.iconThemeColor, // Use appColors
+                    color: appColors.iconThemeColor, // Use appColors
                     size: 24,
                   ),
                 ),

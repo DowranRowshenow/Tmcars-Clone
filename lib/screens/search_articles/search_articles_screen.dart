@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../menus/articles_menu/tabs/articles_tab.dart';
-import '../../utils/constants.dart' as constants;
+import '../../utils/constants.dart';
 import '../../l10n/app_localizations.dart';
 
 class SearchArticlesScreen extends StatefulWidget {
@@ -13,7 +13,7 @@ class SearchArticlesScreen extends StatefulWidget {
 }
 
 class _SearchArticlesScreenState extends State<SearchArticlesScreen> {
-  TextEditingController searchBarController = TextEditingController();
+  final TextEditingController searchBarController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -22,9 +22,11 @@ class _SearchArticlesScreenState extends State<SearchArticlesScreen> {
         title: TextField(
           controller: searchBarController,
           autocorrect: false,
-          style: const TextStyle(fontSize: 20),
+          style: const TextStyle(fontSize: 20, color: Colors.white),
           keyboardType: TextInputType.text,
+          cursorColor: Colors.white,
           decoration: InputDecoration.collapsed(
+            hintStyle: TextStyle(color: Colors.grey.shade200),
             hintText: AppLocalizations.of(context)!.search,
           ),
           onChanged: (value) {
@@ -45,7 +47,7 @@ class _SearchArticlesScreenState extends State<SearchArticlesScreen> {
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
           onPressed: () => Navigator.pop(context),
-          splashRadius: constants.splashRadius,
+          splashRadius: Constants.splashRadius,
           splashColor: Colors.transparent,
         ),
         actions: [
@@ -55,7 +57,7 @@ class _SearchArticlesScreenState extends State<SearchArticlesScreen> {
                     searchBarController.clear();
                     setState(() {});
                   },
-                  splashRadius: constants.splashRadius,
+                  splashRadius: Constants.splashRadius,
                   icon: const Icon(Icons.close),
                   splashColor: Colors.transparent,
                 )

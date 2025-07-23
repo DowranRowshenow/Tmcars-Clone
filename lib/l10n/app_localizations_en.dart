@@ -18,6 +18,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get langEn => 'English';
 
   @override
+  String get appName => 'Tmcars Clone';
+
+  @override
   String get confirmExit => 'Do you want to exit?';
 
   @override

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../../components/should_register.dart';
-import '../../../utils/constants.dart' as constants;
+import '../../../utils/constants.dart';
 
 class MyCommentsTab extends StatefulWidget {
   const MyCommentsTab({super.key});
@@ -13,6 +13,6 @@ class MyCommentsTab extends StatefulWidget {
 class _MyCommentsTabState extends State<MyCommentsTab> {
   @override
   Widget build(BuildContext context) {
-    return constants.isRegistered ? Container() : ShouldRegister();
+    return Constants.isRegistered ? Container() : ShouldRegister();
   }
 }

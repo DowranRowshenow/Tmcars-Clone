@@ -1,13 +1,13 @@
-import 'package:flutter/material.dart';
 import 'dart:convert';
 import 'dart:io';
+
+import 'package:flutter/material.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../models/article_category_model.dart';
-import 'constants.dart' as constants;
 
-class Storage extends ChangeNotifier {
+class Storage {
   Future<void> setThemeMode(ThemeMode themeMode) async {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
     await sharedPreferences.setInt(
@@ -23,13 +23,11 @@ class Storage extends ChangeNotifier {
   Future<ThemeMode> getThemeMode() async {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
     int mode = sharedPreferences.getInt('themeMode') ?? 0;
-    constants.appThemeMode = mode == 0
+    return mode == 0
         ? ThemeMode.system
         : mode == 1
         ? ThemeMode.dark
         : ThemeMode.light;
-    notifyListeners();
-    return constants.appThemeMode;
   }
 
   Future<void> setLocale(String localeCode) async {

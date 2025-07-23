@@ -2,6 +2,7 @@
   "locale": "ru",
   "lang": "Русский",
   "langEn": "Russian",
+  "appName": "Tmcars Clone",
   "confirmExit": "Вы хотите выйти?",
   "cancel": "Отмен",
   "yes": "Да",

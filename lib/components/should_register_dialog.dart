@@ -1,30 +1,35 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
-import '../utils/constants.dart' as constants;
+import '../utils/constants.dart';
 import '../l10n/app_localizations.dart';
+import '../utils/navigation.dart';
+import '../utils/themes.dart';
 
 Future<T?> shouldRegisterDialog<T>({
   required BuildContext context,
   Color? barrierColor,
-  double blurSigmaX = constants.blurSigmaX,
-  double blurSigmaY = constants.blurSigmaY,
+  double blurSigmaX = Constants.blurSigmaX,
+  double blurSigmaY = Constants.blurSigmaY,
   bool barrierDismissible = true,
 }) {
   return showDialog<T>(
     context: context,
     barrierDismissible: barrierDismissible,
     barrierColor:
-        barrierColor ?? Colors.black.withValues(alpha: constants.blurAlpha),
+        barrierColor ?? Colors.black.withValues(alpha: Constants.blurAlpha),
     builder: (BuildContext dialogContext) {
-      return AlertDialog(
-        insetPadding: EdgeInsets.all(constants.dialogPadding),
+      final AppColors appColors = Theme.of(context).extension<AppColors>()!;
 
-        backgroundColor: constants.appColors.themedSurface,
-        elevation: constants.elevation,
+      return AlertDialog(
+        insetPadding: EdgeInsets.all(Constants.dialogPadding),
+
+        backgroundColor: appColors.themedSurface,
+        elevation: Constants.elevation,
         contentPadding: EdgeInsets.fromLTRB(30, 30, 30, 0),
         title: Text(
           AppLocalizations.of(context)!.notification,
-          style: TextStyle(color: constants.appColors.textThemeColor),
+          style: TextStyle(color: appColors.textThemeColor),
         ),
         content: Text(AppLocalizations.of(context)!.notRegistered),
         actions: [
@@ -34,13 +39,13 @@ Future<T?> shouldRegisterDialog<T>({
             ),
             child: Text(
               AppLocalizations.of(context)!.register.toUpperCase(),
-              style: TextStyle(color: constants.colorPrimary),
+              style: TextStyle(color: Constants.colorPrimary),
             ),
             onPressed: () {
               Navigator.of(context).pop(false);
-              constants.navigate.changeScreen(
+              context.read<NavigationManager>().setScreen(
                 context,
-                constants.ScreenState.register,
+                ScreenState.register,
               );
             },
           ),
@@ -50,7 +55,7 @@ Future<T?> shouldRegisterDialog<T>({
             ),
             child: Text(
               AppLocalizations.of(context)!.cancel.toUpperCase(),
-              style: TextStyle(color: constants.colorPrimary),
+              style: TextStyle(color: Constants.colorPrimary),
             ),
             onPressed: () => Navigator.of(context).pop(false),
           ),

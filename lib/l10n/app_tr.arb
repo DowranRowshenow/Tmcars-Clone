@@ -2,6 +2,7 @@
   "locale": "tr",
   "lang": "Türkçe",
   "langEn": "Turkish",
+  "appName": "Tmcars Clone",
   "confirmExit": "Çıkmak istiyor musunuz?",
   "cancel": "Iptal",
   "yes": "Evet",

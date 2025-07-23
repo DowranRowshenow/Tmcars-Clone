@@ -2,34 +2,36 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../../l10n/app_localizations.dart';
-import '../../../utils/constants.dart' as constants;
+import '../../../utils/constants.dart';
+import '../../../utils/themes.dart';
 import '../../../utils/traffic.dart';
 
 Future<T?> showSetTrafficDialog<T>({
   required BuildContext context,
   Color? barrierColor,
-  double blurSigmaX = constants.blurSigmaX,
-  double blurSigmaY = constants.blurSigmaY,
+  double blurSigmaX = Constants.blurSigmaX,
+  double blurSigmaY = Constants.blurSigmaY,
   bool barrierDismissible = true,
 }) {
   return showDialog<T>(
     context: context,
     barrierDismissible: barrierDismissible,
     barrierColor:
-        barrierColor ?? Colors.black.withValues(alpha: constants.blurAlpha),
+        barrierColor ?? Colors.black.withValues(alpha: Constants.blurAlpha),
     builder: (BuildContext dialogContext) {
       int selectedTrafficMode = context.watch<TrafficManager>().getTrafficMode;
+      final AppColors appColors = Theme.of(context).extension<AppColors>()!;
 
       return StatefulBuilder(
         builder: (context, setState) {
           return AlertDialog(
-            insetPadding: EdgeInsets.all(constants.dialogPadding),
+            insetPadding: EdgeInsets.all(Constants.dialogPadding),
             contentPadding: EdgeInsets.fromLTRB(0, 20, 0, 0),
-            backgroundColor: constants.appColors.themedSurface,
-            elevation: constants.elevation,
+            backgroundColor: appColors.themedSurface,
+            elevation: Constants.elevation,
             title: Text(
               AppLocalizations.of(context)!.selectLanguage,
-              style: TextStyle(color: constants.appColors.textThemeColor),
+              style: TextStyle(color: appColors.textThemeColor),
             ),
             content: SizedBox(
               width: double.maxFinite,
@@ -45,7 +47,7 @@ Future<T?> showSetTrafficDialog<T>({
                         selectedTrafficMode = 0;
                       });
                     },
-                    activeColor: constants.colorPrimary,
+                    activeColor: Constants.colorPrimary,
                     controlAffinity: ListTileControlAffinity.leading,
                   ),
                   RadioListTile<int>(
@@ -57,7 +59,7 @@ Future<T?> showSetTrafficDialog<T>({
                         selectedTrafficMode = 1;
                       });
                     },
-                    activeColor: constants.colorPrimary,
+                    activeColor: Constants.colorPrimary,
                     controlAffinity: ListTileControlAffinity.leading,
                   ),
                 ],
@@ -70,7 +72,7 @@ Future<T?> showSetTrafficDialog<T>({
                 ),
                 child: Text(
                   AppLocalizations.of(context)!.select,
-                  style: TextStyle(color: constants.colorPrimary),
+                  style: TextStyle(color: Constants.colorPrimary),
                 ),
                 onPressed: () {
                   context.read<TrafficManager>().setTrafficMode(
@@ -85,7 +87,7 @@ Future<T?> showSetTrafficDialog<T>({
                 ),
                 child: Text(
                   AppLocalizations.of(context)!.cancel,
-                  style: TextStyle(color: constants.colorPrimary),
+                  style: TextStyle(color: Constants.colorPrimary),
                 ),
                 onPressed: () => Navigator.of(context).pop(),
               ),

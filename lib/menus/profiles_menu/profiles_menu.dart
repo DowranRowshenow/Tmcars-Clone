@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../l10n/app_localizations.dart';
-import '../../utils/constants.dart' as constants;
+import '../../utils/constants.dart';
 import 'tabs/all_profiles_tab.dart';
 import 'tabs/profiles_category_tab.dart';
 
@@ -24,7 +24,7 @@ class _ProfilesMenuState extends State<ProfilesMenu> {
           toolbarHeight: 0,
           leading: Container(),
           bottom: TabBar(
-            textScaler: TextScaler.linear(constants.tabTextScale),
+            textScaler: TextScaler.linear(Constants.tabTextScale),
             indicatorColor: Colors.white,
             tabs: [
               Tab(text: AppLocalizations.of(context)!.all.toUpperCase()),

@@ -2,6 +2,7 @@
   "locale": "en",
   "lang": "English",
   "langEn": "English",
+  "appName": "Tmcars Clone",
   "confirmExit": "Do you want to exit?",
   "cancel": "Cancel",
   "yes": "Yes",

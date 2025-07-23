@@ -3,7 +3,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:transparent_image/transparent_image.dart';
 
 import '../../../utils/themes.dart';
-import '../../../utils/constants.dart' as constants;
+import '../../../utils/constants.dart';
 import '../../../l10n/app_localizations.dart';
 
 class ProfileCategoryCard extends StatelessWidget {
@@ -11,7 +11,7 @@ class ProfileCategoryCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    constants.appColors = Theme.of(context).extension<AppColors>()!;
+    final AppColors appColors = Theme.of(context).extension<AppColors>()!;
 
     // Use InkWell for splash effect
     return Card(
@@ -21,7 +21,7 @@ class ProfileCategoryCard extends StatelessWidget {
       clipBehavior: Clip.antiAlias, // Ensures splash is clipped to card shape
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
       // The color is applied to the Card
-      color: constants.appColors.themedSurface,
+      color: appColors.themedSurface,
       child: Stack(
         children: [
           Column(
@@ -30,7 +30,7 @@ class ProfileCategoryCard extends StatelessWidget {
             children: [
               Expanded(
                 child: CachedNetworkImage(
-                  imageUrl: constants.tempImageUrl,
+                  imageUrl: Constants.tempImageUrl,
                   height: 185,
                   width: 185,
                   // Replace with your actual image URL or asset
@@ -43,7 +43,7 @@ class ProfileCategoryCard extends StatelessWidget {
                     return Container(
                       width: 90,
                       height: 90,
-                      color: constants.appColors.tileThemeColor,
+                      color: appColors.tileThemeColor,
                       child: Center(
                         child: Icon(
                           Icons.broken_image_outlined,
@@ -60,7 +60,7 @@ class ProfileCategoryCard extends StatelessWidget {
                 child: Text(
                   AppLocalizations.of(context)!.carsAndParts,
                   overflow: TextOverflow.ellipsis,
-                  style: TextStyle(color: constants.appColors.textThemeColor),
+                  style: TextStyle(color: appColors.textThemeColor),
                 ),
               ),
               SizedBox(height: 10),

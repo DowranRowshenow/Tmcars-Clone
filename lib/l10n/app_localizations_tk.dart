@@ -18,6 +18,9 @@ class AppLocalizationsTk extends AppLocalizations {
   String get langEn => 'Turkmen';
 
   @override
+  String get appName => 'Tmcars Clone';
+
+  @override
   String get confirmExit => 'Çykmak isleýärsiňizmi?';
 
   @override

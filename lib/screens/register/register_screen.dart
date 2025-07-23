@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import '../../components/ripple_container.dart';
-import '../../utils/constants.dart' as constants;
+import '../../utils/constants.dart';
+import '../../utils/navigation.dart';
 import '../../utils/server.dart';
 import '../../l10n/app_localizations.dart';
+import '../../utils/themes.dart';
 
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({super.key});
@@ -22,13 +25,15 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final AppColors appColors = Theme.of(context).extension<AppColors>()!;
+
     return Scaffold(
       appBar: AppBar(
         title: Text(AppLocalizations.of(context)!.register),
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
           onPressed: () => Navigator.pop(context),
-          splashRadius: constants.splashRadius,
+          splashRadius: Constants.splashRadius,
           splashColor: Colors.transparent,
         ),
       ),
@@ -44,9 +49,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 padding: EdgeInsets.all(25),
                 child: Image(
                   image: AssetImage(
-                    constants.themeManager.isDark()
-                        ? constants.drawerLogoDark
-                        : constants.drawerLogoLight,
+                    context.watch<ThemeManager>().isDark()
+                        ? Constants.drawerLogoDark
+                        : Constants.drawerLogoLight,
                   ),
                   height: 85,
                 ),
@@ -80,7 +85,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     : Row(
                         children: [
                           const Text(
-                            constants.phoneCode,
+                            Constants.phoneCode,
                             style: TextStyle(fontSize: 18),
                           ),
                           SizedBox(width: 10),
@@ -131,9 +136,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         maxLines: 1,
                       ),
                       onTap: () {
-                        constants.navigate.changeScreen(
+                        context.read<NavigationManager>().setScreen(
                           context,
-                          constants.ScreenState.webview,
+                          ScreenState.webview,
                           url: Server.PRIVACY_POLICY_RU_URL,
                           title: AppLocalizations.of(context)!.policy,
                         );
@@ -145,9 +150,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
               SizedBox(height: 15),
               RippleContainer(
                 onTap: () {},
-                color: constants.colorAccent,
+                color: Constants.colorAccent,
                 padding: EdgeInsets.all(15),
-                borderRadius: constants.buttonBorderRadius,
+                borderRadius: Constants.buttonBorderRadius,
                 child: Text(
                   AppLocalizations.of(context)!.accept.toUpperCase(),
                   style: TextStyle(fontSize: 16, color: Colors.white),
@@ -161,7 +166,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           AppLocalizations.of(context)!.enterWithPhoneNumber,
                           style: TextStyle(
                             fontSize: 16,
-                            color: constants.appColors.text2ThemeColor,
+                            color: appColors.text2ThemeColor,
                           ),
                         ),
                         onTap: () => setState(() => isEmail = false),
@@ -171,7 +176,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           AppLocalizations.of(context)!.enterWithEmail,
                           style: TextStyle(
                             fontSize: 16,
-                            color: constants.appColors.text2ThemeColor,
+                            color: appColors.text2ThemeColor,
                           ),
                         ),
                         onTap: () => setState(() => isEmail = true),

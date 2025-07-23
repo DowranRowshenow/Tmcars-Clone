@@ -3,7 +3,6 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:provider/provider.dart';
 
 import '../../../components/ripple_container.dart';
-import '../../../utils/constants.dart' as constants;
 import '../../../utils/locale.dart';
 import '../../../utils/themes.dart';
 import '../../../models/popular_product_model.dart';
@@ -14,7 +13,7 @@ class PopularProductCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    constants.appColors = Theme.of(context).extension<AppColors>()!;
+    final AppColors appColors = Theme.of(context).extension<AppColors>()!;
 
     return RippleContainer(
       padding: EdgeInsets.all(8.0),
@@ -32,7 +31,7 @@ class PopularProductCard extends StatelessWidget {
               return Container(
                 width: 90,
                 height: 90,
-                color: constants.appColors.tileThemeColor,
+                color: appColors.tileThemeColor,
                 child: Center(
                   child: Icon(
                     Icons.broken_image_outlined,
@@ -46,7 +45,7 @@ class PopularProductCard extends StatelessWidget {
               return Container(
                 width: 90,
                 height: 90,
-                color: constants.appColors.tileThemeColor,
+                color: appColors.tileThemeColor,
                 child: Center(
                   child: Icon(
                     Icons.broken_image_outlined,
@@ -78,7 +77,7 @@ class PopularProductCard extends StatelessWidget {
                   maxLines: 2,
                   style: TextStyle(
                     fontSize: 12,
-                    color: constants.appColors.textHintThemeColor,
+                    color: appColors.textHintThemeColor,
                     overflow: TextOverflow.ellipsis,
                   ),
                 ),

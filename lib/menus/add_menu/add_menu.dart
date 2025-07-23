@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../components/should_register_dialog.dart';
-import '../../utils/constants.dart' as constants;
+import '../../utils/constants.dart';
 import '../../l10n/app_localizations.dart';
 import 'tabs/add_car_parts_tab.dart';
 import 'tabs/add_others_tab.dart';
@@ -26,7 +26,7 @@ class _AddMenuState extends State<AddMenu> {
           toolbarHeight: 0,
           leading: Container(),
           bottom: TabBar(
-            textScaler: TextScaler.linear(constants.tabTextScale),
+            textScaler: TextScaler.linear(Constants.tabTextScale),
             indicatorColor: Colors.white,
             tabs: [
               Tab(text: AppLocalizations.of(context)!.cars.toUpperCase()),
@@ -39,7 +39,7 @@ class _AddMenuState extends State<AddMenu> {
           children: [AddCarsTab(), AddCarPartsTab(), AddOthersTab()],
         ),
         floatingActionButton: FloatingActionButton(
-          backgroundColor: constants.colorPrimary,
+          backgroundColor: Constants.colorPrimary,
           child: Icon(Icons.add),
           onPressed: () {
             shouldRegisterDialog(context: context);

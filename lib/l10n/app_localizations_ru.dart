@@ -18,6 +18,9 @@ class AppLocalizationsRu extends AppLocalizations {
   String get langEn => 'Russian';
 
   @override
+  String get appName => 'Tmcars Clone';
+
+  @override
   String get confirmExit => 'Вы хотите выйти?';
 
   @override

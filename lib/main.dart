@@ -3,13 +3,15 @@ import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:provider/provider.dart';
 
+import 'utils/navigation.dart';
+import 'utils/location.dart';
 import 'utils/traffic.dart';
 import 'utils/server.dart';
-import 'l10n/app_localizations.dart';
 import 'utils/locale.dart';
-import 'utils/constants.dart' as constants;
+import 'utils/constants.dart';
 import 'utils/storage.dart';
 import 'utils/themes.dart';
+import 'l10n/app_localizations.dart';
 import 'models/article_category_model.dart';
 import 'screens/menu/menu_screen.dart';
 import 'components/scroll_behavior.dart';
@@ -23,6 +25,8 @@ void main() async {
   final initialThemeMode = await Storage().getThemeMode();
   final initialLocale = await Storage().getLocale();
   final initialTrafficMode = await Storage().getTrafficMode();
+  final initialLocation = await Storage().getLocation();
+
   // Set preferred orientation once for the entire app lifecycle.
   await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
 
@@ -39,6 +43,10 @@ void main() async {
         ChangeNotifierProvider(
           create: (_) => TrafficManager()..setTrafficMode(initialTrafficMode),
         ),
+        ChangeNotifierProvider(
+          create: (_) => LocationManager()..setLocation(initialLocation),
+        ),
+        ChangeNotifierProvider(create: (_) => NavigationManager()),
         // Use FutureProvider to handle async data loading for the UI.
         FutureProvider<List<ArticleCategory>>(
           create: (_) =>
@@ -61,31 +69,33 @@ class TmcarsClone extends StatefulWidget {
 class _TmcarsCloneState extends State<TmcarsClone> {
   @override
   Widget build(BuildContext context) {
-    return Consumer2<ThemeManager, LocaleManager>(
-      builder: (context, themeManager, localeManager, child) {
-        return MaterialApp(
-          debugShowCheckedModeBanner: false,
-          title: constants.appName,
-          theme: lightThemeData,
-          darkTheme: darkThemeData,
-          themeMode: themeManager.themeMode,
-          localizationsDelegates: const [
-            AppLocalizations.delegate,
-            GlobalMaterialLocalizations.delegate,
-            GlobalWidgetsLocalizations.delegate,
-            GlobalCupertinoLocalizations.delegate,
-          ],
-          supportedLocales: AppLocalizations.supportedLocales,
-          locale: localeManager.locale,
-          builder: (context, child) {
-            return ScrollConfiguration(
-              behavior: GlowlessScrollBehavior(),
-              child: child!,
-            );
-          },
-          home: const MenuScreen(),
+    // Watch only the providers that affect this widget's UI.
+    // This is more efficient and readable than using a large Consumer.
+    final themeManager = context.watch<ThemeManager>();
+    final localeManager = context.watch<LocaleManager>();
+
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      // Use a fallback title for safety during initial load.
+      title: AppLocalizations.of(context)?.appName ?? Constants.appName,
+      theme: lightThemeData,
+      darkTheme: darkThemeData,
+      themeMode: themeManager.themeMode,
+      localizationsDelegates: const [
+        AppLocalizations.delegate,
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+      ],
+      supportedLocales: AppLocalizations.supportedLocales,
+      locale: localeManager.locale,
+      builder: (context, child) {
+        return ScrollConfiguration(
+          behavior: GlowlessScrollBehavior(),
+          child: child!,
         );
       },
+      home: const MenuScreen(),
     );
   }
 }

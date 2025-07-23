@@ -117,6 +117,12 @@ abstract class AppLocalizations {
   /// **'English'**
   String get langEn;
 
+  /// No description provided for @appName.
+  ///
+  /// In en, this message translates to:
+  /// **'Tmcars Clone'**
+  String get appName;
+
   /// No description provided for @confirmExit.
   ///
   /// In en, this message translates to:

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../components/ripple_container.dart';
-import '../../utils/constants.dart' as constants;
+import '../../utils/constants.dart';
 import '../../l10n/app_localizations.dart';
 
 class ContactScreen extends StatefulWidget {
@@ -21,7 +21,7 @@ class _ContactScreenState extends State<ContactScreen> {
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
           onPressed: () => Navigator.pop(context),
-          splashRadius: constants.splashRadius,
+          splashRadius: Constants.splashRadius,
           splashColor: Colors.transparent,
         ),
       ),

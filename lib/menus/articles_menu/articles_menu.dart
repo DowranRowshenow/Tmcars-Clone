@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../../utils/constants.dart' as constants;
+import '../../utils/constants.dart';
 import '../../models/article_category_model.dart';
 import '../../utils/locale.dart';
+import '../../utils/navigation.dart';
 import 'tabs/articles_tab.dart';
 
 class NewsMenu extends StatelessWidget {
@@ -11,19 +12,12 @@ class NewsMenu extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Directly watch the providers. The UI will rebuild automatically when the
-    // data or locale changes. FutureProvider handles the async state.
     final categories = context.watch<List<ArticleCategory>>();
-    final locale = context.watch<LocaleManager>().locale;
-
-    // The FutureProvider was configured with `initialData: []`. We can use this
-    // to show a loading indicator while the data is being fetched.
-    // If an error occurs, the provider will throw it and Flutter will show
-    // an error screen in debug mode. For a custom error UI like `NoConnection`,
-    // a more advanced error handling setup would be needed.
     if (categories.isEmpty) {
       return const Center(child: CircularProgressIndicator());
     }
+
+    final locale = context.watch<LocaleManager>().locale;
 
     // A helper function to get the correct category name based on locale.
     String getCategoryName(ArticleCategory category) {
@@ -43,17 +37,17 @@ class NewsMenu extends StatelessWidget {
           toolbarHeight: 0,
           leading: IconButton(
             onPressed: () {
-              constants.navigate.changeScreen(
+              context.read<NavigationManager>().setScreen(
                 context,
-                constants.ScreenState.searchArticles,
+                ScreenState.searchArticles,
               );
             },
-            splashRadius: constants.splashRadius,
+            splashRadius: Constants.splashRadius,
             icon: const Icon(Icons.search),
             splashColor: Colors.transparent,
           ),
           bottom: TabBar(
-            textScaler: TextScaler.linear(constants.tabTextScale),
+            textScaler: TextScaler.linear(Constants.tabTextScale),
             indicatorColor: Colors.white,
             isScrollable: true,
             tabs: categories
@@ -65,8 +59,9 @@ class NewsMenu extends StatelessWidget {
         body: TabBarView(
           // Pass the specific category to each tab so it knows what articles to load.
           // The ArticlesTab will use the category's `code` to fetch the correct articles.
-          children:
-              categories.map((cat) => ArticlesTab(category: cat)).toList(),
+          children: categories
+              .map((cat) => ArticlesTab(category: cat))
+              .toList(),
         ),
       ),
     );
