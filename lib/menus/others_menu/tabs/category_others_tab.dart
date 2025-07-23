@@ -11,6 +11,6 @@ class CategoryOthersTab extends StatefulWidget {
 class _CategoryOthersTabState extends State<CategoryOthersTab> {
   @override
   Widget build(BuildContext context) {
-    return Container();
+    return const SizedBox();
   }
 }

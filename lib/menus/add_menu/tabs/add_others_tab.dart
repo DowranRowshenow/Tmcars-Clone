@@ -10,6 +10,6 @@ class AddOthersTab extends StatefulWidget {
 class _AddOthersTabState extends State<AddOthersTab> {
   @override
   Widget build(BuildContext context) {
-    return Container();
+    return const SizedBox();
   }
 }

@@ -11,6 +11,6 @@ class SelectionOthersTab extends StatefulWidget {
 class _SelectionOthersTabState extends State<SelectionOthersTab> {
   @override
   Widget build(BuildContext context) {
-    return Container();
+    return const SizedBox();
   }
 }

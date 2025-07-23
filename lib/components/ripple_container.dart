@@ -55,13 +55,13 @@ class RippleContainer extends StatelessWidget {
           ),
           text != null
               ? const Padding(padding: EdgeInsets.all(5))
-              : Container(),
+              : const SizedBox(),
           text != null
               ? Text(
                   text!,
                   style: const TextStyle(color: Colors.white, fontSize: 13),
                 )
-              : Container(),
+              : const SizedBox(),
         ],
       ),
     );

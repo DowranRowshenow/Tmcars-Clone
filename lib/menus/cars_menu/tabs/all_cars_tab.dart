@@ -10,6 +10,6 @@ class AllCarsTab extends StatefulWidget {
 class _AllCarsTabState extends State<AllCarsTab> {
   @override
   Widget build(BuildContext context) {
-    return Container();
+    return const SizedBox();
   }
 }

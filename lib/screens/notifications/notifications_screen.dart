@@ -24,7 +24,7 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
           splashColor: Colors.transparent,
         ),
       ),
-      body: SingleChildScrollView(child: Container()),
+      body: SingleChildScrollView(child: const SizedBox()),
     );
   }
 }

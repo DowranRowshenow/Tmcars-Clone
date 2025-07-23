@@ -14,7 +14,7 @@ import 'providers/themes.dart';
 import 'l10n/app_localizations.dart';
 import 'models/article_category_model.dart';
 import 'screens/menu/menu_screen.dart';
-import 'components/scroll_behavior.dart';
+import 'components/app_scroll_behavior.dart';
 
 void main() async {
   // Ensure Flutter is ready.
@@ -91,7 +91,7 @@ class _TmcarsCloneState extends State<TmcarsClone> {
       locale: localeManager.locale,
       builder: (context, child) {
         return ScrollConfiguration(
-          behavior: GlowlessScrollBehavior(),
+          behavior: AppScrollBehavior(),
           child: child!,
         );
       },

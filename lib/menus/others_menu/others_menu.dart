@@ -23,7 +23,7 @@ class _OthersMenuState extends State<OthersMenu> {
         appBar: AppBar(
           elevation: 0,
           toolbarHeight: 0,
-          leading: Container(),
+          leading: const SizedBox(),
           bottom: TabBar(
             textScaler: TextScaler.linear(Constants.tabTextScale),
 
