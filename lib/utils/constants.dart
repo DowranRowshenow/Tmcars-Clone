@@ -16,6 +16,8 @@ class Constants {
 
   // INTEGERS AND DOUBLES
   static const int animationDuration = 300;
+  static const double popularProductItemExtent = 118;
+  static const double articleItemExtent = 100;
   static const double tabTextScale = 0.85;
   static const double blurAlpha = 0.7;
   static const double borderRadius = 7.0;

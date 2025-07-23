@@ -3,8 +3,8 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:provider/provider.dart';
 
 import '../../../components/ripple_container.dart';
-import '../../../utils/locale.dart';
-import '../../../utils/themes.dart';
+import '../../../providers/locale.dart';
+import '../../../providers/themes.dart';
 import '../../../models/popular_product_model.dart';
 
 class PopularProductCard extends StatelessWidget {

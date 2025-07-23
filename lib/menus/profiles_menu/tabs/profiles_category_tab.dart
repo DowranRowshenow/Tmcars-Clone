@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../../utils/themes.dart';
+import '../../../providers/themes.dart';
 import '../components/profile_category_card.dart';
 
 class ProfilesCategoryTab extends StatelessWidget {

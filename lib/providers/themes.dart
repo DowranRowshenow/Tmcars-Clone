@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-import 'constants.dart';
-import 'storage.dart';
+import '../utils/constants.dart';
+import '../utils/storage.dart';
 
 @immutable
 class AppColors extends ThemeExtension<AppColors> {

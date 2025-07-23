@@ -3,8 +3,8 @@ import 'package:provider/provider.dart';
 
 import '../../../l10n/app_localizations.dart';
 import '../../../utils/constants.dart';
-import '../../../utils/locale.dart';
-import '../../../utils/themes.dart';
+import '../../../providers/locale.dart';
+import '../../../providers/themes.dart';
 
 Future<T?> showSetLanguageDialog<T>({
   required BuildContext context,

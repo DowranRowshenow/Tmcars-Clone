@@ -3,8 +3,8 @@ import 'package:provider/provider.dart';
 
 import '../../../l10n/app_localizations.dart';
 import '../../../utils/constants.dart';
-import '../../../utils/location.dart';
-import '../../../utils/themes.dart';
+import '../../../providers/location.dart';
+import '../../../providers/themes.dart';
 
 Future<T?> showSetLocationDialog<T>({
   required BuildContext context,

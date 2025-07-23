@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../components/no_connection.dart';
+import '../../utils/constants.dart';
 import '../../utils/server.dart';
 import '../../l10n/app_localizations.dart';
 import '../../models/popular_product_model.dart';
@@ -50,6 +51,7 @@ class _HomeMenuState extends State<HomeMenu> {
             child: SingleChildScrollView(
               physics: const AlwaysScrollableScrollPhysics(),
               child: ListView.builder(
+                itemExtent: Constants.popularProductItemExtent,
                 shrinkWrap: true, // Important when inside another scrollable
                 physics:
                     const NeverScrollableScrollPhysics(), // Delegate scrolling

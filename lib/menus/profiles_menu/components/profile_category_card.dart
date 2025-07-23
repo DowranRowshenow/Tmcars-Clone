@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:transparent_image/transparent_image.dart';
 
-import '../../../utils/themes.dart';
+import '../../../providers/themes.dart';
 import '../../../utils/constants.dart';
 import '../../../l10n/app_localizations.dart';
 

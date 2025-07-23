@@ -2,8 +2,8 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../../../utils/locale.dart';
-import '../../../utils/themes.dart';
+import '../../../providers/locale.dart';
+import '../../../providers/themes.dart';
 import '../../../models/article_model.dart';
 
 class ArticleCard extends StatefulWidget {

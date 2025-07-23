@@ -3,8 +3,8 @@ import 'package:provider/provider.dart';
 
 import '../../../l10n/app_localizations.dart';
 import '../../../utils/constants.dart';
-import '../../../utils/themes.dart';
-import '../../../utils/traffic.dart';
+import '../../../providers/themes.dart';
+import '../../../providers/traffic.dart';
 
 Future<T?> showSetTrafficDialog<T>({
   required BuildContext context,

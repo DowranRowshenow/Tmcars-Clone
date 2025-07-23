@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../l10n/app_localizations.dart';
-import '../utils/themes.dart';
+import '../providers/themes.dart';
 
 class NoResult extends StatelessWidget {
   const NoResult({super.key});

@@ -3,8 +3,8 @@ import 'package:provider/provider.dart';
 
 import '../../utils/constants.dart';
 import '../../models/article_category_model.dart';
-import '../../utils/locale.dart';
-import '../../utils/navigation.dart';
+import '../../providers/locale.dart';
+import '../../providers/navigation.dart';
 import 'tabs/articles_tab.dart';
 
 class NewsMenu extends StatelessWidget {

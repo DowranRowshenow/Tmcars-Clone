@@ -4,6 +4,7 @@ import '../../../components/no_connection.dart';
 import '../../../components/no_result.dart';
 import '../../../models/article_category_model.dart';
 import '../../../models/article_model.dart';
+import '../../../utils/constants.dart';
 import '../../../utils/server.dart';
 import '../components/article_card.dart';
 
@@ -116,13 +117,14 @@ class _ArticlesTabState extends State<ArticlesTab> {
 
     // If loading is finished and there are no articles, show NoResult.
     if (_articles.isEmpty && !_isLoading) {
-      return NoResult();
+      return const NoResult();
     }
 
     // Otherwise, display the list of articles.
     return RefreshIndicator(
       onRefresh: _handleRefresh,
       child: ListView.builder(
+        itemExtent: Constants.articleItemExtent,
         controller: _scrollController,
         itemCount: _articles.length + (_hasMore ? 1 : 0),
         itemBuilder: (context, index) {

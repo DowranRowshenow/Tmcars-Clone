@@ -18,7 +18,7 @@ import '../screens/contact/contact_screen.dart';
 import '../screens/settings/settings_screen.dart';
 import '../screens/webview/webview_screen.dart';
 import '../utils/constants.dart';
-import 'server.dart';
+import '../utils/server.dart';
 
 enum MenuState { home, add, others, comments, articles, profiles, parts, cars }
 
@@ -86,17 +86,20 @@ class NavigationManager extends ChangeNotifier {
   List<Widget> getMenuTabs(BuildContext context) {
     switch (_currentMenu) {
       case MenuState.home:
-        return [
-          IconButton(
-            color: Colors.white,
-            onPressed: () {
-              setScreen(context, ScreenState.notifications);
-            },
-            splashRadius: Constants.splashRadius,
-            icon: const Icon(Icons.notifications),
-            splashColor: Colors.transparent,
-          ),
-        ];
+        return Constants.isRegistered
+            ? [
+                IconButton(
+                  color: Colors.white,
+                  onPressed: () {
+                    setScreen(context, ScreenState.notifications);
+                  },
+                  splashRadius: Constants.splashRadius,
+                  icon: const Icon(Icons.notifications),
+                  splashColor: Colors.transparent,
+                ),
+              ]
+            : [];
+
       case MenuState.articles:
         return [
           IconButton(

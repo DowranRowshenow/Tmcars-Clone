@@ -3,10 +3,10 @@ import 'package:provider/provider.dart';
 
 import '../../components/ripple_container.dart';
 import '../../utils/constants.dart';
-import '../../utils/navigation.dart';
+import '../../providers/navigation.dart';
 import '../../utils/server.dart';
 import '../../l10n/app_localizations.dart';
-import '../../utils/themes.dart';
+import '../../providers/themes.dart';
 
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({super.key});
@@ -111,9 +111,12 @@ class _RegisterScreenState extends State<RegisterScreen> {
               ),
               Container(
                 margin: EdgeInsets.only(top: 5, bottom: 5, left: 45),
-                decoration: const BoxDecoration(
+                decoration: BoxDecoration(
                   border: Border(
-                    bottom: BorderSide(width: 0.5, color: Colors.black),
+                    bottom: BorderSide(
+                      width: 0.5,
+                      color: appColors.dividerColor!,
+                    ),
                   ),
                 ),
               ),

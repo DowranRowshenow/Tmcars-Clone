@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../../components/ripple_container.dart';
-import '../../../utils/themes.dart';
+import '../../../providers/themes.dart';
 import '../../../l10n/app_localizations.dart';
 
 class AllProfilesTab extends StatelessWidget {

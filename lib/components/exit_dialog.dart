@@ -2,7 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 
-import '../utils/themes.dart';
+import '../providers/themes.dart';
 import '../utils/constants.dart';
 import '../l10n/app_localizations.dart';
 

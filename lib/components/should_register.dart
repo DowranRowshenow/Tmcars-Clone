@@ -3,7 +3,7 @@ import 'package:provider/provider.dart';
 
 import '../l10n/app_localizations.dart';
 import '../utils/constants.dart';
-import '../utils/navigation.dart';
+import '../providers/navigation.dart';
 
 class ShouldRegister extends StatelessWidget {
   const ShouldRegister({super.key});

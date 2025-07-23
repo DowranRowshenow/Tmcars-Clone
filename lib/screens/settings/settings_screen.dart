@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
 import 'package:share_plus/share_plus.dart';
-import 'package:tmcarsclone/utils/location.dart';
+import 'package:tmcarsclone/providers/location.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-import '../../utils/navigation.dart';
-import '../../utils/themes.dart';
-import '../../utils/traffic.dart';
+import '../../providers/navigation.dart';
+import '../../providers/themes.dart';
+import '../../providers/traffic.dart';
 import 'components/set_traffic_dialog.dart';
 import 'components/set_language_dialog.dart';
 import 'components/set_location_dialog.dart';

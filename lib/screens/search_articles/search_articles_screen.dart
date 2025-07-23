@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'dart:async';
 
 import '../../menus/articles_menu/tabs/articles_tab.dart';
 import '../../utils/constants.dart';
 import '../../l10n/app_localizations.dart';
+import '../../providers/themes.dart';
 
 class SearchArticlesScreen extends StatefulWidget {
   const SearchArticlesScreen({super.key});
@@ -14,35 +16,62 @@ class SearchArticlesScreen extends StatefulWidget {
 
 class _SearchArticlesScreenState extends State<SearchArticlesScreen> {
   final TextEditingController searchBarController = TextEditingController();
+  Timer? _debounce;
+  String _searchQuery = '';
+
+  @override
+  void dispose() {
+    _debounce?.cancel();
+    searchBarController.dispose();
+    super.dispose();
+  }
+
+  void _onSearchChanged(String query) {
+    // Prevent input longer than 50 chars.
+    if (query.length > 50) {
+      final truncatedQuery = query.substring(0, 50);
+      // Setting the controller's value will trigger onChanged again with the truncated value.
+      searchBarController.value = TextEditingValue(
+        text: truncatedQuery,
+        selection: TextSelection.collapsed(offset: truncatedQuery.length),
+      );
+      return; // Exit to avoid setting a timer for the non-truncated value.
+    }
+
+    // This setState is cheap and only rebuilds the AppBar to show/hide the clear button.
+    setState(() {});
+
+    // Debounce the actual search to avoid firing network requests on every keystroke.
+    if (_debounce?.isActive ?? false) _debounce!.cancel();
+    _debounce = Timer(const Duration(milliseconds: 500), () {
+      if (mounted && _searchQuery != query) {
+        setState(() => _searchQuery = query);
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
+    final AppColors appColors = Theme.of(context).extension<AppColors>()!;
+
     return Scaffold(
       appBar: AppBar(
         title: TextField(
           controller: searchBarController,
           autocorrect: false,
-          style: const TextStyle(fontSize: 20, color: Colors.white),
+          style: TextStyle(
+            fontSize: 20,
+            color: appColors.appBarForegroundColor,
+          ),
           keyboardType: TextInputType.text,
-          cursorColor: Colors.white,
+          cursorColor: appColors.appBarForegroundColor,
           decoration: InputDecoration.collapsed(
-            hintStyle: TextStyle(color: Colors.grey.shade200),
+            hintStyle: TextStyle(
+              color: appColors.appBarForegroundColor?.withValues(alpha: 0.7),
+            ),
             hintText: AppLocalizations.of(context)!.search,
           ),
-          onChanged: (value) {
-            if (value.length <= 50) {
-              setState(() {}); // This will rebuild the widget on every change
-            } else {
-              // Optionally prevent input longer than 50 chars
-              searchBarController.text = searchBarController.text.substring(
-                0,
-                50,
-              );
-              searchBarController.selection = TextSelection.fromPosition(
-                TextPosition(offset: searchBarController.text.length),
-              );
-            }
-          },
+          onChanged: _onSearchChanged,
         ),
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
@@ -64,9 +93,7 @@ class _SearchArticlesScreenState extends State<SearchArticlesScreen> {
               : const SizedBox(width: 20),
         ],
       ),
-      body: searchBarController.text.isEmpty
-          ? Container()
-          : ArticlesTab(mask: searchBarController.text),
+      body: _searchQuery.isEmpty ? null : ArticlesTab(mask: _searchQuery),
     );
   }
 }

@@ -3,8 +3,8 @@ import 'package:provider/provider.dart';
 
 import '../utils/constants.dart';
 import '../l10n/app_localizations.dart';
-import '../utils/navigation.dart';
-import '../utils/themes.dart';
+import '../providers/navigation.dart';
+import '../providers/themes.dart';
 
 Future<T?> shouldRegisterDialog<T>({
   required BuildContext context,
@@ -23,10 +23,9 @@ Future<T?> shouldRegisterDialog<T>({
 
       return AlertDialog(
         insetPadding: EdgeInsets.all(Constants.dialogPadding),
-
         backgroundColor: appColors.themedSurface,
         elevation: Constants.elevation,
-        contentPadding: EdgeInsets.fromLTRB(30, 30, 30, 0),
+        contentPadding: EdgeInsets.fromLTRB(30, 10, 30, 0),
         title: Text(
           AppLocalizations.of(context)!.notification,
           style: TextStyle(color: appColors.textThemeColor),

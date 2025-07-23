@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'storage.dart';
+import '../utils/storage.dart';
 
 class LocaleManager extends ChangeNotifier {
   // Provide a default locale to ensure _locale is never null.

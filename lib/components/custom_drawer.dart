@@ -3,8 +3,8 @@ import 'package:provider/provider.dart';
 
 import '../l10n/app_localizations.dart';
 import '../utils/constants.dart';
-import '../utils/navigation.dart';
-import '../utils/themes.dart';
+import '../providers/navigation.dart';
+import '../providers/themes.dart';
 
 class CustomDrawer extends StatelessWidget {
   const CustomDrawer({super.key, required this.onTap});
@@ -59,9 +59,9 @@ class CustomDrawer extends StatelessWidget {
           ),
           Container(
             margin: const EdgeInsets.only(top: 5, bottom: 5),
-            decoration: const BoxDecoration(
+            decoration: BoxDecoration(
               border: Border(
-                bottom: BorderSide(width: 0.5, color: Colors.grey),
+                bottom: BorderSide(width: 0.5, color: appColors.dividerColor!),
               ),
             ),
           ),
@@ -115,9 +115,9 @@ class CustomDrawer extends StatelessWidget {
           ),
           Container(
             margin: const EdgeInsets.only(top: 5, bottom: 5),
-            decoration: const BoxDecoration(
+            decoration: BoxDecoration(
               border: Border(
-                bottom: BorderSide(width: 0.3, color: Colors.grey),
+                bottom: BorderSide(width: 0.3, color: appColors.dividerColor!),
               ),
             ),
           ),
@@ -133,7 +133,7 @@ class CustomDrawer extends StatelessWidget {
                 : Icon(Icons.light_mode_outlined),
             trailing: Switch(
               value: themeManager.isDark(),
-              activeColor: Colors.lightBlueAccent,
+              activeColor: appColors.focusColor,
               onChanged: (value) => context.read<ThemeManager>().toggleTheme(),
             ),
           ),

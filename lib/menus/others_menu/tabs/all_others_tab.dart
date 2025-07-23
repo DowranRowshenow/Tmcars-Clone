@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../../models/popular_product_model.dart';
 import '../../../components/no_connection.dart';
+import '../../../utils/constants.dart';
 import '../../../utils/server.dart';
 import '../../../l10n/app_localizations.dart';
 import '../../home_menu/components/popular_product_card.dart';
@@ -85,6 +86,7 @@ class _AllOthersTabState extends State<AllOthersTab> {
                   child: SingleChildScrollView(
                     physics: const AlwaysScrollableScrollPhysics(),
                     child: ListView.builder(
+                      itemExtent: Constants.popularProductItemExtent,
                       shrinkWrap:
                           true, // Important when inside another scrollable
                       physics:

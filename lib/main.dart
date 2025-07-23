@@ -3,14 +3,14 @@ import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:provider/provider.dart';
 
-import 'utils/navigation.dart';
-import 'utils/location.dart';
-import 'utils/traffic.dart';
+import 'providers/navigation.dart';
+import 'providers/location.dart';
+import 'providers/traffic.dart';
 import 'utils/server.dart';
-import 'utils/locale.dart';
+import 'providers/locale.dart';
 import 'utils/constants.dart';
 import 'utils/storage.dart';
-import 'utils/themes.dart';
+import 'providers/themes.dart';
 import 'l10n/app_localizations.dart';
 import 'models/article_category_model.dart';
 import 'screens/menu/menu_screen.dart';
@@ -22,11 +22,12 @@ void main() async {
 
   // Load initial values that providers will need.
   // This keeps the main function clean and focused.
-  final initialThemeMode = await Storage().getThemeMode();
-  final initialLocale = await Storage().getLocale();
-  final initialTrafficMode = await Storage().getTrafficMode();
-  final initialLocation = await Storage().getLocation();
-
+  final ThemeMode initialThemeMode = await Storage().getThemeMode();
+  final Locale initialLocale = await Storage().getLocale();
+  final int initialTrafficMode = await Storage().getTrafficMode();
+  final String initialLocation = await Storage().getLocation();
+  final List<ArticleCategory> initialArticleCategories = await Storage()
+      .getArticleCategories();
   // Set preferred orientation once for the entire app lifecycle.
   await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
 
@@ -49,9 +50,8 @@ void main() async {
         ChangeNotifierProvider(create: (_) => NavigationManager()),
         // Use FutureProvider to handle async data loading for the UI.
         FutureProvider<List<ArticleCategory>>(
-          create: (_) =>
-              Server.getArticleCategories(), // Assuming this fetches from server/cache
-          initialData: const [], // Provide an empty list initially
+          create: (_) => Server.getArticleCategories(),
+          initialData: initialArticleCategories,
         ),
       ],
       child: const TmcarsClone(),

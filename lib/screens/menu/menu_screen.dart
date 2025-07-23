@@ -4,7 +4,7 @@ import 'package:provider/provider.dart';
 import '../../components/custom_drawer.dart';
 import '../../components/exit_dialog.dart';
 import '../../utils/constants.dart';
-import '../../utils/navigation.dart';
+import '../../providers/navigation.dart';
 
 class MenuScreen extends StatefulWidget {
   const MenuScreen({super.key});
