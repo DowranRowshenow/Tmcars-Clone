@@ -99,12 +99,12 @@ class Server {
     String tags = "",
     String devId = "",
   }) async {
-    final Map<String, dynamic> map = {'max': max};
+    final Map<String, dynamic> map = {'max': max.toString()};
     if (offset != 0) {
-      map['offset'] = offset;
+      map['offset'] = offset.toString();
     }
     if (categoryId != 0) {
-      map['categoryId'] = categoryId;
+      map['categoryId'] = categoryId.toString();
     }
     if (categoryCode != "") {
       map['categoryCode'] = categoryCode;

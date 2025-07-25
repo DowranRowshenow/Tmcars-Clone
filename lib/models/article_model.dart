@@ -33,20 +33,38 @@ class Article {
 
   factory Article.fromJson(Map<String, dynamic> json) {
     return Article(
-      id: json['id'],
-      viewCount: json['viewCount'],
-      title: json['title'],
-      titleRu: json['titleRu'],
-      openUrl: json['openUrl'],
-      openUrlRu: json['openUrlRu'],
-      categoryName: json['categoryName'],
-      categoryNameRu: json['categoryNameRu'],
-      publishedDate: json['publishedDate'],
-      publishedDate3: json['publishedDate3'],
-      elapsedTime: json['elapsedTime'],
-      elapsedTimeRu: json['elapsedTimeRu'],
-      img: json['img'],
+      id: json['id'] ?? 0,
+      viewCount: json['viewCount'] ?? 0,
+      title: json['title'] ?? '',
+      titleRu: json['titleRu'] ?? '',
+      openUrl: json['openUrl'] ?? '',
+      openUrlRu: json['openUrlRu'] ?? '',
+      categoryName: json['categoryName'] ?? '',
+      categoryNameRu: json['categoryNameRu'] ?? '',
+      publishedDate: json['publishedDate'] ?? '',
+      publishedDate3: json['publishedDate3'] ?? '',
+      elapsedTime: json['elapsedTime'] ?? '',
+      elapsedTimeRu: json['elapsedTimeRu'] ?? '',
+      img: json['img'] ?? '',
       videoExist: json['videoExist'],
     );
+  }
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'viewCount': viewCount,
+      'title': title,
+      'titleRu': titleRu,
+      'openUrl': openUrl,
+      'openUrlRu': openUrlRu,
+      'categoryName': categoryName,
+      'categoryNameRu': categoryNameRu,
+      'publishedDate': publishedDate,
+      'publishedDate3': publishedDate3,
+      'elapsedTime': elapsedTime,
+      'elapsedTimeRu': elapsedTimeRu,
+      'img': img,
+      'videoExist': videoExist,
+    };
   }
 }

@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:tmcarsclone/models/article_model.dart';
 
 import '../models/article_category_model.dart';
 
@@ -75,5 +76,20 @@ class Storage {
     final jsonString = await file.readAsString();
     final List<dynamic> jsonList = jsonDecode(jsonString);
     return jsonList.map((json) => ArticleCategory.fromJson(json)).toList();
+  }
+
+  Future<void> setArticlesByCategory(String data, int id) async {
+    final dir = await getApplicationDocumentsDirectory();
+    final file = File('${dir.path}/articles_$id.json');
+    await file.writeAsString(data);
+  }
+
+  Future<List<Article>> getArticlesByCategory(int id) async {
+    final dir = await getApplicationDocumentsDirectory();
+    final file = File('${dir.path}/articles_$id.json');
+    if (!await file.exists()) return [];
+    final jsonString = await file.readAsString();
+    final List<dynamic> jsonList = jsonDecode(jsonString);
+    return jsonList.map((json) => Article.fromJson(json)).toList();
   }
 }

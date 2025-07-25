@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'package:flutter/material.dart';
 
 import '../../../components/no_connection.dart';
@@ -6,6 +7,7 @@ import '../../../models/article_category_model.dart';
 import '../../../models/article_model.dart';
 import '../../../utils/constants.dart';
 import '../../../utils/server.dart';
+import '../../../utils/storage.dart';
 import '../components/article_card.dart';
 
 class ArticlesTab extends StatefulWidget {
@@ -19,7 +21,7 @@ class ArticlesTab extends StatefulWidget {
 
 class _ArticlesTabState extends State<ArticlesTab> {
   final ScrollController _scrollController = ScrollController();
-  final List<Article> _articles = [];
+  List<Article> _articles = [];
   int _offset = 0;
   bool _isLoading = false;
   bool _hasMore = true;
@@ -28,14 +30,33 @@ class _ArticlesTabState extends State<ArticlesTab> {
   @override
   void initState() {
     super.initState();
-    _loadArticles();
+    _initializeData();
     _scrollController.addListener(_onScroll);
   }
 
   @override
   void dispose() {
-    _scrollController.dispose();
+    _scrollController.removeListener(_onScroll);
+    _scrollController
+        .dispose(); // It's good practice to remove the listener before disposing.
     super.dispose();
+  }
+
+  Future<void> _initializeData() async {
+    // First, try to load articles from local storage to show data quickly.
+    final cachedArticles = await Storage().getArticlesByCategory(
+      widget.category?.id ?? 0,
+    );
+    if (mounted && cachedArticles.isNotEmpty) {
+      setState(() {
+        _articles = cachedArticles;
+      });
+    }
+
+    // Then, fetch the latest articles from the server.
+    // This will either populate the list for the first time or
+    // update the existing cached list.
+    await _loadArticles(refresh: true);
   }
 
   Future<void> _loadArticles({bool refresh = false}) async {
@@ -49,7 +70,6 @@ class _ArticlesTabState extends State<ArticlesTab> {
 
     if (refresh) {
       _offset = 0;
-      _articles.clear();
       _hasMore = true;
     }
 
@@ -57,17 +77,25 @@ class _ArticlesTabState extends State<ArticlesTab> {
       final newArticles = await Server.getArticles(
         offset: _offset,
         mask: widget.mask ?? "",
+        tags: widget.tags ?? "",
         categoryCode: widget.category?.code ?? "",
         categoryId: widget.category?.id ?? 0,
-        tags: widget.tags ?? "",
       );
       if (mounted) {
         setState(() {
-          _articles.addAll(newArticles);
-          _offset += newArticles.length;
+          if (refresh) {
+            _articles = newArticles;
+          } else {
+            _articles.addAll(newArticles);
+          }
+          _offset = _articles.length;
           _hasMore = newArticles.isNotEmpty;
           _hasError = false; // Data loaded successfully
         });
+        // After updating the UI, save the complete list to the cache.
+        if (newArticles.isNotEmpty) {
+          await _saveArticlesToCache();
+        }
       }
     } catch (e) {
       // If an error occurs, set the error flag.
@@ -79,6 +107,16 @@ class _ArticlesTabState extends State<ArticlesTab> {
         setState(() => _isLoading = false);
       }
     }
+  }
+
+  Future<void> _saveArticlesToCache() async {
+    if (widget.category?.id == null) return;
+    // We convert the list of Article objects back to a JSON string to save it.
+    final articlesJson = jsonEncode(_articles.map((a) => a.toJson()).toList());
+    await Storage().setArticlesByCategory(
+      articlesJson,
+      widget.category?.id ?? 0,
+    );
   }
 
   void _onScroll() {
