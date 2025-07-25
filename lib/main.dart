@@ -14,7 +14,7 @@ import 'providers/themes.dart';
 import 'l10n/app_localizations.dart';
 import 'models/article_category_model.dart';
 import 'screens/menu/menu_screen.dart';
-import 'components/app_scroll_behavior.dart';
+import 'components/scroll/app_scroll_behavior.dart';
 
 void main() async {
   // Ensure Flutter is ready.

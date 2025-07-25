@@ -286,7 +286,7 @@ final ThemeData darkThemeData = ThemeData.dark(useMaterial3: false).copyWith(
   focusColor: AppColors.dark.focusColor,
   iconTheme: IconThemeData(color: AppColors.dark.iconThemeColor),
   extensions: <ThemeExtension<dynamic>>[AppColors.dark],
-  splashFactory: InkSparkle.splashFactory,
+  splashFactory: NoSplash.splashFactory,
   progressIndicatorTheme: ProgressIndicatorThemeData(
     color: AppColors.dark.progressIndicatorColor,
   ),

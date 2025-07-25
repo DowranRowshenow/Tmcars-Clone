@@ -53,12 +53,11 @@ class _ArticlesTabState extends State<ArticlesTab> {
     }
 
     try {
-      // Use the direct mask if provided, otherwise use the category's code.
-      final String effectiveMask = widget.mask ?? widget.category?.code ?? "";
-
       final newArticles = await Server.getArticles(
         offset: _offset,
-        mask: effectiveMask,
+        mask: widget.mask ?? "",
+        categoryCode: widget.category?.code ?? "",
+        categoryId: widget.category?.id ?? 0,
       );
       if (mounted) {
         setState(() {

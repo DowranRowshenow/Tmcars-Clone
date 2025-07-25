@@ -83,21 +83,16 @@ class _AllOthersTabState extends State<AllOthersTab> {
                 }
                 return RefreshIndicator(
                   onRefresh: _handleRefresh,
-                  child: SingleChildScrollView(
-                    physics: const AlwaysScrollableScrollPhysics(),
-                    child: ListView.builder(
-                      itemExtent: Constants.popularProductItemExtent,
-                      shrinkWrap:
-                          true, // Important when inside another scrollable
-                      physics:
-                          const NeverScrollableScrollPhysics(), // Delegate scrolling
-                      itemCount: popularProducts.length,
-                      itemBuilder: (context, index) {
-                        return PopularProductCard(
-                          product: popularProducts[index],
-                        );
-                      },
-                    ),
+                  child: ListView.builder(
+                    itemExtent: Constants.popularProductItemExtent,
+                    shrinkWrap:
+                        true, // Important when inside another scrollable
+                    itemCount: popularProducts.length,
+                    itemBuilder: (context, index) {
+                      return PopularProductCard(
+                        product: popularProducts[index],
+                      );
+                    },
                   ),
                 );
               }

@@ -90,6 +90,46 @@ class Server {
     }
   }
 
+  static Future<List<Article>> getArticles({
+    int offset = 0,
+    int max = 40,
+    int categoryId = 0,
+    String categoryCode = "",
+    String mask = "",
+    String tag = "",
+    String devId = "",
+  }) async {
+    final Map<String, dynamic> map = {'max': max};
+    if (offset != 0) {
+      map['offset'] = offset;
+    }
+    if (categoryId != 0) {
+      map['categoryId'] = categoryId;
+    }
+    if (categoryCode != "") {
+      map['categoryCode'] = categoryCode;
+    }
+    if (mask != "") {
+      map['mask'] = mask;
+    }
+    if (tag != "") {
+      map['tag'] = tag;
+    }
+    if (devId != "") {
+      map['devId'] = devId;
+    }
+
+    final response = await http.get(
+      Uri.https(host, "/tmcars/article/articles", map),
+    );
+    if (response.statusCode == 200) {
+      final List<dynamic> data = json.decode(response.body);
+      return data.map((e) => Article.fromJson(e)).toList();
+    } else {
+      throw Exception('Failed to load articles');
+    }
+  }
+
   static Future<List<Product>> getProducts({
     String name = '',
     String category = '',
@@ -130,23 +170,5 @@ class Server {
     } catch (e) {
       throw Exception('Error fetching data: $e');
     }*/
-  }
-
-  static Future<List<Article>> getArticles({
-    int offset = 0,
-    String mask = "",
-  }) async {
-    final response = await http.get(
-      Uri.https(host, "/tmcars/article/articles", {
-        "offset": offset.toString(),
-        "mask": mask,
-      }),
-    );
-    if (response.statusCode == 200) {
-      final List<dynamic> data = json.decode(response.body);
-      return data.map((e) => Article.fromJson(e)).toList();
-    } else {
-      throw Exception('Failed to load articles');
-    }
   }
 }

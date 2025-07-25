@@ -10,6 +10,23 @@ import '../../../models/popular_product_model.dart';
 class PopularProductCard extends StatelessWidget {
   const PopularProductCard({super.key, required this.product});
   final PopularProduct product;
+  final double size = 96;
+
+  Widget _buildImagePlaceholder(BuildContext context) {
+    final AppColors appColors = Theme.of(context).extension<AppColors>()!;
+    return Container(
+      width: size,
+      height: size,
+      color: appColors.tileThemeColor,
+      child: Center(
+        child: Icon(
+          Icons.broken_image_outlined,
+          size: 50,
+          color: Colors.grey[700]!,
+        ),
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -19,42 +36,19 @@ class PopularProductCard extends StatelessWidget {
       padding: EdgeInsets.all(8.0),
       onTap: () {},
       color: Colors.transparent,
-      border: const Border(bottom: BorderSide(color: Colors.grey, width: 0.5)),
+      border: Border(
+        bottom: BorderSide(color: Theme.of(context).dividerColor, width: 0.5),
+      ),
       child: Row(
         children: [
           CachedNetworkImage(
             imageUrl: product.img,
-            height: 90,
-            width: 90,
+            height: size,
+            width: size,
             fit: BoxFit.fitHeight,
-            placeholder: (context, url) {
-              return Container(
-                width: 90,
-                height: 90,
-                color: appColors.tileThemeColor,
-                child: Center(
-                  child: Icon(
-                    Icons.broken_image_outlined,
-                    size: 50,
-                    color: Colors.grey[700]!,
-                  ),
-                ),
-              );
-            },
-            errorWidget: (context, url, error) {
-              return Container(
-                width: 90,
-                height: 90,
-                color: appColors.tileThemeColor,
-                child: Center(
-                  child: Icon(
-                    Icons.broken_image_outlined,
-                    size: 50,
-                    color: Colors.grey[700]!,
-                  ),
-                ),
-              );
-            },
+            placeholder: (context, url) => _buildImagePlaceholder(context),
+            errorWidget: (context, url, error) =>
+                _buildImagePlaceholder(context),
           ),
           SizedBox(width: 10),
           Flexible(
@@ -64,7 +58,7 @@ class PopularProductCard extends StatelessWidget {
               children: [
                 Text(
                   product.title,
-                  style: const TextStyle(fontSize: 16),
+                  style: const TextStyle(fontSize: 15),
                   maxLines: 2,
                   overflow: TextOverflow.ellipsis,
                 ),
