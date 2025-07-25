@@ -9,8 +9,9 @@ import '../../../utils/server.dart';
 import '../components/article_card.dart';
 
 class ArticlesTab extends StatefulWidget {
-  const ArticlesTab({super.key, this.category, this.mask});
+  const ArticlesTab({super.key, this.category, this.mask, this.tags});
   final String? mask;
+  final String? tags;
   final ArticleCategory? category;
   @override
   State<ArticlesTab> createState() => _ArticlesTabState();
@@ -58,6 +59,7 @@ class _ArticlesTabState extends State<ArticlesTab> {
         mask: widget.mask ?? "",
         categoryCode: widget.category?.code ?? "",
         categoryId: widget.category?.id ?? 0,
+        tags: widget.tags ?? "",
       );
       if (mounted) {
         setState(() {

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart' hide StretchingOverscrollIndicator;
-import 'low_friction_scroll_physics.dart';
 import 'stretch_scroll_indicator.dart';
 
 /// A scroll behavior that enables the "stretch" overscroll effect.
@@ -19,6 +18,7 @@ class AppScrollBehavior extends ScrollBehavior {
     );
   }
 
+  /*
   @override
   ScrollPhysics getScrollPhysics(BuildContext context) {
     // This applies the ultra-low friction scroll physics to the main scroll.
@@ -28,4 +28,5 @@ class AppScrollBehavior extends ScrollBehavior {
       parent: AlwaysScrollableScrollPhysics(),
     );
   }
+  */
 }

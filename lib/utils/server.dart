@@ -96,7 +96,7 @@ class Server {
     int categoryId = 0,
     String categoryCode = "",
     String mask = "",
-    String tag = "",
+    String tags = "",
     String devId = "",
   }) async {
     final Map<String, dynamic> map = {'max': max};
@@ -112,8 +112,8 @@ class Server {
     if (mask != "") {
       map['mask'] = mask;
     }
-    if (tag != "") {
-      map['tag'] = tag;
+    if (tags != "") {
+      map['tags'] = tags;
     }
     if (devId != "") {
       map['devId'] = devId;
