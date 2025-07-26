@@ -21,6 +21,8 @@ class AppColors extends ThemeExtension<AppColors> {
     required this.tintColor,
     required this.dividerColor,
     required this.progressIndicatorColor,
+    required this.tagColor,
+    required this.tagColor2,
   });
 
   final Color? appBarBackgroundColor;
@@ -38,6 +40,8 @@ class AppColors extends ThemeExtension<AppColors> {
   final Color? tintColor;
   final Color? dividerColor;
   final Color? progressIndicatorColor;
+  final Color? tagColor;
+  final Color? tagColor2;
 
   // Light theme custom colors
   static final AppColors light = AppColors(
@@ -57,6 +61,8 @@ class AppColors extends ThemeExtension<AppColors> {
     tintColor: const Color.fromARGB(255, 233, 223, 231),
     dividerColor: Colors.black.withAlpha(128), // 50% opacity
     progressIndicatorColor: Constants.colorPrimary,
+    tagColor2: Constants.colorPrimary, // Light cyan for tags
+    tagColor: Color(0xFFB2EBF2), // Another light cyan for tags
   );
 
   // Dark theme custom colors
@@ -77,6 +83,8 @@ class AppColors extends ThemeExtension<AppColors> {
     tintColor: const Color.fromARGB(255, 71, 59, 71),
     dividerColor: Colors.white.withAlpha(128), // 50% opacity
     progressIndicatorColor: Colors.white54,
+    tagColor2: Constants.blueGrey800, // Dark cyan for tags
+    tagColor: Constants.colorPrimary, // Another dark cyan for tags
   );
 
   @override
@@ -96,6 +104,8 @@ class AppColors extends ThemeExtension<AppColors> {
     Color? tintColor,
     Color? dividerColor,
     Color? progressIndicatorColor,
+    Color? tagColor,
+    Color? tagColor2,
   }) {
     return AppColors(
       appBarBackgroundColor:
@@ -118,6 +128,8 @@ class AppColors extends ThemeExtension<AppColors> {
       dividerColor: dividerColor ?? this.dividerColor,
       progressIndicatorColor:
           progressIndicatorColor ?? this.progressIndicatorColor,
+      tagColor: tagColor ?? this.tagColor,
+      tagColor2: tagColor2 ?? this.tagColor2,
     );
   }
 
@@ -169,6 +181,8 @@ class AppColors extends ThemeExtension<AppColors> {
         other.progressIndicatorColor,
         t,
       ),
+      tagColor: Color.lerp(tagColor, other.tagColor, t),
+      tagColor2: Color.lerp(tagColor2, other.tagColor2, t),
     );
   }
 }

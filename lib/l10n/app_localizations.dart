@@ -543,6 +543,12 @@ abstract class AppLocalizations {
   /// **'Share link'**
   String get shareLink;
 
+  /// No description provided for @tags.
+  ///
+  /// In en, this message translates to:
+  /// **'Tags'**
+  String get tags;
+
   /// No description provided for @notRegistered.
   ///
   /// In en, this message translates to:

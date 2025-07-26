@@ -231,6 +231,9 @@ class AppLocalizationsTk extends AppLocalizations {
   String get shareLink => 'Link paýlaşmak';
 
   @override
+  String get tags => 'Tegler';
+
+  @override
   String get notRegistered => 'Siz ulgama girmändirsiňiz! Ulgama girip, siz bildiriş goşup bilersiňiz, öz bildirişleriňizi we profiliňizi sazlap bilersiňiz, we özüňiziň başga telefonlaryňyza geçirip bilersiňiz.';
 
   @override

@@ -6,12 +6,12 @@ import 'stretch_scroll_indicator.dart';
 ///
 /// This provides a very smooth and long-gliding scroll experience that
 /// stops precisely at the content boundaries without bounce or overscroll.
-class UltraLowFrictionScrollPhysics extends ScrollPhysics {
-  const UltraLowFrictionScrollPhysics({super.parent});
+class LowFrictionScrollPhysics extends ScrollPhysics {
+  const LowFrictionScrollPhysics({super.parent});
 
   @override
-  UltraLowFrictionScrollPhysics applyTo(ScrollPhysics? ancestor) {
-    return UltraLowFrictionScrollPhysics(parent: buildParent(ancestor));
+  LowFrictionScrollPhysics applyTo(ScrollPhysics? ancestor) {
+    return LowFrictionScrollPhysics(parent: buildParent(ancestor));
   }
 
   @override
@@ -35,7 +35,7 @@ class UltraLowFrictionScrollPhysics extends ScrollPhysics {
     // This is the value to change for less friction in the main scroll.
     // A smaller value here will make the scroll glide longer.
     // Experiment with values like 0.0001, 0.00005, etc.
-    const double customFriction = 0.0001; // Adjusted for even more glide
+    const double customFriction = 0.002; // Adjusted for even more glide
 
     return ClampingScrollSimulation(
       position: position.pixels,
@@ -67,7 +67,7 @@ class AppScrollBehavior extends ScrollBehavior {
     // This applies the ultra-low friction scroll physics to the main scroll.
     // AlwaysScrollableScrollPhysics ensures that scrolling is always possible,
     // even if the content does not overflow the viewport.
-    return const UltraLowFrictionScrollPhysics(
+    return const LowFrictionScrollPhysics(
       parent: AlwaysScrollableScrollPhysics(),
     );
   }
