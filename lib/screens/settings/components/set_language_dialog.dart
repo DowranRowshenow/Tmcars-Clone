@@ -34,8 +34,8 @@ Future<T?> showSetLanguageDialog<T>({
       return StatefulBuilder(
         builder: (context, setState) {
           return AlertDialog(
-            insetPadding: EdgeInsets.all(Constants.dialogPadding),
-            contentPadding: EdgeInsets.fromLTRB(0, 20, 0, 0),
+            insetPadding: const EdgeInsets.all(Constants.dialogPadding),
+            contentPadding: const EdgeInsets.fromLTRB(0, 20, 0, 0),
             backgroundColor: appColors.themedSurface,
             elevation: Constants.elevation,
             title: Text(
@@ -71,7 +71,7 @@ Future<T?> showSetLanguageDialog<T>({
                 ),
                 child: Text(
                   AppLocalizations.of(context)!.select,
-                  style: TextStyle(color: Constants.colorPrimary),
+                  style: const TextStyle(color: Constants.colorPrimary),
                 ),
                 onPressed: () {
                   // Use context.read inside a callback.
@@ -86,7 +86,7 @@ Future<T?> showSetLanguageDialog<T>({
                 ),
                 child: Text(
                   AppLocalizations.of(context)!.cancel,
-                  style: TextStyle(color: Constants.colorPrimary),
+                  style: const TextStyle(color: Constants.colorPrimary),
                 ),
                 onPressed: () => Navigator.of(dialogContext).pop(),
               ),

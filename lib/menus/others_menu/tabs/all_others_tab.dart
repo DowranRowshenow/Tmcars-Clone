@@ -40,7 +40,7 @@ class _AllOthersTabState extends State<AllOthersTab> {
     return Column(
       children: [
         Container(
-          padding: EdgeInsets.all(10),
+          padding: const EdgeInsets.all(10),
           decoration: const BoxDecoration(
             border: Border(bottom: BorderSide(width: 0.5)),
           ),
@@ -73,7 +73,7 @@ class _AllOthersTabState extends State<AllOthersTab> {
             future: _popularProductsFuture,
             builder: (context, snapshot) {
               if (snapshot.connectionState == ConnectionState.waiting) {
-                return Center(child: CircularProgressIndicator());
+                return const Center(child: CircularProgressIndicator());
               } else if (snapshot.hasError) {
                 return NoConnection(onTap: () => _handleRefresh());
               } else if (snapshot.hasData) {

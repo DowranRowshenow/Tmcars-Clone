@@ -12,7 +12,7 @@ class ShouldRegister extends StatelessWidget {
   Widget build(BuildContext context) {
     return Center(
       child: Container(
-        padding: EdgeInsets.all(30),
+        padding: const EdgeInsets.all(30),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
@@ -20,9 +20,9 @@ class ShouldRegister extends StatelessWidget {
               AppLocalizations.of(context)!.shouldRegister,
               softWrap: true,
               textAlign: TextAlign.center,
-              style: TextStyle(overflow: TextOverflow.clip, fontSize: 18),
+              style: const TextStyle(overflow: TextOverflow.clip, fontSize: 18),
             ),
-            SizedBox(height: 10),
+            const SizedBox(height: 10),
             ElevatedButton(
               style: ButtonStyle(
                 backgroundColor: WidgetStateProperty.all(
@@ -37,7 +37,7 @@ class ShouldRegister extends StatelessWidget {
               },
               child: Text(
                 AppLocalizations.of(context)!.register.toUpperCase(),
-                style: TextStyle(color: Colors.white),
+                style: const TextStyle(color: Colors.white),
               ),
             ),
           ],

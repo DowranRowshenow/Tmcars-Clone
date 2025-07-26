@@ -22,10 +22,10 @@ Future<T?> shouldRegisterDialog<T>({
       final AppColors appColors = Theme.of(context).extension<AppColors>()!;
 
       return AlertDialog(
-        insetPadding: EdgeInsets.all(Constants.dialogPadding),
+        insetPadding: const EdgeInsets.all(Constants.dialogPadding),
         backgroundColor: appColors.themedSurface,
         elevation: Constants.elevation,
-        contentPadding: EdgeInsets.fromLTRB(30, 10, 30, 0),
+        contentPadding: const EdgeInsets.fromLTRB(30, 10, 30, 0),
         title: Text(
           AppLocalizations.of(context)!.notification,
           style: TextStyle(color: appColors.textThemeColor),
@@ -38,7 +38,7 @@ Future<T?> shouldRegisterDialog<T>({
             ),
             child: Text(
               AppLocalizations.of(context)!.register.toUpperCase(),
-              style: TextStyle(color: Constants.colorPrimary),
+              style: const TextStyle(color: Constants.colorPrimary),
             ),
             onPressed: () {
               Navigator.of(context).pop(false);
@@ -54,7 +54,7 @@ Future<T?> shouldRegisterDialog<T>({
             ),
             child: Text(
               AppLocalizations.of(context)!.cancel.toUpperCase(),
-              style: TextStyle(color: Constants.colorPrimary),
+              style: const TextStyle(color: Constants.colorPrimary),
             ),
             onPressed: () => Navigator.of(context).pop(false),
           ),

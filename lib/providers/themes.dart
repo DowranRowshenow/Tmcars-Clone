@@ -22,7 +22,7 @@ class AppColors extends ThemeExtension<AppColors> {
     required this.dividerColor,
     required this.progressIndicatorColor,
     required this.tagColor,
-    required this.tagColor2,
+    required this.categoryColor,
   });
 
   final Color? appBarBackgroundColor;
@@ -41,7 +41,7 @@ class AppColors extends ThemeExtension<AppColors> {
   final Color? dividerColor;
   final Color? progressIndicatorColor;
   final Color? tagColor;
-  final Color? tagColor2;
+  final Color? categoryColor;
 
   // Light theme custom colors
   static final AppColors light = AppColors(
@@ -61,8 +61,8 @@ class AppColors extends ThemeExtension<AppColors> {
     tintColor: const Color.fromARGB(255, 233, 223, 231),
     dividerColor: Colors.black.withAlpha(128), // 50% opacity
     progressIndicatorColor: Constants.colorPrimary,
-    tagColor2: Constants.colorPrimary, // Light cyan for tags
-    tagColor: Color(0xFFB2EBF2), // Another light cyan for tags
+    categoryColor: Colors.blueGrey.shade100, // Light cyan for tags
+    tagColor: Colors.blueGrey.shade100, // Another light cyan for tags
   );
 
   // Dark theme custom colors
@@ -70,7 +70,7 @@ class AppColors extends ThemeExtension<AppColors> {
     appBarBackgroundColor: Constants.blueGrey950,
     appBarForegroundColor: Colors.white,
     themedSurface: Constants.blueGrey950,
-    menuBackgroundColor: Color.fromARGB(145, 102, 102, 102),
+    menuBackgroundColor: const Color.fromARGB(145, 102, 102, 102),
     iconThemeColor: Colors.white.withAlpha(128), // 50% opacity
     textThemeColor: Colors.white.withAlpha(204), // 80% opacity
     textHintThemeColor: Colors.white.withAlpha(128), // 50% opacity
@@ -83,7 +83,7 @@ class AppColors extends ThemeExtension<AppColors> {
     tintColor: const Color.fromARGB(255, 71, 59, 71),
     dividerColor: Colors.white.withAlpha(128), // 50% opacity
     progressIndicatorColor: Colors.white54,
-    tagColor2: Constants.blueGrey800, // Dark cyan for tags
+    categoryColor: Colors.blueGrey.shade900, // Dark cyan for tags
     tagColor: Constants.colorPrimary, // Another dark cyan for tags
   );
 
@@ -105,7 +105,7 @@ class AppColors extends ThemeExtension<AppColors> {
     Color? dividerColor,
     Color? progressIndicatorColor,
     Color? tagColor,
-    Color? tagColor2,
+    Color? categoryColor,
   }) {
     return AppColors(
       appBarBackgroundColor:
@@ -129,7 +129,7 @@ class AppColors extends ThemeExtension<AppColors> {
       progressIndicatorColor:
           progressIndicatorColor ?? this.progressIndicatorColor,
       tagColor: tagColor ?? this.tagColor,
-      tagColor2: tagColor2 ?? this.tagColor2,
+      categoryColor: categoryColor ?? this.categoryColor,
     );
   }
 
@@ -182,7 +182,7 @@ class AppColors extends ThemeExtension<AppColors> {
         t,
       ),
       tagColor: Color.lerp(tagColor, other.tagColor, t),
-      tagColor2: Color.lerp(tagColor2, other.tagColor2, t),
+      categoryColor: Color.lerp(categoryColor, other.categoryColor, t),
     );
   }
 }

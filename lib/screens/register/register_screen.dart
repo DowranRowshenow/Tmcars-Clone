@@ -39,14 +39,14 @@ class _RegisterScreenState extends State<RegisterScreen> {
       ),
       body: SingleChildScrollView(
         child: Container(
-          padding: EdgeInsets.all(20),
+          padding: const EdgeInsets.all(20),
           width: double.infinity,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              SizedBox(height: 15),
+              const SizedBox(height: 15),
               Container(
-                padding: EdgeInsets.all(25),
+                padding: const EdgeInsets.all(25),
                 child: Image(
                   image: AssetImage(
                     context.watch<ThemeManager>().isDark()
@@ -56,7 +56,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   height: 85,
                 ),
               ),
-              SizedBox(height: 15),
+              const SizedBox(height: 15),
               Container(
                 child: isEmail
                     ? Row(
@@ -65,7 +65,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                             AppLocalizations.of(context)!.emailField,
                             style: const TextStyle(fontSize: 18),
                           ),
-                          SizedBox(width: 5),
+                          const SizedBox(width: 5),
                           Flexible(
                             child: TextField(
                               key: const Key('emailAddressController'),
@@ -88,7 +88,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                             Constants.phoneCode,
                             style: TextStyle(fontSize: 18),
                           ),
-                          SizedBox(width: 10),
+                          const SizedBox(width: 10),
                           Flexible(
                             child: TextField(
                               key: const Key('phoneNumberController'),
@@ -110,7 +110,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       ),
               ),
               Container(
-                margin: EdgeInsets.only(top: 5, bottom: 5, left: 45),
+                margin: const EdgeInsets.only(top: 5, bottom: 5, left: 45),
                 decoration: BoxDecoration(
                   border: Border(
                     bottom: BorderSide(
@@ -120,7 +120,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   ),
                 ),
               ),
-              SizedBox(height: 15),
+              const SizedBox(height: 15),
               Row(
                 children: [
                   Checkbox(
@@ -150,18 +150,18 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   ),
                 ],
               ),
-              SizedBox(height: 15),
+              const SizedBox(height: 15),
               RippleContainer(
                 onTap: () {},
                 color: Constants.colorAccent,
-                padding: EdgeInsets.all(15),
+                padding: const EdgeInsets.all(15),
                 borderRadius: Constants.buttonBorderRadius,
                 child: Text(
                   AppLocalizations.of(context)!.accept.toUpperCase(),
-                  style: TextStyle(fontSize: 16, color: Colors.white),
+                  style: const TextStyle(fontSize: 16, color: Colors.white),
                 ),
               ),
-              SizedBox(height: 30),
+              const SizedBox(height: 30),
               Container(
                 child: isEmail
                     ? GestureDetector(
@@ -185,7 +185,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         onTap: () => setState(() => isEmail = true),
                       ),
               ),
-              SizedBox(height: 30),
+              const SizedBox(height: 30),
               Text(
                 AppLocalizations.of(context)!.registerDescription,
                 textAlign: TextAlign.center,

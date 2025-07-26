@@ -59,7 +59,7 @@ class _ContactScreenState extends State<ContactScreen> {
                 Flexible(
                   child: TextField(
                     autocorrect: false,
-                    style: TextStyle(fontSize: 18),
+                    style: const TextStyle(fontSize: 18),
                     keyboardType: TextInputType.multiline,
                     maxLines: 1,
                     decoration: InputDecoration.collapsed(
@@ -68,11 +68,11 @@ class _ContactScreenState extends State<ContactScreen> {
                   ),
                 ),
                 RippleContainer(
-                  padding: EdgeInsets.all(10),
+                  padding: const EdgeInsets.all(10),
                   onTap: () {},
                   borderRadius: 25,
                   color: Colors.transparent,
-                  child: Icon(Icons.send_outlined, size: 24),
+                  child: const Icon(Icons.send_outlined, size: 24),
                 ),
               ],
             ),

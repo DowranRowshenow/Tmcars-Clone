@@ -25,7 +25,7 @@ class _OthersMenuState extends State<OthersMenu> {
           toolbarHeight: 0,
           leading: const SizedBox(),
           bottom: TabBar(
-            textScaler: TextScaler.linear(Constants.tabTextScale),
+            textScaler: const TextScaler.linear(Constants.tabTextScale),
 
             indicatorColor: Colors.white,
             tabs: [

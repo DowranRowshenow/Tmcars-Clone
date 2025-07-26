@@ -24,8 +24,8 @@ Future<T?> showSetLocationDialog<T>({
       return StatefulBuilder(
         builder: (context, setState) {
           return AlertDialog(
-            insetPadding: EdgeInsets.all(Constants.dialogPadding),
-            contentPadding: EdgeInsets.fromLTRB(20, 20, 20, 0),
+            insetPadding: const EdgeInsets.all(Constants.dialogPadding),
+            contentPadding: const EdgeInsets.fromLTRB(20, 20, 20, 0),
             backgroundColor: appColors.themedSurface,
             elevation: Constants.elevation,
             title: Text(
@@ -107,7 +107,7 @@ Future<T?> showSetLocationDialog<T>({
                 ),
                 child: Text(
                   AppLocalizations.of(context)!.cancel,
-                  style: TextStyle(color: Constants.colorPrimary),
+                  style: const TextStyle(color: Constants.colorPrimary),
                 ),
                 onPressed: () => Navigator.of(context).pop(),
               ),

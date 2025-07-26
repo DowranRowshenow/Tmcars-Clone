@@ -17,15 +17,15 @@ class HtmlRenderer extends StatelessWidget {
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return Container(
-            margin: EdgeInsets.all(60),
-            child: Center(child: CircularProgressIndicator()),
+            margin: const EdgeInsets.all(60),
+            child: const Center(child: CircularProgressIndicator()),
           );
         } else if (snapshot.hasError) {
           return Padding(
             padding: const EdgeInsets.all(16.0),
             child: Text(
               'Error: ${snapshot.error}',
-              style: TextStyle(color: Colors.red),
+              style: const TextStyle(color: Colors.red),
             ),
           );
         } else if (snapshot.hasData) {
@@ -33,7 +33,11 @@ class HtmlRenderer extends StatelessWidget {
             data: snapshot.data,
             onLinkTap: (url, attributes, element) async {
               if (url != null) {
-                await launchUrl(Uri.parse(url));
+                try {
+                  await launchUrl(Uri.parse(url));
+                } catch (e) {
+                  // TODO: implement intent tel:
+                }
               }
             },
             style: {
@@ -48,7 +52,7 @@ class HtmlRenderer extends StatelessWidget {
                 backgroundColor: Colors.transparent,
                 color: appColors.textThemeColor,
                 fontSize: FontSize(16),
-                lineHeight: LineHeight(1.5),
+                lineHeight: const LineHeight(1.5),
               ),
               "span": Style(color: appColors.textThemeColor),
               "div": Style(
@@ -59,7 +63,7 @@ class HtmlRenderer extends StatelessWidget {
             },
           );
         } else {
-          return Center(child: Text('No content available.'));
+          return const Center(child: Text('No content available.'));
         }
       },
     );

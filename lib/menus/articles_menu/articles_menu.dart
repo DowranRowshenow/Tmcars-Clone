@@ -47,14 +47,14 @@ class NewsMenu extends StatelessWidget {
             splashColor: Colors.transparent,
           ),
           bottom: TabBar(
-            textScaler: TextScaler.linear(Constants.tabTextScale),
+            textScaler: const TextScaler.linear(Constants.tabTextScale),
             indicatorColor: Colors.white,
             isScrollable: true,
             tabs: categories
                 .map((cat) => Tab(text: getCategoryName(cat)))
                 .toList(),
           ),
-          actions: [],
+          actions: const [],
         ),
         body: TabBarView(
           // Pass the specific category to each tab so it knows what articles to load.

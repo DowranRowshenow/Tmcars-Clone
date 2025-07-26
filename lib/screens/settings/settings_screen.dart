@@ -59,7 +59,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
           AppLocalizations.of(context)!.settings,
           overflow: TextOverflow.ellipsis,
           softWrap: false,
-          style: TextStyle(overflow: TextOverflow.ellipsis),
+          style: const TextStyle(overflow: TextOverflow.ellipsis),
         ),
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
@@ -75,7 +75,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
               AppLocalizations.of(context)!.generalSettings,
               overflow: TextOverflow.ellipsis,
               softWrap: false,
-              style: TextStyle(overflow: TextOverflow.ellipsis),
+              style: const TextStyle(overflow: TextOverflow.ellipsis),
             ),
             tileColor: appColors.tileThemeColor,
           ),
@@ -84,13 +84,13 @@ class _SettingsScreenState extends State<SettingsScreen> {
               AppLocalizations.of(context)!.language,
               overflow: TextOverflow.ellipsis,
               softWrap: false,
-              style: TextStyle(overflow: TextOverflow.ellipsis),
+              style: const TextStyle(overflow: TextOverflow.ellipsis),
             ),
             trailing: Text(
               AppLocalizations.of(context)!.lang,
               overflow: TextOverflow.ellipsis,
               softWrap: false,
-              style: TextStyle(overflow: TextOverflow.ellipsis),
+              style: const TextStyle(overflow: TextOverflow.ellipsis),
             ),
             onTap: () => showSetLanguageDialog(context: context),
           ),
@@ -106,7 +106,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
               AppLocalizations.of(context)!.version,
               overflow: TextOverflow.ellipsis,
               softWrap: false,
-              style: TextStyle(overflow: TextOverflow.ellipsis),
+              style: const TextStyle(overflow: TextOverflow.ellipsis),
             ),
             trailing: const Text(
               Constants.packageVersion,
@@ -128,7 +128,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
               AppLocalizations.of(context)!.internet,
               overflow: TextOverflow.ellipsis,
               softWrap: false,
-              style: TextStyle(overflow: TextOverflow.ellipsis),
+              style: const TextStyle(overflow: TextOverflow.ellipsis),
             ),
             trailing: Text(
               context.watch<TrafficManager>().getTrafficMode == 0
@@ -136,7 +136,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   : AppLocalizations.of(context)!.econom,
               overflow: TextOverflow.ellipsis,
               softWrap: false,
-              style: TextStyle(overflow: TextOverflow.ellipsis),
+              style: const TextStyle(overflow: TextOverflow.ellipsis),
             ),
             onTap: () {
               showSetTrafficDialog(context: context).then((onValue) {
@@ -156,13 +156,13 @@ class _SettingsScreenState extends State<SettingsScreen> {
               AppLocalizations.of(context)!.selectedLocation,
               overflow: TextOverflow.ellipsis,
               softWrap: false,
-              style: TextStyle(overflow: TextOverflow.ellipsis),
+              style: const TextStyle(overflow: TextOverflow.ellipsis),
             ),
             trailing: Text(
               getLocation(context.watch<LocationManager>().location),
               overflow: TextOverflow.ellipsis,
               softWrap: false,
-              style: TextStyle(overflow: TextOverflow.ellipsis),
+              style: const TextStyle(overflow: TextOverflow.ellipsis),
             ),
             onTap: () {
               showSetLocationDialog(context: context).then((onValue) {
@@ -175,7 +175,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
               AppLocalizations.of(context)!.additional,
               overflow: TextOverflow.ellipsis,
               softWrap: false,
-              style: TextStyle(overflow: TextOverflow.ellipsis),
+              style: const TextStyle(overflow: TextOverflow.ellipsis),
             ),
             tileColor: appColors.tileThemeColor,
           ),
@@ -184,11 +184,11 @@ class _SettingsScreenState extends State<SettingsScreen> {
               AppLocalizations.of(context)!.share,
               overflow: TextOverflow.ellipsis,
               softWrap: false,
-              style: TextStyle(overflow: TextOverflow.ellipsis),
+              style: const TextStyle(overflow: TextOverflow.ellipsis),
             ),
             trailing: SvgPicture.asset(
               Constants.arrowRight,
-              colorFilter: ColorFilter.mode(Colors.grey, BlendMode.srcIn),
+              colorFilter: const ColorFilter.mode(Colors.grey, BlendMode.srcIn),
               width: 6,
             ),
             onTap: () {
@@ -212,13 +212,13 @@ class _SettingsScreenState extends State<SettingsScreen> {
               AppLocalizations.of(context)!.helper,
               overflow: TextOverflow.ellipsis,
               softWrap: false,
-              style: TextStyle(overflow: TextOverflow.ellipsis),
+              style: const TextStyle(overflow: TextOverflow.ellipsis),
             ),
             trailing: Text(
               AppLocalizations.of(context)!.mustRead,
               overflow: TextOverflow.ellipsis,
               softWrap: false,
-              style: TextStyle(overflow: TextOverflow.ellipsis),
+              style: const TextStyle(overflow: TextOverflow.ellipsis),
             ),
             onTap: () {
               navigationManager.setScreen(
@@ -241,13 +241,13 @@ class _SettingsScreenState extends State<SettingsScreen> {
               AppLocalizations.of(context)!.policy,
               overflow: TextOverflow.ellipsis,
               softWrap: false,
-              style: TextStyle(overflow: TextOverflow.ellipsis),
+              style: const TextStyle(overflow: TextOverflow.ellipsis),
             ),
             trailing: Text(
               AppLocalizations.of(context)!.read,
               overflow: TextOverflow.ellipsis,
               softWrap: false,
-              style: TextStyle(overflow: TextOverflow.ellipsis),
+              style: const TextStyle(overflow: TextOverflow.ellipsis),
             ),
             onTap: () {
               navigationManager.setScreen(
@@ -270,13 +270,13 @@ class _SettingsScreenState extends State<SettingsScreen> {
               AppLocalizations.of(context)!.privacyPolicy,
               overflow: TextOverflow.ellipsis,
               softWrap: false,
-              style: TextStyle(overflow: TextOverflow.ellipsis),
+              style: const TextStyle(overflow: TextOverflow.ellipsis),
             ),
             trailing: Text(
               AppLocalizations.of(context)!.read,
               overflow: TextOverflow.ellipsis,
               softWrap: false,
-              style: TextStyle(overflow: TextOverflow.ellipsis),
+              style: const TextStyle(overflow: TextOverflow.ellipsis),
             ),
             onTap: () {
               navigationManager.setScreen(
@@ -299,13 +299,13 @@ class _SettingsScreenState extends State<SettingsScreen> {
               AppLocalizations.of(context)!.commentPolicy,
               overflow: TextOverflow.ellipsis,
               softWrap: false,
-              style: TextStyle(overflow: TextOverflow.ellipsis),
+              style: const TextStyle(overflow: TextOverflow.ellipsis),
             ),
             trailing: Text(
               AppLocalizations.of(context)!.read,
               overflow: TextOverflow.ellipsis,
               softWrap: false,
-              style: TextStyle(overflow: TextOverflow.ellipsis),
+              style: const TextStyle(overflow: TextOverflow.ellipsis),
             ),
             onTap: () {
               navigationManager.setScreen(
@@ -329,11 +329,11 @@ class _SettingsScreenState extends State<SettingsScreen> {
               overflow: TextOverflow.ellipsis,
               softWrap: false,
               maxLines: 1,
-              style: TextStyle(overflow: TextOverflow.ellipsis),
+              style: const TextStyle(overflow: TextOverflow.ellipsis),
             ),
             trailing: SvgPicture.asset(
               Constants.arrowRight,
-              colorFilter: ColorFilter.mode(Colors.grey, BlendMode.srcIn),
+              colorFilter: const ColorFilter.mode(Colors.grey, BlendMode.srcIn),
               width: 6,
             ),
             onTap: () {

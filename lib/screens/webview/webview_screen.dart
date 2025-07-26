@@ -63,7 +63,7 @@ class _WebViewScreenState extends State<WebViewScreen> {
       ),
       body: Stack(
         children: [
-          if (_isLoading) Center(child: CircularProgressIndicator()),
+          if (_isLoading) const Center(child: CircularProgressIndicator()),
           if (_webError) NoConnection(onTap: () => _retryLoad()),
           if (!_isLoading && !_webError) WebViewWidget(controller: _controller),
         ],

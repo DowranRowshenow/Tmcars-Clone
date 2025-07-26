@@ -22,7 +22,7 @@ Future<T?> showExitDialog<T>({
       final AppColors appColors = Theme.of(context).extension<AppColors>()!;
 
       return AlertDialog(
-        insetPadding: EdgeInsets.all(Constants.dialogPadding),
+        insetPadding: const EdgeInsets.all(Constants.dialogPadding),
         backgroundColor: appColors.themedSurface,
         elevation: Constants.elevation,
         title: Text(
@@ -36,7 +36,7 @@ Future<T?> showExitDialog<T>({
             ),
             child: Text(
               AppLocalizations.of(context)!.yes,
-              style: TextStyle(color: Constants.colorPrimary),
+              style: const TextStyle(color: Constants.colorPrimary),
             ),
             onPressed: () => exit(0),
           ),
@@ -46,7 +46,7 @@ Future<T?> showExitDialog<T>({
             ),
             child: Text(
               AppLocalizations.of(context)!.no,
-              style: TextStyle(color: Constants.colorPrimary),
+              style: const TextStyle(color: Constants.colorPrimary),
             ),
             onPressed: () => Navigator.of(context).pop(false),
           ),

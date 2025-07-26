@@ -71,9 +71,11 @@ class ArticleDetail {
       shareSiteUrlRu: json['shareSiteUrlRu'] as String,
       shareUrl: json['shareUrl'] as String?, // Nullable
       shareUrlRu: json['shareUrlRu'] as String?, // Nullable
-      tags: (json['tags'] as List<dynamic>)
-          .map((e) => ArticleTag.fromJson(e as Map<String, dynamic>))
-          .toList(),
+      tags:
+          (json['tags'] as List<dynamic>?) // Make the cast nullable
+              ?.map((e) => ArticleTag.fromJson(e as Map<String, dynamic>))
+              .toList() ??
+          [],
       viewCount: json['viewCount'] as int,
     );
   }

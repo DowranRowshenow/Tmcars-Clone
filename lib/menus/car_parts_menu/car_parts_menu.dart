@@ -25,7 +25,7 @@ class _CarPartsMenuState extends State<CarPartsMenu> {
           toolbarHeight: 0,
           leading: const SizedBox(),
           bottom: TabBar(
-            textScaler: TextScaler.linear(Constants.tabTextScale),
+            textScaler: const TextScaler.linear(Constants.tabTextScale),
             indicatorColor: Colors.white,
             tabs: [
               Tab(text: AppLocalizations.of(context)!.cars.toUpperCase()),

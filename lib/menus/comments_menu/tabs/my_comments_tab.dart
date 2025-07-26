@@ -13,6 +13,6 @@ class MyCommentsTab extends StatefulWidget {
 class _MyCommentsTabState extends State<MyCommentsTab> {
   @override
   Widget build(BuildContext context) {
-    return Constants.isRegistered ? const SizedBox() : ShouldRegister();
+    return Constants.isRegistered ? const SizedBox() : const ShouldRegister();
   }
 }

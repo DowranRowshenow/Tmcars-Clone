@@ -18,7 +18,7 @@ class PopularProductCard extends StatelessWidget {
     final AppColors appColors = Theme.of(context).extension<AppColors>()!;
 
     return RippleContainer(
-      padding: EdgeInsets.all(8.0),
+      padding: const EdgeInsets.all(8.0),
       onTap: () {},
       color: Colors.transparent,
       border: Border(
@@ -35,7 +35,7 @@ class PopularProductCard extends StatelessWidget {
             errorWidget: (context, url, error) =>
                 buildImagePlaceholder(context),
           ),
-          SizedBox(width: 10),
+          const SizedBox(width: 10),
           Flexible(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.start,
@@ -47,7 +47,7 @@ class PopularProductCard extends StatelessWidget {
                   maxLines: 2,
                   overflow: TextOverflow.ellipsis,
                 ),
-                SizedBox(height: 3),
+                const SizedBox(height: 3),
                 Text(
                   context.watch<LocaleManager>().locale.languageCode == 'ru'
                       ? product.descriptionRu
@@ -60,7 +60,7 @@ class PopularProductCard extends StatelessWidget {
                     overflow: TextOverflow.ellipsis,
                   ),
                 ),
-                SizedBox(height: 3),
+                const SizedBox(height: 3),
                 Text(
                   context.watch<LocaleManager>().locale.languageCode == 'ru'
                       ? product.timeLocationRu

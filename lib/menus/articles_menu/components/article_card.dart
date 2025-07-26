@@ -7,6 +7,7 @@ import '../../../providers/locale.dart';
 import '../../../providers/navigation.dart';
 import '../../../providers/themes.dart';
 import '../../../models/article_model.dart';
+import '../../../utils/constants.dart';
 
 class ArticleCard extends StatefulWidget {
   const ArticleCard({super.key, required this.article});
@@ -28,8 +29,9 @@ class _ArticleCardState extends State<ArticleCard> {
         ),
       ),
       child: ListTile(
-        minTileHeight: 90,
-        contentPadding: EdgeInsets.all(8),
+        key: Key(widget.article.id.toString()),
+        minTileHeight: Constants.articleItemExtent,
+        contentPadding: const EdgeInsets.all(8),
         onTap: () {
           context.read<NavigationManager>().setScreen(
             context,
@@ -47,7 +49,7 @@ class _ArticleCardState extends State<ArticleCard> {
           style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w600),
         ),
         subtitle: Container(
-          padding: EdgeInsets.only(top: 5),
+          padding: const EdgeInsets.only(top: 5),
           child: Text(
             context.watch<LocaleManager>().locale.languageCode == 'ru'
                 ? widget.article.elapsedTimeRu
@@ -65,9 +67,11 @@ class _ArticleCardState extends State<ArticleCard> {
         trailing: CachedNetworkImage(
           alignment: Alignment.center,
           imageUrl: widget.article.img,
+          fit: BoxFit.fitHeight,
+          memCacheHeight: 100,
+          memCacheWidth: 200,
           height: double.infinity,
           width: MediaQuery.of(context).size.width * 0.3,
-          fit: BoxFit.cover,
           placeholder: (context, url) => buildImagePlaceholder(context),
           errorWidget: (context, url, error) => buildImagePlaceholder(context),
         ),

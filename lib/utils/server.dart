@@ -165,6 +165,34 @@ class Server {
     }
   }
 
+  static Future<List<Article>> getNearestArticles(int id) async {
+    final String cacheKey = 'nearest_articles_$id';
+
+    // Check cache first
+    if (_cache.containsKey(cacheKey)) {
+      final cached = _cache[cacheKey];
+      if (cached['timestamp'] != null &&
+          DateTime.now().difference(cached['timestamp']) < _cacheExpiry) {
+        return cached['data'] as List<Article>;
+      }
+    }
+
+    final Map<String, dynamic> map = {'sourceId': id.toString()};
+
+    final response = await http.get(
+      Uri.https(host, "/tmcars/article/nearestNews", map),
+    );
+    if (response.statusCode == 200) {
+      final List<dynamic> data = json.decode(response.body);
+      final List<Article> res = data.map((e) => Article.fromJson(e)).toList();
+
+      _cache[cacheKey] = {'data': res, 'timestamp': DateTime.now()};
+      return res;
+    } else {
+      throw Exception('Failed to load articles');
+    }
+  }
+
   static Future<ArticleDetail> getArticle(int id) async {
     final String cacheKey = 'article_$id';
 

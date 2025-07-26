@@ -1,10 +1,12 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:share_plus/share_plus.dart';
 
 import '../../../components/scroll/glowless_scroll_behavior.dart';
 import '../../components/scroll/low_friction_scroll_physics.dart';
 import '../../l10n/app_localizations.dart';
+import '../../models/article_category_model.dart';
 import '../../models/article_detail_model.dart';
 import '../../models/article_model.dart';
 import '../../providers/themes.dart';
@@ -32,19 +34,26 @@ class _ArticleDetailScreenState extends State<ArticleDetailScreen> {
   ArticleDetail? articleDetail;
   static const double _expandedHeight = 250.0;
   late Future<String> _htmlContentFuture;
-  double _fabTop = 0;
-  bool _fabVisible = true;
+  List<Article>? nearestArticles;
+  String? colorCode;
+  List<ArticleCategory>? articleCategories;
+  // Use ValueNotifiers for FAB position and visibility
+  final ValueNotifier<double> _fabTopNotifier = ValueNotifier<double>(0);
+  final ValueNotifier<bool> _fabVisibleNotifier = ValueNotifier<bool>(true);
 
   @override
   void initState() {
     super.initState();
     _loadArticle();
+    _loadNearestArticles();
     _htmlContentFuture = Server.fetchHtmlContent(
       widget.languageCode == "ru"
           ? widget.article.openUrlRu
           : widget.article.openUrl,
     );
-    _fabTop = _expandedHeight - 5;
+    // Initialize ValueNotifiers with their initial values
+    _fabTopNotifier.value = _expandedHeight - 5;
+    _fabVisibleNotifier.value = true;
     _scrollController.addListener(_onScroll);
   }
 
@@ -52,11 +61,18 @@ class _ArticleDetailScreenState extends State<ArticleDetailScreen> {
   void dispose() {
     _scrollController.removeListener(_onScroll);
     _scrollController.dispose();
+    _fabTopNotifier.dispose(); // Dispose notifiers to prevent memory leaks
+    _fabVisibleNotifier.dispose();
     super.dispose();
   }
 
   Future<void> _loadArticle() async {
     articleDetail = await Server.getArticle(widget.article.id);
+    setState(() {});
+  }
+
+  Future<void> _loadNearestArticles() async {
+    nearestArticles = await Server.getNearestArticles(widget.article.id);
     setState(() {});
   }
 
@@ -69,23 +85,35 @@ class _ArticleDetailScreenState extends State<ArticleDetailScreen> {
     if (newTop < kToolbarHeight) newTop = kToolbarHeight;
     bool newVisible = newTop > kToolbarHeight + 1;
 
-    bool needsUpdate = false;
-    if (_fabTop != newTop) {
-      _fabTop = newTop;
-      needsUpdate = true;
+    // Update ValueNotifiers only if values have changed
+    if (_fabTopNotifier.value != newTop) {
+      _fabTopNotifier.value = newTop;
     }
-    if (_fabVisible != newVisible) {
-      _fabVisible = newVisible;
-      needsUpdate = true;
+    if (_fabVisibleNotifier.value != newVisible) {
+      _fabVisibleNotifier.value = newVisible;
     }
+
+    // _showTitle still requires setState as it affects the AppBar title,
+    // which is part of the main build method and not wrapped in AnimatedBuilder.
     final bool shouldShowTitle =
         _scrollController.hasClients &&
         _scrollController.offset >= _expandedHeight - kToolbarHeight;
     if (_showTitle != shouldShowTitle) {
       _showTitle = shouldShowTitle;
-      needsUpdate = true;
+      setState(() {});
     }
-    if (needsUpdate) setState(() {});
+  }
+
+  Color hexToColor(String hexCode) {
+    String colorString = hexCode.replaceAll("#", ""); // Remove '#'
+    colorString = colorString.replaceAll("0x", ""); // Remove '0x'
+
+    if (colorString.length == 6) {
+      colorString = "FF$colorString"; // Add full opacity if missing
+    }
+
+    // Parse the hexadecimal string to an integer
+    return Color(int.parse(colorString, radix: 16));
   }
 
   @override
@@ -94,6 +122,15 @@ class _ArticleDetailScreenState extends State<ArticleDetailScreen> {
     final String title = widget.languageCode == "ru"
         ? widget.article.titleRu
         : widget.article.title;
+    if (articleCategories == null) {
+      articleCategories = context.watch<List<ArticleCategory>>();
+      for (int i = 0; i < articleCategories!.length; i++) {
+        if (articleCategories![i].categoryName == widget.article.categoryName) {
+          colorCode = articleCategories![i].colorCode;
+          break;
+        }
+      }
+    }
 
     return Scaffold(
       body: Stack(
@@ -101,7 +138,7 @@ class _ArticleDetailScreenState extends State<ArticleDetailScreen> {
           CustomScrollView(
             controller: _scrollController,
             scrollBehavior: GlowlessScrollBehavior(),
-            physics: LowFrictionScrollPhysics(),
+            physics: const LowFrictionScrollPhysics(),
             slivers: <Widget>[
               SliverAppBar(
                 expandedHeight: _expandedHeight,
@@ -129,8 +166,8 @@ class _ArticleDetailScreenState extends State<ArticleDetailScreen> {
                           SharePlus.instance.share(
                             ShareParams(
                               text: widget.languageCode == 'ru'
-                                  ? articleDetail?.shareUrlRu ?? ""
-                                  : articleDetail?.shareUrl ?? "",
+                                  ? articleDetail?.shareSiteUrlRu ?? ""
+                                  : articleDetail?.shareSiteUrl ?? "",
                             ),
                           );
                           break;
@@ -160,8 +197,8 @@ class _ArticleDetailScreenState extends State<ArticleDetailScreen> {
                     errorWidget: (context, url, error) =>
                         const Icon(Icons.error),
                     fadeInDuration: const Duration(milliseconds: 200),
-                    memCacheHeight: 200,
-                    memCacheWidth: 300,
+                    memCacheHeight: 400,
+                    memCacheWidth: 600,
                   ),
                 ),
               ),
@@ -175,30 +212,38 @@ class _ArticleDetailScreenState extends State<ArticleDetailScreen> {
                     languageCode: widget.languageCode,
                     htmlContentFuture: _htmlContentFuture,
                     appColors: appColors,
+                    tagColor: hexToColor(colorCode ?? "000000"),
                   ),
                 ),
               ),
             ],
           ),
           // Floating widget positioned at the bottom of the SliverAppBar
-          Positioned(
-            top: _fabTop,
-            right: 30,
-            child: AnimatedScale(
-              scale: _fabVisible ? 1.0 : 0.0,
-              duration: const Duration(milliseconds: 250),
-              curve: Curves.easeInOut,
-              child: FloatingActionButton(
-                onPressed: () {
-                  // TODO: Implement add to favorites
-                },
-                backgroundColor: Colors.white,
-                child: const Icon(
-                  Icons.thumb_up_outlined,
-                  color: Colors.blueGrey,
+          // Wrapped in AnimatedBuilder to optimize rebuilds
+          AnimatedBuilder(
+            // Listen to both notifiers to trigger rebuild when either changes
+            animation: Listenable.merge([_fabTopNotifier, _fabVisibleNotifier]),
+            builder: (context, child) {
+              return Positioned(
+                top: _fabTopNotifier.value,
+                right: 30,
+                child: AnimatedScale(
+                  scale: _fabVisibleNotifier.value ? 1.0 : 0.0,
+                  duration: const Duration(milliseconds: 250),
+                  curve: Curves.easeInOut,
+                  child: FloatingActionButton(
+                    onPressed: () {
+                      // TODO: Implement add to favorites
+                    },
+                    backgroundColor: Colors.white,
+                    child: const Icon(
+                      Icons.thumb_up_outlined,
+                      color: Colors.blueGrey,
+                    ),
+                  ),
                 ),
-              ),
-            ),
+              );
+            },
           ),
         ],
       ),
@@ -213,6 +258,7 @@ class _ArticleDetailContent extends StatelessWidget {
   final String languageCode;
   final Future<String> htmlContentFuture;
   final AppColors appColors;
+  final Color tagColor;
 
   const _ArticleDetailContent({
     required this.articleDetail,
@@ -220,6 +266,7 @@ class _ArticleDetailContent extends StatelessWidget {
     required this.languageCode,
     required this.htmlContentFuture,
     required this.appColors,
+    required this.tagColor,
   });
 
   @override
@@ -232,7 +279,9 @@ class _ArticleDetailContent extends StatelessWidget {
             categoryName: languageCode == 'ru'
                 ? articleDetail!.categoryNameRu
                 : articleDetail!.categoryName,
-            color: appColors.tagColor2 ?? Constants.blueGrey800,
+            color: context.watch<ThemeManager>().isDark()
+                ? Colors.blueGrey.shade900
+                : tagColor,
           ),
         Text(
           languageCode == 'ru' ? article.titleRu : article.title,
@@ -245,6 +294,7 @@ class _ArticleDetailContent extends StatelessWidget {
           languageCode: languageCode,
         ),
         const SizedBox(height: 30),
+        // Placeholder for an ad or other content
         Container(
           height: 80,
           width: double.infinity,
@@ -253,7 +303,9 @@ class _ArticleDetailContent extends StatelessWidget {
         const SizedBox(height: 10),
         HtmlRenderer(future: htmlContentFuture),
         const SizedBox(height: 10),
-        Text(AppLocalizations.of(context)!.tags),
+        if (articleDetail != null)
+          if (articleDetail!.tags.isNotEmpty)
+            Text(AppLocalizations.of(context)!.tags.toUpperCase()),
         const SizedBox(height: 10),
         if (articleDetail != null)
           Wrap(
@@ -267,11 +319,10 @@ class _ArticleDetailContent extends StatelessWidget {
                 ),
                 decoration: BoxDecoration(
                   color: appColors.tagColor,
-                  borderRadius: BorderRadius.circular(5),
+                  borderRadius: BorderRadius.circular(3),
                 ),
                 child: Text(
-                  languageCode == 'ru' ? tag.nameRu : tag.name,
-                  style: const TextStyle(color: Colors.white, fontSize: 12),
+                  languageCode == 'ru' ? "#${tag.nameRu}" : "#${tag.name}",
                 ),
               );
             }).toList(),
@@ -295,7 +346,7 @@ class _TagCategoryChip extends StatelessWidget {
       padding: const EdgeInsets.fromLTRB(10, 5, 10, 5),
       decoration: BoxDecoration(
         color: color,
-        borderRadius: BorderRadius.circular(5),
+        borderRadius: BorderRadius.circular(3),
       ),
       child: Text(categoryName, style: const TextStyle(color: Colors.white)),
     );

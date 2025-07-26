@@ -24,7 +24,7 @@ class NoConnection extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               const Icon(Icons.wifi_off, size: 50),
-              SizedBox(height: 10),
+              const SizedBox(height: 10),
               Text(
                 AppLocalizations.of(context)!.noInternet,
                 style: const TextStyle(
@@ -32,7 +32,7 @@ class NoConnection extends StatelessWidget {
                   fontSize: 18,
                 ),
               ),
-              SizedBox(height: 10),
+              const SizedBox(height: 10),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [

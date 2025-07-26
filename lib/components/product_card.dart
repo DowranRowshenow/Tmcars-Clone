@@ -17,7 +17,7 @@ class _ProductCardState extends State<ProductCard> {
   @override
   Widget build(BuildContext context) {
     return RippleContainer(
-      padding: EdgeInsets.all(5),
+      padding: const EdgeInsets.all(5),
       onTap: () {},
       color: Colors.transparent,
       border: const Border(bottom: BorderSide(color: Colors.grey, width: 0.5)),
@@ -29,7 +29,7 @@ class _ProductCardState extends State<ProductCard> {
             width: 90,
             fit: BoxFit.fitHeight,
           ),
-          SizedBox(width: 10),
+          const SizedBox(width: 10),
           Flexible(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.start,
@@ -39,7 +39,7 @@ class _ProductCardState extends State<ProductCard> {
                   widget.product.title,
                   style: const TextStyle(fontSize: 16),
                 ),
-                SizedBox(height: 5),
+                const SizedBox(height: 5),
                 Text(
                   context.watch<LocaleManager>().locale.languageCode == 'ru'
                       ? widget.product.timeLocationRu
@@ -52,9 +52,9 @@ class _ProductCardState extends State<ProductCard> {
                     fontWeight: FontWeight.w400,
                   ),
                 ),
-                SizedBox(height: 5),
+                const SizedBox(height: 5),
                 Text("${widget.product.p} TMT"),
-                SizedBox(height: 5),
+                const SizedBox(height: 5),
                 Text(
                   widget.product.description,
                   overflow: TextOverflow.ellipsis,

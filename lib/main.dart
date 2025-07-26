@@ -21,7 +21,7 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   // Initialize storage singleton
-  final storage = await Storage.getInstance();
+  final Storage storage = await Storage.getInstance();
 
   // Load initial values that providers will need.
   // This keeps the main function clean and focused.
@@ -76,8 +76,8 @@ class _TmcarsCloneState extends State<TmcarsClone> {
   Widget build(BuildContext context) {
     // Watch only the providers that affect this widget's UI.
     // This is more efficient and readable than using a large Consumer.
-    final themeManager = context.watch<ThemeManager>();
-    final localeManager = context.watch<LocaleManager>();
+    final ThemeManager themeManager = context.watch<ThemeManager>();
+    final LocaleManager localeManager = context.watch<LocaleManager>();
 
     return MaterialApp(
       debugShowCheckedModeBanner: false,

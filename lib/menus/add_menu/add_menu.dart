@@ -26,7 +26,7 @@ class _AddMenuState extends State<AddMenu> {
           toolbarHeight: 0,
           leading: const SizedBox(),
           bottom: TabBar(
-            textScaler: TextScaler.linear(Constants.tabTextScale),
+            textScaler: const TextScaler.linear(Constants.tabTextScale),
             indicatorColor: Colors.white,
             tabs: [
               Tab(text: AppLocalizations.of(context)!.cars.toUpperCase()),
@@ -40,7 +40,7 @@ class _AddMenuState extends State<AddMenu> {
         ),
         floatingActionButton: FloatingActionButton(
           backgroundColor: Constants.colorPrimary,
-          child: Icon(Icons.add),
+          child: const Icon(Icons.add),
           onPressed: () {
             shouldRegisterDialog(context: context);
           },

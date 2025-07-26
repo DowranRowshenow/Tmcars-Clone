@@ -22,15 +22,15 @@ class AllProfilesTab extends StatelessWidget {
               borderRadius: BorderRadius.circular(5), // Use appColors
               color: appColors.themedSurface,
             ),
-            padding: EdgeInsets.all(5),
+            padding: const EdgeInsets.all(5),
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                SizedBox(width: 10),
+                const SizedBox(width: 10),
                 Flexible(
                   child: TextField(
                     autocorrect: false,
-                    style: TextStyle(fontSize: 18),
+                    style: const TextStyle(fontSize: 18),
                     keyboardType: TextInputType.multiline,
                     maxLines: 1,
                     decoration: InputDecoration.collapsed(
@@ -39,7 +39,7 @@ class AllProfilesTab extends StatelessWidget {
                   ),
                 ),
                 RippleContainer(
-                  padding: EdgeInsets.all(10),
+                  padding: const EdgeInsets.all(10),
                   onTap: () {},
                   borderRadius: 25,
                   color: Colors.transparent,
@@ -52,7 +52,7 @@ class AllProfilesTab extends StatelessWidget {
               ],
             ),
           ),
-          SizedBox(height: 5),
+          const SizedBox(height: 5),
           // Refreshable list of profiles
           Expanded(
             child: RefreshIndicator(onRefresh: () async {}, child: ListView()),

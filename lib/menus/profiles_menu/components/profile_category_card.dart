@@ -63,7 +63,7 @@ class ProfileCategoryCard extends StatelessWidget {
                   style: TextStyle(color: appColors.textThemeColor),
                 ),
               ),
-              SizedBox(height: 10),
+              const SizedBox(height: 10),
             ],
           ),
           Positioned.fill(

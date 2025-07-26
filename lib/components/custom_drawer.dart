@@ -25,7 +25,7 @@ class CustomDrawer extends StatelessWidget {
           Center(
             child: Column(
               children: [
-                SizedBox(height: 20),
+                const SizedBox(height: 20),
                 Image(
                   image: themeManager.isDark()
                       ? const AssetImage(Constants.drawerLogoDark)
@@ -35,7 +35,7 @@ class CustomDrawer extends StatelessWidget {
                 GestureDetector(
                   child: Text(
                     AppLocalizations.of(context)!.login.toUpperCase(),
-                    style: TextStyle(
+                    style: const TextStyle(
                       fontSize: 14,
                       fontStyle: FontStyle.italic,
                       decoration: TextDecoration.underline,
@@ -54,7 +54,7 @@ class CustomDrawer extends StatelessWidget {
                     decoration: TextDecoration.underline,
                   ),
                 ),
-                SizedBox(height: 20),
+                const SizedBox(height: 20),
               ],
             ),
           ),
@@ -148,8 +148,8 @@ class CustomDrawer extends StatelessWidget {
               overflow: TextOverflow.ellipsis,
             ),
             leading: themeManager.isDark()
-                ? Icon(Icons.dark_mode_outlined)
-                : Icon(Icons.light_mode_outlined),
+                ? const Icon(Icons.dark_mode_outlined)
+                : const Icon(Icons.light_mode_outlined),
             trailing: Switch(
               value: themeManager.isDark(),
               activeColor: appColors.focusColor,
@@ -166,7 +166,7 @@ class CustomDrawer extends StatelessWidget {
             title: Text(
               AppLocalizations.of(context)!.settings,
             ), // Use appColors
-            leading: Icon(Icons.settings_outlined),
+            leading: const Icon(Icons.settings_outlined),
           ),
           ListTile(
             minLeadingWidth: Constants.drawerLeadingWidth,
@@ -178,7 +178,7 @@ class CustomDrawer extends StatelessWidget {
             title: Text(
               AppLocalizations.of(context)!.contactUs,
             ), // Use appColors
-            leading: Icon(Icons.support_agent_outlined),
+            leading: const Icon(Icons.support_agent_outlined),
           ),
         ],
       ),
