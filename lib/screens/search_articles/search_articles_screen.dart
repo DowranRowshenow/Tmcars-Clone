@@ -39,7 +39,7 @@ class _SearchArticlesScreenState extends State<SearchArticlesScreen> {
     }
 
     // This setState is cheap and only rebuilds the AppBar to show/hide the clear button.
-    setState(() {});
+    if (mounted) setState(() {});
 
     // Debounce the actual search to avoid firing network requests on every keystroke.
     if (_debounce?.isActive ?? false) _debounce!.cancel();
@@ -84,7 +84,7 @@ class _SearchArticlesScreenState extends State<SearchArticlesScreen> {
               ? IconButton(
                   onPressed: () {
                     searchBarController.clear();
-                    setState(() {});
+                    if (mounted) setState(() {});
                   },
                   splashRadius: Constants.splashRadius,
                   icon: const Icon(Icons.close),

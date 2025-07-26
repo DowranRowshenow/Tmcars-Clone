@@ -28,7 +28,7 @@ class _AllOthersTabState extends State<AllOthersTab> {
 
   void _loadPopularProducts() {
     _popularProductsFuture = Server.getSettings();
-    setState(() {});
+    if (mounted) setState(() {});
   }
 
   Future<void> _handleRefresh() async {

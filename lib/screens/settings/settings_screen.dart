@@ -140,7 +140,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
             ),
             onTap: () {
               showSetTrafficDialog(context: context).then((onValue) {
-                setState(() {});
+                if (mounted) setState(() {});
               });
             },
           ),
@@ -166,7 +166,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
             ),
             onTap: () {
               showSetLocationDialog(context: context).then((onValue) {
-                setState(() {});
+                if (mounted) setState(() {});
               });
             },
           ),

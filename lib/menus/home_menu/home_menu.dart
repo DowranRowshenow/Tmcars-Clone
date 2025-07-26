@@ -25,7 +25,7 @@ class _HomeMenuState extends State<HomeMenu> {
 
   void _loadPopularProducts() {
     _popularProductsFuture = Server.getSettings();
-    setState(() {});
+    if (mounted) setState(() {});
   }
 
   Future<void> _handleRefresh() async {

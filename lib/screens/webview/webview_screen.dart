@@ -20,10 +20,12 @@ class _WebViewScreenState extends State<WebViewScreen> {
   bool _webError = false;
 
   void _retryLoad() {
-    setState(() {
-      _isLoading = true; // Show loading indicator again
-      _webError = false; // Reset error state
-    });
+    if (mounted) {
+      setState(() {
+        _isLoading = true; // Show loading indicator again
+        _webError = false; // Reset error state
+      });
+    }
     _controller.loadRequest(Uri.parse(widget.url)); // Attempt to reload
   }
 

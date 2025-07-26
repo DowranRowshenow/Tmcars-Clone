@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:share_plus/share_plus.dart';
+import 'package:tmcarsclone/components/should_register_dialog.dart';
 
 import '../../../components/scroll/glowless_scroll_behavior.dart';
 import '../../components/scroll/low_friction_scroll_physics.dart';
@@ -12,7 +13,7 @@ import '../../models/article_model.dart';
 import '../../providers/themes.dart';
 import '../../utils/constants.dart';
 import '../../utils/server.dart';
-import 'components/html_renderer.dart';
+import 'components/article_detail_content.dart';
 
 class ArticleDetailScreen extends StatefulWidget {
   const ArticleDetailScreen({
@@ -68,12 +69,12 @@ class _ArticleDetailScreenState extends State<ArticleDetailScreen> {
 
   Future<void> _loadArticle() async {
     articleDetail = await Server.getArticle(widget.article.id);
-    setState(() {});
+    if (mounted) setState(() {});
   }
 
   Future<void> _loadNearestArticles() async {
     nearestArticles = await Server.getNearestArticles(widget.article.id);
-    setState(() {});
+    if (mounted) setState(() {});
   }
 
   void _onScroll() {
@@ -100,7 +101,7 @@ class _ArticleDetailScreenState extends State<ArticleDetailScreen> {
         _scrollController.offset >= _expandedHeight - kToolbarHeight;
     if (_showTitle != shouldShowTitle) {
       _showTitle = shouldShowTitle;
-      setState(() {});
+      if (mounted) setState(() {});
     }
   }
 
@@ -154,9 +155,11 @@ class _ArticleDetailScreenState extends State<ArticleDetailScreen> {
                   icon: const Icon(Icons.arrow_back),
                   onPressed: () => Navigator.pop(context),
                   splashRadius: Constants.splashRadius,
+                  splashColor: Colors.transparent,
                 ),
                 actions: <Widget>[
                   PopupMenuButton<int>(
+                    tooltip: "",
                     menuPadding: const EdgeInsets.all(0),
                     color: appColors.themedSurface,
                     splashRadius: Constants.splashRadius,
@@ -206,22 +209,20 @@ class _ArticleDetailScreenState extends State<ArticleDetailScreen> {
               SliverToBoxAdapter(
                 child: Padding(
                   padding: const EdgeInsets.all(16.0),
-                  child: _ArticleDetailContent(
+                  child: ArticleDetailContent(
                     articleDetail: articleDetail,
                     article: widget.article,
                     languageCode: widget.languageCode,
                     htmlContentFuture: _htmlContentFuture,
                     appColors: appColors,
                     tagColor: hexToColor(colorCode ?? "000000"),
+                    nearestArticles: nearestArticles ?? [],
                   ),
                 ),
               ),
             ],
           ),
-          // Floating widget positioned at the bottom of the SliverAppBar
-          // Wrapped in AnimatedBuilder to optimize rebuilds
           AnimatedBuilder(
-            // Listen to both notifiers to trigger rebuild when either changes
             animation: Listenable.merge([_fabTopNotifier, _fabVisibleNotifier]),
             builder: (context, child) {
               return Positioned(
@@ -233,7 +234,9 @@ class _ArticleDetailScreenState extends State<ArticleDetailScreen> {
                   curve: Curves.easeInOut,
                   child: FloatingActionButton(
                     onPressed: () {
-                      // TODO: Implement add to favorites
+                      Constants.isRegistered
+                          ? const SizedBox()
+                          : shouldRegisterDialog(context: context);
                     },
                     backgroundColor: Colors.white,
                     child: const Icon(
@@ -247,142 +250,6 @@ class _ArticleDetailScreenState extends State<ArticleDetailScreen> {
           ),
         ],
       ),
-    );
-  }
-}
-
-// Extracted content widget
-class _ArticleDetailContent extends StatelessWidget {
-  final ArticleDetail? articleDetail;
-  final Article article;
-  final String languageCode;
-  final Future<String> htmlContentFuture;
-  final AppColors appColors;
-  final Color tagColor;
-
-  const _ArticleDetailContent({
-    required this.articleDetail,
-    required this.article,
-    required this.languageCode,
-    required this.htmlContentFuture,
-    required this.appColors,
-    required this.tagColor,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        if (articleDetail != null)
-          _TagCategoryChip(
-            categoryName: languageCode == 'ru'
-                ? articleDetail!.categoryNameRu
-                : articleDetail!.categoryName,
-            color: context.watch<ThemeManager>().isDark()
-                ? Colors.blueGrey.shade900
-                : tagColor,
-          ),
-        Text(
-          languageCode == 'ru' ? article.titleRu : article.title,
-          style: const TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
-        ),
-        const SizedBox(height: 8),
-        _MetaInfoRow(
-          article: article,
-          articleDetail: articleDetail,
-          languageCode: languageCode,
-        ),
-        const SizedBox(height: 30),
-        // Placeholder for an ad or other content
-        Container(
-          height: 80,
-          width: double.infinity,
-          color: Colors.grey.withAlpha(70),
-        ),
-        const SizedBox(height: 10),
-        HtmlRenderer(future: htmlContentFuture),
-        const SizedBox(height: 10),
-        if (articleDetail != null)
-          if (articleDetail!.tags.isNotEmpty)
-            Text(AppLocalizations.of(context)!.tags.toUpperCase()),
-        const SizedBox(height: 10),
-        if (articleDetail != null)
-          Wrap(
-            spacing: 8.0,
-            runSpacing: 8.0,
-            children: articleDetail!.tags.map((tag) {
-              return Container(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 12,
-                  vertical: 6,
-                ),
-                decoration: BoxDecoration(
-                  color: appColors.tagColor,
-                  borderRadius: BorderRadius.circular(3),
-                ),
-                child: Text(
-                  languageCode == 'ru' ? "#${tag.nameRu}" : "#${tag.name}",
-                ),
-              );
-            }).toList(),
-          ),
-      ],
-    );
-  }
-}
-
-// Extracted tag category chip
-class _TagCategoryChip extends StatelessWidget {
-  final String categoryName;
-  final Color color;
-
-  const _TagCategoryChip({required this.categoryName, required this.color});
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      margin: const EdgeInsets.fromLTRB(0, 5, 0, 10),
-      padding: const EdgeInsets.fromLTRB(10, 5, 10, 5),
-      decoration: BoxDecoration(
-        color: color,
-        borderRadius: BorderRadius.circular(3),
-      ),
-      child: Text(categoryName, style: const TextStyle(color: Colors.white)),
-    );
-  }
-}
-
-// Extracted meta info row
-class _MetaInfoRow extends StatelessWidget {
-  final Article article;
-  final ArticleDetail? articleDetail;
-  final String languageCode;
-
-  const _MetaInfoRow({
-    required this.article,
-    required this.articleDetail,
-    required this.languageCode,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      children: <Widget>[
-        const Icon(Icons.calendar_today, size: 16, color: Colors.grey),
-        const SizedBox(width: 4),
-        Text(
-          languageCode == 'ru' ? article.elapsedTimeRu : article.elapsedTime,
-          style: const TextStyle(fontSize: 14, color: Colors.grey),
-        ),
-        const SizedBox(width: 16),
-        const Icon(Icons.visibility, size: 16, color: Colors.grey),
-        const SizedBox(width: 4),
-        Text(
-          articleDetail?.viewCount.toString() ?? "",
-          style: const TextStyle(fontSize: 14, color: Colors.grey),
-        ),
-      ],
     );
   }
 }
