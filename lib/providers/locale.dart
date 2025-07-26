@@ -15,6 +15,6 @@ class LocaleManager extends ChangeNotifier {
     _locale = Locale(localeCode);
     notifyListeners();
     // Save to SharedPreferences asynchronously
-    await Storage().setLocale(localeCode);
+    await Storage.instance.setLocale(localeCode);
   }
 }

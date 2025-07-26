@@ -17,6 +17,6 @@ class TrafficManager extends ChangeNotifier {
     _trafficMode = mode;
     notifyListeners();
     // Save to SharedPreferences asynchronously
-    await Storage().setTrafficMode(_trafficMode);
+    await Storage.instance.setTrafficMode(_trafficMode);
   }
 }

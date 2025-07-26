@@ -182,7 +182,7 @@ class ThemeManager with ChangeNotifier {
     if (_themeMode == themeMode) return;
     _themeMode = themeMode;
     notifyListeners();
-    Storage().setThemeMode(_themeMode);
+    Storage.instance.setThemeMode(_themeMode);
   }
 
   void toggleTheme() {

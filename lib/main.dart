@@ -20,13 +20,16 @@ void main() async {
   // Ensure Flutter is ready.
   WidgetsFlutterBinding.ensureInitialized();
 
+  // Initialize storage singleton
+  final storage = await Storage.getInstance();
+
   // Load initial values that providers will need.
   // This keeps the main function clean and focused.
-  final ThemeMode initialThemeMode = await Storage().getThemeMode();
-  final Locale initialLocale = await Storage().getLocale();
-  final int initialTrafficMode = await Storage().getTrafficMode();
-  final String initialLocation = await Storage().getLocation();
-  final List<ArticleCategory> initialArticleCategories = await Storage()
+  final ThemeMode initialThemeMode = await storage.getThemeMode();
+  final Locale initialLocale = await storage.getLocale();
+  final int initialTrafficMode = await storage.getTrafficMode();
+  final String initialLocation = await storage.getLocation();
+  final List<ArticleCategory> initialArticleCategories = await storage
       .getArticleCategories();
   // Set preferred orientation once for the entire app lifecycle.
   await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
@@ -35,19 +38,21 @@ void main() async {
     MultiProvider(
       providers: [
         // Provider now creates and manages its own state.
-        ChangeNotifierProvider(
+        ChangeNotifierProvider<ThemeManager>(
           create: (_) => ThemeManager()..setThemeMode(initialThemeMode),
         ),
-        ChangeNotifierProvider(
+        ChangeNotifierProvider<LocaleManager>(
           create: (_) => LocaleManager()..setLocale(initialLocale.languageCode),
         ),
-        ChangeNotifierProvider(
+        ChangeNotifierProvider<TrafficManager>(
           create: (_) => TrafficManager()..setTrafficMode(initialTrafficMode),
         ),
-        ChangeNotifierProvider(
+        ChangeNotifierProvider<LocationManager>(
           create: (_) => LocationManager()..setLocation(initialLocation),
         ),
-        ChangeNotifierProvider(create: (_) => NavigationManager()),
+        ChangeNotifierProvider<NavigationManager>(
+          create: (_) => NavigationManager(),
+        ),
         // Use FutureProvider to handle async data loading for the UI.
         FutureProvider<List<ArticleCategory>>(
           create: (_) => Server.getArticleCategories(),

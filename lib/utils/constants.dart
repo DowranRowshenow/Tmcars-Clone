@@ -5,6 +5,8 @@ class Constants {
   static const bool isRegistered = false;
 
   // STRINGS
+  static const String appVersion = '3.6.1';
+  static const String appType = 'android';
   static const String packageVersion = '0.3.1';
   static const String appName = 'Tmcars Clone';
   static const String phoneCode = "+993";
@@ -14,10 +16,15 @@ class Constants {
   static const String tempImageUrl =
       "https://tapgo.biz:8443/tmcars/images/original/2025/04/04/16/45/21ba5856-2f62-4a80-9495-d02f9c376bd6.png";
 
+  // PADDINGS AND OTHER
+  static const EdgeInsets drawerItemPadding = EdgeInsets.fromLTRB(15, 0, 5, 0);
+
   // INTEGERS AND DOUBLES
   static const int animationDuration = 300;
-  static const double popularProductItemExtent = 114;
-  static const double articleItemExtent = 100;
+  static const double placeHolderSize = 96.0;
+  static const double drawerLeadingWidth = 15.0;
+  static const double popularProductItemExtent = 114.0;
+  static const double articleItemExtent = 100.0;
   static const double tabTextScale = 0.85;
   static const double blurAlpha = 0.7;
   static const double borderRadius = 7.0;

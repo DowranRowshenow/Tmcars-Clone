@@ -1,21 +1,20 @@
 import 'package:flutter/material.dart';
 
-class PlaceholderImage extends StatelessWidget {
-  const PlaceholderImage({super.key});
+import '../providers/themes.dart';
+import '../utils/constants.dart';
 
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      width: 90,
-      height: 90,
-      color: Colors.grey[300],
-      child: Center(
-        child: Icon(
-          Icons.broken_image_outlined,
-          size: 40,
-          color: Colors.grey[600],
-        ),
+Widget buildImagePlaceholder(BuildContext context) {
+  final AppColors appColors = Theme.of(context).extension<AppColors>()!;
+  return Container(
+    width: Constants.placeHolderSize,
+    height: Constants.placeHolderSize,
+    color: appColors.tileThemeColor,
+    child: Center(
+      child: Icon(
+        Icons.broken_image_outlined,
+        size: 50,
+        color: Colors.grey[700]!,
       ),
-    );
-  }
+    ),
+  );
 }

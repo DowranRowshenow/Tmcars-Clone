@@ -228,6 +228,9 @@ class AppLocalizationsTr extends AppLocalizations {
   String get noResult => 'Sonuç Ýok';
 
   @override
+  String get shareLink => 'Linki paylaş';
+
+  @override
   String get notRegistered => 'Hesabınıza giriş yapmadınız! Giriş yaparak ilan ekleyebilir, kendi ilanlarınızı ve profilinizi düzenleyebilir ve verilerinizi diğer telefonlarınıza aktarabilirsiniz.';
 
   @override

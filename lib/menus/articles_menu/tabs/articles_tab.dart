@@ -44,7 +44,7 @@ class _ArticlesTabState extends State<ArticlesTab> {
 
   Future<void> _initializeData() async {
     // First, try to load articles from local storage to show data quickly.
-    final cachedArticles = await Storage().getArticlesByCategory(
+    final cachedArticles = await Storage.instance.getArticlesByCategory(
       widget.category?.id ?? 0,
     );
     if (mounted && cachedArticles.isNotEmpty) {
@@ -113,7 +113,7 @@ class _ArticlesTabState extends State<ArticlesTab> {
     if (widget.category?.id == null) return;
     // We convert the list of Article objects back to a JSON string to save it.
     final articlesJson = jsonEncode(_articles.map((a) => a.toJson()).toList());
-    await Storage().setArticlesByCategory(
+    await Storage.instance.setArticlesByCategory(
       articlesJson,
       widget.category?.id ?? 0,
     );

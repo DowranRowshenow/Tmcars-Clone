@@ -2,7 +2,9 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../../../components/placeholder_image.dart';
 import '../../../providers/locale.dart';
+import '../../../providers/navigation.dart';
 import '../../../providers/themes.dart';
 import '../../../models/article_model.dart';
 
@@ -28,10 +30,16 @@ class _ArticleCardState extends State<ArticleCard> {
       child: ListTile(
         minTileHeight: 90,
         contentPadding: EdgeInsets.all(8),
-        onTap: () {},
+        onTap: () {
+          context.read<NavigationManager>().setScreen(
+            context,
+            ScreenState.articleDetail,
+            article: widget.article,
+          );
+        },
         titleAlignment: ListTileTitleAlignment.center,
         title: Text(
-          context.watch<LocaleManager>().locale == Locale('ru')
+          context.watch<LocaleManager>().locale.languageCode == 'ru'
               ? widget.article.titleRu
               : widget.article.title,
           maxLines: 3,
@@ -41,7 +49,7 @@ class _ArticleCardState extends State<ArticleCard> {
         subtitle: Container(
           padding: EdgeInsets.only(top: 5),
           child: Text(
-            context.watch<LocaleManager>().locale == Locale('ru')
+            context.watch<LocaleManager>().locale.languageCode == 'ru'
                 ? widget.article.elapsedTimeRu
                 : widget.article.elapsedTime,
             maxLines: 1,
@@ -60,34 +68,8 @@ class _ArticleCardState extends State<ArticleCard> {
           height: double.infinity,
           width: MediaQuery.of(context).size.width * 0.3,
           fit: BoxFit.cover,
-          placeholder: (context, url) {
-            return Container(
-              width: 90,
-              height: 90,
-              color: appColors.tileThemeColor,
-              child: Center(
-                child: Icon(
-                  Icons.broken_image_outlined,
-                  size: 50,
-                  color: Colors.grey[600],
-                ),
-              ),
-            );
-          },
-          errorWidget: (context, url, error) {
-            return Container(
-              width: 90,
-              height: 90,
-              color: appColors.tileThemeColor,
-              child: Center(
-                child: Icon(
-                  Icons.broken_image_outlined,
-                  size: 50,
-                  color: Colors.grey[400],
-                ),
-              ),
-            );
-          },
+          placeholder: (context, url) => buildImagePlaceholder(context),
+          errorWidget: (context, url, error) => buildImagePlaceholder(context),
         ),
       ),
     );

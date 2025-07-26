@@ -9,9 +9,29 @@ import 'package:tmcarsclone/models/article_model.dart';
 import '../models/article_category_model.dart';
 
 class Storage {
+  static Storage? _instance;
+  static SharedPreferences? _prefs;
+
+  Storage._();
+
+  static Future<Storage> getInstance() async {
+    if (_instance == null) {
+      _instance = Storage._();
+      _prefs = await SharedPreferences.getInstance();
+    }
+    return _instance!;
+  }
+
+  static Storage get instance {
+    if (_instance == null) {
+      throw StateError('Storage not initialized. Call getInstance() first.');
+    }
+    return _instance!;
+  }
+
   Future<void> setThemeMode(ThemeMode themeMode) async {
-    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-    await sharedPreferences.setInt(
+    final prefs = await _getPrefs();
+    await prefs.setInt(
       'themeMode',
       themeMode == ThemeMode.system
           ? 0
@@ -22,8 +42,8 @@ class Storage {
   }
 
   Future<ThemeMode> getThemeMode() async {
-    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-    int mode = sharedPreferences.getInt('themeMode') ?? 0;
+    final prefs = await _getPrefs();
+    int mode = prefs.getInt('themeMode') ?? 0;
     return mode == 0
         ? ThemeMode.system
         : mode == 1
@@ -32,64 +52,86 @@ class Storage {
   }
 
   Future<void> setLocale(String localeCode) async {
-    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-    await sharedPreferences.setString('locale', localeCode);
+    final prefs = await _getPrefs();
+    await prefs.setString('locale', localeCode);
   }
 
   Future<Locale> getLocale() async {
-    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-    return Locale.fromSubtags(
-      languageCode: sharedPreferences.getString('locale') ?? "en",
-    );
+    final prefs = await _getPrefs();
+    return Locale.fromSubtags(languageCode: prefs.getString('locale') ?? "en");
   }
 
   Future<void> setTrafficMode(int value) async {
-    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-    await sharedPreferences.setInt('traffic', value);
+    final prefs = await _getPrefs();
+    await prefs.setInt('traffic', value);
   }
 
   Future<int> getTrafficMode() async {
-    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-    return sharedPreferences.getInt('traffic') ?? 0;
+    final prefs = await _getPrefs();
+    return prefs.getInt('traffic') ?? 0;
   }
 
   Future<void> setLocation(String value) async {
-    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-    await sharedPreferences.setString('location', value);
+    final prefs = await _getPrefs();
+    await prefs.setString('location', value);
   }
 
   Future<String> getLocation() async {
-    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-    return sharedPreferences.getString('location') ?? "";
+    final prefs = await _getPrefs();
+    return prefs.getString('location') ?? "";
   }
 
   Future<void> setArticleCategories(String data) async {
-    final dir = await getApplicationDocumentsDirectory();
-    final file = File('${dir.path}/articleCategories.json');
-    await file.writeAsString(data);
+    try {
+      final dir = await getApplicationDocumentsDirectory();
+      final file = File('${dir.path}/articleCategories.json');
+      await file.writeAsString(data);
+    } catch (e) {
+      debugPrint('Error saving article categories: $e');
+    }
   }
 
   Future<List<ArticleCategory>> getArticleCategories() async {
-    final dir = await getApplicationDocumentsDirectory();
-    final file = File('${dir.path}/articleCategories.json');
-    if (!await file.exists()) return [];
-    final jsonString = await file.readAsString();
-    final List<dynamic> jsonList = jsonDecode(jsonString);
-    return jsonList.map((json) => ArticleCategory.fromJson(json)).toList();
+    try {
+      final dir = await getApplicationDocumentsDirectory();
+      final file = File('${dir.path}/articleCategories.json');
+      if (!await file.exists()) return [];
+      final jsonString = await file.readAsString();
+      final List<dynamic> jsonList = jsonDecode(jsonString);
+      return jsonList.map((json) => ArticleCategory.fromJson(json)).toList();
+    } catch (e) {
+      debugPrint('Error loading article categories: $e');
+      return [];
+    }
   }
 
   Future<void> setArticlesByCategory(String data, int id) async {
-    final dir = await getApplicationDocumentsDirectory();
-    final file = File('${dir.path}/articles_$id.json');
-    await file.writeAsString(data);
+    try {
+      final dir = await getApplicationDocumentsDirectory();
+      final file = File('${dir.path}/articles_$id.json');
+      await file.writeAsString(data);
+    } catch (e) {
+      debugPrint('Error saving articles for category $id: $e');
+    }
   }
 
   Future<List<Article>> getArticlesByCategory(int id) async {
-    final dir = await getApplicationDocumentsDirectory();
-    final file = File('${dir.path}/articles_$id.json');
-    if (!await file.exists()) return [];
-    final jsonString = await file.readAsString();
-    final List<dynamic> jsonList = jsonDecode(jsonString);
-    return jsonList.map((json) => Article.fromJson(json)).toList();
+    try {
+      final dir = await getApplicationDocumentsDirectory();
+      final file = File('${dir.path}/articles_$id.json');
+      if (!await file.exists()) return [];
+      final jsonString = await file.readAsString();
+      final List<dynamic> jsonList = jsonDecode(jsonString);
+      return jsonList.map((json) => Article.fromJson(json)).toList();
+    } catch (e) {
+      debugPrint('Error loading articles for category $id: $e');
+      return [];
+    }
+  }
+
+  Future<SharedPreferences> _getPrefs() async {
+    if (_prefs != null) return _prefs!;
+    _prefs = await SharedPreferences.getInstance();
+    return _prefs!;
   }
 }

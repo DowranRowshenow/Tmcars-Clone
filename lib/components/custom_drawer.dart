@@ -16,6 +16,7 @@ class CustomDrawer extends StatelessWidget {
     final ThemeManager themeManager = context.watch<ThemeManager>();
 
     return Drawer(
+      width: 270,
       elevation: 0,
       shadowColor: Colors.transparent,
       backgroundColor: appColors.themedSurface, // Use appColors
@@ -66,48 +67,64 @@ class CustomDrawer extends StatelessWidget {
             ),
           ),
           ListTile(
+            minLeadingWidth: Constants.drawerLeadingWidth,
+            contentPadding: Constants.drawerItemPadding,
             onTap: () => onTap(MenuState.home),
             title: Text(AppLocalizations.of(context)!.home),
             leading: const Icon(Icons.home_outlined),
             selectedTileColor: Constants.colorPrimary.withAlpha(50),
           ),
           ListTile(
+            minLeadingWidth: Constants.drawerLeadingWidth,
+            contentPadding: Constants.drawerItemPadding,
             onTap: () => onTap(MenuState.cars),
             title: Text(AppLocalizations.of(context)!.cars),
             leading: const Icon(Icons.car_repair_outlined),
             selectedTileColor: Constants.colorPrimary.withAlpha(50),
           ),
           ListTile(
+            minLeadingWidth: Constants.drawerLeadingWidth,
+            contentPadding: Constants.drawerItemPadding,
             onTap: () => onTap(MenuState.parts),
             title: Text(AppLocalizations.of(context)!.parts),
             leading: const Icon(Icons.car_rental_outlined),
             selectedTileColor: Constants.colorPrimary.withAlpha(50),
           ),
           ListTile(
+            minLeadingWidth: Constants.drawerLeadingWidth,
+            contentPadding: Constants.drawerItemPadding,
             onTap: () => onTap(MenuState.others),
             title: Text(AppLocalizations.of(context)!.others),
             leading: const Icon(Icons.shopping_basket_outlined),
             selectedTileColor: Constants.colorPrimary.withAlpha(50),
           ),
           ListTile(
+            minLeadingWidth: Constants.drawerLeadingWidth,
+            contentPadding: Constants.drawerItemPadding,
             onTap: () => onTap(MenuState.profiles),
             title: Text(AppLocalizations.of(context)!.profiles),
             leading: const Icon(Icons.star_border_outlined),
             selectedTileColor: Constants.colorPrimary.withAlpha(50),
           ),
           ListTile(
+            minLeadingWidth: Constants.drawerLeadingWidth,
+            contentPadding: Constants.drawerItemPadding,
             onTap: () => onTap(MenuState.articles),
             title: Text(AppLocalizations.of(context)!.news),
             leading: const Icon(Icons.newspaper_outlined),
             selectedTileColor: Constants.colorPrimary.withAlpha(50),
           ),
           ListTile(
+            minLeadingWidth: Constants.drawerLeadingWidth,
+            contentPadding: Constants.drawerItemPadding,
             onTap: () => onTap(MenuState.add),
             title: Text(AppLocalizations.of(context)!.add),
             leading: const Icon(Icons.add_box_outlined),
             selectedTileColor: Constants.colorPrimary.withAlpha(50),
           ),
           ListTile(
+            minLeadingWidth: Constants.drawerLeadingWidth,
+            contentPadding: Constants.drawerItemPadding,
             onTap: () => onTap(MenuState.comments),
             title: Text(AppLocalizations.of(context)!.comments),
             leading: const Icon(Icons.message_outlined),
@@ -122,6 +139,8 @@ class CustomDrawer extends StatelessWidget {
             ),
           ),
           ListTile(
+            minLeadingWidth: Constants.drawerLeadingWidth,
+            contentPadding: Constants.drawerItemPadding,
             title: Text(
               themeManager.isDark()
                   ? AppLocalizations.of(context)!.darkTheme
@@ -138,6 +157,8 @@ class CustomDrawer extends StatelessWidget {
             ),
           ),
           ListTile(
+            minLeadingWidth: Constants.drawerLeadingWidth,
+            contentPadding: Constants.drawerItemPadding,
             onTap: () => context.read<NavigationManager>().setScreen(
               context,
               ScreenState.settings,
@@ -148,6 +169,8 @@ class CustomDrawer extends StatelessWidget {
             leading: Icon(Icons.settings_outlined),
           ),
           ListTile(
+            minLeadingWidth: Constants.drawerLeadingWidth,
+            contentPadding: Constants.drawerItemPadding,
             onTap: () => context.read<NavigationManager>().setScreen(
               context,
               ScreenState.contact,

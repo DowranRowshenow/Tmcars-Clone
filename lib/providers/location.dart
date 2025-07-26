@@ -15,6 +15,6 @@ class LocationManager extends ChangeNotifier {
     _location = location;
     notifyListeners();
     // Save to SharedPreferences asynchronously
-    await Storage().setLocale(_location);
+    await Storage.instance.setLocale(_location);
   }
 }

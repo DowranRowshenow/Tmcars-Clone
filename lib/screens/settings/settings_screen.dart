@@ -24,12 +24,6 @@ class SettingsScreen extends StatefulWidget {
 }
 
 class _SettingsScreenState extends State<SettingsScreen> {
-  Future<void> _launchUrl() async {
-    if (!await launchUrl(Uri.parse(Server.CONTACT_URL))) {
-      throw Exception('Could not launch');
-    }
-  }
-
   String getLocation(String location) {
     switch (location) {
       case '':
@@ -342,7 +336,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
               colorFilter: ColorFilter.mode(Colors.grey, BlendMode.srcIn),
               width: 6,
             ),
-            onTap: _launchUrl,
+            onTap: () {
+              launchUrl(Uri.parse(Server.CONTACT_URL));
+            },
           ),
           Container(
             decoration: BoxDecoration(

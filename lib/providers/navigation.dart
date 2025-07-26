@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:tmcarsclone/providers/locale.dart';
 
+import '../models/article_model.dart';
+import '../screens/article/article_detail_screen.dart';
 import '../screens/notifications/notifications_screen.dart';
 import '../components/should_register_dialog.dart';
 import '../screens/search_articles/search_articles_screen.dart';
@@ -18,7 +22,6 @@ import '../screens/contact/contact_screen.dart';
 import '../screens/settings/settings_screen.dart';
 import '../screens/webview/webview_screen.dart';
 import '../utils/constants.dart';
-import '../utils/server.dart';
 
 enum MenuState { home, add, others, comments, articles, profiles, parts, cars }
 
@@ -30,6 +33,7 @@ enum ScreenState {
   webview,
   searchArticles,
   notifications,
+  articleDetail,
 }
 
 class NavigationManager extends ChangeNotifier {
@@ -186,12 +190,29 @@ class NavigationManager extends ChangeNotifier {
   void setScreen(
     BuildContext context,
     ScreenState state, {
-    String url = Server.currentUrl,
-    String title = 'NONE',
+    String? url,
+    String? title,
+    Article? article,
   }) {
     _currentScreen = state;
     _scaffoldKey.currentState!.closeDrawer();
     switch (state) {
+      case ScreenState.articleDetail:
+        if (article != null) {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => ArticleDetailScreen(
+                article: article,
+                languageCode: context
+                    .watch<LocaleManager>()
+                    .locale
+                    .languageCode,
+              ),
+            ),
+          );
+        }
+        break;
       case ScreenState.notifications:
         Navigator.push(
           context,
@@ -233,8 +254,8 @@ class NavigationManager extends ChangeNotifier {
           context,
           MaterialPageRoute(
             builder: (context) => WebViewScreen(
-              url: url,
-              title: title == 'NONE' ? getMenuTitle(context) : title,
+              url: url ?? "",
+              title: title ?? getMenuTitle(context),
             ),
           ),
         );

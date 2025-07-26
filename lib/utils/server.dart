@@ -8,6 +8,7 @@ import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 
 import '../models/article_category_model.dart';
+import '../models/article_detail_model.dart';
 import '../models/popular_product_model.dart';
 import '../models/product_model.dart';
 import '../models/article_model.dart';
@@ -15,8 +16,15 @@ import 'storage.dart';
 
 class Server {
   // Consider making this class abstract or using a service locator if it grows
-  static String host = "tapgo.biz:8443";
+  static const String host = "tapgo.biz:8443";
   //static String host = "127.0.0.1:8000";
+
+  // HTTP client with connection pooling and timeout configuration
+  static final http.Client _client = http.Client();
+
+  // Cache for API responses
+  static final Map<String, dynamic> _cache = {};
+  static const Duration _cacheExpiry = Duration(minutes: 1);
 
   // ENDPOINTS
   static const String currentUrl = '';
@@ -40,8 +48,19 @@ class Server {
   }
 
   static Future<List<PopularProduct>> getSettings() async {
+    const String cacheKey = 'popular_products';
+
+    // Check cache first
+    if (_cache.containsKey(cacheKey)) {
+      final cached = _cache[cacheKey];
+      if (cached['timestamp'] != null &&
+          DateTime.now().difference(cached['timestamp']) < _cacheExpiry) {
+        return cached['data'] as List<PopularProduct>;
+      }
+    }
+
     try {
-      final http.Response response = await http
+      final http.Response response = await _client
           .get(Uri.https(host, "/tmcars/setting/getAppSettingsV1"))
           .timeout(const Duration(seconds: 10)); // Added timeout
 
@@ -53,6 +72,10 @@ class Server {
           product = PopularProduct.fromJson(product);
           products.add(product);
         }
+
+        // Cache the result
+        _cache[cacheKey] = {'data': products, 'timestamp': DateTime.now()};
+
         return products;
       } else {
         if (kDebugMode) {
@@ -78,13 +101,29 @@ class Server {
   }
 
   static Future<List<ArticleCategory>> getArticleCategories() async {
-    final response = await http.get(
+    const String cacheKey = 'article_categories';
+
+    // Check cache first
+    if (_cache.containsKey(cacheKey)) {
+      final cached = _cache[cacheKey];
+      if (cached['timestamp'] != null &&
+          DateTime.now().difference(cached['timestamp']) < _cacheExpiry) {
+        return cached['data'] as List<ArticleCategory>;
+      }
+    }
+
+    final response = await _client.get(
       Uri.https(host, "/tmcars/articleCategory/categories"),
     );
     if (response.statusCode == 200) {
       final List<dynamic> data = json.decode(response.body);
-      Storage().setArticleCategories(response.body);
-      return data.map((e) => ArticleCategory.fromJson(e)).toList();
+      final categories = data.map((e) => ArticleCategory.fromJson(e)).toList();
+
+      // Cache the result
+      _cache[cacheKey] = {'data': categories, 'timestamp': DateTime.now()};
+
+      Storage.instance.setArticleCategories(response.body);
+      return categories;
     } else {
       throw Exception('Failed to load news categories');
     }
@@ -97,7 +136,6 @@ class Server {
     String categoryCode = "",
     String mask = "",
     String tags = "",
-    String devId = "",
   }) async {
     final Map<String, dynamic> map = {'max': max.toString()};
     if (offset != 0) {
@@ -115,9 +153,6 @@ class Server {
     if (tags != "") {
       map['tags'] = tags;
     }
-    if (devId != "") {
-      map['devId'] = devId;
-    }
 
     final response = await http.get(
       Uri.https(host, "/tmcars/article/articles", map),
@@ -127,6 +162,110 @@ class Server {
       return data.map((e) => Article.fromJson(e)).toList();
     } else {
       throw Exception('Failed to load articles');
+    }
+  }
+
+  static Future<ArticleDetail> getArticle(int id) async {
+    final String cacheKey = 'article_$id';
+
+    // Check cache first
+    if (_cache.containsKey(cacheKey)) {
+      final cached = _cache[cacheKey];
+      if (cached['timestamp'] != null &&
+          DateTime.now().difference(cached['timestamp']) < _cacheExpiry) {
+        return cached['data'] as ArticleDetail;
+      }
+    }
+
+    final Map<String, dynamic> map = {'id': id.toString()};
+
+    final response = await http.get(
+      Uri.https(host, "/tmcars/article/getArticle", map),
+    );
+    if (response.statusCode == 200) {
+      final ArticleDetail data = ArticleDetail.fromJson(
+        json.decode(response.body),
+      );
+      _cache[cacheKey] = {'data': data, 'timestamp': DateTime.now()};
+      return data;
+    } else {
+      throw Exception('Failed to load articles');
+    }
+  }
+
+  // Function to fetch HTML content from a URL
+  static Future<String> fetchHtmlContent(String url) async {
+    try {
+      final response = await http.get(
+        Uri.parse(url),
+        headers: {
+          'Accept':
+              'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
+          'Accept-Charset': 'utf-8',
+          'Accept-Encoding': 'gzip, deflate',
+        },
+      );
+
+      if (response.statusCode == 200) {
+        // Debug: Print response headers
+        if (kDebugMode) {
+          print('Response headers: ${response.headers}');
+          print('Content-Type: ${response.headers['content-type']}');
+        }
+
+        // Check if response has proper encoding
+        final contentType = response.headers['content-type'] ?? '';
+        String htmlContent = response.body;
+
+        // If content-type doesn't specify charset, try to detect it
+        if (!contentType.toLowerCase().contains('charset')) {
+          // Try to detect encoding from HTML meta tag
+          if (htmlContent.contains('<meta charset="')) {
+            // HTML has charset meta tag, use it
+            return htmlContent;
+          } else {
+            // Try UTF-8 first, then fallback to other encodings
+            try {
+              // Force UTF-8 decoding
+              htmlContent = utf8.decode(
+                response.bodyBytes,
+                allowMalformed: true,
+              );
+            } catch (e) {
+              if (kDebugMode) {
+                print('UTF-8 decoding failed, using original: $e');
+              }
+              htmlContent = response.body;
+            }
+          }
+        }
+
+        // Ensure HTML has proper charset meta tag
+        if (!htmlContent.contains('<meta charset="') &&
+            !htmlContent.contains('charset=')) {
+          // Inject UTF-8 charset meta tag if not present
+          htmlContent = htmlContent.replaceFirst(
+            '<head>',
+            '<head><meta charset="utf-8">',
+          );
+          // If no head tag, add it at the beginning
+          if (!htmlContent.contains('<head>')) {
+            htmlContent =
+                '<!DOCTYPE html><html><head><meta charset="utf-8"></head><body>$htmlContent</body></html>';
+          }
+        }
+
+        return htmlContent;
+      } else {
+        // Handle server errors
+        throw Exception('Failed to load HTML content: ${response.statusCode}');
+      }
+    } catch (e) {
+      // Handle network or other errors
+      if (kDebugMode) {
+        print('Error fetching HTML: $e');
+      }
+      return '';
     }
   }
 

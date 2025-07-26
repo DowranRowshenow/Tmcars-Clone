@@ -2,31 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:provider/provider.dart';
 
+import '../../../components/placeholder_image.dart';
 import '../../../components/ripple_container.dart';
 import '../../../providers/locale.dart';
 import '../../../providers/themes.dart';
 import '../../../models/popular_product_model.dart';
+import '../../../utils/constants.dart';
 
 class PopularProductCard extends StatelessWidget {
   const PopularProductCard({super.key, required this.product});
   final PopularProduct product;
-  final double size = 96;
-
-  Widget _buildImagePlaceholder(BuildContext context) {
-    final AppColors appColors = Theme.of(context).extension<AppColors>()!;
-    return Container(
-      width: size,
-      height: size,
-      color: appColors.tileThemeColor,
-      child: Center(
-        child: Icon(
-          Icons.broken_image_outlined,
-          size: 50,
-          color: Colors.grey[700]!,
-        ),
-      ),
-    );
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -43,12 +28,12 @@ class PopularProductCard extends StatelessWidget {
         children: [
           CachedNetworkImage(
             imageUrl: product.img,
-            height: size,
-            width: size,
+            height: Constants.placeHolderSize,
+            width: Constants.placeHolderSize,
             fit: BoxFit.fitHeight,
-            placeholder: (context, url) => _buildImagePlaceholder(context),
+            placeholder: (context, url) => buildImagePlaceholder(context),
             errorWidget: (context, url, error) =>
-                _buildImagePlaceholder(context),
+                buildImagePlaceholder(context),
           ),
           SizedBox(width: 10),
           Flexible(
@@ -64,7 +49,7 @@ class PopularProductCard extends StatelessWidget {
                 ),
                 SizedBox(height: 3),
                 Text(
-                  context.watch<LocaleManager>().locale == Locale('ru')
+                  context.watch<LocaleManager>().locale.languageCode == 'ru'
                       ? product.descriptionRu
                       : product.description,
                   overflow: TextOverflow.ellipsis,
@@ -77,7 +62,7 @@ class PopularProductCard extends StatelessWidget {
                 ),
                 SizedBox(height: 3),
                 Text(
-                  context.watch<LocaleManager>().locale == Locale('ru')
+                  context.watch<LocaleManager>().locale.languageCode == 'ru'
                       ? product.timeLocationRu
                       : product.timeLocation,
                   maxLines: 1,

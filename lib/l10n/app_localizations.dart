@@ -537,6 +537,12 @@ abstract class AppLocalizations {
   /// **'No Result'**
   String get noResult;
 
+  /// No description provided for @shareLink.
+  ///
+  /// In en, this message translates to:
+  /// **'Share link'**
+  String get shareLink;
+
   /// No description provided for @notRegistered.
   ///
   /// In en, this message translates to:

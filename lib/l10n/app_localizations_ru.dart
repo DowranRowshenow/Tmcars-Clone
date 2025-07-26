@@ -228,6 +228,9 @@ class AppLocalizationsRu extends AppLocalizations {
   String get noResult => 'Нет Результатов';
 
   @override
+  String get shareLink => 'Поделиться ссылкой';
+
+  @override
   String get notRegistered => 'Вы не вошли в систему! Войдя в систему, вы сможете добавлять объявления, управлять своими объявлениями и профилем, а также переносить свои данные на другие телефоны.';
 
   @override

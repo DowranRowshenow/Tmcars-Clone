@@ -38,13 +38,13 @@ class _HomeMenuState extends State<HomeMenu> {
       future: _popularProductsFuture,
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return Center(child: CircularProgressIndicator());
+          return const Center(child: CircularProgressIndicator());
         } else if (snapshot.hasError) {
-          return NoConnection(onTap: () => _handleRefresh());
+          return NoConnection(onTap: _handleRefresh);
         } else if (snapshot.hasData) {
           final popularProducts = snapshot.data!;
           if (popularProducts.isEmpty) {
-            return NoConnection(onTap: () => _handleRefresh());
+            return NoConnection(onTap: _handleRefresh);
           }
           return RefreshIndicator(
             onRefresh: _handleRefresh,
@@ -53,7 +53,11 @@ class _HomeMenuState extends State<HomeMenu> {
               shrinkWrap: true, // Important when inside another scrollable
               itemCount: popularProducts.length,
               itemBuilder: (context, index) {
-                return PopularProductCard(product: popularProducts[index]);
+                final product = popularProducts[index];
+                return PopularProductCard(
+                  key: ValueKey(product.hashCode),
+                  product: product,
+                );
               },
             ),
           );
