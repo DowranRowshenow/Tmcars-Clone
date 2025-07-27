@@ -6,20 +6,19 @@ import '../../../utils/constants.dart';
 import '../../../providers/location.dart';
 import '../../../providers/themes.dart';
 
-Future<T?> showSetLocationDialog<T>({
+Future<bool?> showSetLocationDialog({
   required BuildContext context,
   Color? barrierColor,
-  double blurSigmaX = Constants.blurSigmaX,
-  double blurSigmaY = Constants.blurSigmaY,
   bool barrierDismissible = true,
 }) {
-  return showDialog<T>(
+  return showDialog<bool>(
     context: context,
     barrierDismissible: barrierDismissible,
     barrierColor:
         barrierColor ?? Colors.black.withValues(alpha: Constants.blurAlpha),
     builder: (BuildContext dialogContext) {
       final AppColors appColors = Theme.of(context).extension<AppColors>()!;
+      final AppLocalizations appLocalizations = AppLocalizations.of(context)!;
 
       return StatefulBuilder(
         builder: (context, setState) {
@@ -29,7 +28,7 @@ Future<T?> showSetLocationDialog<T>({
             backgroundColor: appColors.themedSurface,
             elevation: Constants.elevation,
             title: Text(
-              AppLocalizations.of(context)!.selectedLocation,
+              appLocalizations.selectedLocation,
               style: TextStyle(color: appColors.textThemeColor),
             ),
             content: SizedBox(
@@ -38,62 +37,74 @@ Future<T?> showSetLocationDialog<T>({
                 shrinkWrap: true,
                 children: [
                   ListTile(
-                    title: Text(AppLocalizations.of(context)!.notSelected),
+                    title: Text(appLocalizations.notSelected),
                     onTap: () {
-                      context.read<LocationManager>().setLocation('');
+                      context.read<LocationManager>().setLocation(
+                        Location.none,
+                      );
                       Navigator.of(context).pop();
                     },
                   ),
                   ListTile(
-                    title: Text(AppLocalizations.of(context)!.ashgabat),
+                    title: Text(appLocalizations.ashgabat),
                     onTap: () {
-                      context.read<LocationManager>().setLocation('ashgabat');
+                      context.read<LocationManager>().setLocation(
+                        Location.ashgabat,
+                      );
                       Navigator.of(context).pop();
                     },
                   ),
                   ListTile(
-                    title: Text(AppLocalizations.of(context)!.arkadag),
+                    title: Text(appLocalizations.arkadag),
                     onTap: () {
-                      context.read<LocationManager>().setLocation('arkadag');
-                      Navigator.of(context).pop();
-                    },
-                  ),
-
-                  ListTile(
-                    title: Text(AppLocalizations.of(context)!.ahal),
-                    onTap: () {
-                      context.read<LocationManager>().setLocation('ahal');
-                      Navigator.of(context).pop();
-                    },
-                  ),
-
-                  ListTile(
-                    title: Text(AppLocalizations.of(context)!.balkan),
-                    onTap: () {
-                      context.read<LocationManager>().setLocation('balkan');
-                      Navigator.of(context).pop();
-                    },
-                  ),
-
-                  ListTile(
-                    title: Text(AppLocalizations.of(context)!.mary),
-                    onTap: () {
-                      context.read<LocationManager>().setLocation('mary');
-                      Navigator.of(context).pop();
-                    },
-                  ),
-
-                  ListTile(
-                    title: Text(AppLocalizations.of(context)!.dashoguz),
-                    onTap: () {
-                      context.read<LocationManager>().setLocation('dashoguz');
+                      context.read<LocationManager>().setLocation(
+                        Location.arkadag,
+                      );
                       Navigator.of(context).pop();
                     },
                   ),
                   ListTile(
-                    title: Text(AppLocalizations.of(context)!.lebap),
+                    title: Text(appLocalizations.ahal),
                     onTap: () {
-                      context.read<LocationManager>().setLocation('lebap');
+                      context.read<LocationManager>().setLocation(
+                        Location.ahal,
+                      );
+                      Navigator.of(context).pop();
+                    },
+                  ),
+                  ListTile(
+                    title: Text(appLocalizations.balkan),
+                    onTap: () {
+                      context.read<LocationManager>().setLocation(
+                        Location.balkan,
+                      );
+                      Navigator.of(context).pop();
+                    },
+                  ),
+                  ListTile(
+                    title: Text(appLocalizations.mary),
+                    onTap: () {
+                      context.read<LocationManager>().setLocation(
+                        Location.mary,
+                      );
+                      Navigator.of(context).pop();
+                    },
+                  ),
+                  ListTile(
+                    title: Text(appLocalizations.dashoguz),
+                    onTap: () {
+                      context.read<LocationManager>().setLocation(
+                        Location.dashoguz,
+                      );
+                      Navigator.of(context).pop();
+                    },
+                  ),
+                  ListTile(
+                    title: Text(appLocalizations.lebap),
+                    onTap: () {
+                      context.read<LocationManager>().setLocation(
+                        Location.lebap,
+                      );
                       Navigator.of(context).pop();
                     },
                   ),
@@ -102,11 +113,8 @@ Future<T?> showSetLocationDialog<T>({
             ),
             actions: [
               TextButton(
-                style: TextButton.styleFrom(
-                  splashFactory: InkSparkle.splashFactory,
-                ),
                 child: Text(
-                  AppLocalizations.of(context)!.cancel,
+                  appLocalizations.cancel,
                   style: const TextStyle(color: Constants.colorPrimary),
                 ),
                 onPressed: () => Navigator.of(context).pop(),

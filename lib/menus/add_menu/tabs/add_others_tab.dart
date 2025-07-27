@@ -1,13 +1,8 @@
 import 'package:flutter/material.dart';
 
-class AddOthersTab extends StatefulWidget {
+class AddOthersTab extends StatelessWidget {
   const AddOthersTab({super.key});
 
-  @override
-  State<AddOthersTab> createState() => _AddOthersTabState();
-}
-
-class _AddOthersTabState extends State<AddOthersTab> {
   @override
   Widget build(BuildContext context) {
     return const SizedBox();

@@ -2,8 +2,9 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:share_plus/share_plus.dart';
-import 'package:tmcarsclone/components/should_register_dialog.dart';
 
+import '../../components/placeholder_image.dart';
+import '../../components/should_register_dialog.dart';
 import '../../../components/scroll/glowless_scroll_behavior.dart';
 import '../../components/scroll/low_friction_scroll_physics.dart';
 import '../../l10n/app_localizations.dart';
@@ -11,6 +12,7 @@ import '../../models/article_category_model.dart';
 import '../../models/article_detail_model.dart';
 import '../../models/article_model.dart';
 import '../../providers/themes.dart';
+import '../../providers/traffic.dart';
 import '../../utils/constants.dart';
 import '../../utils/server.dart';
 import 'components/article_detail_content.dart';
@@ -188,21 +190,24 @@ class _ArticleDetailScreenState extends State<ArticleDetailScreen> {
                   ),
                 ],
                 flexibleSpace: FlexibleSpaceBar(
-                  background: CachedNetworkImage(
-                    imageUrl: widget.article.img,
-                    fit: BoxFit.cover,
-                    placeholder: (context, url) => Container(
-                      color: appColors.tileThemeColor,
-                      child: const Center(
-                        child: CircularProgressIndicator(strokeWidth: 2),
-                      ),
-                    ),
-                    errorWidget: (context, url, error) =>
-                        const Icon(Icons.error),
-                    fadeInDuration: const Duration(milliseconds: 200),
-                    memCacheHeight: 400,
-                    memCacheWidth: 600,
-                  ),
+                  background:
+                      context.watch<TrafficManager>().getTrafficMode == 0
+                      ? CachedNetworkImage(
+                          imageUrl: widget.article.img,
+                          fit: BoxFit.cover,
+                          placeholder: (context, url) => Container(
+                            color: appColors.tileThemeColor,
+                            child: const Center(
+                              child: CircularProgressIndicator(strokeWidth: 2),
+                            ),
+                          ),
+                          errorWidget: (context, url, error) =>
+                              const Icon(Icons.error),
+                          fadeInDuration: const Duration(milliseconds: 200),
+                          memCacheHeight: 400,
+                          memCacheWidth: 600,
+                        )
+                      : buildImagePlaceholder(context),
                 ),
               ),
               // This is the body of the screen.

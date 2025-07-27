@@ -5,17 +5,13 @@ import '../../utils/constants.dart';
 import 'tabs/all_profiles_tab.dart';
 import 'tabs/profiles_category_tab.dart';
 
-class ProfilesMenu extends StatefulWidget {
+class ProfilesMenu extends StatelessWidget {
   const ProfilesMenu({super.key});
 
   @override
-  // ignore: library_private_types_in_public_api
-  _ProfilesMenuState createState() => _ProfilesMenuState();
-}
-
-class _ProfilesMenuState extends State<ProfilesMenu> {
-  @override
   Widget build(BuildContext context) {
+    final AppLocalizations appLocalizations = AppLocalizations.of(context)!;
+
     return DefaultTabController(
       length: 2,
       child: Scaffold(
@@ -27,8 +23,8 @@ class _ProfilesMenuState extends State<ProfilesMenu> {
             textScaler: const TextScaler.linear(Constants.tabTextScale),
             indicatorColor: Colors.white,
             tabs: [
-              Tab(text: AppLocalizations.of(context)!.all.toUpperCase()),
-              Tab(text: AppLocalizations.of(context)!.category.toUpperCase()),
+              Tab(text: appLocalizations.all.toUpperCase()),
+              Tab(text: appLocalizations.category.toUpperCase()),
             ],
           ),
         ),

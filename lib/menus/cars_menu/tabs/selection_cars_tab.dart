@@ -1,13 +1,8 @@
 import 'package:flutter/material.dart';
 
-class SelectionCarsTab extends StatefulWidget {
+class SelectionCarsTab extends StatelessWidget {
   const SelectionCarsTab({super.key});
 
-  @override
-  State<SelectionCarsTab> createState() => _SelectionCarsTabState();
-}
-
-class _SelectionCarsTabState extends State<SelectionCarsTab> {
   @override
   Widget build(BuildContext context) {
     return const SizedBox();

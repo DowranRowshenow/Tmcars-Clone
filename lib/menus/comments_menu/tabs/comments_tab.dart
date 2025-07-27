@@ -3,14 +3,9 @@ import 'package:flutter/material.dart';
 import '../../../components/should_register.dart';
 import '../../../utils/constants.dart';
 
-class CommentsTab extends StatefulWidget {
+class CommentsTab extends StatelessWidget {
   const CommentsTab({super.key});
 
-  @override
-  State<CommentsTab> createState() => _CommentsTabState();
-}
-
-class _CommentsTabState extends State<CommentsTab> {
   @override
   Widget build(BuildContext context) {
     return Constants.isRegistered ? const SizedBox() : const ShouldRegister();

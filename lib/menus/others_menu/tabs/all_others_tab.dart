@@ -85,11 +85,11 @@ class _AllOthersTabState extends State<AllOthersTab> {
                   onRefresh: _handleRefresh,
                   child: ListView.builder(
                     itemExtent: Constants.popularProductItemExtent,
-                    shrinkWrap:
-                        true, // Important when inside another scrollable
+                    shrinkWrap: true,
                     itemCount: popularProducts.length,
                     itemBuilder: (context, index) {
                       return PopularProductCard(
+                        key: ValueKey(popularProducts[index].id),
                         product: popularProducts[index],
                       );
                     },

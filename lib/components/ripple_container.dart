@@ -36,16 +36,12 @@ class RippleContainer extends StatelessWidget {
     return Container(
       margin: margin,
       child: Column(
-        mainAxisSize: MainAxisSize
-            .min, // Makes the Column only take necessary vertical space
+        mainAxisSize: MainAxisSize.min,
         children: [
           Material(
-            // The color property sets the background color of the Material surface.
-            // This is also the surface over which the InkWell's ripple will draw.
             color: color,
             borderRadius: BorderRadius.circular(borderRadius),
-            clipBehavior: Clip
-                .antiAlias, // Ensures the Material's content is clipped if rounded
+            clipBehavior: Clip.antiAlias,
             child: InkWell(
               borderRadius: BorderRadius.circular(borderRadius),
               onTap: onTap,
@@ -53,33 +49,23 @@ class RippleContainer extends StatelessWidget {
               highlightColor: highlightColor,
               child: Container(
                 padding: padding,
-                width:
-                    width, // Apply width if provided (can be null for auto-sizing)
-                height:
-                    height, // Apply height if provided (can be null for auto-sizing)
+                width: width,
+                height: height,
                 decoration: BoxDecoration(
-                  // The color here is transparent to allow the Material's color (and ripple) to show through
                   color: Colors.transparent,
                   borderRadius: BorderRadius.circular(borderRadius),
-                  border: border, // Apply border directly if it's not null
+                  border: border,
                 ),
                 alignment: Alignment.center,
                 child: child,
               ),
             ),
           ),
-          // Conditionally add Padding and Text only if 'text' is provided
           if (text != null) ...[
-            // Using spread operator for concise conditional widgets
-            const Padding(
-              padding: EdgeInsets.all(5),
-            ), // Use const for performance
+            const Padding(padding: EdgeInsets.all(5)),
             Text(
               text!,
-              style: const TextStyle(
-                color: Colors.white,
-                fontSize: 13,
-              ), // Use const for performance
+              style: const TextStyle(color: Colors.white, fontSize: 13),
             ),
           ],
         ],

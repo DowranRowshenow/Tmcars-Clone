@@ -6,17 +6,13 @@ import 'tabs/all_car_parts_tab.dart';
 import 'tabs/selection_car_parts_tab.dart';
 import 'tabs/category_car_parth_tab.dart';
 
-class CarPartsMenu extends StatefulWidget {
+class CarPartsMenu extends StatelessWidget {
   const CarPartsMenu({super.key});
 
   @override
-  // ignore: library_private_types_in_public_api
-  _CarPartsMenuState createState() => _CarPartsMenuState();
-}
-
-class _CarPartsMenuState extends State<CarPartsMenu> {
-  @override
   Widget build(BuildContext context) {
+    final AppLocalizations appLocalizations = AppLocalizations.of(context)!;
+
     return DefaultTabController(
       length: 3,
       child: Scaffold(
@@ -28,9 +24,9 @@ class _CarPartsMenuState extends State<CarPartsMenu> {
             textScaler: const TextScaler.linear(Constants.tabTextScale),
             indicatorColor: Colors.white,
             tabs: [
-              Tab(text: AppLocalizations.of(context)!.cars.toUpperCase()),
-              Tab(text: AppLocalizations.of(context)!.selected.toUpperCase()),
-              Tab(text: AppLocalizations.of(context)!.category.toUpperCase()),
+              Tab(text: appLocalizations.cars.toUpperCase()),
+              Tab(text: appLocalizations.selected.toUpperCase()),
+              Tab(text: appLocalizations.category.toUpperCase()),
             ],
           ),
         ),

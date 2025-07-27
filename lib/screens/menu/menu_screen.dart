@@ -6,20 +6,13 @@ import '../../components/exit_dialog.dart';
 import '../../utils/constants.dart';
 import '../../providers/navigation.dart';
 
-class MenuScreen extends StatefulWidget {
+class MenuScreen extends StatelessWidget {
   const MenuScreen({super.key});
 
   @override
-  // ignore: library_private_types_in_public_api
-  _MenuScreenState createState() => _MenuScreenState();
-}
-
-class _MenuScreenState extends State<MenuScreen> {
-  @override
   Widget build(BuildContext context) {
-    // Use `watch` here to ensure the UI (ApspBar title, body, etc.)
-    // rebuilds when the navigation state changes.
-    final navigationManager = context.watch<NavigationManager>();
+    final NavigationManager navigationManager = context
+        .watch<NavigationManager>();
 
     return PopScope(
       canPop: false,

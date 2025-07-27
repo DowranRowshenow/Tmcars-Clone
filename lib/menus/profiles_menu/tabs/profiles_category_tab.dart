@@ -24,7 +24,8 @@ class ProfilesCategoryTab extends StatelessWidget {
         ),
         itemBuilder: (BuildContext context, int index) {
           // You can pass different data to ProfileCategoryCard based on the index
-          return const ProfileCategoryCard(
+          return ProfileCategoryCard(
+            key: ValueKey(index),
             // Example: Pass a title or ID if your card needs it
             // title: "Category ${index + 1}",
           );

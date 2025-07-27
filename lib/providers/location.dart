@@ -1,20 +1,49 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
+import '../l10n/app_localizations.dart';
 import '../utils/storage.dart';
 
+enum Location { none, ashgabat, arkadag, ahal, balkan, mary, dashoguz, lebap }
+
 class LocationManager extends ChangeNotifier {
-  // Provide a default locale to ensure _locale is never null.
-  // The actual initial locale will be set from main.dart at startup.
-  String _location = '';
+  Location _location = Location.none;
 
-  String get location => _location;
+  Location get location => _location;
 
-  Future<void> setLocation(String location) async {
+  Future<void> setLocation(Location location) async {
     if (_location == location) return;
 
     _location = location;
     notifyListeners();
-    // Save to SharedPreferences asynchronously
-    await Storage.instance.setLocale(_location);
+    await Storage.instance.setLocation(_location);
+  }
+
+  static Location getLocationFromString(String location) {
+    final locationMap = {
+      'ashgabat': Location.none,
+      'arkadag': Location.arkadag,
+      'ahal': Location.ahal,
+      'balkan': Location.balkan,
+      'mary': Location.mary,
+      'dashoguz': Location.dashoguz,
+      'lebap': Location.lebap,
+    };
+    return locationMap[location] ?? Location.none;
+  }
+
+  static String getLocalizedLocation(BuildContext context) {
+    final AppLocalizations appLocalizations = AppLocalizations.of(context)!;
+    final Location location = context.watch<LocationManager>().location;
+    final locationMap = {
+      Location.ashgabat: appLocalizations.ashgabat,
+      Location.arkadag: appLocalizations.arkadag,
+      Location.ahal: appLocalizations.ahal,
+      Location.balkan: appLocalizations.balkan,
+      Location.mary: appLocalizations.mary,
+      Location.dashoguz: appLocalizations.dashoguz,
+      Location.lebap: appLocalizations.lebap,
+    };
+    return locationMap[location] ?? appLocalizations.notSelected;
   }
 }

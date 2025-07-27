@@ -250,6 +250,12 @@ final ThemeData lightThemeData = ThemeData.light(useMaterial3: false).copyWith(
     surface: AppColors.light.themedSurface,
     onSurface: AppColors.light.textThemeColor,
   ),
+  textButtonTheme: TextButtonThemeData(
+    style: TextButton.styleFrom(
+      overlayColor: AppColors.light.dividerColor,
+      splashFactory: NoSplash.splashFactory,
+    ),
+  ),
   checkboxTheme: CheckboxThemeData(
     fillColor: WidgetStateProperty.resolveWith((states) {
       if (states.contains(WidgetState.selected)) {
@@ -318,6 +324,12 @@ final ThemeData darkThemeData = ThemeData.dark(useMaterial3: false).copyWith(
       systemNavigationBarContrastEnforced: true,
     ),
     */
+  ),
+  textButtonTheme: TextButtonThemeData(
+    style: TextButton.styleFrom(
+      overlayColor: AppColors.dark.dividerColor,
+      splashFactory: NoSplash.splashFactory,
+    ),
   ),
   textSelectionTheme: TextSelectionThemeData(
     cursorColor: AppColors.dark.focusColor,

@@ -5,17 +5,13 @@ import '../../utils/constants.dart';
 import 'tabs/comments_tab.dart';
 import 'tabs/my_comments_tab.dart';
 
-class CommentsMenu extends StatefulWidget {
+class CommentsMenu extends StatelessWidget {
   const CommentsMenu({super.key});
 
   @override
-  // ignore: library_private_types_in_public_api
-  _CommentsMenuState createState() => _CommentsMenuState();
-}
-
-class _CommentsMenuState extends State<CommentsMenu> {
-  @override
   Widget build(BuildContext context) {
+    final AppLocalizations appLocalizations = AppLocalizations.of(context)!;
+
     return DefaultTabController(
       length: 2,
       child: Scaffold(
@@ -27,10 +23,8 @@ class _CommentsMenuState extends State<CommentsMenu> {
             textScaler: const TextScaler.linear(Constants.tabTextScale),
             indicatorColor: Colors.white,
             tabs: [
-              Tab(text: AppLocalizations.of(context)!.myComments.toUpperCase()),
-              Tab(
-                text: AppLocalizations.of(context)!.writtenToMe.toUpperCase(),
-              ),
+              Tab(text: appLocalizations.myComments.toUpperCase()),
+              Tab(text: appLocalizations.writtenToMe.toUpperCase()),
             ],
           ),
         ),

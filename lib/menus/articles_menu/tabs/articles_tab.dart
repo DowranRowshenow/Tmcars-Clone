@@ -1,4 +1,5 @@
 import 'dart:convert';
+
 import 'package:flutter/material.dart';
 
 import '../../../components/no_connection.dart';
@@ -165,10 +166,14 @@ class _ArticlesTabState extends State<ArticlesTab> {
       child: ListView.builder(
         itemExtent: Constants.articleItemExtent,
         controller: _scrollController,
+        shrinkWrap: true,
         itemCount: _articles.length + (_hasMore ? 1 : 0),
         itemBuilder: (context, index) {
           if (index < _articles.length) {
-            return ArticleCard(article: _articles[index]);
+            return ArticleCard(
+              key: ValueKey(_articles[index].id),
+              article: _articles[index],
+            );
           } else {
             // Show loading indicator at the bottom
             return const Padding(

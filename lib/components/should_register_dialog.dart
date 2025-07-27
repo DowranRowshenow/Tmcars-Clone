@@ -1,3 +1,5 @@
+//import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -6,59 +8,59 @@ import '../l10n/app_localizations.dart';
 import '../providers/navigation.dart';
 import '../providers/themes.dart';
 
-Future<T?> shouldRegisterDialog<T>({
+Future<bool?> shouldRegisterDialog({
   required BuildContext context,
   Color? barrierColor,
-  double blurSigmaX = Constants.blurSigmaX,
-  double blurSigmaY = Constants.blurSigmaY,
   bool barrierDismissible = true,
 }) {
-  return showDialog<T>(
+  return showDialog<bool>(
     context: context,
     barrierDismissible: barrierDismissible,
     barrierColor:
         barrierColor ?? Colors.black.withValues(alpha: Constants.blurAlpha),
     builder: (BuildContext dialogContext) {
-      final AppColors appColors = Theme.of(context).extension<AppColors>()!;
+      final AppColors appColors = Theme.of(
+        dialogContext,
+      ).extension<AppColors>()!;
+      final AppLocalizations localizations = AppLocalizations.of(
+        dialogContext,
+      )!;
 
-      return AlertDialog(
-        insetPadding: const EdgeInsets.all(Constants.dialogPadding),
-        backgroundColor: appColors.themedSurface,
-        elevation: Constants.elevation,
-        contentPadding: const EdgeInsets.fromLTRB(30, 10, 30, 0),
-        title: Text(
-          AppLocalizations.of(context)!.notification,
-          style: TextStyle(color: appColors.textThemeColor),
+      return PopScope(
+        canPop: barrierDismissible,
+        child: AlertDialog(
+          insetPadding: const EdgeInsets.all(Constants.dialogPadding),
+          backgroundColor: appColors.themedSurface,
+          elevation: Constants.elevation,
+          contentPadding: const EdgeInsets.fromLTRB(30, 10, 30, 0),
+          title: Text(
+            localizations.notification,
+            style: TextStyle(color: appColors.textThemeColor),
+          ),
+          content: Text(localizations.notRegistered),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(dialogContext).pop(true);
+                context.read<NavigationManager>().setScreen(
+                  dialogContext,
+                  ScreenState.register,
+                );
+              },
+              child: Text(
+                localizations.register.toUpperCase(),
+                style: const TextStyle(color: Constants.colorPrimary),
+              ),
+            ),
+            TextButton(
+              onPressed: () => Navigator.of(dialogContext).pop(false),
+              child: Text(
+                localizations.cancel.toUpperCase(),
+                style: const TextStyle(color: Constants.colorPrimary),
+              ),
+            ),
+          ],
         ),
-        content: Text(AppLocalizations.of(context)!.notRegistered),
-        actions: [
-          TextButton(
-            style: TextButton.styleFrom(
-              splashFactory: InkSparkle.splashFactory,
-            ),
-            child: Text(
-              AppLocalizations.of(context)!.register.toUpperCase(),
-              style: const TextStyle(color: Constants.colorPrimary),
-            ),
-            onPressed: () {
-              Navigator.of(context).pop(false);
-              context.read<NavigationManager>().setScreen(
-                context,
-                ScreenState.register,
-              );
-            },
-          ),
-          TextButton(
-            style: TextButton.styleFrom(
-              splashFactory: InkSparkle.splashFactory,
-            ),
-            child: Text(
-              AppLocalizations.of(context)!.cancel.toUpperCase(),
-              style: const TextStyle(color: Constants.colorPrimary),
-            ),
-            onPressed: () => Navigator.of(context).pop(false),
-          ),
-        ],
       );
     },
   );

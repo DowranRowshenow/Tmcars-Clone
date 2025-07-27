@@ -7,20 +7,17 @@ import '../../../providers/locale.dart';
 import '../../../providers/navigation.dart';
 import '../../../providers/themes.dart';
 import '../../../models/article_model.dart';
+import '../../../providers/traffic.dart';
 import '../../../utils/constants.dart';
 
-class ArticleCard extends StatefulWidget {
+class ArticleCard extends StatelessWidget {
   const ArticleCard({super.key, required this.article});
   final Article article;
 
   @override
-  State<ArticleCard> createState() => _ArticleCardState();
-}
-
-class _ArticleCardState extends State<ArticleCard> {
-  @override
   Widget build(BuildContext context) {
     final AppColors appColors = Theme.of(context).extension<AppColors>()!;
+    final Locale locale = context.watch<LocaleManager>().locale;
 
     return Container(
       decoration: BoxDecoration(
@@ -29,21 +26,18 @@ class _ArticleCardState extends State<ArticleCard> {
         ),
       ),
       child: ListTile(
-        key: Key(widget.article.id.toString()),
         minTileHeight: Constants.articleItemExtent,
         contentPadding: const EdgeInsets.all(8),
         onTap: () {
           context.read<NavigationManager>().setScreen(
             context,
             ScreenState.articleDetail,
-            article: widget.article,
+            article: article,
           );
         },
         titleAlignment: ListTileTitleAlignment.center,
         title: Text(
-          context.watch<LocaleManager>().locale.languageCode == 'ru'
-              ? widget.article.titleRu
-              : widget.article.title,
+          locale.languageCode == 'ru' ? article.titleRu : article.title,
           maxLines: 3,
           overflow: TextOverflow.ellipsis,
           style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w600),
@@ -51,9 +45,9 @@ class _ArticleCardState extends State<ArticleCard> {
         subtitle: Container(
           padding: const EdgeInsets.only(top: 5),
           child: Text(
-            context.watch<LocaleManager>().locale.languageCode == 'ru'
-                ? widget.article.elapsedTimeRu
-                : widget.article.elapsedTime,
+            locale.languageCode == 'ru'
+                ? article.elapsedTimeRu
+                : article.elapsedTime,
             maxLines: 1,
             textWidthBasis: TextWidthBasis.parent,
             overflow: TextOverflow.clip,
@@ -64,17 +58,20 @@ class _ArticleCardState extends State<ArticleCard> {
             ),
           ),
         ),
-        trailing: CachedNetworkImage(
-          alignment: Alignment.center,
-          imageUrl: widget.article.img,
-          fit: BoxFit.fitHeight,
-          memCacheHeight: 100,
-          memCacheWidth: 200,
-          height: double.infinity,
-          width: MediaQuery.of(context).size.width * 0.3,
-          placeholder: (context, url) => buildImagePlaceholder(context),
-          errorWidget: (context, url, error) => buildImagePlaceholder(context),
-        ),
+        trailing: context.watch<TrafficManager>().getTrafficMode == 0
+            ? CachedNetworkImage(
+                alignment: Alignment.center,
+                imageUrl: article.img,
+                fit: BoxFit.fitHeight,
+                memCacheHeight: 100,
+                memCacheWidth: 200,
+                height: double.infinity,
+                width: MediaQuery.of(context).size.width * 0.3,
+                placeholder: (context, url) => buildImagePlaceholder(context),
+                errorWidget: (context, url, error) =>
+                    buildImagePlaceholder(context),
+              )
+            : buildImagePlaceholder(context),
       ),
     );
   }

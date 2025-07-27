@@ -16,39 +16,63 @@ class WebViewScreen extends StatefulWidget {
 
 class _WebViewScreenState extends State<WebViewScreen> {
   late final WebViewController _controller;
+  double progress = 0;
   bool _isLoading = true;
-  bool _webError = false;
-
-  void _retryLoad() {
-    if (mounted) {
-      setState(() {
-        _isLoading = true; // Show loading indicator again
-        _webError = false; // Reset error state
-      });
-    }
-    _controller.loadRequest(Uri.parse(widget.url)); // Attempt to reload
-  }
+  bool _hasError = false;
 
   @override
   void initState() {
     super.initState();
+    _initWebViewController();
+  }
+
+  void _initWebViewController() {
+    if (mounted) {
+      setState(() {
+        _isLoading = true;
+        _hasError = false;
+      });
+    }
+
     _controller = WebViewController()
       ..setJavaScriptMode(JavaScriptMode.disabled)
       ..setBackgroundColor(Colors.transparent)
       ..setNavigationDelegate(
         NavigationDelegate(
+          onProgress: (value) {
+            setState(() {
+              progress = value / 100;
+            });
+          },
+          onPageStarted: (String url) {
+            if (mounted) {
+              setState(() {
+                _isLoading = true;
+                _hasError = false;
+              });
+            }
+          },
           onPageFinished: (String url) {
             if (mounted) setState(() => _isLoading = false);
           },
-          onWebResourceError: (WebResourceError webResourceError) {
-            if (mounted) setState(() => _webError = true);
+          onWebResourceError: (WebResourceError error) {
+            if (mounted) {
+              setState(() {
+                _hasError = true;
+                _isLoading = false;
+              });
+            }
           },
-          onNavigationRequest: (NavigationRequest navigationRequest) {
+          onNavigationRequest: (NavigationRequest request) {
             return NavigationDecision.prevent;
           },
         ),
       )
       ..loadRequest(Uri.parse(widget.url));
+  }
+
+  void _retryLoad() {
+    _initWebViewController();
   }
 
   @override
@@ -65,9 +89,11 @@ class _WebViewScreenState extends State<WebViewScreen> {
       ),
       body: Stack(
         children: [
-          if (_isLoading) const Center(child: CircularProgressIndicator()),
-          if (_webError) NoConnection(onTap: () => _retryLoad()),
-          if (!_isLoading && !_webError) WebViewWidget(controller: _controller),
+          _hasError
+              ? Center(child: NoConnection(onTap: _retryLoad))
+              : WebViewWidget(controller: _controller),
+          if (_isLoading)
+            Center(child: CircularProgressIndicator(value: progress)),
         ],
       ),
     );

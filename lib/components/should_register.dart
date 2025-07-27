@@ -10,6 +10,8 @@ class ShouldRegister extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final AppLocalizations appLocalizations = AppLocalizations.of(context)!;
+
     return Center(
       child: Container(
         padding: const EdgeInsets.all(30),
@@ -17,7 +19,7 @@ class ShouldRegister extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text(
-              AppLocalizations.of(context)!.shouldRegister,
+              appLocalizations.shouldRegister,
               softWrap: true,
               textAlign: TextAlign.center,
               style: const TextStyle(overflow: TextOverflow.clip, fontSize: 18),
@@ -36,7 +38,7 @@ class ShouldRegister extends StatelessWidget {
                 );
               },
               child: Text(
-                AppLocalizations.of(context)!.register.toUpperCase(),
+                appLocalizations.register.toUpperCase(),
                 style: const TextStyle(color: Colors.white),
               ),
             ),

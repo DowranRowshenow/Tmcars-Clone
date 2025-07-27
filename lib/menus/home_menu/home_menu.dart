@@ -50,19 +50,17 @@ class _HomeMenuState extends State<HomeMenu> {
             onRefresh: _handleRefresh,
             child: ListView.builder(
               itemExtent: Constants.popularProductItemExtent,
-              shrinkWrap: true, // Important when inside another scrollable
+              shrinkWrap: true,
               itemCount: popularProducts.length,
               itemBuilder: (context, index) {
-                final product = popularProducts[index];
                 return PopularProductCard(
-                  key: ValueKey(product.hashCode),
-                  product: product,
+                  key: ValueKey(popularProducts[index].id),
+                  product: popularProducts[index],
                 );
               },
             ),
           );
         }
-        // Fallback, should ideally not be reached if other states are handled.
         return Center(
           child: Text(AppLocalizations.of(context)!.somethingWentWrong),
         );

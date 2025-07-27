@@ -1,13 +1,8 @@
 import 'package:flutter/material.dart';
 
-class AddCarsTab extends StatefulWidget {
+class AddCarsTab extends StatelessWidget {
   const AddCarsTab({super.key});
 
-  @override
-  State<AddCarsTab> createState() => _AddCarsTabState();
-}
-
-class _AddCarsTabState extends State<AddCarsTab> {
   @override
   Widget build(BuildContext context) {
     return const SizedBox();

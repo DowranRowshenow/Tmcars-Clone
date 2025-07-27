@@ -7,8 +7,8 @@ import '../../providers/locale.dart';
 import '../../providers/navigation.dart';
 import 'tabs/articles_tab.dart';
 
-class NewsMenu extends StatelessWidget {
-  const NewsMenu({super.key});
+class ArticlesMenu extends StatelessWidget {
+  const ArticlesMenu({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -19,7 +19,6 @@ class NewsMenu extends StatelessWidget {
 
     final locale = context.watch<LocaleManager>().locale;
 
-    // A helper function to get the correct category name based on locale.
     String getCategoryName(ArticleCategory category) {
       switch (locale.languageCode) {
         case 'ru':
@@ -57,8 +56,6 @@ class NewsMenu extends StatelessWidget {
           actions: const [],
         ),
         body: TabBarView(
-          // Pass the specific category to each tab so it knows what articles to load.
-          // The ArticlesTab will use the category's `code` to fetch the correct articles.
           children: categories
               .map((cat) => ArticlesTab(category: cat))
               .toList(),

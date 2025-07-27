@@ -2,53 +2,26 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
 import 'package:share_plus/share_plus.dart';
-import 'package:tmcarsclone/providers/location.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+import '../../providers/location.dart';
 import '../../providers/navigation.dart';
 import '../../providers/themes.dart';
 import '../../providers/traffic.dart';
-import 'components/set_traffic_dialog.dart';
-import 'components/set_language_dialog.dart';
-import 'components/set_location_dialog.dart';
 import '../../utils/constants.dart';
 import '../../utils/server.dart';
 import '../../l10n/app_localizations.dart';
+import 'components/set_traffic_dialog.dart';
+import 'components/set_language_dialog.dart';
+import 'components/set_location_dialog.dart';
 
-class SettingsScreen extends StatefulWidget {
+class SettingsScreen extends StatelessWidget {
   const SettingsScreen({super.key});
-
-  @override
-  // ignore: library_private_types_in_public_api
-  _SettingsScreenState createState() => _SettingsScreenState();
-}
-
-class _SettingsScreenState extends State<SettingsScreen> {
-  String getLocation(String location) {
-    switch (location) {
-      case '':
-        return AppLocalizations.of(context)!.notSelected;
-      case 'ashgabat':
-        return AppLocalizations.of(context)!.ashgabat;
-      case 'arkadag':
-        return AppLocalizations.of(context)!.arkadag;
-      case 'ahal':
-        return AppLocalizations.of(context)!.ahal;
-      case 'balkan':
-        return AppLocalizations.of(context)!.balkan;
-      case 'mary':
-        return AppLocalizations.of(context)!.mary;
-      case 'dashoguz':
-        return AppLocalizations.of(context)!.dashoguz;
-      case 'lebap':
-        return AppLocalizations.of(context)!.lebap;
-    }
-    return AppLocalizations.of(context)!.notSelected;
-  }
 
   @override
   Widget build(BuildContext context) {
     final AppColors appColors = Theme.of(context).extension<AppColors>()!;
+    final AppLocalizations appLocalizations = AppLocalizations.of(context)!;
     final NavigationManager navigationManager = context
         .read<NavigationManager>();
 
@@ -56,7 +29,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
       resizeToAvoidBottomInset: true,
       appBar: AppBar(
         title: Text(
-          AppLocalizations.of(context)!.settings,
+          appLocalizations.settings,
           overflow: TextOverflow.ellipsis,
           softWrap: false,
           style: const TextStyle(overflow: TextOverflow.ellipsis),
@@ -72,25 +45,31 @@ class _SettingsScreenState extends State<SettingsScreen> {
         children: [
           ListTile(
             title: Text(
-              AppLocalizations.of(context)!.generalSettings,
+              appLocalizations.generalSettings,
               overflow: TextOverflow.ellipsis,
               softWrap: false,
-              style: const TextStyle(overflow: TextOverflow.ellipsis),
+              style: TextStyle(
+                overflow: TextOverflow.ellipsis,
+                color: appColors.text2ThemeColor,
+              ),
             ),
             tileColor: appColors.tileThemeColor,
           ),
           ListTile(
             title: Text(
-              AppLocalizations.of(context)!.language,
+              appLocalizations.language,
               overflow: TextOverflow.ellipsis,
               softWrap: false,
               style: const TextStyle(overflow: TextOverflow.ellipsis),
             ),
             trailing: Text(
-              AppLocalizations.of(context)!.lang,
+              appLocalizations.lang,
               overflow: TextOverflow.ellipsis,
               softWrap: false,
-              style: const TextStyle(overflow: TextOverflow.ellipsis),
+              style: TextStyle(
+                overflow: TextOverflow.ellipsis,
+                color: appColors.text2ThemeColor,
+              ),
             ),
             onTap: () => showSetLanguageDialog(context: context),
           ),
@@ -103,16 +82,19 @@ class _SettingsScreenState extends State<SettingsScreen> {
           ),
           ListTile(
             title: Text(
-              AppLocalizations.of(context)!.version,
+              appLocalizations.version,
               overflow: TextOverflow.ellipsis,
               softWrap: false,
               style: const TextStyle(overflow: TextOverflow.ellipsis),
             ),
-            trailing: const Text(
+            trailing: Text(
               Constants.packageVersion,
               overflow: TextOverflow.ellipsis,
               softWrap: false,
-              style: TextStyle(overflow: TextOverflow.ellipsis),
+              style: TextStyle(
+                overflow: TextOverflow.ellipsis,
+                color: appColors.text2ThemeColor,
+              ),
             ),
             onTap: () {},
           ),
@@ -125,23 +107,24 @@ class _SettingsScreenState extends State<SettingsScreen> {
           ),
           ListTile(
             title: Text(
-              AppLocalizations.of(context)!.internet,
+              appLocalizations.internet,
               overflow: TextOverflow.ellipsis,
               softWrap: false,
               style: const TextStyle(overflow: TextOverflow.ellipsis),
             ),
             trailing: Text(
               context.watch<TrafficManager>().getTrafficMode == 0
-                  ? AppLocalizations.of(context)!.standard
-                  : AppLocalizations.of(context)!.econom,
+                  ? appLocalizations.standard
+                  : appLocalizations.econom,
               overflow: TextOverflow.ellipsis,
               softWrap: false,
-              style: const TextStyle(overflow: TextOverflow.ellipsis),
+              style: TextStyle(
+                overflow: TextOverflow.ellipsis,
+                color: appColors.text2ThemeColor,
+              ),
             ),
             onTap: () {
-              showSetTrafficDialog(context: context).then((onValue) {
-                if (mounted) setState(() {});
-              });
+              showSetTrafficDialog(context: context);
             },
           ),
           Container(
@@ -153,35 +136,39 @@ class _SettingsScreenState extends State<SettingsScreen> {
           ),
           ListTile(
             title: Text(
-              AppLocalizations.of(context)!.selectedLocation,
+              appLocalizations.selectedLocation,
               overflow: TextOverflow.ellipsis,
               softWrap: false,
               style: const TextStyle(overflow: TextOverflow.ellipsis),
             ),
             trailing: Text(
-              getLocation(context.watch<LocationManager>().location),
+              LocationManager.getLocalizedLocation(context),
               overflow: TextOverflow.ellipsis,
               softWrap: false,
-              style: const TextStyle(overflow: TextOverflow.ellipsis),
+              style: TextStyle(
+                overflow: TextOverflow.ellipsis,
+                color: appColors.text2ThemeColor,
+              ),
             ),
             onTap: () {
-              showSetLocationDialog(context: context).then((onValue) {
-                if (mounted) setState(() {});
-              });
+              showSetLocationDialog(context: context);
             },
           ),
           ListTile(
             title: Text(
-              AppLocalizations.of(context)!.additional,
+              appLocalizations.additional,
               overflow: TextOverflow.ellipsis,
               softWrap: false,
-              style: const TextStyle(overflow: TextOverflow.ellipsis),
+              style: TextStyle(
+                overflow: TextOverflow.ellipsis,
+                color: appColors.text2ThemeColor,
+              ),
             ),
             tileColor: appColors.tileThemeColor,
           ),
           ListTile(
             title: Text(
-              AppLocalizations.of(context)!.share,
+              appLocalizations.share,
               overflow: TextOverflow.ellipsis,
               softWrap: false,
               style: const TextStyle(overflow: TextOverflow.ellipsis),
@@ -194,8 +181,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
             onTap: () {
               SharePlus.instance.share(
                 ShareParams(
-                  text:
-                      '${AppLocalizations.of(context)!.shareText}: ${Server.SHARE_LINK}',
+                  text: '${appLocalizations.shareText}: ${Server.SHARE_LINK}',
                 ),
               );
             },
@@ -209,23 +195,26 @@ class _SettingsScreenState extends State<SettingsScreen> {
           ),
           ListTile(
             title: Text(
-              AppLocalizations.of(context)!.helper,
+              appLocalizations.helper,
               overflow: TextOverflow.ellipsis,
               softWrap: false,
               style: const TextStyle(overflow: TextOverflow.ellipsis),
             ),
             trailing: Text(
-              AppLocalizations.of(context)!.mustRead,
+              appLocalizations.mustRead,
               overflow: TextOverflow.ellipsis,
               softWrap: false,
-              style: const TextStyle(overflow: TextOverflow.ellipsis),
+              style: TextStyle(
+                overflow: TextOverflow.ellipsis,
+                color: appColors.text2ThemeColor,
+              ),
             ),
             onTap: () {
               navigationManager.setScreen(
                 context,
                 ScreenState.webview,
                 url: Server.ABOUT_US_URL,
-                title: AppLocalizations.of(context)!.helper,
+                title: appLocalizations.helper,
               );
             },
           ),
@@ -238,23 +227,26 @@ class _SettingsScreenState extends State<SettingsScreen> {
           ),
           ListTile(
             title: Text(
-              AppLocalizations.of(context)!.policy,
+              appLocalizations.policy,
               overflow: TextOverflow.ellipsis,
               softWrap: false,
               style: const TextStyle(overflow: TextOverflow.ellipsis),
             ),
             trailing: Text(
-              AppLocalizations.of(context)!.read,
+              appLocalizations.read,
               overflow: TextOverflow.ellipsis,
               softWrap: false,
-              style: const TextStyle(overflow: TextOverflow.ellipsis),
+              style: TextStyle(
+                overflow: TextOverflow.ellipsis,
+                color: appColors.text2ThemeColor,
+              ),
             ),
             onTap: () {
               navigationManager.setScreen(
                 context,
                 ScreenState.webview,
                 url: Server.PRIVACY_POLICY_URL,
-                title: AppLocalizations.of(context)!.policy,
+                title: appLocalizations.policy,
               );
             },
           ),
@@ -267,23 +259,26 @@ class _SettingsScreenState extends State<SettingsScreen> {
           ),
           ListTile(
             title: Text(
-              AppLocalizations.of(context)!.privacyPolicy,
+              appLocalizations.privacyPolicy,
               overflow: TextOverflow.ellipsis,
               softWrap: false,
               style: const TextStyle(overflow: TextOverflow.ellipsis),
             ),
             trailing: Text(
-              AppLocalizations.of(context)!.read,
+              appLocalizations.read,
               overflow: TextOverflow.ellipsis,
               softWrap: false,
-              style: const TextStyle(overflow: TextOverflow.ellipsis),
+              style: TextStyle(
+                overflow: TextOverflow.ellipsis,
+                color: appColors.text2ThemeColor,
+              ),
             ),
             onTap: () {
               navigationManager.setScreen(
                 context,
                 ScreenState.webview,
                 url: Server.PRIVACY_POLICY_URL,
-                title: AppLocalizations.of(context)!.privacyPolicy,
+                title: appLocalizations.privacyPolicy,
               );
             },
           ),
@@ -296,23 +291,26 @@ class _SettingsScreenState extends State<SettingsScreen> {
           ),
           ListTile(
             title: Text(
-              AppLocalizations.of(context)!.commentPolicy,
+              appLocalizations.commentPolicy,
               overflow: TextOverflow.ellipsis,
               softWrap: false,
               style: const TextStyle(overflow: TextOverflow.ellipsis),
             ),
             trailing: Text(
-              AppLocalizations.of(context)!.read,
+              appLocalizations.read,
               overflow: TextOverflow.ellipsis,
               softWrap: false,
-              style: const TextStyle(overflow: TextOverflow.ellipsis),
+              style: TextStyle(
+                overflow: TextOverflow.ellipsis,
+                color: appColors.text2ThemeColor,
+              ),
             ),
             onTap: () {
               navigationManager.setScreen(
                 context,
                 ScreenState.webview,
                 url: Server.COMMENT_POST_POLICY_URL,
-                title: AppLocalizations.of(context)!.commentPolicy,
+                title: appLocalizations.commentPolicy,
               );
             },
           ),
@@ -325,7 +323,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
           ),
           ListTile(
             title: Text(
-              AppLocalizations.of(context)!.contact,
+              appLocalizations.contact,
               overflow: TextOverflow.ellipsis,
               softWrap: false,
               maxLines: 1,

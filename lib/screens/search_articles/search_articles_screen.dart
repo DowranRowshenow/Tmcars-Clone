@@ -1,5 +1,6 @@
-import 'package:flutter/material.dart';
 import 'dart:async';
+
+import 'package:flutter/material.dart';
 
 import '../../menus/articles_menu/tabs/articles_tab.dart';
 import '../../utils/constants.dart';
@@ -53,6 +54,7 @@ class _SearchArticlesScreenState extends State<SearchArticlesScreen> {
   @override
   Widget build(BuildContext context) {
     final AppColors appColors = Theme.of(context).extension<AppColors>()!;
+    final AppLocalizations appLocalizations = AppLocalizations.of(context)!;
 
     return Scaffold(
       appBar: AppBar(
@@ -69,7 +71,7 @@ class _SearchArticlesScreenState extends State<SearchArticlesScreen> {
             hintStyle: TextStyle(
               color: appColors.appBarForegroundColor?.withValues(alpha: 0.7),
             ),
-            hintText: AppLocalizations.of(context)!.search,
+            hintText: appLocalizations.search,
           ),
           onChanged: _onSearchChanged,
         ),

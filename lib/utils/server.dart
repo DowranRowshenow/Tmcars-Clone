@@ -78,24 +78,18 @@ class Server {
 
         return products;
       } else {
-        if (kDebugMode) {
-          print(
-            'Failed to load popular products: ${response.statusCode}, Body: ${response.body}',
-          );
-        }
+        debugPrint(
+          'Failed to load popular products: ${response.statusCode}, Body: ${response.body}',
+        );
         throw HttpException(
           'Failed to load popular products: ${response.statusCode}',
         );
       }
     } on TimeoutException catch (e) {
-      if (kDebugMode) {
-        print('Error fetching popular products (timeout): $e');
-      }
+      debugPrint('Error fetching popular products (timeout): $e');
       throw Exception('Request timed out. Please check your connection.');
     } catch (e) {
-      if (kDebugMode) {
-        print('Error fetching popular products: $e');
-      }
+      debugPrint('Error fetching popular products: $e');
       throw Exception('An unexpected error occurred: $e');
     }
   }
@@ -236,10 +230,8 @@ class Server {
 
       if (response.statusCode == 200) {
         // Debug: Print response headers
-        if (kDebugMode) {
-          print('Response headers: ${response.headers}');
-          print('Content-Type: ${response.headers['content-type']}');
-        }
+        debugPrint('Response headers: ${response.headers}');
+        debugPrint('Content-Type: ${response.headers['content-type']}');
 
         // Check if response has proper encoding
         final contentType = response.headers['content-type'] ?? '';
@@ -260,9 +252,7 @@ class Server {
                 allowMalformed: true,
               );
             } catch (e) {
-              if (kDebugMode) {
-                print('UTF-8 decoding failed, using original: $e');
-              }
+              debugPrint('UTF-8 decoding failed, using original: $e');
               htmlContent = response.body;
             }
           }
@@ -290,9 +280,7 @@ class Server {
       }
     } catch (e) {
       // Handle network or other errors
-      if (kDebugMode) {
-        print('Error fetching HTML: $e');
-      }
+      debugPrint('Error fetching HTML: $e');
       return '';
     }
   }

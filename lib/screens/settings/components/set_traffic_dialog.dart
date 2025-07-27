@@ -6,14 +6,12 @@ import '../../../utils/constants.dart';
 import '../../../providers/themes.dart';
 import '../../../providers/traffic.dart';
 
-Future<T?> showSetTrafficDialog<T>({
+Future<bool?> showSetTrafficDialog({
   required BuildContext context,
   Color? barrierColor,
-  double blurSigmaX = Constants.blurSigmaX,
-  double blurSigmaY = Constants.blurSigmaY,
   bool barrierDismissible = true,
 }) {
-  return showDialog<T>(
+  return showDialog<bool>(
     context: context,
     barrierDismissible: barrierDismissible,
     barrierColor:
@@ -22,20 +20,20 @@ Future<T?> showSetTrafficDialog<T>({
       int selectedTrafficMode = context.watch<TrafficManager>().getTrafficMode;
       final AppColors appColors = Theme.of(context).extension<AppColors>()!;
 
-      return StatefulBuilder(
-        builder: (context, setState) {
-          return AlertDialog(
-            insetPadding: const EdgeInsets.all(Constants.dialogPadding),
-            contentPadding: const EdgeInsets.fromLTRB(0, 20, 0, 0),
-            backgroundColor: appColors.themedSurface,
-            elevation: Constants.elevation,
-            title: Text(
-              AppLocalizations.of(context)!.selectLanguage,
-              style: TextStyle(color: appColors.textThemeColor),
-            ),
-            content: SizedBox(
-              width: double.maxFinite,
-              child: ListView(
+      return AlertDialog(
+        insetPadding: const EdgeInsets.all(Constants.dialogPadding),
+        contentPadding: const EdgeInsets.fromLTRB(0, 20, 0, 0),
+        backgroundColor: appColors.themedSurface,
+        elevation: Constants.elevation,
+        title: Text(
+          AppLocalizations.of(context)!.selectLanguage,
+          style: TextStyle(color: appColors.textThemeColor),
+        ),
+        content: SizedBox(
+          width: double.maxFinite,
+          child: StatefulBuilder(
+            builder: (context, setState) {
+              return ListView(
                 shrinkWrap: true,
                 children: [
                   RadioListTile<int>(
@@ -63,37 +61,31 @@ Future<T?> showSetTrafficDialog<T>({
                     controlAffinity: ListTileControlAffinity.leading,
                   ),
                 ],
-              ),
+              );
+            },
+          ),
+        ),
+        actions: [
+          TextButton(
+            child: Text(
+              AppLocalizations.of(context)!.select,
+              style: const TextStyle(color: Constants.colorPrimary),
             ),
-            actions: [
-              TextButton(
-                style: TextButton.styleFrom(
-                  splashFactory: InkSparkle.splashFactory,
-                ),
-                child: Text(
-                  AppLocalizations.of(context)!.select,
-                  style: const TextStyle(color: Constants.colorPrimary),
-                ),
-                onPressed: () {
-                  context.read<TrafficManager>().setTrafficMode(
-                    selectedTrafficMode,
-                  );
-                  Navigator.of(context).pop();
-                },
-              ),
-              TextButton(
-                style: TextButton.styleFrom(
-                  splashFactory: InkSparkle.splashFactory,
-                ),
-                child: Text(
-                  AppLocalizations.of(context)!.cancel,
-                  style: const TextStyle(color: Constants.colorPrimary),
-                ),
-                onPressed: () => Navigator.of(context).pop(),
-              ),
-            ],
-          );
-        },
+            onPressed: () {
+              context.read<TrafficManager>().setTrafficMode(
+                selectedTrafficMode,
+              );
+              Navigator.of(context).pop();
+            },
+          ),
+          TextButton(
+            child: Text(
+              AppLocalizations.of(context)!.cancel,
+              style: const TextStyle(color: Constants.colorPrimary),
+            ),
+            onPressed: () => Navigator.of(context).pop(),
+          ),
+        ],
       );
     },
   );

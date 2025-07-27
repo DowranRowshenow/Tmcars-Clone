@@ -16,7 +16,6 @@ class AllProfilesTab extends StatelessWidget {
       padding: const EdgeInsets.all(5),
       child: Column(
         children: [
-          // Search bar container
           Container(
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(5), // Use appColors
@@ -53,7 +52,6 @@ class AllProfilesTab extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 5),
-          // Refreshable list of profiles
           Expanded(
             child: RefreshIndicator(onRefresh: () async {}, child: ListView()),
           ),

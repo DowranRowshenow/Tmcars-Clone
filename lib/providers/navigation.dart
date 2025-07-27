@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:tmcarsclone/providers/locale.dart';
 
+import '../providers/locale.dart';
 import '../models/article_model.dart';
 import '../screens/article/article_detail_screen.dart';
 import '../screens/notifications/notifications_screen.dart';
@@ -22,6 +22,20 @@ import '../screens/contact/contact_screen.dart';
 import '../screens/settings/settings_screen.dart';
 import '../screens/webview/webview_screen.dart';
 import '../utils/constants.dart';
+
+class _ArticleDetailArgs {
+  final Article article;
+  final String languageCode;
+
+  const _ArticleDetailArgs({required this.article, required this.languageCode});
+}
+
+class _WebViewArgs {
+  final String url;
+  final String title;
+
+  const _WebViewArgs({required this.url, required this.title});
+}
 
 enum MenuState { home, add, others, comments, articles, profiles, parts, cars }
 
@@ -45,46 +59,55 @@ class NavigationManager extends ChangeNotifier {
   MenuState get currentMenu => _currentMenu;
   GlobalKey<ScaffoldState> get scaffoldKey => _scaffoldKey;
 
+  late final Map<MenuState, String Function(BuildContext)> _menuTitles;
+  late final Map<MenuState, Widget> _menuWidgets;
+
+  NavigationManager() {
+    _menuTitles = {
+      MenuState.home: (context) => AppLocalizations.of(context)!.home,
+      MenuState.others: (context) => AppLocalizations.of(context)!.others,
+      MenuState.add: (context) => AppLocalizations.of(context)!.add,
+      MenuState.comments: (context) => AppLocalizations.of(context)!.comments,
+      MenuState.articles: (context) => AppLocalizations.of(context)!.news,
+      MenuState.profiles: (context) => AppLocalizations.of(context)!.profiles,
+      MenuState.parts: (context) => AppLocalizations.of(context)!.parts,
+      MenuState.cars: (context) => AppLocalizations.of(context)!.cars,
+    };
+
+    _menuWidgets = const {
+      MenuState.home: HomeMenu(),
+      MenuState.add: AddMenu(),
+      MenuState.others: OthersMenu(),
+      MenuState.comments: CommentsMenu(),
+      MenuState.articles: ArticlesMenu(),
+      MenuState.parts: CarPartsMenu(),
+      MenuState.cars: CarsMenu(),
+      MenuState.profiles: ProfilesMenu(),
+    };
+  }
+
   String getMenuTitle(BuildContext context) {
-    switch (_currentMenu) {
-      case MenuState.home:
-        return AppLocalizations.of(context)!.home;
-      case MenuState.others:
-        return AppLocalizations.of(context)!.others;
-      case MenuState.add:
-        return AppLocalizations.of(context)!.add;
-      case MenuState.comments:
-        return AppLocalizations.of(context)!.comments;
-      case MenuState.articles:
-        return AppLocalizations.of(context)!.news;
-      case MenuState.profiles:
-        return AppLocalizations.of(context)!.profiles;
-      case MenuState.parts:
-        return AppLocalizations.of(context)!.parts;
-      case MenuState.cars:
-        return AppLocalizations.of(context)!.cars;
-    }
+    return _menuTitles[_currentMenu]?.call(context) ??
+        AppLocalizations.of(context)!.home; // Fallback to home
   }
 
   Widget getCurrentMenu() {
-    switch (_currentMenu) {
-      case MenuState.home:
-        return const HomeMenu();
-      case MenuState.add:
-        return const AddMenu();
-      case MenuState.others:
-        return const OthersMenu();
-      case MenuState.comments:
-        return const CommentsMenu();
-      case MenuState.articles:
-        return const NewsMenu();
-      case MenuState.parts:
-        return const CarPartsMenu();
-      case MenuState.cars:
-        return const CarsMenu();
-      case MenuState.profiles:
-        return const ProfilesMenu();
-    }
+    return _menuWidgets[_currentMenu] ??
+        const HomeMenu(); // Fallback to HomeMenu
+  }
+
+  IconButton _buildIconButton({
+    required VoidCallback onPressed,
+    required IconData icon,
+    Color color = Colors.white, // Default color
+  }) {
+    return IconButton(
+      color: color,
+      onPressed: onPressed,
+      splashRadius: Constants.splashRadius,
+      icon: Icon(icon),
+      splashColor: Colors.transparent, // Consistent splash behavior
+    );
   }
 
   List<Widget> getMenuTabs(BuildContext context) {
@@ -92,99 +115,112 @@ class NavigationManager extends ChangeNotifier {
       case MenuState.home:
         return Constants.isRegistered
             ? [
-                IconButton(
-                  color: Colors.white,
-                  onPressed: () {
-                    setScreen(context, ScreenState.notifications);
-                  },
-                  splashRadius: Constants.splashRadius,
-                  icon: const Icon(Icons.notifications),
-                  splashColor: Colors.transparent,
+                _buildIconButton(
+                  onPressed: () =>
+                      _navigateToScreen(context, ScreenState.notifications),
+                  icon: Icons.notifications,
                 ),
               ]
             : [];
 
       case MenuState.articles:
         return [
-          IconButton(
-            color: Colors.white,
-            onPressed: () {
-              setScreen(context, ScreenState.searchArticles);
-            },
-            splashRadius: Constants.splashRadius,
-            icon: const Icon(Icons.search),
-            splashColor: Colors.transparent,
+          _buildIconButton(
+            onPressed: () =>
+                _navigateToScreen(context, ScreenState.searchArticles),
+            icon: Icons.search,
           ),
         ];
+
       case MenuState.others:
-        return [
-          IconButton(
-            color: Colors.white,
-            onPressed: () {},
-            splashRadius: Constants.splashRadius,
-            icon: const Icon(Icons.sort),
-            splashColor: Colors.transparent,
-          ),
-          IconButton(
-            color: Colors.white,
-            onPressed: () {
-              shouldRegisterDialog(context: context);
-            },
-            splashRadius: Constants.splashRadius,
-            icon: const Icon(Icons.star),
-            splashColor: Colors.transparent,
-          ),
-        ];
       case MenuState.parts:
-        return [
-          IconButton(
-            color: Colors.white,
-            onPressed: () {},
-            splashRadius: Constants.splashRadius,
-            icon: const Icon(Icons.sort),
-            splashColor: Colors.transparent,
-          ),
-          IconButton(
-            color: Colors.white,
-            onPressed: () {
-              shouldRegisterDialog(context: context);
-            },
-            splashRadius: Constants.splashRadius,
-            icon: const Icon(Icons.star),
-            splashColor: Colors.transparent,
-          ),
-        ];
       case MenuState.cars:
         return [
-          IconButton(
-            color: Colors.white,
-            onPressed: () {},
-            splashRadius: Constants.splashRadius,
-            icon: const Icon(Icons.sort),
-            splashColor: Colors.transparent,
-          ),
-          IconButton(
-            color: Colors.white,
+          _buildIconButton(
             onPressed: () {
-              shouldRegisterDialog(context: context);
+              // Add specific sort logic here if different for each menu
             },
-            splashRadius: Constants.splashRadius,
-            icon: const Icon(Icons.star),
-            splashColor: Colors.transparent,
+            icon: Icons.sort,
+          ),
+          _buildIconButton(
+            onPressed: () => shouldRegisterDialog(context: context),
+            icon: Icons.star,
           ),
         ];
+
       case MenuState.add:
-        return [];
       case MenuState.profiles:
-        return [];
       case MenuState.comments:
         return [];
     }
   }
 
   void setMenu(MenuState state) {
+    if (_currentMenu == state) return; // Prevent unnecessary rebuilds
     _currentMenu = state;
     notifyListeners();
+  }
+
+  void _navigateToScreen(
+    BuildContext context,
+    ScreenState state, {
+    Object? arguments, // Use Object? for general arguments
+  }) {
+    if (_scaffoldKey.currentState?.isDrawerOpen ?? false) {
+      _scaffoldKey.currentState?.closeDrawer();
+    }
+
+    if (_currentScreen != state) {
+      _currentScreen = state;
+      // notifyListeners();
+    }
+
+    Widget screenToPush; // Changed to non-nullable
+
+    switch (state) {
+      case ScreenState.articleDetail:
+        final args = arguments as _ArticleDetailArgs?;
+        if (args == null) {
+          debugPrint('Error: ArticleDetailScreen requires _ArticleDetailArgs.');
+          return; // Exit if arguments are missing
+        }
+        screenToPush = ArticleDetailScreen(
+          article: args.article,
+          languageCode: args.languageCode,
+        );
+        break;
+      case ScreenState.notifications:
+        screenToPush = const NotificationsScreen();
+        break;
+      case ScreenState.searchArticles:
+        screenToPush = const SearchArticlesScreen();
+        break;
+      case ScreenState.menu:
+        screenToPush = const MenuScreen();
+        break;
+      case ScreenState.settings:
+        screenToPush = const SettingsScreen();
+        break;
+      case ScreenState.contact:
+        screenToPush = const ContactScreen();
+        break;
+      case ScreenState.register:
+        screenToPush = const RegisterScreen();
+        break;
+      case ScreenState.webview:
+        final args = arguments as _WebViewArgs?;
+        if (args == null) {
+          debugPrint('Error: WebViewScreen requires _WebViewArgs.');
+          return; // Exit if arguments are missing
+        }
+        screenToPush = WebViewScreen(url: args.url, title: args.title);
+        break;
+    }
+
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (ctx) => screenToPush), // No '!' needed
+    );
   }
 
   void setScreen(
@@ -194,72 +230,28 @@ class NavigationManager extends ChangeNotifier {
     String? title,
     Article? article,
   }) {
-    _currentScreen = state;
-    _scaffoldKey.currentState!.closeDrawer();
-    switch (state) {
-      case ScreenState.articleDetail:
-        if (article != null) {
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => ArticleDetailScreen(
-                article: article,
-                languageCode: context
-                    .watch<LocaleManager>()
-                    .locale
-                    .languageCode,
-              ),
-            ),
-          );
-        }
-        break;
-      case ScreenState.notifications:
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => const NotificationsScreen()),
+    Object? args;
+    if (state == ScreenState.articleDetail) {
+      if (article == null) {
+        debugPrint(
+          'Error: Article argument is required for ArticleDetailScreen.',
         );
-        break;
-      case ScreenState.searchArticles:
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => const SearchArticlesScreen()),
-        );
-        break;
-      case ScreenState.menu:
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => const MenuScreen()),
-        );
-        break;
-      case ScreenState.settings:
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => const SettingsScreen()),
-        );
-        break;
-      case ScreenState.contact:
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => const ContactScreen()),
-        );
-        break;
-      case ScreenState.register:
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => const RegisterScreen()),
-        );
-        break;
-      case ScreenState.webview:
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => WebViewScreen(
-              url: url ?? "",
-              title: title ?? getMenuTitle(context),
-            ),
-          ),
-        );
-        break;
+        return;
+      }
+      args = _ArticleDetailArgs(
+        article: article,
+        languageCode: context.read<LocaleManager>().locale.languageCode,
+      );
+    } else if (state == ScreenState.webview) {
+      if (url == null) {
+        debugPrint('Error: URL is required for WebViewScreen.');
+        return;
+      }
+      args = _WebViewArgs(
+        url: url,
+        title: title ?? getMenuTitle(context), // Fallback title
+      );
     }
+    _navigateToScreen(context, state, arguments: args);
   }
 }

@@ -28,7 +28,7 @@ void main() async {
   final ThemeMode initialThemeMode = await storage.getThemeMode();
   final Locale initialLocale = await storage.getLocale();
   final int initialTrafficMode = await storage.getTrafficMode();
-  final String initialLocation = await storage.getLocation();
+  final Location initialLocation = await storage.getLocation();
   final List<ArticleCategory> initialArticleCategories = await storage
       .getArticleCategories();
   // Set preferred orientation once for the entire app lifecycle.
@@ -81,7 +81,6 @@ class _TmcarsCloneState extends State<TmcarsClone> {
 
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      // Use a fallback title for safety during initial load.
       title: AppLocalizations.of(context)?.appName ?? Constants.appName,
       theme: lightThemeData,
       darkTheme: darkThemeData,

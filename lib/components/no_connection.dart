@@ -8,6 +8,8 @@ class NoConnection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final AppLocalizations appLocalizations = AppLocalizations.of(context)!;
+
     return Center(
       child: InkWell(
         borderRadius: BorderRadius.circular(200),
@@ -26,7 +28,7 @@ class NoConnection extends StatelessWidget {
               const Icon(Icons.wifi_off, size: 50),
               const SizedBox(height: 10),
               Text(
-                AppLocalizations.of(context)!.noInternet,
+                appLocalizations.noInternet,
                 style: const TextStyle(
                   fontWeight: FontWeight.bold,
                   fontSize: 18,
@@ -37,7 +39,7 @@ class NoConnection extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   const Icon(Icons.refresh, size: 16),
-                  Text(AppLocalizations.of(context)!.tryAgain),
+                  Text(appLocalizations.tryAgain),
                 ],
               ),
             ],

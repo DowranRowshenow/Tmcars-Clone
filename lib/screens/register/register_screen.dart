@@ -26,10 +26,11 @@ class _RegisterScreenState extends State<RegisterScreen> {
   @override
   Widget build(BuildContext context) {
     final AppColors appColors = Theme.of(context).extension<AppColors>()!;
+    final AppLocalizations appLocalizations = AppLocalizations.of(context)!;
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(AppLocalizations.of(context)!.register),
+        title: Text(appLocalizations.register),
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
           onPressed: () => Navigator.pop(context),
@@ -62,7 +63,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     ? Row(
                         children: [
                           Text(
-                            AppLocalizations.of(context)!.emailField,
+                            appLocalizations.emailField,
                             style: const TextStyle(fontSize: 18),
                           ),
                           const SizedBox(width: 5),
@@ -131,7 +132,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   Flexible(
                     child: GestureDetector(
                       child: Text(
-                        AppLocalizations.of(context)!.acceptPolicy,
+                        appLocalizations.acceptPolicy,
                         style: const TextStyle(
                           decoration: TextDecoration.underline,
                           overflow: TextOverflow.ellipsis,
@@ -143,7 +144,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           context,
                           ScreenState.webview,
                           url: Server.PRIVACY_POLICY_RU_URL,
-                          title: AppLocalizations.of(context)!.policy,
+                          title: appLocalizations.policy,
                         );
                       },
                     ),
@@ -157,7 +158,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 padding: const EdgeInsets.all(15),
                 borderRadius: Constants.buttonBorderRadius,
                 child: Text(
-                  AppLocalizations.of(context)!.accept.toUpperCase(),
+                  appLocalizations.accept.toUpperCase(),
                   style: const TextStyle(fontSize: 16, color: Colors.white),
                 ),
               ),
@@ -166,7 +167,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 child: isEmail
                     ? GestureDetector(
                         child: Text(
-                          AppLocalizations.of(context)!.enterWithPhoneNumber,
+                          appLocalizations.enterWithPhoneNumber,
                           style: TextStyle(
                             fontSize: 16,
                             color: appColors.text2ThemeColor,
@@ -176,7 +177,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       )
                     : GestureDetector(
                         child: Text(
-                          AppLocalizations.of(context)!.enterWithEmail,
+                          appLocalizations.enterWithEmail,
                           style: TextStyle(
                             fontSize: 16,
                             color: appColors.text2ThemeColor,
@@ -187,7 +188,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
               ),
               const SizedBox(height: 30),
               Text(
-                AppLocalizations.of(context)!.registerDescription,
+                appLocalizations.registerDescription,
                 textAlign: TextAlign.center,
               ),
             ],

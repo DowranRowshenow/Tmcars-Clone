@@ -4,9 +4,10 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:tmcarsclone/models/article_model.dart';
 
+import '../models/article_model.dart';
 import '../models/article_category_model.dart';
+import '../providers/location.dart';
 
 class Storage {
   static Storage? _instance;
@@ -71,14 +72,16 @@ class Storage {
     return prefs.getInt('traffic') ?? 0;
   }
 
-  Future<void> setLocation(String value) async {
+  Future<void> setLocation(Location location) async {
     final prefs = await _getPrefs();
-    await prefs.setString('location', value);
+    await prefs.setString('location', location.toString());
   }
 
-  Future<String> getLocation() async {
+  Future<Location> getLocation() async {
     final prefs = await _getPrefs();
-    return prefs.getString('location') ?? "";
+    return LocationManager.getLocationFromString(
+      prefs.getString('location') ?? "none",
+    );
   }
 
   Future<void> setArticleCategories(String data) async {

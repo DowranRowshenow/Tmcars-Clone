@@ -6,17 +6,13 @@ import 'tabs/all_others_tab.dart';
 import 'tabs/category_others_tab.dart';
 import 'tabs/selection_others_tab.dart';
 
-class OthersMenu extends StatefulWidget {
+class OthersMenu extends StatelessWidget {
   const OthersMenu({super.key});
 
   @override
-  // ignore: library_private_types_in_public_api
-  _OthersMenuState createState() => _OthersMenuState();
-}
-
-class _OthersMenuState extends State<OthersMenu> {
-  @override
   Widget build(BuildContext context) {
+    final AppLocalizations appLocalizations = AppLocalizations.of(context)!;
+
     return DefaultTabController(
       length: 3,
       child: Scaffold(
@@ -26,12 +22,11 @@ class _OthersMenuState extends State<OthersMenu> {
           leading: const SizedBox(),
           bottom: TabBar(
             textScaler: const TextScaler.linear(Constants.tabTextScale),
-
             indicatorColor: Colors.white,
             tabs: [
-              Tab(text: AppLocalizations.of(context)!.all.toUpperCase()),
-              Tab(text: AppLocalizations.of(context)!.selected.toUpperCase()),
-              Tab(text: AppLocalizations.of(context)!.category.toUpperCase()),
+              Tab(text: appLocalizations.all.toUpperCase()),
+              Tab(text: appLocalizations.selected.toUpperCase()),
+              Tab(text: appLocalizations.category.toUpperCase()),
             ],
           ),
         ),

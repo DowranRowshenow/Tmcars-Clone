@@ -1,7 +1,7 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../../../screens/article/components/nearest_article_card.dart';
 import '../../../l10n/app_localizations.dart';
 import '../../../models/article_detail_model.dart';
 import '../../../models/article_model.dart';
@@ -106,96 +106,14 @@ class ArticleDetailContent extends StatelessWidget {
         Container(color: Colors.grey.shade200, height: 180, child: Container()),
         const SizedBox(height: 10),
         ListView.builder(
+          // Doesnot have itemExtent it is dynamic
           shrinkWrap: true,
           physics: const NeverScrollableScrollPhysics(),
           itemCount: nearestArticles.length,
           itemBuilder: (context, index) {
-            return Column(
-              children: <Widget>[
-                Stack(
-                  children: <Widget>[
-                    SizedBox(
-                      width: double.infinity,
-                      child: CachedNetworkImage(
-                        imageUrl: nearestArticles[index].img,
-                        placeholder: (context, url) => Container(
-                          height: 100,
-                          color: Colors.grey[200],
-                          child: const Center(
-                            child: CircularProgressIndicator(),
-                          ),
-                        ),
-                        errorWidget: (context, url, error) =>
-                            const Icon(Icons.error),
-                        fit: BoxFit.fitWidth,
-                        width: double.infinity,
-                      ),
-                    ),
-
-                    Positioned.fill(
-                      child: Container(
-                        decoration: BoxDecoration(
-                          gradient: LinearGradient(
-                            begin: Alignment.topCenter,
-                            end: Alignment.bottomCenter,
-                            colors: [
-                              Colors.transparent, // Top is transparent
-                              Colors.black.withValues(alpha: 0.8),
-                            ],
-                            stops: const [0.5, 1.0],
-                          ),
-                        ),
-                      ),
-                    ),
-                    Positioned(
-                      bottom: 40,
-                      left: 10,
-                      right: 10,
-                      child: Text(
-                        languageCode == 'ru'
-                            ? nearestArticles[index].titleRu
-                            : nearestArticles[index].title,
-                        style: const TextStyle(
-                          color: Colors.white,
-                          fontSize: 16,
-                          fontWeight: FontWeight.bold,
-                        ),
-                        maxLines: 3,
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                    ),
-                    Positioned(
-                      bottom: 10,
-                      left: 10,
-                      right: 10,
-                      child: Text(
-                        languageCode == 'ru'
-                            ? nearestArticles[index].elapsedTimeRu
-                            : nearestArticles[index].elapsedTime,
-                        style: TextStyle(
-                          color: Colors.grey.shade300,
-                          fontSize: 14,
-                          fontWeight: FontWeight.bold,
-                        ),
-                        maxLines: 2,
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                    ),
-                    Positioned.fill(
-                      child: Material(
-                        color: Colors.transparent,
-                        child: InkWell(
-                          onTap: () {
-                            // Handle tap
-                          },
-                          splashColor: Colors.grey.withAlpha(100),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 20),
-              ],
+            return NearestArticleCard(
+              key: ValueKey(nearestArticles[index].id),
+              nearestArticle: nearestArticles[index],
             );
           },
         ),
