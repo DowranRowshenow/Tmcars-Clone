@@ -54,9 +54,6 @@ class _ArticlesTabState extends State<ArticlesTab> {
       });
     }
 
-    // Then, fetch the latest articles from the server.
-    // This will either populate the list for the first time or
-    // update the existing cached list.
     await _loadArticles(refresh: true);
   }
 

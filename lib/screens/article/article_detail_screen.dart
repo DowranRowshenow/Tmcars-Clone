@@ -11,6 +11,7 @@ import '../../l10n/app_localizations.dart';
 import '../../models/article_category_model.dart';
 import '../../models/article_detail_model.dart';
 import '../../models/article_model.dart';
+import '../../providers/navigation.dart';
 import '../../providers/themes.dart';
 import '../../providers/traffic.dart';
 import '../../utils/constants.dart';
@@ -84,11 +85,9 @@ class _ArticleDetailScreenState extends State<ArticleDetailScreen> {
         ? _scrollController.offset
         : 0.0;
     double newTop = (_expandedHeight - 5) - offset;
-    // Prevent it from going above the appbar
     if (newTop < kToolbarHeight) newTop = kToolbarHeight;
     bool newVisible = newTop > kToolbarHeight + 1;
 
-    // Update ValueNotifiers only if values have changed
     if (_fabTopNotifier.value != newTop) {
       _fabTopNotifier.value = newTop;
     }
@@ -96,8 +95,6 @@ class _ArticleDetailScreenState extends State<ArticleDetailScreen> {
       _fabVisibleNotifier.value = newVisible;
     }
 
-    // _showTitle still requires setState as it affects the AppBar title,
-    // which is part of the main build method and not wrapped in AnimatedBuilder.
     final bool shouldShowTitle =
         _scrollController.hasClients &&
         _scrollController.offset >= _expandedHeight - kToolbarHeight;
@@ -105,18 +102,6 @@ class _ArticleDetailScreenState extends State<ArticleDetailScreen> {
       _showTitle = shouldShowTitle;
       if (mounted) setState(() {});
     }
-  }
-
-  Color hexToColor(String hexCode) {
-    String colorString = hexCode.replaceAll("#", ""); // Remove '#'
-    colorString = colorString.replaceAll("0x", ""); // Remove '0x'
-
-    if (colorString.length == 6) {
-      colorString = "FF$colorString"; // Add full opacity if missing
-    }
-
-    // Parse the hexadecimal string to an integer
-    return Color(int.parse(colorString, radix: 16));
   }
 
   @override
@@ -165,6 +150,9 @@ class _ArticleDetailScreenState extends State<ArticleDetailScreen> {
                     menuPadding: const EdgeInsets.all(0),
                     color: appColors.themedSurface,
                     splashRadius: Constants.splashRadius,
+                    style: const ButtonStyle(
+                      splashFactory: NoSplash.splashFactory,
+                    ),
                     onSelected: (int value) {
                       switch (value) {
                         case 0:
@@ -190,27 +178,36 @@ class _ArticleDetailScreenState extends State<ArticleDetailScreen> {
                   ),
                 ],
                 flexibleSpace: FlexibleSpaceBar(
-                  background:
-                      context.watch<TrafficManager>().getTrafficMode == 0
-                      ? CachedNetworkImage(
-                          imageUrl: widget.article.img,
-                          fit: BoxFit.cover,
-                          placeholder: (context, url) => Container(
-                            color: appColors.tileThemeColor,
-                            child: const Center(
-                              child: CircularProgressIndicator(strokeWidth: 2),
+                  background: GestureDetector(
+                    onTap: () {
+                      context.read<NavigationManager>().setScreen(
+                        context,
+                        ScreenState.imageView,
+                        imageUrls: articleDetail?.getAllOriginalImageUrls(),
+                      );
+                    },
+                    child: context.watch<TrafficManager>().getTrafficMode == 0
+                        ? CachedNetworkImage(
+                            imageUrl: widget.article.img,
+                            fit: BoxFit.cover,
+                            placeholder: (context, url) => Container(
+                              color: appColors.tileThemeColor,
+                              child: const Center(
+                                child: CircularProgressIndicator(
+                                  strokeWidth: 2,
+                                ),
+                              ),
                             ),
-                          ),
-                          errorWidget: (context, url, error) =>
-                              const Icon(Icons.error),
-                          fadeInDuration: const Duration(milliseconds: 200),
-                          memCacheHeight: 400,
-                          memCacheWidth: 600,
-                        )
-                      : buildImagePlaceholder(context),
+                            errorWidget: (context, url, error) =>
+                                const Icon(Icons.error),
+                            fadeInDuration: const Duration(milliseconds: 200),
+                            memCacheHeight: 400,
+                            memCacheWidth: 600,
+                          )
+                        : buildImagePlaceholder(context),
+                  ),
                 ),
               ),
-              // This is the body of the screen.
               SliverToBoxAdapter(
                 child: Padding(
                   padding: const EdgeInsets.all(16.0),
@@ -220,7 +217,7 @@ class _ArticleDetailScreenState extends State<ArticleDetailScreen> {
                     languageCode: widget.languageCode,
                     htmlContentFuture: _htmlContentFuture,
                     appColors: appColors,
-                    tagColor: hexToColor(colorCode ?? "000000"),
+                    tagColor: AppColors.hexToColor(colorCode ?? "000000"),
                     nearestArticles: nearestArticles ?? [],
                   ),
                 ),

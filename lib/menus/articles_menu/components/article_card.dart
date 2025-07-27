@@ -66,7 +66,7 @@ class ArticleCard extends StatelessWidget {
                 memCacheHeight: 100,
                 memCacheWidth: 200,
                 height: double.infinity,
-                width: MediaQuery.of(context).size.width * 0.3,
+                width: 118,
                 placeholder: (context, url) => buildImagePlaceholder(context),
                 errorWidget: (context, url, error) =>
                     buildImagePlaceholder(context),

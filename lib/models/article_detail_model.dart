@@ -1,4 +1,6 @@
-class ArticleDetail {
+import 'package:equatable/equatable.dart';
+
+class ArticleDetail extends Equatable {
   final int id;
   final String title;
   final String titleRu;
@@ -9,7 +11,7 @@ class ArticleDetail {
   final int categoryId;
   final String categoryCode;
   final DateTime publishedDate;
-  final DateTime publishedDate3; // Appears to be a duplicate of publishedDate
+  final DateTime publishedDate3;
   final DateTime lastUpdated;
   final String elapsedTime;
   final String elapsedTimeRu;
@@ -17,12 +19,12 @@ class ArticleDetail {
   final List<ArticleImage> imgs;
   final String shareSiteUrl;
   final String shareSiteUrlRu;
-  final String? shareUrl; // Can be null
-  final String? shareUrlRu; // Can be null
+  final String? shareUrl;
+  final String? shareUrlRu;
   final List<ArticleTag> tags;
   final int viewCount;
 
-  ArticleDetail({
+  const ArticleDetail({
     required this.id,
     required this.title,
     required this.titleRu,
@@ -64,18 +66,20 @@ class ArticleDetail {
       elapsedTime: json['elapsedTime'] as String,
       elapsedTimeRu: json['elapsedTimeRu'] as String,
       img: json['img'] as String,
-      imgs: (json['imgs'] as List<dynamic>)
-          .map((e) => ArticleImage.fromJson(e as Map<String, dynamic>))
-          .toList(),
+      imgs:
+          (json['imgs'] as List<dynamic>?)
+              ?.map((e) => ArticleImage.fromJson(e as Map<String, dynamic>))
+              .toList() ??
+          const [],
       shareSiteUrl: json['shareSiteUrl'] as String,
       shareSiteUrlRu: json['shareSiteUrlRu'] as String,
-      shareUrl: json['shareUrl'] as String?, // Nullable
-      shareUrlRu: json['shareUrlRu'] as String?, // Nullable
+      shareUrl: json['shareUrl'] as String?,
+      shareUrlRu: json['shareUrlRu'] as String?,
       tags:
-          (json['tags'] as List<dynamic>?) // Make the cast nullable
+          (json['tags'] as List<dynamic>?)
               ?.map((e) => ArticleTag.fromJson(e as Map<String, dynamic>))
               .toList() ??
-          [],
+          const [],
       viewCount: json['viewCount'] as int,
     );
   }
@@ -108,16 +112,96 @@ class ArticleDetail {
   }
 
   @override
-  String toString() {
-    return 'ArticleDetail(id: $id, title: $title, categoryName: $categoryName, viewCount: $viewCount)';
+  List<Object?> get props => [
+    id,
+    title,
+    titleRu,
+    openUrlRu,
+    openUrl,
+    categoryName,
+    categoryNameRu,
+    categoryId,
+    categoryCode,
+    publishedDate,
+    publishedDate3,
+    lastUpdated,
+    elapsedTime,
+    elapsedTimeRu,
+    img,
+    imgs,
+    shareSiteUrl,
+    shareSiteUrlRu,
+    shareUrl,
+    shareUrlRu,
+    tags,
+    viewCount,
+  ];
+
+  ArticleDetail copyWith({
+    int? id,
+    String? title,
+    String? titleRu,
+    String? openUrlRu,
+    String? openUrl,
+    String? categoryName,
+    String? categoryNameRu,
+    int? categoryId,
+    String? categoryCode,
+    DateTime? publishedDate,
+    DateTime? publishedDate3,
+    DateTime? lastUpdated,
+    String? elapsedTime,
+    String? elapsedTimeRu,
+    String? img,
+    List<ArticleImage>? imgs,
+    String? shareSiteUrl,
+    String? shareSiteUrlRu,
+    String? shareUrl,
+    String? shareUrlRu,
+    List<ArticleTag>? tags,
+    int? viewCount,
+  }) {
+    return ArticleDetail(
+      id: id ?? this.id,
+      title: title ?? this.title,
+      titleRu: titleRu ?? this.titleRu,
+      openUrlRu: openUrlRu ?? this.openUrlRu,
+      openUrl: openUrl ?? this.openUrl,
+      categoryName: categoryName ?? this.categoryName,
+      categoryNameRu: categoryNameRu ?? this.categoryNameRu,
+      categoryId: categoryId ?? this.categoryId,
+      categoryCode: categoryCode ?? this.categoryCode,
+      publishedDate: publishedDate ?? this.publishedDate,
+      publishedDate3: publishedDate3 ?? this.publishedDate3,
+      lastUpdated: lastUpdated ?? this.lastUpdated,
+      elapsedTime: elapsedTime ?? this.elapsedTime,
+      elapsedTimeRu: elapsedTimeRu ?? this.elapsedTimeRu,
+      img: img ?? this.img,
+      imgs: imgs ?? this.imgs,
+      shareSiteUrl: shareSiteUrl ?? this.shareSiteUrl,
+      shareSiteUrlRu: shareSiteUrlRu ?? this.shareSiteUrlRu,
+      shareUrl: shareUrl ?? this.shareUrl,
+      shareUrlRu: shareUrlRu ?? this.shareUrlRu,
+      tags: tags ?? this.tags,
+      viewCount: viewCount ?? this.viewCount,
+    );
+  }
+
+  List<String> getAllOriginalImageUrls() {
+    final List<String> urls = [];
+    if (img.isNotEmpty) {
+      urls.add(img);
+    }
+    urls.addAll(imgs.map((image) => image.original));
+    return urls;
   }
 }
 
-class ArticleImage {
+class ArticleImage extends Equatable {
   final String thumbnail;
   final String original;
 
-  ArticleImage({required this.thumbnail, required this.original});
+  const ArticleImage({required this.thumbnail, required this.original});
 
   factory ArticleImage.fromJson(Map<String, dynamic> json) {
     return ArticleImage(
@@ -129,14 +213,28 @@ class ArticleImage {
   Map<String, dynamic> toJson() {
     return {'thumbnail': thumbnail, 'original': original};
   }
+
+  @override
+  List<Object> get props => [thumbnail, original];
+
+  ArticleImage copyWith({String? thumbnail, String? original}) {
+    return ArticleImage(
+      thumbnail: thumbnail ?? this.thumbnail,
+      original: original ?? this.original,
+    );
+  }
 }
 
-class ArticleTag {
+class ArticleTag extends Equatable {
   final String code;
   final String name;
   final String nameRu;
 
-  ArticleTag({required this.code, required this.name, required this.nameRu});
+  const ArticleTag({
+    required this.code,
+    required this.name,
+    required this.nameRu,
+  });
 
   factory ArticleTag.fromJson(Map<String, dynamic> json) {
     return ArticleTag(
@@ -148,5 +246,16 @@ class ArticleTag {
 
   Map<String, dynamic> toJson() {
     return {'code': code, 'name': name, 'nameRu': nameRu};
+  }
+
+  @override
+  List<Object> get props => [code, name, nameRu];
+
+  ArticleTag copyWith({String? code, String? name, String? nameRu}) {
+    return ArticleTag(
+      code: code ?? this.code,
+      name: name ?? this.name,
+      nameRu: nameRu ?? this.nameRu,
+    );
   }
 }

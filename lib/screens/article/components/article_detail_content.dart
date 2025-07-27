@@ -103,7 +103,11 @@ class ArticleDetailContent extends StatelessWidget {
             }).toList(),
           ),
         const SizedBox(height: 10),
-        Container(color: Colors.grey.shade200, height: 180, child: Container()),
+        Container(
+          color: Colors.grey.withAlpha(70),
+          height: 180,
+          child: Container(),
+        ),
         const SizedBox(height: 10),
         ListView.builder(
           // Doesnot have itemExtent it is dynamic

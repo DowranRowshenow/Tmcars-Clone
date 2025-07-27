@@ -133,6 +133,15 @@ class AppColors extends ThemeExtension<AppColors> {
     );
   }
 
+  static Color hexToColor(String hexCode) {
+    String colorString = hexCode.replaceAll("#", ""); // Remove '#'
+    colorString = colorString.replaceAll("0x", ""); // Remove '0x'
+    if (colorString.length == 6) {
+      colorString = "FF$colorString"; // Add full opacity if missing
+    }
+    return Color(int.parse(colorString, radix: 16));
+  }
+
   @override
   AppColors lerp(ThemeExtension<AppColors>? other, double t) {
     if (other is! AppColors) return this;

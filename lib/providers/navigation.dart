@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../screens/image_view/image_view_screen.dart';
 import '../providers/locale.dart';
 import '../models/article_model.dart';
 import '../screens/article/article_detail_screen.dart';
@@ -37,6 +38,12 @@ class _WebViewArgs {
   const _WebViewArgs({required this.url, required this.title});
 }
 
+class _ImageViewArgs {
+  final List<String> imageUrls;
+
+  const _ImageViewArgs({required this.imageUrls});
+}
+
 enum MenuState { home, add, others, comments, articles, profiles, parts, cars }
 
 enum ScreenState {
@@ -48,6 +55,7 @@ enum ScreenState {
   searchArticles,
   notifications,
   articleDetail,
+  imageView,
 }
 
 class NavigationManager extends ChangeNotifier {
@@ -215,6 +223,14 @@ class NavigationManager extends ChangeNotifier {
         }
         screenToPush = WebViewScreen(url: args.url, title: args.title);
         break;
+      case ScreenState.imageView:
+        final args = arguments as _ImageViewArgs?;
+        if (args == null) {
+          debugPrint('Error: ImageViewScreen requires _ImageViewArgs.');
+          return; // Exit if arguments are missing
+        }
+        screenToPush = ImageViewScreen(imageUrls: args.imageUrls);
+        break;
     }
 
     Navigator.push(
@@ -229,6 +245,7 @@ class NavigationManager extends ChangeNotifier {
     String? url,
     String? title,
     Article? article,
+    List<String>? imageUrls,
   }) {
     Object? args;
     if (state == ScreenState.articleDetail) {

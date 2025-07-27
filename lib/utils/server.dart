@@ -2,7 +2,6 @@
 
 import 'dart:convert';
 import 'dart:async';
-import 'dart:io';
 
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
@@ -50,7 +49,6 @@ class Server {
   static Future<List<PopularProduct>> getSettings() async {
     const String cacheKey = 'popular_products';
 
-    // Check cache first
     if (_cache.containsKey(cacheKey)) {
       final cached = _cache[cacheKey];
       if (cached['timestamp'] != null &&
@@ -67,37 +65,28 @@ class Server {
       if (response.statusCode == 200) {
         List<PopularProduct> products = [];
         final data = json.decode(response.body) as Map<String, dynamic>;
-
         for (var product in data["dashFeatured"]) {
           product = PopularProduct.fromJson(product);
           products.add(product);
         }
-
-        // Cache the result
         _cache[cacheKey] = {'data': products, 'timestamp': DateTime.now()};
-
         return products;
       } else {
         debugPrint(
           'Failed to load popular products: ${response.statusCode}, Body: ${response.body}',
         );
-        throw HttpException(
-          'Failed to load popular products: ${response.statusCode}',
-        );
       }
     } on TimeoutException catch (e) {
       debugPrint('Error fetching popular products (timeout): $e');
-      throw Exception('Request timed out. Please check your connection.');
     } catch (e) {
       debugPrint('Error fetching popular products: $e');
-      throw Exception('An unexpected error occurred: $e');
     }
+    return [];
   }
 
   static Future<List<ArticleCategory>> getArticleCategories() async {
     const String cacheKey = 'article_categories';
 
-    // Check cache first
     if (_cache.containsKey(cacheKey)) {
       final cached = _cache[cacheKey];
       if (cached['timestamp'] != null &&
@@ -106,21 +95,25 @@ class Server {
       }
     }
 
-    final response = await _client.get(
-      Uri.https(host, "/tmcars/articleCategory/categories"),
-    );
-    if (response.statusCode == 200) {
-      final List<dynamic> data = json.decode(response.body);
-      final categories = data.map((e) => ArticleCategory.fromJson(e)).toList();
-
-      // Cache the result
-      _cache[cacheKey] = {'data': categories, 'timestamp': DateTime.now()};
-
-      Storage.instance.setArticleCategories(response.body);
-      return categories;
-    } else {
-      throw Exception('Failed to load news categories');
+    try {
+      final response = await _client.get(
+        Uri.https(host, "/tmcars/articleCategory/categories"),
+      );
+      if (response.statusCode == 200) {
+        final List<dynamic> data = json.decode(response.body);
+        final categories = data
+            .map((e) => ArticleCategory.fromJson(e))
+            .toList();
+        _cache[cacheKey] = {'data': categories, 'timestamp': DateTime.now()};
+        Storage.instance.setArticleCategories(response.body);
+        return categories;
+      } else {
+        debugPrint('Failed to load news categories');
+      }
+    } catch (e) {
+      debugPrint(e.toString());
     }
+    return [];
   }
 
   static Future<List<Article>> getArticles({
@@ -148,21 +141,25 @@ class Server {
       map['tags'] = tags;
     }
 
-    final response = await http.get(
-      Uri.https(host, "/tmcars/article/articles", map),
-    );
-    if (response.statusCode == 200) {
-      final List<dynamic> data = json.decode(response.body);
-      return data.map((e) => Article.fromJson(e)).toList();
-    } else {
-      throw Exception('Failed to load articles');
+    try {
+      final response = await http.get(
+        Uri.https(host, "/tmcars/article/articles", map),
+      );
+      if (response.statusCode == 200) {
+        final List<dynamic> data = json.decode(response.body);
+        return data.map((e) => Article.fromJson(e)).toList();
+      } else {
+        debugPrint('Failed to load articles');
+      }
+    } catch (e) {
+      debugPrint(e.toString());
     }
+    return [];
   }
 
   static Future<List<Article>> getNearestArticles(int id) async {
     final String cacheKey = 'nearest_articles_$id';
 
-    // Check cache first
     if (_cache.containsKey(cacheKey)) {
       final cached = _cache[cacheKey];
       if (cached['timestamp'] != null &&
@@ -173,21 +170,25 @@ class Server {
 
     final Map<String, dynamic> map = {'sourceId': id.toString()};
 
-    final response = await http.get(
-      Uri.https(host, "/tmcars/article/nearestNews", map),
-    );
-    if (response.statusCode == 200) {
-      final List<dynamic> data = json.decode(response.body);
-      final List<Article> res = data.map((e) => Article.fromJson(e)).toList();
-
-      _cache[cacheKey] = {'data': res, 'timestamp': DateTime.now()};
-      return res;
-    } else {
-      throw Exception('Failed to load articles');
+    try {
+      final response = await http.get(
+        Uri.https(host, "/tmcars/article/nearestNews", map),
+      );
+      if (response.statusCode == 200) {
+        final List<dynamic> data = json.decode(response.body);
+        final List<Article> res = data.map((e) => Article.fromJson(e)).toList();
+        _cache[cacheKey] = {'data': res, 'timestamp': DateTime.now()};
+        return res;
+      } else {
+        debugPrint('Failed to load articles');
+      }
+    } catch (e) {
+      debugPrint('Failed to load articles');
     }
+    return [];
   }
 
-  static Future<ArticleDetail> getArticle(int id) async {
+  static Future<ArticleDetail?> getArticle(int id) async {
     final String cacheKey = 'article_$id';
 
     // Check cache first
@@ -200,22 +201,25 @@ class Server {
     }
 
     final Map<String, dynamic> map = {'id': id.toString()};
-
-    final response = await http.get(
-      Uri.https(host, "/tmcars/article/getArticle", map),
-    );
-    if (response.statusCode == 200) {
-      final ArticleDetail data = ArticleDetail.fromJson(
-        json.decode(response.body),
+    try {
+      final response = await http.get(
+        Uri.https(host, "/tmcars/article/getArticle", map),
       );
-      _cache[cacheKey] = {'data': data, 'timestamp': DateTime.now()};
-      return data;
-    } else {
-      throw Exception('Failed to load articles');
+      if (response.statusCode == 200) {
+        final ArticleDetail data = ArticleDetail.fromJson(
+          json.decode(response.body),
+        );
+        _cache[cacheKey] = {'data': data, 'timestamp': DateTime.now()};
+        return data;
+      } else {
+        debugPrint('Failed to load articles');
+      }
+    } catch (e) {
+      debugPrint(e.toString());
     }
+    return null;
   }
 
-  // Function to fetch HTML content from a URL
   static Future<String> fetchHtmlContent(String url) async {
     try {
       final response = await http.get(
@@ -229,24 +233,15 @@ class Server {
       );
 
       if (response.statusCode == 200) {
-        // Debug: Print response headers
         debugPrint('Response headers: ${response.headers}');
         debugPrint('Content-Type: ${response.headers['content-type']}');
-
-        // Check if response has proper encoding
         final contentType = response.headers['content-type'] ?? '';
         String htmlContent = response.body;
-
-        // If content-type doesn't specify charset, try to detect it
         if (!contentType.toLowerCase().contains('charset')) {
-          // Try to detect encoding from HTML meta tag
           if (htmlContent.contains('<meta charset="')) {
-            // HTML has charset meta tag, use it
             return htmlContent;
           } else {
-            // Try UTF-8 first, then fallback to other encodings
             try {
-              // Force UTF-8 decoding
               htmlContent = utf8.decode(
                 response.bodyBytes,
                 allowMalformed: true,
@@ -257,32 +252,25 @@ class Server {
             }
           }
         }
-
-        // Ensure HTML has proper charset meta tag
         if (!htmlContent.contains('<meta charset="') &&
             !htmlContent.contains('charset=')) {
-          // Inject UTF-8 charset meta tag if not present
           htmlContent = htmlContent.replaceFirst(
             '<head>',
             '<head><meta charset="utf-8">',
           );
-          // If no head tag, add it at the beginning
           if (!htmlContent.contains('<head>')) {
             htmlContent =
                 '<!DOCTYPE html><html><head><meta charset="utf-8"></head><body>$htmlContent</body></html>';
           }
         }
-
         return htmlContent;
       } else {
-        // Handle server errors
-        throw Exception('Failed to load HTML content: ${response.statusCode}');
+        debugPrint('Failed to load HTML content: ${response.statusCode}');
       }
     } catch (e) {
-      // Handle network or other errors
       debugPrint('Error fetching HTML: $e');
-      return '';
     }
+    return '';
   }
 
   static Future<List<Product>> getProducts({
@@ -293,7 +281,6 @@ class Server {
     String location = '',
     String limit = '',
   }) async {
-    return [];
     /*
     final Map<String, String> queryParams = {
       'format': 'json',
@@ -320,10 +307,11 @@ class Server {
         }
         return products;
       } else {
-        throw Exception('${response.statusCode}: Product Get Failed!');
+        debugPrint('${response.statusCode}: Product Get Failed!');
       }
     } catch (e) {
-      throw Exception('Error fetching data: $e');
+      debugPrint('Error fetching data: $e');
     }*/
+    return [];
   }
 }
