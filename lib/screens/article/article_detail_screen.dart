@@ -1,11 +1,14 @@
-import 'package:cached_network_image/cached_network_image.dart';
+// ignore: depend_on_referenced_packages
+import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:share_plus/share_plus.dart';
 
-import '../../components/placeholder_image.dart';
+import '../../components/app_bar_image.dart';
+import '../../components/back_icon_button.dart';
 import '../../components/should_register_dialog.dart';
-import '../../../components/scroll/glowless_scroll_behavior.dart';
+import '../../components/scroll/glowless_scroll_behavior.dart';
 import '../../components/scroll/low_friction_scroll_physics.dart';
 import '../../l10n/app_localizations.dart';
 import '../../models/article_category_model.dart';
@@ -13,7 +16,6 @@ import '../../models/article_detail_model.dart';
 import '../../models/article_model.dart';
 import '../../providers/navigation.dart';
 import '../../providers/themes.dart';
-import '../../providers/traffic.dart';
 import '../../utils/constants.dart';
 import '../../utils/server.dart';
 import 'components/article_detail_content.dart';
@@ -34,16 +36,15 @@ class ArticleDetailScreen extends StatefulWidget {
 
 class _ArticleDetailScreenState extends State<ArticleDetailScreen> {
   final ScrollController _scrollController = ScrollController();
-  bool _showTitle = false;
   ArticleDetail? articleDetail;
   static const double _expandedHeight = 250.0;
+  static const double _offset = 10.0;
   late Future<String> _htmlContentFuture;
   List<Article>? nearestArticles;
-  String? colorCode;
-  List<ArticleCategory>? articleCategories;
   // Use ValueNotifiers for FAB position and visibility
   final ValueNotifier<double> _fabTopNotifier = ValueNotifier<double>(0);
   final ValueNotifier<bool> _fabVisibleNotifier = ValueNotifier<bool>(true);
+  final ValueNotifier<bool> _showTitleNotifier = ValueNotifier<bool>(false);
 
   @override
   void initState() {
@@ -56,17 +57,27 @@ class _ArticleDetailScreenState extends State<ArticleDetailScreen> {
           : widget.article.openUrl,
     );
     // Initialize ValueNotifiers with their initial values
-    _fabTopNotifier.value = _expandedHeight - 5;
+    _fabTopNotifier.value = _expandedHeight - _offset;
     _fabVisibleNotifier.value = true;
     _scrollController.addListener(_onScroll);
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      SystemChrome.setSystemUIOverlayStyle(
+        const SystemUiOverlayStyle(statusBarColor: Colors.transparent),
+      );
+    });
   }
 
   @override
   void dispose() {
+    SystemChrome.setSystemUIOverlayStyle(
+      const SystemUiOverlayStyle(statusBarColor: Color.fromARGB(40, 0, 0, 0)),
+    );
     _scrollController.removeListener(_onScroll);
     _scrollController.dispose();
-    _fabTopNotifier.dispose(); // Dispose notifiers to prevent memory leaks
+    _fabTopNotifier.dispose();
     _fabVisibleNotifier.dispose();
+    _showTitleNotifier.dispose();
     super.dispose();
   }
 
@@ -84,7 +95,7 @@ class _ArticleDetailScreenState extends State<ArticleDetailScreen> {
     final offset = _scrollController.hasClients
         ? _scrollController.offset
         : 0.0;
-    double newTop = (_expandedHeight - 5) - offset;
+    double newTop = (_expandedHeight - _offset) - offset;
     if (newTop < kToolbarHeight) newTop = kToolbarHeight;
     bool newVisible = newTop > kToolbarHeight + 1;
 
@@ -98,9 +109,8 @@ class _ArticleDetailScreenState extends State<ArticleDetailScreen> {
     final bool shouldShowTitle =
         _scrollController.hasClients &&
         _scrollController.offset >= _expandedHeight - kToolbarHeight;
-    if (_showTitle != shouldShowTitle) {
-      _showTitle = shouldShowTitle;
-      if (mounted) setState(() {});
+    if (_showTitleNotifier.value != shouldShowTitle) {
+      _showTitleNotifier.value = shouldShowTitle;
     }
   }
 
@@ -110,15 +120,11 @@ class _ArticleDetailScreenState extends State<ArticleDetailScreen> {
     final String title = widget.languageCode == "ru"
         ? widget.article.titleRu
         : widget.article.title;
-    if (articleCategories == null) {
-      articleCategories = context.watch<List<ArticleCategory>>();
-      for (int i = 0; i < articleCategories!.length; i++) {
-        if (articleCategories![i].categoryName == widget.article.categoryName) {
-          colorCode = articleCategories![i].colorCode;
-          break;
-        }
-      }
-    }
+    final allCategories = context.watch<List<ArticleCategory>>();
+    final category = allCategories.firstWhereOrNull(
+      (c) => c.categoryName == widget.article.categoryName,
+    );
+    final colorCode = category?.colorCode ?? "000000";
 
     return Scaffold(
       body: Stack(
@@ -133,17 +139,18 @@ class _ArticleDetailScreenState extends State<ArticleDetailScreen> {
                 pinned: true,
                 floating: false,
                 snap: false,
-                title: AnimatedOpacity(
-                  opacity: _showTitle ? 1.0 : 0.0,
-                  duration: const Duration(milliseconds: 200),
+                title: ValueListenableBuilder<bool>(
+                  valueListenable: _showTitleNotifier,
+                  builder: (context, showTitle, child) {
+                    return AnimatedOpacity(
+                      opacity: showTitle ? 1.0 : 0.0,
+                      duration: const Duration(milliseconds: 200),
+                      child: child,
+                    );
+                  },
                   child: Text(title),
                 ),
-                leading: IconButton(
-                  icon: const Icon(Icons.arrow_back),
-                  onPressed: () => Navigator.pop(context),
-                  splashRadius: Constants.splashRadius,
-                  splashColor: Colors.transparent,
-                ),
+                leading: buildBackIconButton(context),
                 actions: <Widget>[
                   PopupMenuButton<int>(
                     tooltip: "",
@@ -186,25 +193,15 @@ class _ArticleDetailScreenState extends State<ArticleDetailScreen> {
                         imageUrls: articleDetail?.getAllOriginalImageUrls(),
                       );
                     },
-                    child: context.watch<TrafficManager>().getTrafficMode == 0
-                        ? CachedNetworkImage(
-                            imageUrl: widget.article.img,
-                            fit: BoxFit.cover,
-                            placeholder: (context, url) => Container(
-                              color: appColors.tileThemeColor,
-                              child: const Center(
-                                child: CircularProgressIndicator(
-                                  strokeWidth: 2,
-                                ),
-                              ),
+                    child: articleDetail == null
+                        ? const Center(
+                            child: CircularProgressIndicator(
+                              color: Colors.white,
                             ),
-                            errorWidget: (context, url, error) =>
-                                const Icon(Icons.error),
-                            fadeInDuration: const Duration(milliseconds: 200),
-                            memCacheHeight: 400,
-                            memCacheWidth: 600,
                           )
-                        : buildImagePlaceholder(context),
+                        : AppBarImage(
+                            imageUrls: articleDetail!.getAllOriginalImageUrls(),
+                          ),
                   ),
                 ),
               ),
@@ -217,7 +214,7 @@ class _ArticleDetailScreenState extends State<ArticleDetailScreen> {
                     languageCode: widget.languageCode,
                     htmlContentFuture: _htmlContentFuture,
                     appColors: appColors,
-                    tagColor: AppColors.hexToColor(colorCode ?? "000000"),
+                    tagColor: AppColors.hexToColor(colorCode),
                     nearestArticles: nearestArticles ?? [],
                   ),
                 ),
@@ -235,15 +232,15 @@ class _ArticleDetailScreenState extends State<ArticleDetailScreen> {
                   duration: const Duration(milliseconds: 250),
                   curve: Curves.easeInOut,
                   child: FloatingActionButton(
-                    onPressed: () {
-                      Constants.isRegistered
-                          ? const SizedBox()
-                          : shouldRegisterDialog(context: context);
-                    },
+                    onPressed: Constants.isRegistered
+                        ? null
+                        : () => shouldRegisterDialog(context: context),
                     backgroundColor: Colors.white,
-                    child: const Icon(
+                    child: Icon(
                       Icons.thumb_up_outlined,
-                      color: Colors.blueGrey,
+                      color: _fabVisibleNotifier.value
+                          ? Colors.blueGrey
+                          : Colors.transparent,
                     ),
                   ),
                 ),

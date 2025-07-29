@@ -58,7 +58,7 @@ class ArticleCard extends StatelessWidget {
             ),
           ),
         ),
-        trailing: context.watch<TrafficManager>().getTrafficMode == 0
+        trailing: context.watch<TrafficManager>().isStandart()
             ? CachedNetworkImage(
                 alignment: Alignment.center,
                 imageUrl: article.img,

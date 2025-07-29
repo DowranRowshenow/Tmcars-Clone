@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../../components/back_icon_button.dart';
 import '../../components/ripple_container.dart';
 import '../../utils/constants.dart';
 import '../../providers/navigation.dart';
@@ -31,12 +32,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text(appLocalizations.register),
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back),
-          onPressed: () => Navigator.pop(context),
-          splashRadius: Constants.splashRadius,
-          splashColor: Colors.transparent,
-        ),
+        leading: buildBackIconButton(context),
       ),
       body: SingleChildScrollView(
         child: Container(
@@ -126,8 +122,11 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 children: [
                   Checkbox(
                     value: isChecked,
-                    onChanged: (value) =>
-                        setState(() => isChecked = !isChecked),
+                    onChanged: (value) {
+                      if (mounted) {
+                        setState(() => isChecked = !isChecked);
+                      }
+                    },
                   ),
                   Flexible(
                     child: GestureDetector(
@@ -173,7 +172,11 @@ class _RegisterScreenState extends State<RegisterScreen> {
                             color: appColors.text2ThemeColor,
                           ),
                         ),
-                        onTap: () => setState(() => isEmail = false),
+                        onTap: () {
+                          if (mounted) {
+                            setState(() => isEmail = false);
+                          }
+                        },
                       )
                     : GestureDetector(
                         child: Text(
@@ -183,7 +186,11 @@ class _RegisterScreenState extends State<RegisterScreen> {
                             color: appColors.text2ThemeColor,
                           ),
                         ),
-                        onTap: () => setState(() => isEmail = true),
+                        onTap: () {
+                          if (mounted) {
+                            setState(() => isEmail = true);
+                          }
+                        },
                       ),
               ),
               const SizedBox(height: 30),

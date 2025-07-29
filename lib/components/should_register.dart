@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:tmcarsclone/providers/themes.dart';
 
 import '../l10n/app_localizations.dart';
 import '../utils/constants.dart';
@@ -11,6 +12,7 @@ class ShouldRegister extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final AppLocalizations appLocalizations = AppLocalizations.of(context)!;
+    final AppColors appColors = Theme.of(context).extension<AppColors>()!;
 
     return Center(
       child: Container(
@@ -27,6 +29,7 @@ class ShouldRegister extends StatelessWidget {
             const SizedBox(height: 10),
             ElevatedButton(
               style: ButtonStyle(
+                overlayColor: WidgetStateProperty.all(appColors.focusColor),
                 backgroundColor: WidgetStateProperty.all(
                   Constants.colorPrimary,
                 ),

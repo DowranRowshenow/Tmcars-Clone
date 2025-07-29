@@ -16,4 +16,8 @@ class TrafficManager extends ChangeNotifier {
     notifyListeners();
     await Storage.instance.setTrafficMode(_trafficMode);
   }
+
+  bool isStandart() {
+    return _trafficMode == 0;
+  }
 }

@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../../../components/article_tag_chip.dart';
+import '../../../providers/navigation.dart';
 import '../../../screens/article/components/nearest_article_card.dart';
 import '../../../l10n/app_localizations.dart';
 import '../../../models/article_detail_model.dart';
 import '../../../models/article_model.dart';
 import '../../../providers/themes.dart';
+import '../../../components/category_tag_chip.dart';
 import 'html_renderer.dart';
-import 'tag_category_chip.dart';
 
 class ArticleDetailContent extends StatelessWidget {
   final ArticleDetail? articleDetail;
@@ -31,19 +33,20 @@ class ArticleDetailContent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final AppLocalizations appLocalizations = AppLocalizations.of(context)!;
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisSize: MainAxisSize.min,
       children: [
-        if (articleDetail != null)
-          TagCategoryChip(
-            categoryName: languageCode == 'ru'
-                ? articleDetail!.categoryNameRu
-                : articleDetail!.categoryName,
-            color: context.watch<ThemeManager>().isDark()
-                ? Colors.blueGrey.shade900
-                : tagColor,
-          ),
+        articleDetail != null
+            ? CategoryTagChip(
+                categoryName: languageCode == 'ru'
+                    ? articleDetail!.categoryNameRu
+                    : articleDetail!.categoryName,
+                color: tagColor,
+              )
+            : const SizedBox(height: 44),
         Text(
           languageCode == 'ru' ? article.titleRu : article.title,
           style: const TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
@@ -80,25 +83,22 @@ class ArticleDetailContent extends StatelessWidget {
         const SizedBox(height: 10),
         if (articleDetail != null)
           if (articleDetail!.tags.isNotEmpty)
-            Text(AppLocalizations.of(context)!.tags.toUpperCase()),
+            Text(appLocalizations.tags.toUpperCase()),
         const SizedBox(height: 10),
         if (articleDetail != null)
           Wrap(
             spacing: 8.0,
             runSpacing: 8.0,
             children: articleDetail!.tags.map((tag) {
-              return Container(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 12,
-                  vertical: 6,
-                ),
-                decoration: BoxDecoration(
-                  color: appColors.tagColor,
-                  borderRadius: BorderRadius.circular(3),
-                ),
-                child: Text(
-                  languageCode == 'ru' ? "#${tag.nameRu}" : "#${tag.name}",
-                ),
+              return ArticleTagChip(
+                articleTag: tag,
+                onTap: () {
+                  context.read<NavigationManager>().setScreen(
+                    context,
+                    ScreenState.searchArticles,
+                    articleTags: [tag],
+                  );
+                },
               );
             }).toList(),
           ),

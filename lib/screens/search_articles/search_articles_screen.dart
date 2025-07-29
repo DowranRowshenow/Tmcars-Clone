@@ -2,13 +2,17 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 
+import '../../components/article_tag_chip.dart';
+import '../../components/back_icon_button.dart';
 import '../../menus/articles_menu/tabs/articles_tab.dart';
+import '../../models/article_detail_model.dart';
 import '../../utils/constants.dart';
 import '../../l10n/app_localizations.dart';
 import '../../providers/themes.dart';
 
 class SearchArticlesScreen extends StatefulWidget {
-  const SearchArticlesScreen({super.key});
+  const SearchArticlesScreen({super.key, this.articleTags});
+  final List<ArticleTag>? articleTags;
 
   @override
   // ignore: library_private_types_in_public_api
@@ -18,7 +22,7 @@ class SearchArticlesScreen extends StatefulWidget {
 class _SearchArticlesScreenState extends State<SearchArticlesScreen> {
   final TextEditingController searchBarController = TextEditingController();
   Timer? _debounce;
-  String _searchQuery = '';
+  String? _searchQuery;
 
   @override
   void dispose() {
@@ -58,6 +62,24 @@ class _SearchArticlesScreenState extends State<SearchArticlesScreen> {
 
     return Scaffold(
       appBar: AppBar(
+        bottom: widget.articleTags == null
+            ? null
+            : PreferredSize(
+                preferredSize: const Size.fromHeight(50),
+                child: Container(
+                  padding: const EdgeInsets.fromLTRB(8, 4, 8, 4),
+                  width: double.infinity,
+                  color: appColors.themedSurface,
+                  child: Wrap(
+                    spacing: 8.0,
+                    runSpacing: 8.0,
+                    alignment: WrapAlignment.start,
+                    children: widget.articleTags!.map((tag) {
+                      return ArticleTagChip(articleTag: widget.articleTags![0]);
+                    }).toList(),
+                  ),
+                ),
+              ),
         title: TextField(
           controller: searchBarController,
           autocorrect: false,
@@ -75,12 +97,7 @@ class _SearchArticlesScreenState extends State<SearchArticlesScreen> {
           ),
           onChanged: _onSearchChanged,
         ),
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back),
-          onPressed: () => Navigator.pop(context),
-          splashRadius: Constants.splashRadius,
-          splashColor: Colors.transparent,
-        ),
+        leading: buildBackIconButton(context),
         actions: [
           searchBarController.text.isNotEmpty
               ? IconButton(
@@ -95,7 +112,13 @@ class _SearchArticlesScreenState extends State<SearchArticlesScreen> {
               : const SizedBox(width: 20),
         ],
       ),
-      body: _searchQuery.isEmpty ? null : ArticlesTab(mask: _searchQuery),
+      body: widget.articleTags == null
+          ? _searchQuery == null
+                ? null
+                : ArticlesTab(mask: _searchQuery!)
+          : _searchQuery == null
+          ? ArticlesTab(tags: widget.articleTags![0].code)
+          : ArticlesTab(mask: _searchQuery!, tags: widget.articleTags![0].code),
     );
   }
 }

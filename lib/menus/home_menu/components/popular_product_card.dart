@@ -28,7 +28,7 @@ class PopularProductCard extends StatelessWidget {
       ),
       child: Row(
         children: [
-          context.watch<TrafficManager>().getTrafficMode == 0
+          context.watch<TrafficManager>().isStandart()
               ? CachedNetworkImage(
                   imageUrl: product.img,
                   height: Constants.placeHolderSize,

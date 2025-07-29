@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../models/article_detail_model.dart';
 import '../screens/image_view/image_view_screen.dart';
 import '../providers/locale.dart';
 import '../models/article_model.dart';
@@ -42,6 +43,12 @@ class _ImageViewArgs {
   final List<String> imageUrls;
 
   const _ImageViewArgs({required this.imageUrls});
+}
+
+class _SearchArticleArgs {
+  final List<ArticleTag> articleTags;
+
+  const _SearchArticleArgs({required this.articleTags});
 }
 
 enum MenuState { home, add, others, comments, articles, profiles, parts, cars }
@@ -200,9 +207,6 @@ class NavigationManager extends ChangeNotifier {
       case ScreenState.notifications:
         screenToPush = const NotificationsScreen();
         break;
-      case ScreenState.searchArticles:
-        screenToPush = const SearchArticlesScreen();
-        break;
       case ScreenState.menu:
         screenToPush = const MenuScreen();
         break;
@@ -231,6 +235,12 @@ class NavigationManager extends ChangeNotifier {
         }
         screenToPush = ImageViewScreen(imageUrls: args.imageUrls);
         break;
+      case ScreenState.searchArticles:
+        final args = arguments as _SearchArticleArgs?;
+        screenToPush = args == null
+            ? const SearchArticlesScreen()
+            : SearchArticlesScreen(articleTags: args.articleTags);
+        break;
     }
 
     Navigator.push(
@@ -246,6 +256,7 @@ class NavigationManager extends ChangeNotifier {
     String? title,
     Article? article,
     List<String>? imageUrls,
+    List<ArticleTag>? articleTags,
   }) {
     Object? args;
     if (state == ScreenState.articleDetail) {
@@ -268,6 +279,16 @@ class NavigationManager extends ChangeNotifier {
         url: url,
         title: title ?? getMenuTitle(context), // Fallback title
       );
+    } else if (state == ScreenState.imageView) {
+      if (imageUrls == null) {
+        debugPrint('Error: imageUrls is required for ImageViewScreen.');
+        return;
+      }
+      args = _ImageViewArgs(imageUrls: imageUrls);
+    } else if (state == ScreenState.searchArticles) {
+      if (articleTags != null) {
+        args = _SearchArticleArgs(articleTags: articleTags);
+      }
     }
     _navigateToScreen(context, state, arguments: args);
   }

@@ -1,4 +1,6 @@
-class ArticleCategory {
+import 'package:equatable/equatable.dart'; // Added for Equatable
+
+class ArticleCategory extends Equatable {
   final int id;
   final String categoryName;
   final String categoryNameRu;
@@ -6,7 +8,8 @@ class ArticleCategory {
   final String code;
   final String colorCode;
 
-  ArticleCategory({
+  const ArticleCategory({
+    // Made constructor const
     required this.id,
     required this.categoryName,
     required this.categoryNameRu,
@@ -17,12 +20,54 @@ class ArticleCategory {
 
   factory ArticleCategory.fromJson(Map<String, dynamic> json) {
     return ArticleCategory(
-      id: json['id'],
-      categoryName: json['categoryName'],
-      categoryNameRu: json['categoryNameRu'],
-      imgUrl: json['imgUrl'],
-      code: json['code'],
-      colorCode: json['colorCode'],
+      id: json['id'] as int? ?? 0, // Using ?? for default value
+      categoryName: json['categoryName'] as String? ?? '',
+      categoryNameRu: json['categoryNameRu'] as String? ?? '',
+      imgUrl: json['imgUrl'] as String? ?? '',
+      code: json['code'] as String? ?? '',
+      colorCode: json['colorCode'] as String? ?? '',
+    );
+  }
+
+  Map<String, dynamic> toJson() {
+    // Added toJson method
+    return {
+      'id': id,
+      'categoryName': categoryName,
+      'categoryNameRu': categoryNameRu,
+      'imgUrl': imgUrl,
+      'code': code,
+      'colorCode': colorCode,
+    };
+  }
+
+  @override
+  List<Object?> get props => [
+    // Implemented Equatable props
+    id,
+    categoryName,
+    categoryNameRu,
+    imgUrl,
+    code,
+    colorCode,
+  ];
+
+  ArticleCategory copyWith({
+    // Added copyWith method
+    int? id,
+    String? categoryName,
+    String? categoryNameRu,
+    String? imgUrl,
+    String? code,
+    String? colorCode,
+  }) {
+    return ArticleCategory(
+      id: id ?? this.id,
+      categoryName: categoryName ?? this.categoryName,
+      categoryNameRu: categoryNameRu ?? this.categoryNameRu,
+      imgUrl: imgUrl ?? this.imgUrl,
+      code: code ?? this.code,
+      colorCode: colorCode ?? this.colorCode,
     );
   }
 }

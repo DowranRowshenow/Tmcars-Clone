@@ -41,9 +41,11 @@ Future<bool?> showSetTrafficDialog({
                     value: 0,
                     groupValue: selectedTrafficMode,
                     onChanged: (int? value) {
-                      setState(() {
-                        selectedTrafficMode = 0;
-                      });
+                      if (context.mounted) {
+                        setState(() {
+                          selectedTrafficMode = 0;
+                        });
+                      }
                     },
                     activeColor: Constants.colorPrimary,
                     controlAffinity: ListTileControlAffinity.leading,
@@ -53,9 +55,11 @@ Future<bool?> showSetTrafficDialog({
                     value: 1,
                     groupValue: selectedTrafficMode,
                     onChanged: (int? value) {
-                      setState(() {
-                        selectedTrafficMode = 1;
-                      });
+                      if (context.mounted) {
+                        setState(() {
+                          selectedTrafficMode = 1;
+                        });
+                      }
                     },
                     activeColor: Constants.colorPrimary,
                     controlAffinity: ListTileControlAffinity.leading,

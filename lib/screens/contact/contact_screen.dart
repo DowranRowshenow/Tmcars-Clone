@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../../components/back_icon_button.dart';
 import '../../components/ripple_container.dart';
-import '../../utils/constants.dart';
 import '../../l10n/app_localizations.dart';
 
 class ContactScreen extends StatefulWidget {
@@ -18,12 +18,7 @@ class _ContactScreenState extends State<ContactScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text(AppLocalizations.of(context)!.administrator),
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back),
-          onPressed: () => Navigator.pop(context),
-          splashRadius: Constants.splashRadius,
-          splashColor: Colors.transparent,
-        ),
+        leading: buildBackIconButton(context),
       ),
       body: Column(
         children: [

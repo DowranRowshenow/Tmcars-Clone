@@ -25,7 +25,7 @@ class NearestArticleCard extends StatelessWidget {
           children: <Widget>[
             SizedBox(
               width: double.infinity,
-              child: context.watch<TrafficManager>().getTrafficMode == 0
+              child: context.watch<TrafficManager>().isStandart()
                   ? CachedNetworkImage(
                       imageUrl: nearestArticle.img,
                       placeholder: (context, url) => Container(

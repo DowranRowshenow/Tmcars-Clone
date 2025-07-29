@@ -47,9 +47,11 @@ Future<bool?> showSetLanguageDialog({
                     value: true,
                     groupValue: selectedLanguageCode == locale.languageCode,
                     onChanged: (bool? value) {
-                      setState(() {
-                        selectedLanguageCode = locale.languageCode;
-                      });
+                      if (context.mounted) {
+                        setState(() {
+                          selectedLanguageCode = locale.languageCode;
+                        });
+                      }
                     },
                     activeColor: Constants.colorPrimary,
                     controlAffinity: ListTileControlAffinity.leading,

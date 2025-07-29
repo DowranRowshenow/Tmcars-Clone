@@ -1,4 +1,6 @@
-class PopularProduct {
+import 'package:equatable/equatable.dart'; // Added for Equatable
+
+class PopularProduct extends Equatable {
   final int id;
   final int activeAdvId;
   final int productId;
@@ -12,7 +14,8 @@ class PopularProduct {
   final String type;
   final String title;
 
-  PopularProduct({
+  const PopularProduct({
+    // Made constructor const
     required this.id,
     required this.activeAdvId,
     required this.productId,
@@ -41,6 +44,72 @@ class PopularProduct {
       p: json['p'] as int,
       type: json['type'] as String,
       title: json['title'] as String,
+    );
+  }
+
+  Map<String, dynamic> toJson() {
+    // Added toJson method
+    return {
+      'id': id,
+      'activeAdvId': activeAdvId,
+      'productId': productId,
+      'img': img,
+      'description': description,
+      'descriptionRu': descriptionRu,
+      'timeLocation': timeLocation,
+      'timeLocationRu': timeLocationRu,
+      'vip': vip,
+      'p': p,
+      'type': type,
+      'title': title,
+    };
+  }
+
+  @override
+  List<Object?> get props => [
+    // Implemented Equatable props
+    id,
+    activeAdvId,
+    productId,
+    img,
+    description,
+    descriptionRu,
+    timeLocation,
+    timeLocationRu,
+    vip,
+    p,
+    type,
+    title,
+  ];
+
+  PopularProduct copyWith({
+    // Added copyWith method
+    int? id,
+    int? activeAdvId,
+    int? productId,
+    String? img,
+    String? description,
+    String? descriptionRu,
+    String? timeLocation,
+    String? timeLocationRu,
+    bool? vip,
+    int? p,
+    String? type,
+    String? title,
+  }) {
+    return PopularProduct(
+      id: id ?? this.id,
+      activeAdvId: activeAdvId ?? this.activeAdvId,
+      productId: productId ?? this.productId,
+      img: img ?? this.img,
+      description: description ?? this.description,
+      descriptionRu: descriptionRu ?? this.descriptionRu,
+      timeLocation: timeLocation ?? this.timeLocation,
+      timeLocationRu: timeLocationRu ?? this.timeLocationRu,
+      vip: vip ?? this.vip,
+      p: p ?? this.p,
+      type: type ?? this.type,
+      title: title ?? this.title,
     );
   }
 }

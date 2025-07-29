@@ -188,12 +188,7 @@ class ArticleDetail extends Equatable {
   }
 
   List<String> getAllOriginalImageUrls() {
-    final List<String> urls = [];
-    if (img.isNotEmpty) {
-      urls.add(img);
-    }
-    urls.addAll(imgs.map((image) => image.original));
-    return urls;
+    return imgs.map((image) => image.original).toList();
   }
 }
 

@@ -59,13 +59,14 @@ class _ArticlesTabState extends State<ArticlesTab> {
 
   Future<void> _loadArticles({bool refresh = false}) async {
     if (_isLoading) return;
-    setState(() {
-      _isLoading = true;
-      if (refresh) {
-        _hasError = false; // Reset error state on refresh
-      }
-    });
-
+    if (mounted) {
+      setState(() {
+        _isLoading = true;
+        if (refresh) {
+          _hasError = false; // Reset error state on refresh
+        }
+      });
+    }
     if (refresh) {
       _offset = 0;
       _hasMore = true;

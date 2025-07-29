@@ -27,7 +27,7 @@ class ProfileCategoryCard extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center, // Center content
             children: [
               Expanded(
-                child: context.watch<TrafficManager>().getTrafficMode == 0
+                child: context.watch<TrafficManager>().isStandart()
                     ? CachedNetworkImage(
                         imageUrl: Constants.tempImageUrl,
                         height: 185,

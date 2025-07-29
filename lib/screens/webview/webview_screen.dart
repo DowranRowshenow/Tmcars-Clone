@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
+import '../../components/back_icon_button.dart';
 import '../../components/no_connection.dart';
-import '../../utils/constants.dart';
 
 class WebViewScreen extends StatefulWidget {
   final String title;
@@ -40,9 +40,11 @@ class _WebViewScreenState extends State<WebViewScreen> {
       ..setNavigationDelegate(
         NavigationDelegate(
           onProgress: (value) {
-            setState(() {
-              progress = value / 100;
-            });
+            if (mounted) {
+              setState(() {
+                progress = value / 100;
+              });
+            }
           },
           onPageStarted: (String url) {
             if (mounted) {
@@ -80,12 +82,7 @@ class _WebViewScreenState extends State<WebViewScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.title),
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back),
-          onPressed: () => Navigator.pop(context),
-          splashRadius: Constants.splashRadius,
-          splashColor: Colors.transparent,
-        ),
+        leading: buildBackIconButton(context),
       ),
       body: Stack(
         children: [

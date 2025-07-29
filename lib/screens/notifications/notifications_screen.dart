@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../utils/constants.dart';
+import '../../components/back_icon_button.dart';
 import '../../l10n/app_localizations.dart';
 
 class NotificationsScreen extends StatelessWidget {
@@ -13,12 +13,7 @@ class NotificationsScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text(appLocalizations.notifications),
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back),
-          onPressed: () => Navigator.pop(context),
-          splashRadius: Constants.splashRadius,
-          splashColor: Colors.transparent,
-        ),
+        leading: buildBackIconButton(context),
       ),
       body: const SingleChildScrollView(child: SizedBox()),
     );

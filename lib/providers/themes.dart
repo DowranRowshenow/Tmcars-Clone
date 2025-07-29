@@ -52,12 +52,11 @@ class AppColors extends ThemeExtension<AppColors> {
     iconThemeColor: Colors.black.withAlpha(128), // 50% opacity
     textThemeColor: Colors.black.withAlpha(204), // 80% opacity
     textHintThemeColor: Colors.black.withAlpha(128), // 50% opacity
-    text2ThemeColor:
-        Constants.colorPrimary, // Assuming colorPrimary is for light theme
+    text2ThemeColor: Constants.colorPrimary,
     productSubtitleThemeColor: Colors.black,
     tileThemeColor: Colors.black.withAlpha(26), // 10% opacity
     scaffoldBackgroundThemeColor: Constants.baseTintColor,
-    focusColor: Colors.blue,
+    focusColor: Colors.blue.withAlpha(128),
     tintColor: const Color.fromARGB(255, 233, 223, 231),
     dividerColor: Colors.black.withAlpha(128), // 50% opacity
     progressIndicatorColor: Constants.colorPrimary,
@@ -77,9 +76,8 @@ class AppColors extends ThemeExtension<AppColors> {
     text2ThemeColor: Colors.white.withAlpha(204), // 80% opacity
     productSubtitleThemeColor: Colors.white,
     tileThemeColor: Colors.white.withAlpha(26), // 10% opacity
-    scaffoldBackgroundThemeColor:
-        Constants.blueGrey950, // A common dark background
-    focusColor: const Color.fromARGB(255, 1, 89, 161),
+    scaffoldBackgroundThemeColor: Constants.blueGrey950,
+    focusColor: const Color.fromARGB(128, 1, 89, 161),
     tintColor: const Color.fromARGB(255, 71, 59, 71),
     dividerColor: Colors.white.withAlpha(128), // 50% opacity
     progressIndicatorColor: Colors.white54,

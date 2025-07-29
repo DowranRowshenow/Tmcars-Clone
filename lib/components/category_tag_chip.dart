@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 
-class TagCategoryChip extends StatelessWidget {
-  final String categoryName;
-  final Color color;
-
-  const TagCategoryChip({
+class CategoryTagChip extends StatelessWidget {
+  const CategoryTagChip({
     super.key,
     required this.categoryName,
     required this.color,
   });
+
+  final String categoryName;
+  final Color color;
 
   @override
   Widget build(BuildContext context) {

@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+import '../../components/back_icon_button.dart';
 import '../../providers/location.dart';
 import '../../providers/navigation.dart';
 import '../../providers/themes.dart';
@@ -34,12 +35,7 @@ class SettingsScreen extends StatelessWidget {
           softWrap: false,
           style: const TextStyle(overflow: TextOverflow.ellipsis),
         ),
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back),
-          onPressed: () => Navigator.pop(context),
-          splashRadius: Constants.splashRadius,
-          splashColor: Colors.transparent,
-        ),
+        leading: buildBackIconButton(context),
       ),
       body: ListView(
         children: [
@@ -113,7 +109,7 @@ class SettingsScreen extends StatelessWidget {
               style: const TextStyle(overflow: TextOverflow.ellipsis),
             ),
             trailing: Text(
-              context.watch<TrafficManager>().getTrafficMode == 0
+              context.watch<TrafficManager>().isStandart()
                   ? appLocalizations.standard
                   : appLocalizations.econom,
               overflow: TextOverflow.ellipsis,
