@@ -2,12 +2,10 @@ import 'dart:ui' as ui;
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
 import '../../components/back_icon_button.dart';
 import '../../components/dot_tab.dart';
 import '../../components/placeholder_image.dart';
-import '../../providers/traffic.dart';
 import '../../utils/constants.dart';
 import '../../utils/downloader.dart';
 
@@ -117,7 +115,6 @@ class _ImageViewScreenState extends State<ImageViewScreen>
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.black,
-
       body: Stack(
         children: <Widget>[
           Center(
@@ -129,31 +126,17 @@ class _ImageViewScreenState extends State<ImageViewScreen>
                 controller: _tabController,
                 children: <Widget>[
                   for (int i = 0; i < widget.imageUrls.length; i++)
-                    Builder(
-                      builder: (BuildContext innerContext) {
-                        final int currentQuarterTurns =
-                            _imageQuarterTurns[i] ?? 0;
-
-                        return RotatedBox(
-                          quarterTurns: currentQuarterTurns,
-                          child: context.watch<TrafficManager>().isStandart()
-                              ? CachedNetworkImage(
-                                  imageUrl: widget.imageUrls[i],
-                                  fit: BoxFit.contain,
-                                  placeholder: (context, url) => const Center(
-                                    child: CircularProgressIndicator(),
-                                  ),
-                                  errorWidget: (context, url, error) =>
-                                      buildImagePlaceholder(context),
-                                  fadeInDuration: const Duration(
-                                    milliseconds: 200,
-                                  ),
-                                  memCacheHeight: 400,
-                                  memCacheWidth: 600,
-                                )
-                              : buildImagePlaceholder(context),
-                        );
-                      },
+                    RotatedBox(
+                      quarterTurns: _imageQuarterTurns[i] ?? 0,
+                      child: CachedNetworkImage(
+                        imageUrl: widget.imageUrls[i],
+                        fit: BoxFit.fitWidth,
+                        placeholder: (context, url) =>
+                            const Center(child: CircularProgressIndicator()),
+                        errorWidget: (context, url, error) =>
+                            buildImagePlaceholder(context),
+                        fadeInDuration: const Duration(milliseconds: 200),
+                      ),
                     ),
                 ],
               ),

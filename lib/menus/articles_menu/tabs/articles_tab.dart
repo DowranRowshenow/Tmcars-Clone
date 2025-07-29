@@ -38,8 +38,7 @@ class _ArticlesTabState extends State<ArticlesTab> {
   @override
   void dispose() {
     _scrollController.removeListener(_onScroll);
-    _scrollController
-        .dispose(); // It's good practice to remove the listener before disposing.
+    _scrollController.dispose();
     super.dispose();
   }
 

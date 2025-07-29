@@ -4,7 +4,6 @@ import 'package:provider/provider.dart';
 import '../../utils/constants.dart';
 import '../../models/article_category_model.dart';
 import '../../providers/locale.dart';
-import '../../providers/navigation.dart';
 import 'tabs/articles_tab.dart';
 
 class ArticlesMenu extends StatelessWidget {
@@ -34,26 +33,18 @@ class ArticlesMenu extends StatelessWidget {
         appBar: AppBar(
           elevation: 0,
           toolbarHeight: 0,
-          leading: IconButton(
-            onPressed: () {
-              context.read<NavigationManager>().setScreen(
-                context,
-                ScreenState.searchArticles,
-              );
-            },
-            splashRadius: Constants.splashRadius,
-            icon: const Icon(Icons.search),
-            splashColor: Colors.transparent,
+          bottom: PreferredSize(
+            preferredSize: const Size.fromHeight(60),
+            child: TabBar(
+              padding: const EdgeInsets.all(5),
+              textScaler: const TextScaler.linear(Constants.tabTextScale),
+              indicatorColor: Colors.white,
+              isScrollable: true,
+              tabs: categories
+                  .map((cat) => Tab(text: getCategoryName(cat)))
+                  .toList(),
+            ),
           ),
-          bottom: TabBar(
-            textScaler: const TextScaler.linear(Constants.tabTextScale),
-            indicatorColor: Colors.white,
-            isScrollable: true,
-            tabs: categories
-                .map((cat) => Tab(text: getCategoryName(cat)))
-                .toList(),
-          ),
-          actions: const [],
         ),
         body: TabBarView(
           children: categories

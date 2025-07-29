@@ -16,6 +16,9 @@ import 'models/article_category_model.dart';
 import 'screens/menu/menu_screen.dart';
 import 'components/scroll/app_scroll_behavior.dart';
 
+// TODO: Dispose() all statefull widgets
+// TODO: Optimize all widgets
+
 void main() async {
   // Ensure Flutter is ready.
   WidgetsFlutterBinding.ensureInitialized();

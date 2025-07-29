@@ -8,7 +8,6 @@ import '../../../providers/navigation.dart';
 import '../../../providers/themes.dart';
 import '../../../models/article_model.dart';
 import '../../../providers/traffic.dart';
-import '../../../utils/constants.dart';
 
 class ArticleCard extends StatelessWidget {
   const ArticleCard({super.key, required this.article});
@@ -18,6 +17,8 @@ class ArticleCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final AppColors appColors = Theme.of(context).extension<AppColors>()!;
     final Locale locale = context.watch<LocaleManager>().locale;
+    const double width = 140.0;
+    const double height = 90.0;
 
     return Container(
       decoration: BoxDecoration(
@@ -26,8 +27,8 @@ class ArticleCard extends StatelessWidget {
         ),
       ),
       child: ListTile(
-        minTileHeight: Constants.articleItemExtent,
-        contentPadding: const EdgeInsets.all(8),
+        // minTileHeight: Constants.articleItemExtent,
+        contentPadding: const EdgeInsets.fromLTRB(8, 0, 8, 0),
         onTap: () {
           context.read<NavigationManager>().setScreen(
             context,
@@ -36,42 +37,68 @@ class ArticleCard extends StatelessWidget {
           );
         },
         titleAlignment: ListTileTitleAlignment.center,
-        title: Text(
-          locale.languageCode == 'ru' ? article.titleRu : article.title,
-          maxLines: 3,
-          overflow: TextOverflow.ellipsis,
-          style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w600),
-        ),
-        subtitle: Container(
-          padding: const EdgeInsets.only(top: 5),
-          child: Text(
-            locale.languageCode == 'ru'
-                ? article.elapsedTimeRu
-                : article.elapsedTime,
-            maxLines: 1,
-            textWidthBasis: TextWidthBasis.parent,
-            overflow: TextOverflow.clip,
-            style: TextStyle(
-              fontSize: 12,
-              color: appColors.textHintThemeColor,
-              fontWeight: FontWeight.w400,
+        title: Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          // mainAxisAlignment: MainAxisAlignment.center, // Remove this line as Expanded will manage alignment
+          children: <Widget>[
+            Expanded(
+              // <--- Wrap the Column with Expanded
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  // SizedBox with fixed width (260.0) might limit it.
+                  // If you want it to truly take all available space, remove the SizedBox width.
+                  // If you want max 3 lines, maxLines is sufficient for Text overflow.
+                  Text(
+                    locale.languageCode == 'ru'
+                        ? article.titleRu
+                        : article.title,
+                    maxLines: 3,
+                    overflow: TextOverflow.ellipsis,
+                    style: const TextStyle(
+                      fontSize: 14,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                  const SizedBox(height: 10),
+                  Text(
+                    locale.languageCode == 'ru'
+                        ? article.elapsedTimeRu
+                        : article.elapsedTime,
+                    maxLines: 1,
+                    textWidthBasis: TextWidthBasis.parent,
+                    overflow: TextOverflow.clip,
+                    style: TextStyle(
+                      fontSize: 12,
+                      color: appColors.textHintThemeColor,
+                      fontWeight: FontWeight.w400,
+                    ),
+                  ),
+                ],
+              ),
             ),
-          ),
+            // const Expanded(child: SizedBox()), // <--- Remove this line
+            context.watch<TrafficManager>().isStandart()
+                ? CachedNetworkImage(
+                    imageUrl: article.img,
+                    fit: BoxFit.cover,
+                    memCacheHeight: height.toInt(),
+                    memCacheWidth: width.toInt(),
+                    placeholder: (context, url) => buildImagePlaceholder(
+                      context,
+                      height: height,
+                      width: width,
+                    ),
+                    errorWidget: (context, url, error) => buildImagePlaceholder(
+                      context,
+                      height: height,
+                      width: width,
+                    ),
+                  )
+                : buildImagePlaceholder(context, height: height, width: width),
+          ],
         ),
-        trailing: context.watch<TrafficManager>().isStandart()
-            ? CachedNetworkImage(
-                alignment: Alignment.center,
-                imageUrl: article.img,
-                fit: BoxFit.fitHeight,
-                memCacheHeight: 100,
-                memCacheWidth: 200,
-                height: double.infinity,
-                width: 118,
-                placeholder: (context, url) => buildImagePlaceholder(context),
-                errorWidget: (context, url, error) =>
-                    buildImagePlaceholder(context),
-              )
-            : buildImagePlaceholder(context),
       ),
     );
   }

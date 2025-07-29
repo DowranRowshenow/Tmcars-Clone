@@ -24,7 +24,7 @@ class Constants {
   static const double placeHolderSize = 96.0;
   static const double drawerLeadingWidth = 15.0;
   static const double popularProductItemExtent = 114.0;
-  static const double articleItemExtent = 100.0;
+  static const double articleItemExtent = 112.0;
   static const double tabTextScale = 0.85;
   static const double blurAlpha = 0.7;
   static const double borderRadius = 7.0;

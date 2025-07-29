@@ -3,16 +3,21 @@ import 'package:flutter/material.dart';
 import '../providers/themes.dart';
 import '../utils/constants.dart';
 
-Widget buildImagePlaceholder(BuildContext context) {
+Widget buildImagePlaceholder(
+  BuildContext context, {
+  double? height,
+  double? width,
+  double? iconSize,
+}) {
   final AppColors appColors = Theme.of(context).extension<AppColors>()!;
   return Container(
-    width: Constants.placeHolderSize,
-    height: Constants.placeHolderSize,
+    width: width ?? Constants.placeHolderSize,
+    height: height ?? Constants.placeHolderSize,
     color: appColors.tileThemeColor,
     child: Center(
       child: Icon(
         Icons.broken_image_outlined,
-        size: 50,
+        size: iconSize ?? 50,
         color: Colors.grey[700]!,
       ),
     ),
