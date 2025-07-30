@@ -1,13 +1,13 @@
-import 'dart:ui' as ui;
-
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
+import '../../components/download_button.dart';
 import '../../components/back_icon_button.dart';
 import '../../components/dot_tab.dart';
 import '../../components/placeholder_image.dart';
 import '../../utils/constants.dart';
-import '../../utils/downloader.dart';
+import '../../utils/downloader.dart'; // Ensure this points to your updated downloader.dart
 
 class ImageViewScreen extends StatefulWidget {
   const ImageViewScreen({super.key, required this.imageUrls});
@@ -20,95 +20,93 @@ class ImageViewScreen extends StatefulWidget {
 class _ImageViewScreenState extends State<ImageViewScreen>
     with SingleTickerProviderStateMixin {
   late TabController _tabController;
-  final Map<int, int> _imageQuarterTurns = {};
-  final Map<String, ui.Image> _loadedImages = {};
-  final ValueNotifier<int> _currentTabIndexNotifier = ValueNotifier<int>(0);
+
+  // New: ValueNotifier to hold the current tab index, which ValueListenableBuilder can listen to
+  late ValueNotifier<int> _currentTabIndexNotifier;
+
+  // Map to store rotation state for each image, keyed by index
+  final ValueNotifier<Map<int, int>> _imageQuarterTurns =
+      ValueNotifier<Map<int, int>>({});
+
+  // --- Maps to manage download state for each image ---
+  late Map<int, ValueNotifier<bool>> _isDownloadComplete;
+  late Map<int, ValueNotifier<bool>> _isDownloadingNotifiers;
+  late Map<int, ValueNotifier<double>> _downloadProgressNotifiers;
+  late Map<int, ValueNotifier<DownloadCancellationToken?>>
+  _cancellationTokenNotifiers;
+  // --------------------------------------------------------
 
   @override
   void initState() {
     super.initState();
+    SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
+    SystemChrome.setSystemUIOverlayStyle(
+      const SystemUiOverlayStyle(systemNavigationBarColor: Colors.transparent),
+    );
+
     _tabController = TabController(
       length: widget.imageUrls.length,
       vsync: this,
     );
 
-    // Initialize all image rotations to 0 quarter turns
+    // Initialize _currentTabIndexNotifier and add listener to _tabController
+    _currentTabIndexNotifier = ValueNotifier<int>(_tabController.index);
+    _tabController.addListener(() {
+      if (_currentTabIndexNotifier.value != _tabController.index) {
+        _currentTabIndexNotifier.value = _tabController.index;
+      }
+    });
+
+    // Initialize rotation map and download state maps for each image
+    _isDownloadComplete = {};
+    _isDownloadingNotifiers = {};
+    _downloadProgressNotifiers = {};
+    _cancellationTokenNotifiers = {};
+
     for (int i = 0; i < widget.imageUrls.length; i++) {
-      _imageQuarterTurns[i] = 0;
+      _imageQuarterTurns.value[i] = 0; // Initialize rotation for each image
+      _isDownloadComplete[i] = ValueNotifier<bool>(false);
+      _isDownloadingNotifiers[i] = ValueNotifier<bool>(false);
+      _downloadProgressNotifiers[i] = ValueNotifier<double>(0.0);
+      _cancellationTokenNotifiers[i] =
+          ValueNotifier<DownloadCancellationToken?>(null);
     }
-
-    // Add listener to load image dimensions when tab changes
-    _tabController.addListener(_onTabChanged);
-
-    // Load dimensions for the initial image
-    if (widget.imageUrls.isNotEmpty) {
-      _loadImageDimensions(widget.imageUrls[0]);
-    }
+    // Trigger a rebuild for _imageQuarterTurns to reflect initial values
+    _imageQuarterTurns.value = Map.from(_imageQuarterTurns.value);
   }
 
   @override
   void dispose() {
-    _tabController.removeListener(_onTabChanged);
+    SystemChrome.setEnabledSystemUIMode(
+      SystemUiMode.manual,
+      overlays: SystemUiOverlay.values,
+    );
+    SystemChrome.setSystemUIOverlayStyle(
+      const SystemUiOverlayStyle(systemNavigationBarColor: Colors.black),
+    );
     _tabController.dispose();
-    _currentTabIndexNotifier.dispose(); // <--- Dispose the notifier
-    _loadedImages.forEach((key, image) => image.dispose());
+    _currentTabIndexNotifier.dispose(); // Dispose the new notifier
+    _imageQuarterTurns.dispose(); // Dispose rotation notifier
+
+    // Dispose all individual ValueNotifiers for download state using for-in loop
+    for (int i = 0; i < widget.imageUrls.length; i++) {
+      _isDownloadComplete[i]!.dispose();
+      _isDownloadingNotifiers[i]!.dispose();
+      _downloadProgressNotifiers[i]!.dispose();
+      _cancellationTokenNotifiers[i]!.dispose();
+    }
+
     super.dispose();
   }
 
-  void _onTabChanged() {
-    if (!_tabController.indexIsChanging) {
-      _loadImageDimensions(widget.imageUrls[_tabController.index]);
-    }
-  }
-
-  // New method to load and store image dimensions
-  void _loadImageDimensions(String imageUrl) {
-    // Only load if not already loaded
-    if (_loadedImages.containsKey(imageUrl)) {
-      return;
-    }
-
-    final ImageProvider imageProvider = CachedNetworkImageProvider(imageUrl);
-    final ImageStream stream = imageProvider.resolve(ImageConfiguration.empty);
-
-    ImageStreamListener? listener; // Declare listener here
-
-    listener = ImageStreamListener(
-      (ImageInfo info, bool synchronousCall) {
-        if (mounted) {
-          setState(() {
-            _loadedImages[imageUrl] = info.image;
-          });
-        }
-        // Remove listener after image is loaded to prevent multiple calls
-        if (listener != null) {
-          stream.removeListener(listener);
-        }
-      },
-      onError: (Object exception, StackTrace? stackTrace) {
-        debugPrint('Error loading image dimensions for $imageUrl: $exception');
-        // Handle error, e.g., show a placeholder or error message
-        if (listener != null) {
-          stream.removeListener(listener);
-        }
-      },
-    );
-
-    stream.addListener(listener);
-  }
-
   void _rotateCurrentImage() {
-    if (mounted) {
-      setState(() {
-        final int currentIndex = _tabController.index;
-        int currentTurns = _imageQuarterTurns[currentIndex] ?? 0;
-        currentTurns = (currentTurns - 1) % 4;
-        if (currentTurns < 0) {
-          currentTurns += 4;
-        }
-        _imageQuarterTurns[currentIndex] = currentTurns;
-      });
-    }
+    final int currentIndex = _tabController.index;
+    int currentTurns = _imageQuarterTurns.value[currentIndex] ?? 0;
+    final int newTurns = (currentTurns - 1 + 4) % 4;
+    _imageQuarterTurns.value = {
+      ..._imageQuarterTurns.value,
+      currentIndex: newTurns,
+    };
   }
 
   @override
@@ -119,26 +117,32 @@ class _ImageViewScreenState extends State<ImageViewScreen>
         children: <Widget>[
           Center(
             child: InteractiveViewer(
-              panEnabled: true, // Enable panning
-              minScale: 0.5, // Minimum zoom scale
-              maxScale: 4.0, // Maximum zoom scale
-              child: TabBarView(
-                controller: _tabController,
-                children: <Widget>[
-                  for (int i = 0; i < widget.imageUrls.length; i++)
-                    RotatedBox(
-                      quarterTurns: _imageQuarterTurns[i] ?? 0,
-                      child: CachedNetworkImage(
-                        imageUrl: widget.imageUrls[i],
-                        fit: BoxFit.contain,
-                        placeholder: (context, url) =>
-                            const Center(child: CircularProgressIndicator()),
-                        errorWidget: (context, url, error) =>
-                            buildImagePlaceholder(context),
-                        fadeInDuration: const Duration(milliseconds: 200),
-                      ),
-                    ),
-                ],
+              panEnabled: true,
+              minScale: 1.0,
+              maxScale: 5.0,
+              child: ValueListenableBuilder<Map<int, int>>(
+                valueListenable: _imageQuarterTurns,
+                builder: (context, imageQuarterTurnsValue, child) {
+                  return TabBarView(
+                    controller: _tabController,
+                    children: <Widget>[
+                      for (int i = 0; i < widget.imageUrls.length; i++)
+                        RotatedBox(
+                          quarterTurns: imageQuarterTurnsValue[i] ?? 0,
+                          child: CachedNetworkImage(
+                            imageUrl: widget.imageUrls[i],
+                            fit: BoxFit.contain,
+                            placeholder: (context, url) => const Center(
+                              child: CircularProgressIndicator(),
+                            ),
+                            errorWidget: (context, url, error) =>
+                                buildImagePlaceholder(context),
+                            fadeInDuration: const Duration(milliseconds: 200),
+                          ),
+                        ),
+                    ],
+                  );
+                },
               ),
             ),
           ),
@@ -159,13 +163,23 @@ class _ImageViewScreenState extends State<ImageViewScreen>
                     icon: const Icon(Icons.rotate_left_outlined),
                     onPressed: _rotateCurrentImage,
                   ),
-                  IconButton(
-                    splashColor: Colors.transparent,
-                    splashRadius: Constants.splashRadius,
-                    icon: const Icon(Icons.download_outlined),
-                    onPressed: () =>
-                        downloadImage(widget.imageUrls[_tabController.index]),
+                  ValueListenableBuilder<int>(
+                    valueListenable: _currentTabIndexNotifier,
+                    builder: (context, currentIndex, child) {
+                      return DownloadButton(
+                        url: widget.imageUrls[currentIndex],
+                        isDownloadingNotifier:
+                            _isDownloadingNotifiers[currentIndex]!,
+                        downloadProgressNotifier:
+                            _downloadProgressNotifiers[currentIndex]!,
+                        cancellationTokenNotifier:
+                            _cancellationTokenNotifiers[currentIndex]!,
+                        isDownloadCompleteNotifier:
+                            _isDownloadComplete[_tabController.index]!,
+                      );
+                    },
                   ),
+                  // ------------------------------------
                 ],
               ),
             ),

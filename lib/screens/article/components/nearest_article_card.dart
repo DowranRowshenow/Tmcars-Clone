@@ -11,6 +11,9 @@ import '../../../providers/traffic.dart';
 class NearestArticleCard extends StatelessWidget {
   const NearestArticleCard({super.key, required this.nearestArticle});
   final Article nearestArticle;
+  final double height = 300.0;
+  final double cacheHeight = 200.0;
+  final double width = 300.0;
 
   @override
   Widget build(BuildContext context) {
@@ -28,17 +31,27 @@ class NearestArticleCard extends StatelessWidget {
               child: context.watch<TrafficManager>().isStandart()
                   ? CachedNetworkImage(
                       imageUrl: nearestArticle.img,
+                      filterQuality: FilterQuality.low,
+                      fit: BoxFit.fitWidth,
+                      width: double.infinity,
+                      memCacheWidth: width.toInt(),
                       placeholder: (context, url) => Container(
-                        height: 100,
+                        height: height,
                         color: Colors.grey[200],
                         child: const Center(child: CircularProgressIndicator()),
                       ),
                       errorWidget: (context, url, error) =>
-                          const Icon(Icons.error),
-                      fit: BoxFit.fitWidth,
-                      width: double.infinity,
+                          buildImagePlaceholder(
+                            context,
+                            width: double.infinity,
+                            height: height,
+                          ),
                     )
-                  : buildImagePlaceholder(context),
+                  : buildImagePlaceholder(
+                      context,
+                      width: double.infinity,
+                      height: height,
+                    ),
             ),
             Positioned.fill(
               child: Container(

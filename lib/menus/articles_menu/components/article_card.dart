@@ -1,13 +1,11 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../../../components/placeholder_image.dart';
 import '../../../providers/locale.dart';
 import '../../../providers/navigation.dart';
 import '../../../providers/themes.dart';
 import '../../../models/article_model.dart';
-import '../../../providers/traffic.dart';
+import 'article_card_image.dart';
 
 class ArticleCard extends StatelessWidget {
   const ArticleCard({super.key, required this.article});
@@ -17,8 +15,6 @@ class ArticleCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final AppColors appColors = Theme.of(context).extension<AppColors>()!;
     final Locale locale = context.watch<LocaleManager>().locale;
-    const double width = 160.0;
-    const double height = 90.0;
 
     return Container(
       decoration: BoxDecoration(
@@ -75,26 +71,10 @@ class ArticleCard extends StatelessWidget {
               ),
             ),
             const SizedBox(width: 10),
-
-            context.watch<TrafficManager>().isStandart()
-                ? CachedNetworkImage(
-                    imageUrl: article.img,
-                    fit: BoxFit.cover,
-                    filterQuality: FilterQuality.low,
-                    memCacheHeight: height.toInt(),
-                    memCacheWidth: width.toInt(),
-                    placeholder: (context, url) => buildImagePlaceholder(
-                      context,
-                      height: height,
-                      width: width,
-                    ),
-                    errorWidget: (context, url, error) => buildImagePlaceholder(
-                      context,
-                      height: height,
-                      width: width,
-                    ),
-                  )
-                : buildImagePlaceholder(context, height: height, width: width),
+            ArticleCardImage(
+              articleImg: article.img,
+              videoExist: article.videoExist,
+            ),
           ],
         ),
       ),

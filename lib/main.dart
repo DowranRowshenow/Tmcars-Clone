@@ -16,8 +16,14 @@ import 'models/article_category_model.dart';
 import 'screens/menu/menu_screen.dart';
 import 'components/scroll/app_scroll_behavior.dart';
 
+// TODO: Throw Server errors to handle refresh
+// TODO: Articles_menu list gets empty list on server error leading to clear existing cached list to clear.
+// TODO: Don't write functions of {onTap} or {onPressed} in custom Component widgets
+// TODO: Force Impeller
+// TODO: Optimize shader compile with caching
 // TODO: Dispose() all statefull widgets
 // TODO: Optimize all widgets
+// TODO: Change Menus Structure to Indexed
 
 void main() async {
   // Ensure Flutter is ready.

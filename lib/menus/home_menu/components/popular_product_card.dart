@@ -16,7 +16,7 @@ class PopularProductCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final AppColors appColors = Theme.of(context).extension<AppColors>()!;
     final Locale locale = context.watch<LocaleManager>().locale;
-    const double width = 120.0;
+    const double width = 100.0;
     const double height = 85.0;
 
     return Container(
@@ -37,9 +37,10 @@ class PopularProductCard extends StatelessWidget {
             context.watch<TrafficManager>().isStandart()
                 ? CachedNetworkImage(
                     imageUrl: product.img,
-                    fit: BoxFit.cover,
+                    fit: BoxFit.fill,
                     filterQuality: FilterQuality.low,
-                    memCacheHeight: height.toInt(),
+                    height: height,
+                    width: width,
                     memCacheWidth: width.toInt(),
                     placeholder: (context, url) => buildImagePlaceholder(
                       context,

@@ -23,6 +23,7 @@ class ArticleDetail extends Equatable {
   final String? shareUrlRu;
   final List<ArticleTag> tags;
   final int viewCount;
+  final MainVideo? mainVideo; // Added mainVideo field
 
   const ArticleDetail({
     required this.id,
@@ -47,6 +48,7 @@ class ArticleDetail extends Equatable {
     this.shareUrlRu,
     required this.tags,
     required this.viewCount,
+    this.mainVideo, // Added to constructor
   });
 
   factory ArticleDetail.fromJson(Map<String, dynamic> json) {
@@ -81,6 +83,10 @@ class ArticleDetail extends Equatable {
               .toList() ??
           const [],
       viewCount: json['viewCount'] as int,
+      // Parse mainVideo if it exists
+      mainVideo: json['mainVideo'] != null
+          ? MainVideo.fromJson(json['mainVideo'] as Map<String, dynamic>)
+          : null,
     );
   }
 
@@ -108,6 +114,7 @@ class ArticleDetail extends Equatable {
       'shareUrlRu': shareUrlRu,
       'tags': tags.map((e) => e.toJson()).toList(),
       'viewCount': viewCount,
+      'mainVideo': mainVideo?.toJson(), // Added to toJson
     };
   }
 
@@ -135,6 +142,7 @@ class ArticleDetail extends Equatable {
     shareUrlRu,
     tags,
     viewCount,
+    mainVideo, // Added to props
   ];
 
   ArticleDetail copyWith({
@@ -160,6 +168,7 @@ class ArticleDetail extends Equatable {
     String? shareUrlRu,
     List<ArticleTag>? tags,
     int? viewCount,
+    MainVideo? mainVideo, // Added to copyWith
   }) {
     return ArticleDetail(
       id: id ?? this.id,
@@ -184,6 +193,7 @@ class ArticleDetail extends Equatable {
       shareUrlRu: shareUrlRu ?? this.shareUrlRu,
       tags: tags ?? this.tags,
       viewCount: viewCount ?? this.viewCount,
+      mainVideo: mainVideo ?? this.mainVideo, // Added to copyWith
     );
   }
 
@@ -253,6 +263,56 @@ class ArticleTag extends Equatable {
       code: code ?? this.code,
       name: name ?? this.name,
       nameRu: nameRu ?? this.nameRu,
+    );
+  }
+}
+
+// New class for MainVideo
+class MainVideo extends Equatable {
+  final String streamUrl;
+  final String url;
+  final String thumbnail;
+  final String smallThumbnail;
+
+  const MainVideo({
+    required this.streamUrl,
+    required this.url,
+    required this.thumbnail,
+    required this.smallThumbnail,
+  });
+
+  factory MainVideo.fromJson(Map<String, dynamic> json) {
+    return MainVideo(
+      streamUrl: json['streamUrl'] as String,
+      url: json['url'] as String,
+      thumbnail: json['thumbnail'] as String,
+      smallThumbnail: json['smallThumbnail'] as String,
+    );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'streamUrl': streamUrl,
+      'url': url,
+      'thumbnail': thumbnail,
+      'smallThumbnail': smallThumbnail,
+    };
+  }
+
+  @override
+  List<Object> get props => [streamUrl, url, thumbnail, smallThumbnail];
+
+  MainVideo copyWith({
+    String? streamUrl,
+    String? url,
+    String? thumbnail,
+    String? smallThumbnail,
+  }) {
+    return MainVideo(
+      streamUrl: streamUrl ?? this.streamUrl,
+      url: url ?? this.url,
+      thumbnail: thumbnail ?? this.thumbnail,
+      smallThumbnail: smallThumbnail ?? this.smallThumbnail,
     );
   }
 }

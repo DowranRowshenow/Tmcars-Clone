@@ -22,7 +22,7 @@ import '../screens/menu/menu_screen.dart';
 import '../screens/register/register_screen.dart';
 import '../screens/contact/contact_screen.dart';
 import '../screens/settings/settings_screen.dart';
-import '../screens/video_view/video_view.dart';
+import '../screens/video_view/video_view_screen.dart';
 import '../screens/webview/webview_screen.dart';
 import '../utils/constants.dart';
 
@@ -47,9 +47,9 @@ class _ImageViewArgs {
 }
 
 class _VideoViewArgs {
-  final String videoUrl;
+  final MainVideo video;
 
-  const _VideoViewArgs({required this.videoUrl});
+  const _VideoViewArgs({required this.video});
 }
 
 class _SearchArticleArgs {
@@ -249,7 +249,7 @@ class NavigationManager extends ChangeNotifier {
           debugPrint('Error: ImageViewScreen requires _VideoViewArgs.');
           return; // Exit if arguments are missing
         }
-        screenToPush = VideoViewScreen(videoUrl: args.videoUrl);
+        screenToPush = VideoViewScreen(video: args.video);
         break;
       case ScreenState.searchArticles:
         final args = arguments as _SearchArticleArgs?;
@@ -270,7 +270,7 @@ class NavigationManager extends ChangeNotifier {
     ScreenState state, {
     String? url,
     String? title,
-    String? videoUrl,
+    MainVideo? video,
     Article? article,
     List<String>? imageUrls,
     List<ArticleTag>? articleTags,
@@ -303,11 +303,11 @@ class NavigationManager extends ChangeNotifier {
       }
       args = _ImageViewArgs(imageUrls: imageUrls);
     } else if (state == ScreenState.videoView) {
-      if (videoUrl == null) {
+      if (video == null) {
         debugPrint('Error: imageUrls is required for ImageViewScreen.');
         return;
       }
-      args = _VideoViewArgs(videoUrl: videoUrl);
+      args = _VideoViewArgs(video: video);
     } else if (state == ScreenState.searchArticles) {
       if (articleTags != null) {
         args = _SearchArticleArgs(articleTags: articleTags);

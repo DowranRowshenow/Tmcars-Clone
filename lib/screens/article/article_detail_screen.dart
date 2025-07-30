@@ -185,7 +185,32 @@ class _ArticleDetailScreenState extends State<ArticleDetailScreen> {
                   ),
                 ],
                 flexibleSpace: FlexibleSpaceBar(
-                  background: GestureDetector(
+                  background: articleDetail == null
+                      ? const Center(
+                          child: CircularProgressIndicator(color: Colors.white),
+                        )
+                      : AppBarImage(
+                          onTapVideo: () {
+                            context.read<NavigationManager>().setScreen(
+                              context,
+                              ScreenState.videoView,
+                              video: articleDetail!.mainVideo,
+                            );
+                          },
+                          onTapImage: () {
+                            context.read<NavigationManager>().setScreen(
+                              context,
+                              ScreenState.imageView,
+                              imageUrls: articleDetail?.getImageUrls(),
+                            );
+                          },
+                          mainVideo: articleDetail!.mainVideo,
+                          imageUrls: articleDetail!.getImageUrls(
+                            isThumbnail: true,
+                          ),
+                        ),
+                  /*
+                  GestureDetector(
                     onTap: () {
                       context.read<NavigationManager>().setScreen(
                         context,
@@ -193,18 +218,7 @@ class _ArticleDetailScreenState extends State<ArticleDetailScreen> {
                         imageUrls: articleDetail?.getImageUrls(),
                       );
                     },
-                    child: articleDetail == null
-                        ? const Center(
-                            child: CircularProgressIndicator(
-                              color: Colors.white,
-                            ),
-                          )
-                        : AppBarImage(
-                            imageUrls: articleDetail!.getImageUrls(
-                              isThumbnail: true,
-                            ),
-                          ),
-                  ),
+                  ),*/
                 ),
               ),
               SliverToBoxAdapter(
