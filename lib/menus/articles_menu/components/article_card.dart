@@ -17,7 +17,7 @@ class ArticleCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final AppColors appColors = Theme.of(context).extension<AppColors>()!;
     final Locale locale = context.watch<LocaleManager>().locale;
-    const double width = 140.0;
+    const double width = 160.0;
     const double height = 90.0;
 
     return Container(
@@ -27,6 +27,7 @@ class ArticleCard extends StatelessWidget {
         ),
       ),
       child: ListTile(
+        minVerticalPadding: 0,
         // minTileHeight: Constants.articleItemExtent,
         contentPadding: const EdgeInsets.fromLTRB(8, 0, 8, 0),
         onTap: () {
@@ -39,17 +40,12 @@ class ArticleCard extends StatelessWidget {
         titleAlignment: ListTileTitleAlignment.center,
         title: Row(
           crossAxisAlignment: CrossAxisAlignment.center,
-          // mainAxisAlignment: MainAxisAlignment.center, // Remove this line as Expanded will manage alignment
           children: <Widget>[
             Expanded(
-              // <--- Wrap the Column with Expanded
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  // SizedBox with fixed width (260.0) might limit it.
-                  // If you want it to truly take all available space, remove the SizedBox width.
-                  // If you want max 3 lines, maxLines is sufficient for Text overflow.
                   Text(
                     locale.languageCode == 'ru'
                         ? article.titleRu
@@ -78,11 +74,13 @@ class ArticleCard extends StatelessWidget {
                 ],
               ),
             ),
-            // const Expanded(child: SizedBox()), // <--- Remove this line
+            const SizedBox(width: 10),
+
             context.watch<TrafficManager>().isStandart()
                 ? CachedNetworkImage(
                     imageUrl: article.img,
                     fit: BoxFit.cover,
+                    filterQuality: FilterQuality.low,
                     memCacheHeight: height.toInt(),
                     memCacheWidth: width.toInt(),
                     placeholder: (context, url) => buildImagePlaceholder(

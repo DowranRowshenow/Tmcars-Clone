@@ -1,7 +1,9 @@
+import 'dart:async';
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
 
+import '../../../components/fab_scroller.dart';
 import '../../../components/no_connection.dart';
 import '../../../components/no_result.dart';
 import '../../../models/article_category_model.dart';
@@ -40,6 +42,15 @@ class _ArticlesTabState extends State<ArticlesTab> {
     _scrollController.removeListener(_onScroll);
     _scrollController.dispose();
     super.dispose();
+  }
+
+  void _onScroll() {
+    if (_scrollController.position.pixels >=
+            _scrollController.position.maxScrollExtent - 200 &&
+        !_isLoading &&
+        _hasMore) {
+      _loadArticles();
+    }
   }
 
   Future<void> _initializeData() async {
@@ -117,15 +128,6 @@ class _ArticlesTabState extends State<ArticlesTab> {
     );
   }
 
-  void _onScroll() {
-    if (_scrollController.position.pixels >=
-            _scrollController.position.maxScrollExtent - 200 &&
-        !_isLoading &&
-        _hasMore) {
-      _loadArticles();
-    }
-  }
-
   @override
   void didUpdateWidget(covariant ArticlesTab oldWidget) {
     super.didUpdateWidget(oldWidget);
@@ -157,28 +159,33 @@ class _ArticlesTabState extends State<ArticlesTab> {
       return const NoResult();
     }
 
+    // final AppColors appColors = Theme.of(context).extension<AppColors>()!;
+
     // Otherwise, display the list of articles.
-    return RefreshIndicator(
-      onRefresh: _handleRefresh,
-      child: ListView.builder(
-        itemExtent: Constants.articleItemExtent,
-        controller: _scrollController,
-        shrinkWrap: true,
-        itemCount: _articles.length + (_hasMore ? 1 : 0),
-        itemBuilder: (context, index) {
-          if (index < _articles.length) {
-            return ArticleCard(
-              key: ValueKey(_articles[index].id),
-              article: _articles[index],
-            );
-          } else {
-            // Show loading indicator at the bottom
-            return const Padding(
-              padding: EdgeInsets.symmetric(vertical: 16),
-              child: Center(child: CircularProgressIndicator()),
-            );
-          }
-        },
+    return Scaffold(
+      floatingActionButton: FabScroller(scrollController: _scrollController),
+      body: RefreshIndicator(
+        onRefresh: _handleRefresh,
+        child: ListView.builder(
+          itemExtent: Constants.articleItemExtent,
+          controller: _scrollController,
+          shrinkWrap: true,
+          itemCount: _articles.length + (_hasMore ? 1 : 0),
+          itemBuilder: (context, index) {
+            if (index < _articles.length) {
+              return ArticleCard(
+                key: ValueKey(_articles[index].id),
+                article: _articles[index],
+              );
+            } else {
+              // Show loading indicator at the bottom
+              return const Padding(
+                padding: EdgeInsets.symmetric(vertical: 16),
+                child: Center(child: CircularProgressIndicator()),
+              );
+            }
+          },
+        ),
       ),
     );
   }

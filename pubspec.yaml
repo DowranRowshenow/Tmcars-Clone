@@ -36,8 +36,8 @@ dependencies:
   intl:
     path: pkgs/intl
 
-  #flutter_bloc: ^9.1.1
   #cupertino_icons: ^1.0.8
+  #flutter_bloc: ^9.1.1
   url_launcher: ^6.3.2
   share_plus: ^11.0.0
   http: ^1.4.0
@@ -52,6 +52,7 @@ dependencies:
   equatable: ^2.0.7
   permission_handler: ^12.0.1
   fluttertoast: ^8.2.12
+  video_player: ^2.10.0
 
 dev_dependencies:
   flutter_test:

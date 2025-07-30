@@ -18,7 +18,6 @@ class ProfilesMenu extends StatelessWidget {
         appBar: AppBar(
           elevation: 0,
           toolbarHeight: 0,
-          leading: const SizedBox(),
           bottom: TabBar(
             textScaler: const TextScaler.linear(Constants.tabTextScale),
             indicatorColor: Colors.white,

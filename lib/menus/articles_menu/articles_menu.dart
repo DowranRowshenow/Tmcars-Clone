@@ -9,6 +9,15 @@ import 'tabs/articles_tab.dart';
 class ArticlesMenu extends StatelessWidget {
   const ArticlesMenu({super.key});
 
+  String getCategoryName(ArticleCategory category, String languageCode) {
+    switch (languageCode) {
+      case 'ru':
+        return category.categoryNameRu;
+      default:
+        return category.categoryName; // Fallback to default
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final categories = context.watch<List<ArticleCategory>>();
@@ -17,15 +26,6 @@ class ArticlesMenu extends StatelessWidget {
     }
 
     final locale = context.watch<LocaleManager>().locale;
-
-    String getCategoryName(ArticleCategory category) {
-      switch (locale.languageCode) {
-        case 'ru':
-          return category.categoryNameRu;
-        default:
-          return category.categoryName; // Fallback to default
-      }
-    }
 
     return DefaultTabController(
       length: categories.length,
@@ -41,7 +41,10 @@ class ArticlesMenu extends StatelessWidget {
               indicatorColor: Colors.white,
               isScrollable: true,
               tabs: categories
-                  .map((cat) => Tab(text: getCategoryName(cat)))
+                  .map(
+                    (cat) =>
+                        Tab(text: getCategoryName(cat, locale.languageCode)),
+                  )
                   .toList(),
             ),
           ),

@@ -3,12 +3,10 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:provider/provider.dart';
 
 import '../../../components/placeholder_image.dart';
-import '../../../components/ripple_container.dart';
 import '../../../providers/locale.dart';
 import '../../../providers/themes.dart';
 import '../../../models/popular_product_model.dart';
 import '../../../providers/traffic.dart';
-import '../../../utils/constants.dart';
 
 class PopularProductCard extends StatelessWidget {
   const PopularProductCard({super.key, required this.product});
@@ -18,70 +16,86 @@ class PopularProductCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final AppColors appColors = Theme.of(context).extension<AppColors>()!;
     final Locale locale = context.watch<LocaleManager>().locale;
+    const double width = 120.0;
+    const double height = 85.0;
 
-    return RippleContainer(
-      padding: const EdgeInsets.all(8.0),
-      onTap: () {},
-      color: Colors.transparent,
-      border: Border(
-        bottom: BorderSide(color: Theme.of(context).dividerColor, width: 0.5),
+    return Container(
+      decoration: BoxDecoration(
+        border: Border(
+          bottom: BorderSide(color: appColors.dividerColor!, width: 1),
+        ),
       ),
-      child: Row(
-        children: [
-          context.watch<TrafficManager>().isStandart()
-              ? CachedNetworkImage(
-                  imageUrl: product.img,
-                  height: Constants.placeHolderSize,
-                  width: Constants.placeHolderSize,
-                  fit: BoxFit.fitHeight,
-                  placeholder: (context, url) => buildImagePlaceholder(context),
-                  errorWidget: (context, url, error) =>
-                      buildImagePlaceholder(context),
-                )
-              : buildImagePlaceholder(context),
-          const SizedBox(width: 10),
-          Flexible(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  product.title,
-                  style: const TextStyle(fontSize: 15),
-                  maxLines: 2,
-                  overflow: TextOverflow.ellipsis,
-                ),
-                const SizedBox(height: 3),
-                Text(
-                  locale.languageCode == 'ru'
-                      ? product.descriptionRu
-                      : product.description,
-                  overflow: TextOverflow.ellipsis,
-                  maxLines: 2,
-                  style: TextStyle(
-                    fontSize: 12,
-                    color: appColors.textHintThemeColor,
+      child: ListTile(
+        minVerticalPadding: 0,
+        // minTileHeight: Constants.articleItemExtent,
+        contentPadding: const EdgeInsets.fromLTRB(8, 0, 8, 0),
+        onTap: () {},
+        titleAlignment: ListTileTitleAlignment.center,
+        title: Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: <Widget>[
+            context.watch<TrafficManager>().isStandart()
+                ? CachedNetworkImage(
+                    imageUrl: product.img,
+                    fit: BoxFit.cover,
+                    filterQuality: FilterQuality.low,
+                    memCacheHeight: height.toInt(),
+                    memCacheWidth: width.toInt(),
+                    placeholder: (context, url) => buildImagePlaceholder(
+                      context,
+                      height: height,
+                      width: width,
+                    ),
+                    errorWidget: (context, url, error) => buildImagePlaceholder(
+                      context,
+                      height: height,
+                      width: width,
+                    ),
+                  )
+                : buildImagePlaceholder(context, height: height, width: width),
+            const SizedBox(width: 10),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    product.title,
+                    maxLines: 1,
                     overflow: TextOverflow.ellipsis,
+                    style: const TextStyle(
+                      fontSize: 14,
+                      fontWeight: FontWeight.w600,
+                    ),
                   ),
-                ),
-                const SizedBox(height: 3),
-                Text(
-                  locale.languageCode == 'ru'
-                      ? product.timeLocationRu
-                      : product.timeLocation,
-                  maxLines: 1,
-                  softWrap: true,
-                  textWidthBasis: TextWidthBasis.parent,
-                  overflow: TextOverflow.clip,
-                  style: const TextStyle(
-                    fontSize: 14,
+                  const SizedBox(height: 4),
+                  Text(
+                    locale.languageCode == "ru"
+                        ? product.descriptionRu
+                        : product.description,
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                    style: const TextStyle(fontSize: 13),
+                  ),
+                  const SizedBox(height: 4),
+                  Text(
+                    locale.languageCode == 'ru'
+                        ? product.timeLocationRu
+                        : product.timeLocation,
+                    maxLines: 1,
+                    textWidthBasis: TextWidthBasis.parent,
                     overflow: TextOverflow.clip,
+                    style: TextStyle(
+                      fontSize: 12,
+                      color: appColors.textHintThemeColor,
+                      fontWeight: FontWeight.w400,
+                    ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

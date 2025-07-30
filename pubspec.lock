@@ -770,6 +770,41 @@ packages:
       url: "https://mirrors.tencent.com/dart-pub/"
     source: hosted
     version: "2.1.4"
+  video_player:
+    dependency: "direct main"
+    description:
+      name: video_player
+      url: "https://mirrors.tencent.com/dart-pub/"
+    source: hosted
+    version: "2.10.0"
+  video_player_android:
+    dependency: transitive
+    description:
+      name: video_player_android
+      url: "https://mirrors.tencent.com/dart-pub/"
+    source: hosted
+    version: "2.8.9"
+  video_player_avfoundation:
+    dependency: transitive
+    description:
+      name: video_player_avfoundation
+      url: "https://mirrors.tencent.com/dart-pub/"
+    source: hosted
+    version: "2.8.0"
+  video_player_platform_interface:
+    dependency: transitive
+    description:
+      name: video_player_platform_interface
+      url: "https://mirrors.tencent.com/dart-pub/"
+    source: hosted
+    version: "6.4.0"
+  video_player_web:
+    dependency: transitive
+    description:
+      name: video_player_web
+      url: "https://mirrors.tencent.com/dart-pub/"
+    source: hosted
+    version: "2.4.0"
   vm_service:
     dependency: transitive
     description:
@@ -844,4 +879,4 @@ packages:
     version: "6.5.0"
 sdks:
   dart: ">=3.8.1 <4.0.0"
-  flutter: ">=3.27.0"
+  flutter: ">=3.29.0"

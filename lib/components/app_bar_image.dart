@@ -41,16 +41,11 @@ class _AppBarImageState extends State<AppBarImage>
               CachedNetworkImage(
                 imageUrl: widget.imageUrls[i],
                 fit: BoxFit.cover,
+                filterQuality: FilterQuality.low,
                 placeholder: (context, url) =>
                     const Center(child: CircularProgressIndicator()),
                 errorWidget: (context, url, error) =>
                     buildImagePlaceholder(context),
-                imageBuilder: (context, imageProvider) {
-                  return Image(
-                    image: imageProvider,
-                    fit: BoxFit.cover, // Apply the fit here too
-                  );
-                },
               ),
           ],
         ),

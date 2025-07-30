@@ -4,16 +4,15 @@ import '../../components/back_icon_button.dart';
 import '../../utils/constants.dart';
 import '../../utils/downloader.dart';
 
-class ImageViewScreen extends StatefulWidget {
-  const ImageViewScreen({super.key, required this.videoUrl});
+class VideoViewScreen extends StatefulWidget {
+  const VideoViewScreen({super.key, required this.videoUrl});
   final String videoUrl;
 
   @override
-  State<ImageViewScreen> createState() => _ImageViewScreenState();
+  State<VideoViewScreen> createState() => _VideoViewScreenState();
 }
 
-class _ImageViewScreenState extends State<ImageViewScreen>
-    with SingleTickerProviderStateMixin {
+class _VideoViewScreenState extends State<VideoViewScreen> {
   int _videoQuarterTurn = 0;
 
   void _rotateCurrentVideo() {

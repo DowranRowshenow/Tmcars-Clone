@@ -190,7 +190,7 @@ class _ArticleDetailScreenState extends State<ArticleDetailScreen> {
                       context.read<NavigationManager>().setScreen(
                         context,
                         ScreenState.imageView,
-                        imageUrls: articleDetail?.getAllOriginalImageUrls(),
+                        imageUrls: articleDetail?.getImageUrls(),
                       );
                     },
                     child: articleDetail == null
@@ -200,7 +200,9 @@ class _ArticleDetailScreenState extends State<ArticleDetailScreen> {
                             ),
                           )
                         : AppBarImage(
-                            imageUrls: articleDetail!.getAllOriginalImageUrls(),
+                            imageUrls: articleDetail!.getImageUrls(
+                              isThumbnail: true,
+                            ),
                           ),
                   ),
                 ),

@@ -22,6 +22,7 @@ import '../screens/menu/menu_screen.dart';
 import '../screens/register/register_screen.dart';
 import '../screens/contact/contact_screen.dart';
 import '../screens/settings/settings_screen.dart';
+import '../screens/video_view/video_view.dart';
 import '../screens/webview/webview_screen.dart';
 import '../utils/constants.dart';
 
@@ -45,6 +46,12 @@ class _ImageViewArgs {
   const _ImageViewArgs({required this.imageUrls});
 }
 
+class _VideoViewArgs {
+  final String videoUrl;
+
+  const _VideoViewArgs({required this.videoUrl});
+}
+
 class _SearchArticleArgs {
   final List<ArticleTag> articleTags;
 
@@ -63,6 +70,7 @@ enum ScreenState {
   notifications,
   articleDetail,
   imageView,
+  videoView,
 }
 
 class NavigationManager extends ChangeNotifier {
@@ -235,6 +243,14 @@ class NavigationManager extends ChangeNotifier {
         }
         screenToPush = ImageViewScreen(imageUrls: args.imageUrls);
         break;
+      case ScreenState.videoView:
+        final args = arguments as _VideoViewArgs?;
+        if (args == null) {
+          debugPrint('Error: ImageViewScreen requires _VideoViewArgs.');
+          return; // Exit if arguments are missing
+        }
+        screenToPush = VideoViewScreen(videoUrl: args.videoUrl);
+        break;
       case ScreenState.searchArticles:
         final args = arguments as _SearchArticleArgs?;
         screenToPush = args == null
@@ -254,6 +270,7 @@ class NavigationManager extends ChangeNotifier {
     ScreenState state, {
     String? url,
     String? title,
+    String? videoUrl,
     Article? article,
     List<String>? imageUrls,
     List<ArticleTag>? articleTags,
@@ -285,6 +302,12 @@ class NavigationManager extends ChangeNotifier {
         return;
       }
       args = _ImageViewArgs(imageUrls: imageUrls);
+    } else if (state == ScreenState.videoView) {
+      if (videoUrl == null) {
+        debugPrint('Error: imageUrls is required for ImageViewScreen.');
+        return;
+      }
+      args = _VideoViewArgs(videoUrl: videoUrl);
     } else if (state == ScreenState.searchArticles) {
       if (articleTags != null) {
         args = _SearchArticleArgs(articleTags: articleTags);
