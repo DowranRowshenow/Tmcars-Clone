@@ -7,9 +7,9 @@ import 'package:share_plus/share_plus.dart';
 
 import '../../components/app_bar_image.dart';
 import '../../components/back_icon_button.dart';
-import '../../components/should_register_dialog.dart';
 import '../../components/scroll/glowless_scroll_behavior.dart';
 import '../../components/scroll/low_friction_scroll_physics.dart';
+import '../../components/should_register_dialog.dart';
 import '../../l10n/app_localizations.dart';
 import '../../models/article_category_model.dart';
 import '../../models/article_detail_model.dart';

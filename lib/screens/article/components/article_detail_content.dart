@@ -2,13 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../../components/article_tag_chip.dart';
-import '../../../providers/navigation.dart';
-import '../../../screens/article/components/nearest_article_card.dart';
+import '../../../components/category_tag_chip.dart';
 import '../../../l10n/app_localizations.dart';
 import '../../../models/article_detail_model.dart';
 import '../../../models/article_model.dart';
+import '../../../providers/navigation.dart';
 import '../../../providers/themes.dart';
-import '../../../components/category_tag_chip.dart';
+import '../../../screens/article/components/nearest_article_card.dart';
 import 'html_renderer.dart';
 
 class ArticleDetailContent extends StatelessWidget {

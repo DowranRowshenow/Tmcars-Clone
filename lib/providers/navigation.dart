@@ -1,26 +1,26 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../models/article_detail_model.dart';
-import '../screens/image_view/image_view_screen.dart';
-import '../providers/locale.dart';
-import '../models/article_model.dart';
-import '../screens/article/article_detail_screen.dart';
-import '../screens/notifications/notifications_screen.dart';
 import '../components/should_register_dialog.dart';
-import '../screens/search_articles/search_articles_screen.dart';
 import '../l10n/app_localizations.dart';
+import '../menus/add_menu/add_menu.dart';
+import '../menus/articles_menu/articles_menu.dart';
 import '../menus/car_parts_menu/car_parts_menu.dart';
 import '../menus/cars_menu/cars_menu.dart';
-import '../menus/profiles_menu/profiles_menu.dart';
 import '../menus/comments_menu/comments_menu.dart';
-import '../menus/articles_menu/articles_menu.dart';
-import '../menus/others_menu/others_menu.dart';
-import '../menus/add_menu/add_menu.dart';
 import '../menus/home_menu/home_menu.dart';
-import '../screens/menu/menu_screen.dart';
-import '../screens/register/register_screen.dart';
+import '../menus/others_menu/others_menu.dart';
+import '../menus/profiles_menu/profiles_menu.dart';
+import '../models/article_detail_model.dart';
+import '../models/article_model.dart';
+import '../providers/locale.dart';
+import '../screens/article/article_detail_screen.dart';
 import '../screens/contact/contact_screen.dart';
+import '../screens/image_view/image_view_screen.dart';
+import '../screens/menu/menu_screen.dart';
+import '../screens/notifications/notifications_screen.dart';
+import '../screens/register/register_screen.dart';
+import '../screens/search_articles/search_articles_screen.dart';
 import '../screens/settings/settings_screen.dart';
 import '../screens/video_view/video_view_screen.dart';
 import '../screens/webview/webview_screen.dart';
@@ -261,7 +261,7 @@ class NavigationManager extends ChangeNotifier {
 
     Navigator.push(
       context,
-      MaterialPageRoute(builder: (ctx) => screenToPush), // No '!' needed
+      MaterialPageRoute<void>(builder: (ctx) => screenToPush), // No '!' needed
     );
   }
 

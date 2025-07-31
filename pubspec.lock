@@ -783,14 +783,14 @@ packages:
       name: video_player_android
       url: "https://mirrors.tencent.com/dart-pub/"
     source: hosted
-    version: "2.8.9"
+    version: "2.8.10"
   video_player_avfoundation:
     dependency: transitive
     description:
       name: video_player_avfoundation
       url: "https://mirrors.tencent.com/dart-pub/"
     source: hosted
-    version: "2.8.0"
+    version: "2.8.1"
   video_player_platform_interface:
     dependency: transitive
     description:

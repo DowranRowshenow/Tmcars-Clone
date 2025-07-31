@@ -3,10 +3,10 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../utils/constants.dart';
 import '../l10n/app_localizations.dart';
 import '../providers/navigation.dart';
 import '../providers/themes.dart';
+import '../utils/constants.dart';
 
 Future<bool?> shouldRegisterDialog({
   required BuildContext context,

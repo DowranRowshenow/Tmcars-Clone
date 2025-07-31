@@ -3,8 +3,8 @@ import 'package:provider/provider.dart';
 
 import '../../components/custom_drawer.dart';
 import '../../components/exit_dialog.dart';
-import '../../utils/constants.dart';
 import '../../providers/navigation.dart';
+import '../../utils/constants.dart';
 
 class MenuScreen extends StatelessWidget {
   const MenuScreen({super.key});

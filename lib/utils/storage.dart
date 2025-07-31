@@ -5,8 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../models/article_model.dart';
 import '../models/article_category_model.dart';
+import '../models/article_model.dart';
 import '../providers/location.dart';
 
 class Storage {
@@ -100,8 +100,10 @@ class Storage {
       final file = File('${dir.path}/articleCategories.json');
       if (!await file.exists()) return [];
       final jsonString = await file.readAsString();
-      final List<dynamic> jsonList = jsonDecode(jsonString);
-      return jsonList.map((json) => ArticleCategory.fromJson(json)).toList();
+      final List<dynamic> jsonList = jsonDecode(jsonString) as List<dynamic>;
+      return jsonList
+          .map((json) => ArticleCategory.fromJson(json as Map<String, dynamic>))
+          .toList();
     } catch (e) {
       debugPrint('Error loading article categories: $e');
       return [];
@@ -124,8 +126,10 @@ class Storage {
       final file = File('${dir.path}/articles_$id.json');
       if (!await file.exists()) return [];
       final jsonString = await file.readAsString();
-      final List<dynamic> jsonList = jsonDecode(jsonString);
-      return jsonList.map((json) => Article.fromJson(json)).toList();
+      final List<dynamic> jsonList = jsonDecode(jsonString) as List<dynamic>;
+      return jsonList
+          .map((json) => Article.fromJson(json as Map<String, dynamic>))
+          .toList();
     } catch (e) {
       debugPrint('Error loading articles for category $id: $e');
       return [];

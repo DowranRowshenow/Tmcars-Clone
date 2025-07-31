@@ -2,9 +2,9 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 
+import '../l10n/app_localizations.dart';
 import '../providers/themes.dart';
 import '../utils/constants.dart';
-import '../l10n/app_localizations.dart';
 
 Future<bool?> showExitDialog({
   required BuildContext context,

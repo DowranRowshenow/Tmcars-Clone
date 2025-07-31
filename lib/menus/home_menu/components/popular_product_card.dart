@@ -1,11 +1,11 @@
-import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../../components/placeholder_image.dart';
+import '../../../models/popular_product_model.dart';
 import '../../../providers/locale.dart';
 import '../../../providers/themes.dart';
-import '../../../models/popular_product_model.dart';
 import '../../../providers/traffic.dart';
 
 class PopularProductCard extends StatelessWidget {

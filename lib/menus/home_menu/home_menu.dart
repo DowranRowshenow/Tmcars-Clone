@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 
 import '../../components/no_connection.dart';
-import '../../utils/constants.dart';
-import '../../utils/server.dart';
 import '../../l10n/app_localizations.dart';
 import '../../models/popular_product_model.dart';
+import '../../utils/constants.dart';
+import '../../utils/server.dart';
 import 'components/popular_product_card.dart';
 
 class HomeMenu extends StatefulWidget {

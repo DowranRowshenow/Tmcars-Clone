@@ -3,19 +3,21 @@ import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:provider/provider.dart';
 
-import 'providers/navigation.dart';
-import 'providers/location.dart';
-import 'providers/traffic.dart';
-import 'utils/server.dart';
-import 'providers/locale.dart';
-import 'utils/constants.dart';
-import 'utils/storage.dart';
-import 'providers/themes.dart';
+import 'components/scroll/app_scroll_behavior.dart';
 import 'l10n/app_localizations.dart';
 import 'models/article_category_model.dart';
+import 'providers/locale.dart';
+import 'providers/location.dart';
+import 'providers/navigation.dart';
+import 'providers/themes.dart';
+import 'providers/traffic.dart';
 import 'screens/menu/menu_screen.dart';
-import 'components/scroll/app_scroll_behavior.dart';
+import 'utils/constants.dart';
+import 'utils/server.dart';
+import 'utils/storage.dart';
 
+// TODO: Write Documentation and Code Patterns
+// TODO: Write Tests Widget Unit
 // TODO: Throw Server errors to handle refresh
 // TODO: Articles_menu list gets empty list on server error leading to clear existing cached list to clear.
 // TODO: Don't write functions of {onTap} or {onPressed} in custom Component widgets

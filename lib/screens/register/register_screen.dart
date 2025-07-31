@@ -3,11 +3,11 @@ import 'package:provider/provider.dart';
 
 import '../../components/back_icon_button.dart';
 import '../../components/ripple_container.dart';
-import '../../utils/constants.dart';
-import '../../providers/navigation.dart';
-import '../../utils/server.dart';
 import '../../l10n/app_localizations.dart';
+import '../../providers/navigation.dart';
 import '../../providers/themes.dart';
+import '../../utils/constants.dart';
+import '../../utils/server.dart';
 
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({super.key});

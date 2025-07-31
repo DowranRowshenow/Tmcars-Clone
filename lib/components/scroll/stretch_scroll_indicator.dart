@@ -2,10 +2,10 @@ import 'dart:async' show Timer;
 import 'dart:math' as math;
 
 import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter/physics.dart' show Tolerance, nearEqual;
 import 'package:flutter/rendering.dart';
 import 'package:flutter/scheduler.dart';
-import 'package:flutter/material.dart';
 
 /// A visual indication that a scroll view has overscrolled.
 ///

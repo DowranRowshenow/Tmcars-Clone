@@ -2,9 +2,9 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-import '../../components/download_button.dart';
 import '../../components/back_icon_button.dart';
 import '../../components/dot_tab.dart';
+import '../../components/download_button.dart';
 import '../../components/placeholder_image.dart';
 import '../../utils/constants.dart';
 import '../../utils/downloader.dart'; // Ensure this points to your updated downloader.dart

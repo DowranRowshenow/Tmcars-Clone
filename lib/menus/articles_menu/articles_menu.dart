@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../../utils/constants.dart';
 import '../../models/article_category_model.dart';
 import '../../providers/locale.dart';
+import '../../utils/constants.dart';
 import 'tabs/articles_tab.dart';
 
 class ArticlesMenu extends StatelessWidget {

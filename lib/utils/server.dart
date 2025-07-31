@@ -1,16 +1,16 @@
 // ignore_for_file: constant_identifier_names
 
-import 'dart:convert';
 import 'dart:async';
+import 'dart:convert';
 
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 
 import '../models/article_category_model.dart';
 import '../models/article_detail_model.dart';
+import '../models/article_model.dart';
 import '../models/popular_product_model.dart';
 import '../models/product_model.dart';
-import '../models/article_model.dart';
 import 'storage.dart';
 
 class Server {
@@ -51,9 +51,21 @@ class Server {
 
     if (_cache.containsKey(cacheKey)) {
       final cached = _cache[cacheKey];
-      if (cached['timestamp'] != null &&
-          DateTime.now().difference(cached['timestamp']) < _cacheExpiry) {
-        return cached['data'] as List<PopularProduct>;
+      // Fix: Explicitly cast 'timestamp' to String before parsing
+      if (cached['timestamp'] != null) {
+        try {
+          final DateTime cachedTimestamp = DateTime.parse(
+            cached['timestamp'] as String,
+          );
+          if (DateTime.now().difference(cachedTimestamp) < _cacheExpiry) {
+            return cached['data'] as List<PopularProduct>;
+          }
+        } catch (e) {
+          debugPrint(
+            'Warning: Could not parse cached timestamp for $cacheKey: $e',
+          );
+          // Treat cache as expired if timestamp is invalid
+        }
       }
     }
 
@@ -64,10 +76,14 @@ class Server {
 
       if (response.statusCode == 200) {
         List<PopularProduct> products = [];
+        // Fix: Explicitly cast json.decode result to Map<String, dynamic>
         final data = json.decode(response.body) as Map<String, dynamic>;
-        for (var product in data["dashFeatured"]) {
-          product = PopularProduct.fromJson(product);
-          products.add(product);
+        // Fix: Explicitly cast data["dashFeatured"] to List<dynamic> for iteration
+        for (var productJson in data["dashFeatured"] as List<dynamic>) {
+          // Fix: Explicitly cast each item to Map<String, dynamic> before passing to fromJson
+          products.add(
+            PopularProduct.fromJson(productJson as Map<String, dynamic>),
+          );
         }
         _cache[cacheKey] = {'data': products, 'timestamp': DateTime.now()};
         return products;
@@ -89,9 +105,21 @@ class Server {
 
     if (_cache.containsKey(cacheKey)) {
       final cached = _cache[cacheKey];
-      if (cached['timestamp'] != null &&
-          DateTime.now().difference(cached['timestamp']) < _cacheExpiry) {
-        return cached['data'] as List<ArticleCategory>;
+      // Fix: Explicitly cast 'timestamp' to String before parsing
+      if (cached['timestamp'] != null) {
+        try {
+          final DateTime cachedTimestamp = DateTime.parse(
+            cached['timestamp'] as String,
+          );
+          if (DateTime.now().difference(cachedTimestamp) < _cacheExpiry) {
+            return cached['data'] as List<ArticleCategory>;
+          }
+        } catch (e) {
+          debugPrint(
+            'Warning: Could not parse cached timestamp for $cacheKey: $e',
+          );
+          // Treat cache as expired if timestamp is invalid
+        }
       }
     }
 
@@ -100,9 +128,11 @@ class Server {
         Uri.https(host, "/tmcars/articleCategory/categories"),
       );
       if (response.statusCode == 200) {
-        final List<dynamic> data = json.decode(response.body);
+        // Fix: Explicitly cast json.decode result to List<dynamic>
+        final List<dynamic> data = json.decode(response.body) as List<dynamic>;
+        // Fix: Explicitly cast each item to Map<String, dynamic> before passing to fromJson
         final categories = data
-            .map((e) => ArticleCategory.fromJson(e))
+            .map((e) => ArticleCategory.fromJson(e as Map<String, dynamic>))
             .toList();
         _cache[cacheKey] = {'data': categories, 'timestamp': DateTime.now()};
         Storage.instance.setArticleCategories(response.body);
@@ -146,8 +176,12 @@ class Server {
         Uri.https(host, "/tmcars/article/articles", map),
       );
       if (response.statusCode == 200) {
-        final List<dynamic> data = json.decode(response.body);
-        return data.map((e) => Article.fromJson(e)).toList();
+        // Fix: Explicitly cast json.decode result to List<dynamic>
+        final List<dynamic> data = json.decode(response.body) as List<dynamic>;
+        // Fix: Explicitly cast each item to Map<String, dynamic> before passing to fromJson
+        return data
+            .map((e) => Article.fromJson(e as Map<String, dynamic>))
+            .toList();
       } else {
         debugPrint('Failed to load articles');
       }
@@ -162,9 +196,21 @@ class Server {
 
     if (_cache.containsKey(cacheKey)) {
       final cached = _cache[cacheKey];
-      if (cached['timestamp'] != null &&
-          DateTime.now().difference(cached['timestamp']) < _cacheExpiry) {
-        return cached['data'] as List<Article>;
+      // Fix: Explicitly cast 'timestamp' to String before parsing
+      if (cached['timestamp'] != null) {
+        try {
+          final DateTime cachedTimestamp = DateTime.parse(
+            cached['timestamp'] as String,
+          );
+          if (DateTime.now().difference(cachedTimestamp) < _cacheExpiry) {
+            return cached['data'] as List<Article>;
+          }
+        } catch (e) {
+          debugPrint(
+            'Warning: Could not parse cached timestamp for $cacheKey: $e',
+          );
+          // Treat cache as expired if timestamp is invalid
+        }
       }
     }
 
@@ -175,8 +221,12 @@ class Server {
         Uri.https(host, "/tmcars/article/nearestNews", map),
       );
       if (response.statusCode == 200) {
-        final List<dynamic> data = json.decode(response.body);
-        final List<Article> res = data.map((e) => Article.fromJson(e)).toList();
+        // Fix: Explicitly cast json.decode result to List<dynamic>
+        final List<dynamic> data = json.decode(response.body) as List<dynamic>;
+        // Fix: Explicitly cast each item to Map<String, dynamic> before passing to fromJson
+        final List<Article> res = data
+            .map((e) => Article.fromJson(e as Map<String, dynamic>))
+            .toList();
         _cache[cacheKey] = {'data': res, 'timestamp': DateTime.now()};
         return res;
       } else {
@@ -194,9 +244,21 @@ class Server {
     // Check cache first
     if (_cache.containsKey(cacheKey)) {
       final cached = _cache[cacheKey];
-      if (cached['timestamp'] != null &&
-          DateTime.now().difference(cached['timestamp']) < _cacheExpiry) {
-        return cached['data'] as ArticleDetail;
+      // Fix: Explicitly cast 'timestamp' to String before parsing
+      if (cached['timestamp'] != null) {
+        try {
+          final DateTime cachedTimestamp = DateTime.parse(
+            cached['timestamp'] as String,
+          );
+          if (DateTime.now().difference(cachedTimestamp) < _cacheExpiry) {
+            return cached['data'] as ArticleDetail;
+          }
+        } catch (e) {
+          debugPrint(
+            'Warning: Could not parse cached timestamp for $cacheKey: $e',
+          );
+          // Treat cache as expired if timestamp is invalid
+        }
       }
     }
 
@@ -206,8 +268,9 @@ class Server {
         Uri.https(host, "/tmcars/article/getArticle", map),
       );
       if (response.statusCode == 200) {
+        // Fix: Explicitly cast json.decode result to Map<String, dynamic>
         final ArticleDetail data = ArticleDetail.fromJson(
-          json.decode(response.body),
+          json.decode(response.body) as Map<String, dynamic>,
         );
         _cache[cacheKey] = {'data': data, 'timestamp': DateTime.now()};
         return data;
@@ -299,11 +362,12 @@ class Server {
         },
       );
       if (response.statusCode == 200) {
-        final data = json.decode(utf8convert(response.body));
+        // Fix: Explicitly cast json.decode result to List<dynamic>
+        final data = json.decode(utf8convert(response.body)) as List<dynamic>;
         List<Product> products = [];
-        for (var product in data) {
-          product = Product.fromJson(product);
-          products.add(product);
+        // Fix: Explicitly cast each item to Map<String, dynamic> before passing to fromJson
+        for (var productJson in data) {
+          products.add(Product.fromJson(productJson as Map<String, dynamic>));
         }
         return products;
       } else {

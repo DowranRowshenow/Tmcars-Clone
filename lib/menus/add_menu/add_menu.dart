@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 
 import '../../components/should_register_dialog.dart';
-import '../../utils/constants.dart';
 import '../../l10n/app_localizations.dart';
+import '../../utils/constants.dart';
 import 'tabs/add_car_parts_tab.dart';
-import 'tabs/add_others_tab.dart';
 import 'tabs/add_cars_tab.dart';
+import 'tabs/add_others_tab.dart';
 
 class AddMenu extends StatelessWidget {
   const AddMenu({super.key});

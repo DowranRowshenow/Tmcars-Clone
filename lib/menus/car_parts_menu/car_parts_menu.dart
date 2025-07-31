@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import '../../l10n/app_localizations.dart';
 import '../../utils/constants.dart';
 import 'tabs/all_car_parts_tab.dart';
-import 'tabs/selection_car_parts_tab.dart';
 import 'tabs/category_car_parth_tab.dart';
+import 'tabs/selection_car_parts_tab.dart';
 
 class CarPartsMenu extends StatelessWidget {
   const CarPartsMenu({super.key});

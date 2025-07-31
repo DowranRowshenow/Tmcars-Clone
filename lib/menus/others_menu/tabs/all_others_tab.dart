@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 
-import '../../../models/popular_product_model.dart';
 import '../../../components/no_connection.dart';
+import '../../../l10n/app_localizations.dart';
+import '../../../models/popular_product_model.dart';
 import '../../../utils/constants.dart';
 import '../../../utils/server.dart';
-import '../../../l10n/app_localizations.dart';
 import '../../home_menu/components/popular_product_card.dart';
 
 class AllOthersTab extends StatefulWidget {

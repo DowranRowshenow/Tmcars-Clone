@@ -3,8 +3,8 @@ import 'package:provider/provider.dart';
 import 'package:tmcarsclone/providers/themes.dart';
 
 import '../l10n/app_localizations.dart';
-import '../utils/constants.dart';
 import '../providers/navigation.dart';
+import '../utils/constants.dart';
 
 class ShouldRegister extends StatelessWidget {
   const ShouldRegister({super.key});

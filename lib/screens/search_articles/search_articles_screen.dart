@@ -4,11 +4,11 @@ import 'package:flutter/material.dart';
 
 import '../../components/article_tag_chip.dart';
 import '../../components/back_icon_button.dart';
+import '../../l10n/app_localizations.dart';
 import '../../menus/articles_menu/tabs/articles_tab.dart';
 import '../../models/article_detail_model.dart';
-import '../../utils/constants.dart';
-import '../../l10n/app_localizations.dart';
 import '../../providers/themes.dart';
+import '../../utils/constants.dart';
 
 class SearchArticlesScreen extends StatefulWidget {
   const SearchArticlesScreen({super.key, this.articleTags});

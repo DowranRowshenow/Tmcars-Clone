@@ -117,7 +117,8 @@ class AppLocalizationsEn extends AppLocalizations {
   String get enterWithEmail => 'Login with email';
 
   @override
-  String get registerDescription => 'By registering, you can manage your ads and profile, and transfer them to your other phones';
+  String get registerDescription =>
+      'By registering, you can manage your ads and profile, and transfer them to your other phones';
 
   @override
   String get administrator => 'Administrator';
@@ -234,11 +235,14 @@ class AppLocalizationsEn extends AppLocalizations {
   String get tags => 'Tags';
 
   @override
-  String get notRegistered => 'You are not logged in! By logging in, you can add notifications, manage your notifications and profile, and transfer your data to other phones.';
+  String get notRegistered =>
+      'You are not logged in! By logging in, you can add notifications, manage your notifications and profile, and transfer your data to other phones.';
 
   @override
-  String get shouldRegister => 'You need to log in to see your comments and the comments you have written!';
+  String get shouldRegister =>
+      'You need to log in to see your comments and the comments you have written!';
 
   @override
-  String get shareText => 'The largest Android app gathering cars and car parts TMCARS';
+  String get shareText =>
+      'The largest Android app gathering cars and car parts TMCARS';
 }

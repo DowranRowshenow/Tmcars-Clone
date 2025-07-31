@@ -5,16 +5,16 @@ import 'package:share_plus/share_plus.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../../components/back_icon_button.dart';
+import '../../l10n/app_localizations.dart';
 import '../../providers/location.dart';
 import '../../providers/navigation.dart';
 import '../../providers/themes.dart';
 import '../../providers/traffic.dart';
 import '../../utils/constants.dart';
 import '../../utils/server.dart';
-import '../../l10n/app_localizations.dart';
-import 'components/set_traffic_dialog.dart';
 import 'components/set_language_dialog.dart';
 import 'components/set_location_dialog.dart';
+import 'components/set_traffic_dialog.dart';
 
 class SettingsScreen extends StatelessWidget {
   const SettingsScreen({super.key});

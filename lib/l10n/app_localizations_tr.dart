@@ -117,7 +117,8 @@ class AppLocalizationsTr extends AppLocalizations {
   String get enterWithEmail => 'Email ile giriş yap';
 
   @override
-  String get registerDescription => 'Kayıt olarak ilanlarınızı ve profilinizi yönetebilir, diğer telefonlarınıza aktarabilirsiniz';
+  String get registerDescription =>
+      'Kayıt olarak ilanlarınızı ve profilinizi yönetebilir, diğer telefonlarınıza aktarabilirsiniz';
 
   @override
   String get administrator => 'Yönetici';
@@ -234,11 +235,14 @@ class AppLocalizationsTr extends AppLocalizations {
   String get tags => 'Etiketler';
 
   @override
-  String get notRegistered => 'Hesabınıza giriş yapmadınız! Giriş yaparak ilan ekleyebilir, kendi ilanlarınızı ve profilinizi düzenleyebilir ve verilerinizi diğer telefonlarınıza aktarabilirsiniz.';
+  String get notRegistered =>
+      'Hesabınıza giriş yapmadınız! Giriş yaparak ilan ekleyebilir, kendi ilanlarınızı ve profilinizi düzenleyebilir ve verilerinizi diğer telefonlarınıza aktarabilirsiniz.';
 
   @override
-  String get shouldRegister => 'Yazdığınız yorumları ve size yazılan yorumları görmek için giriş yapmalısınız!';
+  String get shouldRegister =>
+      'Yazdığınız yorumları ve size yazılan yorumları görmek için giriş yapmalısınız!';
 
   @override
-  String get shareText => 'Arabalar ve yedek parçaların bir araya geldiği en büyük Android uygulaması TMCARS';
+  String get shareText =>
+      'Arabalar ve yedek parçaların bir araya geldiği en büyük Android uygulaması TMCARS';
 }

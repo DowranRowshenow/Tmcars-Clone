@@ -1,13 +1,13 @@
-import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:transparent_image/transparent_image.dart';
 
 import '../../../components/placeholder_image.dart';
+import '../../../l10n/app_localizations.dart';
 import '../../../providers/themes.dart';
 import '../../../providers/traffic.dart';
 import '../../../utils/constants.dart';
-import '../../../l10n/app_localizations.dart';
 
 class ProfileCategoryCard extends StatelessWidget {
   const ProfileCategoryCard({super.key});

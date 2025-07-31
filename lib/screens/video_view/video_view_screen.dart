@@ -1,7 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:video_player/video_player.dart';
 import 'package:flutter/services.dart';
+import 'package:video_player/video_player.dart';
 
 import '../../components/back_icon_button.dart';
 import '../../components/download_button.dart';
