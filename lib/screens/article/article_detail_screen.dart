@@ -36,11 +36,13 @@ class ArticleDetailScreen extends StatefulWidget {
 
 class _ArticleDetailScreenState extends State<ArticleDetailScreen> {
   final ScrollController _scrollController = ScrollController();
-  ArticleDetail? articleDetail;
+  final ValueNotifier<ArticleDetail?> _articleDetailNotifier =
+      ValueNotifier<ArticleDetail?>(null);
+  final ValueNotifier<List<Article>?> _nearestArticlesNotifier =
+      ValueNotifier<List<Article>?>(null);
   static const double _expandedHeight = 250.0;
-  static const double _offset = 10.0;
+  static const double _offset = 5.0;
   late Future<String> _htmlContentFuture;
-  List<Article>? nearestArticles;
   // Use ValueNotifiers for FAB position and visibility
   final ValueNotifier<double> _fabTopNotifier = ValueNotifier<double>(0);
   final ValueNotifier<bool> _fabVisibleNotifier = ValueNotifier<bool>(true);
@@ -78,17 +80,19 @@ class _ArticleDetailScreenState extends State<ArticleDetailScreen> {
     _fabTopNotifier.dispose();
     _fabVisibleNotifier.dispose();
     _showTitleNotifier.dispose();
+    _articleDetailNotifier.dispose();
+    _nearestArticlesNotifier.dispose();
     super.dispose();
   }
 
   Future<void> _loadArticle() async {
-    articleDetail = await Server.getArticle(widget.article.id);
-    if (mounted) setState(() {});
+    final articleDetail = await Server.getArticle(widget.article.id);
+    _articleDetailNotifier.value = articleDetail;
   }
 
   Future<void> _loadNearestArticles() async {
-    nearestArticles = await Server.getNearestArticles(widget.article.id);
-    if (mounted) setState(() {});
+    final nearestArticles = await Server.getNearestArticles(widget.article.id);
+    _nearestArticlesNotifier.value = nearestArticles;
   }
 
   void _onScroll() {
@@ -152,63 +156,94 @@ class _ArticleDetailScreenState extends State<ArticleDetailScreen> {
                 ),
                 leading: buildBackIconButton(context),
                 actions: <Widget>[
-                  PopupMenuButton<int>(
-                    tooltip: "",
-                    menuPadding: const EdgeInsets.all(0),
-                    color: appColors.themedSurface,
-                    splashRadius: Constants.splashRadius,
-                    style: const ButtonStyle(
-                      splashFactory: NoSplash.splashFactory,
-                    ),
-                    onSelected: (int value) {
-                      switch (value) {
-                        case 0:
-                          SharePlus.instance.share(
-                            ShareParams(
-                              text: widget.languageCode == 'ru'
-                                  ? articleDetail?.shareSiteUrlRu ?? ""
-                                  : articleDetail?.shareSiteUrl ?? "",
-                            ),
-                          );
-                          break;
-                      }
+                  ValueListenableBuilder<bool>(
+                    valueListenable: _showTitleNotifier,
+                    builder: (context, showTitle, child) {
+                      return AnimatedOpacity(
+                        opacity: showTitle ? 1.0 : 0.0,
+                        duration: const Duration(milliseconds: 200),
+                        child: child,
+                      );
                     },
-                    itemBuilder: (BuildContext context) =>
-                        <PopupMenuEntry<int>>[
-                          PopupMenuItem<int>(
-                            value: 0,
-                            child: Text(
-                              AppLocalizations.of(context)!.shareLink,
-                            ),
-                          ),
-                        ],
+                    child: IconButton(
+                      splashColor: Colors.transparent,
+                      splashRadius: Constants.splashRadius,
+                      icon: const Icon(Icons.thumb_up_outlined),
+                      onPressed: () => shouldRegisterDialog(context: context),
+                    ),
+                  ),
+                  ValueListenableBuilder<ArticleDetail?>(
+                    valueListenable: _articleDetailNotifier,
+                    builder: (context, articleDetail, child) {
+                      final currentArticleDetail = articleDetail;
+                      return PopupMenuButton<int>(
+                        tooltip: "",
+                        menuPadding: const EdgeInsets.all(0),
+                        color: appColors.themedSurface,
+                        splashRadius: Constants.splashRadius,
+                        style: const ButtonStyle(
+                          splashFactory: NoSplash.splashFactory,
+                        ),
+                        itemBuilder: (BuildContext context) =>
+                            <PopupMenuEntry<int>>[
+                              PopupMenuItem<int>(
+                                value: 0,
+                                child: Text(
+                                  AppLocalizations.of(context)!.shareLink,
+                                ),
+                              ),
+                            ],
+                        onSelected: (int value) {
+                          switch (value) {
+                            case 0:
+                              SharePlus.instance.share(
+                                ShareParams(
+                                  text: widget.languageCode == 'ru'
+                                      ? currentArticleDetail?.shareSiteUrlRu ??
+                                            ""
+                                      : currentArticleDetail?.shareSiteUrl ??
+                                            "",
+                                ),
+                              );
+                              break;
+                          }
+                        },
+                      );
+                    },
                   ),
                 ],
                 flexibleSpace: FlexibleSpaceBar(
-                  background: articleDetail == null
-                      ? const Center(
-                          child: CircularProgressIndicator(color: Colors.white),
-                        )
-                      : AppBarImage(
-                          onTapVideo: () {
-                            context.read<NavigationManager>().setScreen(
-                              context,
-                              ScreenState.videoView,
-                              video: articleDetail!.mainVideo,
+                  background: ValueListenableBuilder<ArticleDetail?>(
+                    valueListenable: _articleDetailNotifier,
+                    builder: (context, articleDetail, child) {
+                      return articleDetail == null
+                          ? const Center(
+                              child: CircularProgressIndicator(
+                                color: Colors.white,
+                              ),
+                            )
+                          : AppBarImage(
+                              onTapVideo: () {
+                                context.read<NavigationManager>().setScreen(
+                                  context,
+                                  ScreenState.videoView,
+                                  video: articleDetail.mainVideo,
+                                );
+                              },
+                              onTapImage: () {
+                                context.read<NavigationManager>().setScreen(
+                                  context,
+                                  ScreenState.imageView,
+                                  imageUrls: articleDetail.getImageUrls(),
+                                );
+                              },
+                              mainVideo: articleDetail.mainVideo,
+                              imageUrls: articleDetail.getImageUrls(
+                                isThumbnail: true,
+                              ),
                             );
-                          },
-                          onTapImage: () {
-                            context.read<NavigationManager>().setScreen(
-                              context,
-                              ScreenState.imageView,
-                              imageUrls: articleDetail?.getImageUrls(),
-                            );
-                          },
-                          mainVideo: articleDetail!.mainVideo,
-                          imageUrls: articleDetail!.getImageUrls(
-                            isThumbnail: true,
-                          ),
-                        ),
+                    },
+                  ),
                   /*
                   GestureDetector(
                     onTap: () {
@@ -224,14 +259,24 @@ class _ArticleDetailScreenState extends State<ArticleDetailScreen> {
               SliverToBoxAdapter(
                 child: Padding(
                   padding: const EdgeInsets.all(16.0),
-                  child: ArticleDetailContent(
-                    articleDetail: articleDetail,
-                    article: widget.article,
-                    languageCode: widget.languageCode,
-                    htmlContentFuture: _htmlContentFuture,
-                    appColors: appColors,
-                    tagColor: AppColors.hexToColor(colorCode),
-                    nearestArticles: nearestArticles ?? [],
+                  child: ValueListenableBuilder<List<Article>?>(
+                    valueListenable: _nearestArticlesNotifier,
+                    builder: (context, nearestArticles, child) {
+                      return ValueListenableBuilder<ArticleDetail?>(
+                        valueListenable: _articleDetailNotifier,
+                        builder: (context, articleDetail, child) {
+                          return ArticleDetailContent(
+                            articleDetail: articleDetail,
+                            article: widget.article,
+                            languageCode: widget.languageCode,
+                            htmlContentFuture: _htmlContentFuture,
+                            appColors: appColors,
+                            tagColor: AppColors.hexToColor(colorCode),
+                            nearestArticles: nearestArticles ?? [],
+                          );
+                        },
+                      );
+                    },
                   ),
                 ),
               ),

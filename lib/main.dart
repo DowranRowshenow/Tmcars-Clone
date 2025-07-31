@@ -27,6 +27,24 @@ import 'utils/storage.dart';
 // TODO: Optimize all widgets
 // TODO: Change Menus Structure to Indexed
 
+/// A helper class to bundle all the initial data needed by the providers.
+/// This makes the main function cleaner and the data flow more explicit.
+class _InitialData {
+  const _InitialData({
+    required this.themeMode,
+    required this.locale,
+    required this.trafficMode,
+    required this.location,
+    required this.articleCategories,
+  });
+
+  final ThemeMode themeMode;
+  final Locale locale;
+  final int trafficMode;
+  final Location location;
+  final List<ArticleCategory> articleCategories;
+}
+
 void main() async {
   // Ensure Flutter is ready.
   WidgetsFlutterBinding.ensureInitialized();
@@ -34,32 +52,35 @@ void main() async {
   // Initialize storage singleton
   final Storage storage = await Storage.getInstance();
 
-  // Load initial values that providers will need.
-  // This keeps the main function clean and focused.
-  final ThemeMode initialThemeMode = await storage.getThemeMode();
-  final Locale initialLocale = await storage.getLocale();
-  final int initialTrafficMode = await storage.getTrafficMode();
-  final Location initialLocation = await storage.getLocation();
-  final List<ArticleCategory> initialArticleCategories = await storage
-      .getArticleCategories();
+  // Load initial values from storage before the app starts.
+  // Grouping them into a single object can improve readability.
+  final initialData = _InitialData(
+    themeMode: await storage.getThemeMode(),
+    locale: await storage.getLocale(),
+    trafficMode: await storage.getTrafficMode(),
+    location: await storage.getLocation(),
+    articleCategories: await storage.getArticleCategories(),
+  );
+
   // Set preferred orientation once for the entire app lifecycle.
   await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
 
   runApp(
     MultiProvider(
       providers: [
-        // Provider now creates and manages its own state.
         ChangeNotifierProvider<ThemeManager>(
-          create: (_) => ThemeManager()..setThemeMode(initialThemeMode),
+          create: (_) => ThemeManager()..setThemeMode(initialData.themeMode),
         ),
         ChangeNotifierProvider<LocaleManager>(
-          create: (_) => LocaleManager()..setLocale(initialLocale.languageCode),
+          create: (_) =>
+              LocaleManager()..setLocale(initialData.locale.languageCode),
         ),
         ChangeNotifierProvider<TrafficManager>(
-          create: (_) => TrafficManager()..setTrafficMode(initialTrafficMode),
+          create: (_) =>
+              TrafficManager()..setTrafficMode(initialData.trafficMode),
         ),
         ChangeNotifierProvider<LocationManager>(
-          create: (_) => LocationManager()..setLocation(initialLocation),
+          create: (_) => LocationManager()..setLocation(initialData.location),
         ),
         ChangeNotifierProvider<NavigationManager>(
           create: (_) => NavigationManager(),
@@ -67,22 +88,17 @@ void main() async {
         // Use FutureProvider to handle async data loading for the UI.
         FutureProvider<List<ArticleCategory>>(
           create: (_) => Server.getArticleCategories(),
-          initialData: initialArticleCategories,
+          initialData: initialData.articleCategories,
         ),
       ],
-      child: const TmcarsClone(),
+      child: const TmcarsApp(),
     ),
   );
 }
 
-class TmcarsClone extends StatefulWidget {
-  const TmcarsClone({super.key});
+class TmcarsApp extends StatelessWidget {
+  const TmcarsApp({super.key});
 
-  @override
-  State<TmcarsClone> createState() => _TmcarsCloneState();
-}
-
-class _TmcarsCloneState extends State<TmcarsClone> {
   @override
   Widget build(BuildContext context) {
     // Watch only the providers that affect this widget's UI.
@@ -106,7 +122,7 @@ class _TmcarsCloneState extends State<TmcarsClone> {
       locale: localeManager.locale,
       builder: (context, child) {
         return ScrollConfiguration(
-          behavior: AppScrollBehavior(),
+          behavior: const AppScrollBehavior(),
           child: child!,
         );
       },

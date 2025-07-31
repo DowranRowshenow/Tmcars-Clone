@@ -93,7 +93,45 @@ class _VideoViewScreenState extends State<VideoViewScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      extendBodyBehindAppBar: true,
       backgroundColor: Colors.black,
+      appBar: AppBar(
+        elevation: 0,
+        backgroundColor: Colors.transparent,
+        leading: buildBackIconButton(context),
+        actions: <Widget>[
+          ValueListenableBuilder<bool>(
+            valueListenable: _isPlayingNotifier,
+            builder: (context, isPlaying, child) {
+              return IconButton(
+                splashColor: Colors.transparent,
+                splashRadius: Constants.splashRadius,
+                icon: Icon(
+                  isPlaying
+                      ? Icons.pause_circle_filled
+                      : Icons.play_circle_filled,
+                  color: Colors.white,
+                  size: 30,
+                ),
+                onPressed: _togglePlayPause,
+              );
+            },
+          ),
+          IconButton(
+            splashColor: Colors.transparent,
+            splashRadius: Constants.splashRadius,
+            icon: const Icon(Icons.screen_rotation, color: Colors.white),
+            onPressed: _rotateScreen,
+          ),
+          DownloadButton(
+            url: widget.video.url,
+            isDownloadingNotifier: _isDownloading,
+            downloadProgressNotifier: _downloadProgress,
+            cancellationTokenNotifier: _currentDownloadCancellationToken,
+            isDownloadCompleteNotifier: _isDownloadComplete,
+          ),
+        ],
+      ),
       body: Stack(
         children: <Widget>[
           FutureBuilder(
@@ -107,9 +145,17 @@ class _VideoViewScreenState extends State<VideoViewScreen> {
                       panEnabled: true,
                       minScale: 0.5,
                       maxScale: 5.0,
-                      child: AspectRatio(
-                        aspectRatio: videoPlayerController.value.aspectRatio,
-                        child: VideoPlayer(videoPlayerController),
+                      child: Container(
+                        width: MediaQuery.of(context).size.width,
+                        height: MediaQuery.of(context).size.height,
+                        child: FittedBox(
+                          fit: BoxFit.contain,
+                          child: SizedBox(
+                            width: videoPlayerController.value.size.width,
+                            height: videoPlayerController.value.size.height,
+                            child: VideoPlayer(videoPlayerController),
+                          ),
+                        ),
                       ),
                     ),
                   ),
@@ -135,56 +181,6 @@ class _VideoViewScreenState extends State<VideoViewScreen> {
                 );
               }
             },
-          ),
-          // AppBar for controls
-          Positioned(
-            top: 0,
-            left: 0,
-            right: 0,
-            child: PreferredSize(
-              preferredSize: const Size.fromHeight(kToolbarHeight),
-              child: AppBar(
-                elevation: 0,
-                backgroundColor: Colors.transparent,
-                leading: buildBackIconButton(context),
-                actions: <Widget>[
-                  ValueListenableBuilder<bool>(
-                    valueListenable: _isPlayingNotifier,
-                    builder: (context, isPlaying, child) {
-                      return IconButton(
-                        splashColor: Colors.transparent,
-                        splashRadius: Constants.splashRadius,
-                        icon: Icon(
-                          isPlaying
-                              ? Icons.pause_circle_filled
-                              : Icons.play_circle_filled,
-                          color: Colors.white,
-                          size: 30,
-                        ),
-                        onPressed: _togglePlayPause,
-                      );
-                    },
-                  ),
-                  IconButton(
-                    splashColor: Colors.transparent,
-                    splashRadius: Constants.splashRadius,
-                    icon: const Icon(
-                      Icons.screen_rotation,
-                      color: Colors.white,
-                    ),
-                    onPressed: _rotateScreen,
-                  ),
-                  DownloadButton(
-                    url: widget.video.url,
-                    isDownloadingNotifier: _isDownloading,
-                    downloadProgressNotifier: _downloadProgress,
-                    cancellationTokenNotifier:
-                        _currentDownloadCancellationToken,
-                    isDownloadCompleteNotifier: _isDownloadComplete,
-                  ),
-                ],
-              ),
-            ),
           ),
         ],
       ),

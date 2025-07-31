@@ -1,16 +1,21 @@
 import 'dart:async';
 import 'dart:developer' as developer;
 
-import 'package:flutter/foundation.dart';
+import 'package:flutter/foundation.dart' show kDebugMode, VoidCallback;
 import 'package:flutter/material.dart';
 
+/// A collection of utilities for performance measurement and optimization.
 class PerformanceUtils {
   static final Map<String, Timer> _timers = {};
   static final Map<String, DateTime> _startTimes = {};
 
   /// Start performance measurement
+  ///
+  /// This also creates a timeline event in Flutter DevTools for visual profiling.
   static void startTimer(String name) {
     if (kDebugMode) {
+      // Using developer.Timeline allows integration with Flutter's DevTools.
+      developer.Timeline.startSync(name);
       _startTimes[name] = DateTime.now();
     }
   }
@@ -19,6 +24,8 @@ class PerformanceUtils {
   static void endTimer(String name) {
     if (kDebugMode && _startTimes.containsKey(name)) {
       final duration = DateTime.now().difference(_startTimes[name]!);
+      // Finish the timeline event so it appears in DevTools.
+      developer.Timeline.finishSync();
       developer.log('Performance: $name took ${duration.inMilliseconds}ms');
       _startTimes.remove(name);
     }

@@ -112,7 +112,38 @@ class _ImageViewScreenState extends State<ImageViewScreen>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      extendBody: true,
+      extendBodyBehindAppBar: true,
       backgroundColor: Colors.black,
+      appBar: AppBar(
+        elevation: 0,
+        backgroundColor: Colors.transparent,
+        leading: buildBackIconButton(context),
+        actions: <Widget>[
+          IconButton(
+            splashColor: Colors.transparent,
+            splashRadius: Constants.splashRadius,
+            icon: const Icon(Icons.rotate_left_outlined),
+            onPressed: _rotateCurrentImage,
+          ),
+          ValueListenableBuilder<int>(
+            valueListenable: _currentTabIndexNotifier,
+            builder: (context, currentIndex, child) {
+              return DownloadButton(
+                url: widget.imageUrls[currentIndex],
+                isDownloadingNotifier: _isDownloadingNotifiers[currentIndex]!,
+                downloadProgressNotifier:
+                    _downloadProgressNotifiers[currentIndex]!,
+                cancellationTokenNotifier:
+                    _cancellationTokenNotifiers[currentIndex]!,
+                isDownloadCompleteNotifier:
+                    _isDownloadComplete[_tabController.index]!,
+              );
+            },
+          ),
+          // ------------------------------------
+        ],
+      ),
       body: Stack(
         children: <Widget>[
           Center(
@@ -147,50 +178,14 @@ class _ImageViewScreenState extends State<ImageViewScreen>
             ),
           ),
           Positioned(
-            top: 0,
-            left: 0,
-            right: 0,
-            child: PreferredSize(
-              preferredSize: const Size.fromHeight(kToolbarHeight),
-              child: AppBar(
-                elevation: 0,
-                backgroundColor: Colors.transparent,
-                leading: buildBackIconButton(context),
-                actions: <Widget>[
-                  IconButton(
-                    splashColor: Colors.transparent,
-                    splashRadius: Constants.splashRadius,
-                    icon: const Icon(Icons.rotate_left_outlined),
-                    onPressed: _rotateCurrentImage,
-                  ),
-                  ValueListenableBuilder<int>(
-                    valueListenable: _currentTabIndexNotifier,
-                    builder: (context, currentIndex, child) {
-                      return DownloadButton(
-                        url: widget.imageUrls[currentIndex],
-                        isDownloadingNotifier:
-                            _isDownloadingNotifiers[currentIndex]!,
-                        downloadProgressNotifier:
-                            _downloadProgressNotifiers[currentIndex]!,
-                        cancellationTokenNotifier:
-                            _cancellationTokenNotifiers[currentIndex]!,
-                        isDownloadCompleteNotifier:
-                            _isDownloadComplete[_tabController.index]!,
-                      );
-                    },
-                  ),
-                  // ------------------------------------
-                ],
-              ),
-            ),
-          ),
-          Positioned(
             right: 0,
             left: 0,
             bottom: 20,
-            child: DotTab(
-              length: widget.imageUrls.length,
-              controller: _tabController,
+            child: SafeArea(
+              child: DotTab(
+                length: widget.imageUrls.length,
+                controller: _tabController,
+              ),
             ),
           ),
         ],

@@ -16,7 +16,7 @@ class PopularProductCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final AppColors appColors = Theme.of(context).extension<AppColors>()!;
     final Locale locale = context.watch<LocaleManager>().locale;
-    const double width = 100.0;
+    const double width = 95.0;
     const double height = 85.0;
 
     return Container(
