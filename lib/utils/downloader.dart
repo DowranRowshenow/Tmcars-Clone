@@ -1,8 +1,7 @@
 import 'dart:io';
 
-import 'package:permission_handler/permission_handler.dart';
-
 import '../components/show_toast.dart';
+import 'permission_helper.dart';
 
 // Define a typedef for the progress callback
 typedef DownloadProgressCallback =
@@ -30,39 +29,22 @@ class DownloadCancellationToken {
 /// - [onProgress]: A callback to listen for download progress updates.
 /// - [cancellationToken]: An optional token to cancel the download.
 ///
+/// Returns true if download was successful, false otherwise.
 /// Throws an [Exception] if the download fails for reasons other than
 /// permission denial or cancellation.
-Future<void> downloadFromUrl(
+Future<bool> downloadFromUrl(
   String imageUrl, {
-  bool showToast = false,
+  bool showToast = true,
   DownloadProgressCallback? onProgress,
   DownloadCancellationToken? cancellationToken,
 }) async {
-  // On modern Android (API 30+), direct storage access requires special
-  // permissions. For a "Downloads" folder, no specific permission is needed.
-  // On older versions, `Permission.storage` is used. On iOS, this is not needed
-  // to write to the app's documents directory.
-  // This check is simplified for broader compatibility.
-  if (Platform.isAndroid) {
-    final status = await Permission.storage.request();
-    if (status.isDenied) {
-      if (showToast) {
-        ToastHelper.showToast(
-          message: "Storage permission denied. Cannot download file.",
-        );
-      }
-      return;
-    }
-    if (status.isPermanentlyDenied) {
-      if (showToast) {
-        ToastHelper.showToast(
-          message:
-              "Storage permission permanently denied. Please enable from settings.",
-        );
-      }
-      openAppSettings();
-      return;
-    }
+  // Request storage permission using the helper
+  final hasPermission = await PermissionHelper.requestStoragePermission(
+    showToast: showToast,
+  );
+
+  if (!hasPermission) {
+    return false;
   }
 
   HttpClient? httpClient;
@@ -115,7 +97,7 @@ Future<void> downloadFromUrl(
         await sink.close();
         await file.delete();
         if (showToast) ToastHelper.showToast(message: "Download cancelled!");
-        return;
+        return false;
       }
 
       sink.add(chunk);
@@ -128,6 +110,7 @@ Future<void> downloadFromUrl(
     if (showToast) {
       ToastHelper.showToast(message: "Download Completed!");
     }
+    return true;
   } on SocketException {
     if (showToast) {
       ToastHelper.showToast(
@@ -147,4 +130,7 @@ Future<void> downloadFromUrl(
     // Ensure the HttpClient is always closed.
     httpClient?.close();
   }
+
+  // Return false for any unhandled cases
+  return false;
 }

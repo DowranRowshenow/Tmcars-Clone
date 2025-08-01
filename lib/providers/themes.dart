@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 import '../utils/constants.dart';
 import '../utils/storage.dart';
@@ -207,8 +208,7 @@ class ThemeManager with ChangeNotifier {
   }
 
   void toggleTheme() {
-    final newMode = isDark() ? ThemeMode.light : ThemeMode.dark;
-    setThemeMode(newMode);
+    setThemeMode(isDark() ? ThemeMode.light : ThemeMode.dark);
   }
 
   bool isDark() {
@@ -235,14 +235,11 @@ final ThemeData lightThemeData = ThemeData.light(useMaterial3: false).copyWith(
     foregroundColor: AppColors.light.appBarForegroundColor,
     surfaceTintColor: Colors.transparent,
     elevation: Constants.elevation,
-    /*
-    systemOverlayStyle: SystemUiOverlayStyle(
-      statusBarIconBrightness: Brightness.dark,
-      systemNavigationBarColor: Constants.baseTintColor.withAlpha(153),
+    systemOverlayStyle: const SystemUiOverlayStyle(
+      statusBarIconBrightness: Brightness.light,
+      systemNavigationBarColor: Constants.baseTintColor,
       systemNavigationBarIconBrightness: Brightness.dark,
-      systemNavigationBarContrastEnforced: false,
     ),
-    */
   ),
   textSelectionTheme: TextSelectionThemeData(
     cursorColor: AppColors.light.focusColor,
@@ -322,15 +319,11 @@ final ThemeData darkThemeData = ThemeData.dark(useMaterial3: false).copyWith(
     foregroundColor: AppColors.dark.appBarForegroundColor,
     surfaceTintColor: Colors.transparent,
     elevation: Constants.elevation,
-    /*
     systemOverlayStyle: const SystemUiOverlayStyle(
-      statusBarColor: Colors.transparent,
+      systemNavigationBarColor: Colors.black,
       statusBarIconBrightness: Brightness.light,
-      systemNavigationBarColor: Colors.transparent,
       systemNavigationBarIconBrightness: Brightness.light,
-      systemNavigationBarContrastEnforced: true,
     ),
-    */
   ),
   textButtonTheme: TextButtonThemeData(
     style: TextButton.styleFrom(

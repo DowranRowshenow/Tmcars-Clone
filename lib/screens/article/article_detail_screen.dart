@@ -1,7 +1,6 @@
 // ignore: depend_on_referenced_packages
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:share_plus/share_plus.dart';
 
@@ -62,19 +61,10 @@ class _ArticleDetailScreenState extends State<ArticleDetailScreen> {
     _fabTopNotifier.value = _expandedHeight - _offset;
     _fabVisibleNotifier.value = true;
     _scrollController.addListener(_onScroll);
-
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      SystemChrome.setSystemUIOverlayStyle(
-        const SystemUiOverlayStyle(statusBarColor: Colors.transparent),
-      );
-    });
   }
 
   @override
   void dispose() {
-    SystemChrome.setSystemUIOverlayStyle(
-      const SystemUiOverlayStyle(statusBarColor: Color.fromARGB(40, 0, 0, 0)),
-    );
     _scrollController.removeListener(_onScroll);
     _scrollController.dispose();
     _fabTopNotifier.dispose();

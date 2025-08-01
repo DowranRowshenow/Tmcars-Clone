@@ -19,8 +19,9 @@ class CustomDrawer extends StatelessWidget {
     return Drawer(
       width: 270,
       elevation: 0,
+      surfaceTintColor: Colors.transparent,
       shadowColor: Colors.transparent,
-      backgroundColor: appColors.themedSurface,
+      backgroundColor: appColors.scaffoldBackgroundThemeColor,
       child: ListView(
         children: [
           Center(

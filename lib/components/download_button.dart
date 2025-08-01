@@ -1,78 +1,80 @@
 import 'package:flutter/material.dart';
 
 import '../utils/constants.dart';
+import '../utils/download_controller.dart';
 import '../utils/downloader.dart';
 // import 'show_toast.dart';
 
 class DownloadButton extends StatelessWidget {
   final String url;
-  final ValueNotifier<bool> isDownloadingNotifier;
-  final ValueNotifier<double> downloadProgressNotifier;
-  final ValueNotifier<DownloadCancellationToken?> cancellationTokenNotifier;
-  final ValueNotifier<bool> isDownloadCompleteNotifier;
+  final DownloadController downloadController;
 
   const DownloadButton({
     super.key,
     required this.url,
-    required this.isDownloadingNotifier,
-    required this.downloadProgressNotifier,
-    required this.cancellationTokenNotifier,
-    required this.isDownloadCompleteNotifier,
+    required this.downloadController,
   });
 
   void _handleDownload() async {
-    if (isDownloadingNotifier.value) {
+    if (downloadController.isDownloading.value) {
       return;
     }
 
-    isDownloadingNotifier.value = true;
-    downloadProgressNotifier.value = 0.0;
-    isDownloadCompleteNotifier.value = false;
+    // Reset all download states at the start
+    downloadController.reset();
+    downloadController.isDownloading.value = true;
     // ToastHelper.showToast(message: "Download started!");
 
     final token = DownloadCancellationToken();
-    cancellationTokenNotifier.value = token;
+    downloadController.currentDownloadCancellationToken.value = token;
 
     try {
-      await downloadFromUrl(
+      final success = await downloadFromUrl(
         url,
-        showToast: false,
         onProgress: (receivedBytes, totalBytes) {
-          downloadProgressNotifier.value = receivedBytes / totalBytes;
+          downloadController.downloadProgress.value =
+              receivedBytes / totalBytes;
         },
         cancellationToken: token,
       );
+
+      // Set download complete based on the return value
       if (!token.isCancelled) {
-        isDownloadCompleteNotifier.value = true;
-        // ToastHelper.showToast(message: "Download completed!");
+        downloadController.isDownloadComplete.value = success;
+      } else {
+        // Reset to false if cancelled
+        downloadController.isDownloadComplete.value = false;
       }
     } catch (e) {
+      // Always set to false on any error
+      downloadController.isDownloadComplete.value = false;
       if (!token.isCancelled) {
         // Only show toast if not cancelled
         // ToastHelper.showToast(message: "Download failed: $e");
       }
-      isDownloadCompleteNotifier.value = false;
     } finally {
-      isDownloadingNotifier.value = false;
+      downloadController.isDownloading.value = false;
     }
   }
 
   void _cancelDownload() {
-    if (isDownloadingNotifier.value &&
-        cancellationTokenNotifier.value != null &&
-        !cancellationTokenNotifier.value!.isCancelled) {
-      cancellationTokenNotifier.value!.cancel();
-      isDownloadCompleteNotifier.value = false;
+    if (downloadController.isDownloading.value &&
+        !downloadController
+            .currentDownloadCancellationToken
+            .value
+            .isCancelled) {
+      downloadController.currentDownloadCancellationToken.value.cancel();
+      downloadController.isDownloadComplete.value = false;
     }
   }
 
   @override
   Widget build(BuildContext context) {
     return ValueListenableBuilder<bool>(
-      valueListenable: isDownloadingNotifier,
+      valueListenable: downloadController.isDownloading,
       builder: (context, isDownloadingValue, child) {
         return ValueListenableBuilder<bool>(
-          valueListenable: isDownloadCompleteNotifier,
+          valueListenable: downloadController.isDownloadComplete,
           builder: (context, isDownloadCompleteValue, child) {
             Widget iconWidget;
             if (isDownloadingValue) {
@@ -80,7 +82,7 @@ class DownloadButton extends StatelessWidget {
                 width: 25,
                 height: 25,
                 child: ValueListenableBuilder<double>(
-                  valueListenable: downloadProgressNotifier,
+                  valueListenable: downloadController.downloadProgress,
                   builder: (context, downloadProgressValue, child) {
                     return Stack(
                       alignment: Alignment.center,

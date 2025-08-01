@@ -2,12 +2,11 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-import '../../components/back_icon_button.dart';
 import '../../components/dot_tab.dart';
 import '../../components/download_button.dart';
 import '../../components/placeholder_image.dart';
 import '../../utils/constants.dart';
-import '../../utils/downloader.dart'; // Ensure this points to your updated downloader.dart
+import '../../utils/download_controller.dart';
 
 class ImageViewScreen extends StatefulWidget {
   const ImageViewScreen({super.key, required this.imageUrls});
@@ -29,25 +28,20 @@ class _ImageViewScreenState extends State<ImageViewScreen>
       ValueNotifier<Map<int, int>>({});
 
   // --- Maps to manage download state for each image ---
-  late Map<int, ValueNotifier<bool>> _isDownloadComplete;
-  late Map<int, ValueNotifier<bool>> _isDownloadingNotifiers;
-  late Map<int, ValueNotifier<double>> _downloadProgressNotifiers;
-  late Map<int, ValueNotifier<DownloadCancellationToken?>>
-  _cancellationTokenNotifiers;
-  // --------------------------------------------------------
+  final Map<int, DownloadController> _downloadControllers = {};
 
   @override
   void initState() {
     super.initState();
     SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
-    SystemChrome.setSystemUIOverlayStyle(
-      const SystemUiOverlayStyle(systemNavigationBarColor: Colors.transparent),
-    );
 
     _tabController = TabController(
       length: widget.imageUrls.length,
       vsync: this,
     );
+    for (int i = 0; i < _tabController.length; i++) {
+      _downloadControllers[i] = DownloadController();
+    }
 
     // Initialize _currentTabIndexNotifier and add listener to _tabController
     _currentTabIndexNotifier = ValueNotifier<int>(_tabController.index);
@@ -57,19 +51,8 @@ class _ImageViewScreenState extends State<ImageViewScreen>
       }
     });
 
-    // Initialize rotation map and download state maps for each image
-    _isDownloadComplete = {};
-    _isDownloadingNotifiers = {};
-    _downloadProgressNotifiers = {};
-    _cancellationTokenNotifiers = {};
-
     for (int i = 0; i < widget.imageUrls.length; i++) {
       _imageQuarterTurns.value[i] = 0; // Initialize rotation for each image
-      _isDownloadComplete[i] = ValueNotifier<bool>(false);
-      _isDownloadingNotifiers[i] = ValueNotifier<bool>(false);
-      _downloadProgressNotifiers[i] = ValueNotifier<double>(0.0);
-      _cancellationTokenNotifiers[i] =
-          ValueNotifier<DownloadCancellationToken?>(null);
     }
     // Trigger a rebuild for _imageQuarterTurns to reflect initial values
     _imageQuarterTurns.value = Map.from(_imageQuarterTurns.value);
@@ -77,24 +60,13 @@ class _ImageViewScreenState extends State<ImageViewScreen>
 
   @override
   void dispose() {
-    SystemChrome.setEnabledSystemUIMode(
-      SystemUiMode.manual,
-      overlays: SystemUiOverlay.values,
-    );
-    SystemChrome.setSystemUIOverlayStyle(
-      const SystemUiOverlayStyle(systemNavigationBarColor: Colors.black),
-    );
+    // Dispose all individual ValueNotifiers for download state using for-in loop
+    for (int i = 0; i < _tabController.length; i++) {
+      _downloadControllers[i]!.dispose();
+    }
     _tabController.dispose();
     _currentTabIndexNotifier.dispose(); // Dispose the new notifier
     _imageQuarterTurns.dispose(); // Dispose rotation notifier
-
-    // Dispose all individual ValueNotifiers for download state using for-in loop
-    for (int i = 0; i < widget.imageUrls.length; i++) {
-      _isDownloadComplete[i]!.dispose();
-      _isDownloadingNotifiers[i]!.dispose();
-      _downloadProgressNotifiers[i]!.dispose();
-      _cancellationTokenNotifiers[i]!.dispose();
-    }
 
     super.dispose();
   }
@@ -112,13 +84,20 @@ class _ImageViewScreenState extends State<ImageViewScreen>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      extendBody: true,
+      extendBody: false,
       extendBodyBehindAppBar: true,
       backgroundColor: Colors.black,
       appBar: AppBar(
         elevation: 0,
         backgroundColor: Colors.transparent,
-        leading: buildBackIconButton(context),
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back),
+          onPressed: () {
+            Navigator.pop(context);
+          },
+          splashRadius: Constants.splashRadius,
+          splashColor: Colors.transparent,
+        ),
         actions: <Widget>[
           IconButton(
             splashColor: Colors.transparent,
@@ -131,13 +110,7 @@ class _ImageViewScreenState extends State<ImageViewScreen>
             builder: (context, currentIndex, child) {
               return DownloadButton(
                 url: widget.imageUrls[currentIndex],
-                isDownloadingNotifier: _isDownloadingNotifiers[currentIndex]!,
-                downloadProgressNotifier:
-                    _downloadProgressNotifiers[currentIndex]!,
-                cancellationTokenNotifier:
-                    _cancellationTokenNotifiers[currentIndex]!,
-                isDownloadCompleteNotifier:
-                    _isDownloadComplete[_tabController.index]!,
+                downloadController: _downloadControllers[currentIndex]!,
               );
             },
           ),

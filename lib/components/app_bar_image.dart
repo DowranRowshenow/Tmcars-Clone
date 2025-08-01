@@ -84,7 +84,7 @@ class _AppBarImageState extends State<AppBarImage>
                         child: Icon(
                           Icons.circle,
                           color: Colors.black,
-                          size: 60.0,
+                          size: 40.0,
                         ),
                       ),
                       const Positioned(
@@ -95,7 +95,7 @@ class _AppBarImageState extends State<AppBarImage>
                         child: Icon(
                           Icons.play_circle_fill,
                           color: Colors.white,
-                          size: 60.0,
+                          size: 50.0,
                         ),
                       ),
                     ],
