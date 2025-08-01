@@ -76,7 +76,7 @@ class _FabScrollerState extends State<FabScroller> {
   }
 
   void _onScroll() {
-    if (!widget.scrollController.hasClients) return;
+    if (!widget.scrollController.hasClients && !mounted) return;
 
     final double currentOffset = widget.scrollController.offset;
 

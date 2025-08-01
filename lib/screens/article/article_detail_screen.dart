@@ -107,7 +107,7 @@ class _ArticleDetailScreenState extends State<ArticleDetailScreen> {
     final ArticleDetail? articleDetail = await Server.getArticle(
       widget.article.id,
     );
-    _articleDetailNotifier.value = articleDetail;
+    if (mounted) _articleDetailNotifier.value = articleDetail;
   }
 
   Future<void> _loadNearestArticles() async {

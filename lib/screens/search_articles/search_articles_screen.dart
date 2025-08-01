@@ -22,11 +22,12 @@ class SearchArticlesScreen extends StatefulWidget {
 class _SearchArticlesScreenState extends State<SearchArticlesScreen> {
   final TextEditingController searchBarController = TextEditingController();
   Timer? _debounce;
-  String? _searchQuery;
+  final ValueNotifier<String> _searchQuery = ValueNotifier<String>("");
 
   @override
   void dispose() {
     _debounce?.cancel();
+    _searchQuery.dispose();
     searchBarController.dispose();
     super.dispose();
   }
@@ -43,14 +44,11 @@ class _SearchArticlesScreenState extends State<SearchArticlesScreen> {
       return; // Exit to avoid setting a timer for the non-truncated value.
     }
 
-    // This setState is cheap and only rebuilds the AppBar to show/hide the clear button.
-    if (mounted) setState(() {});
-
     // Debounce the actual search to avoid firing network requests on every keystroke.
     if (_debounce?.isActive ?? false) _debounce!.cancel();
     _debounce = Timer(const Duration(milliseconds: 500), () {
-      if (mounted && _searchQuery != query) {
-        setState(() => _searchQuery = query);
+      if (mounted && _searchQuery.value != query) {
+        _searchQuery.value = query;
       }
     });
   }
@@ -99,26 +97,36 @@ class _SearchArticlesScreenState extends State<SearchArticlesScreen> {
         ),
         leading: buildBackIconButton(context),
         actions: <Widget>[
-          searchBarController.text.isNotEmpty
-              ? IconButton(
-                  onPressed: () {
-                    searchBarController.clear();
-                    if (mounted) setState(() {});
-                  },
-                  splashRadius: Constants.splashRadius,
-                  icon: const Icon(Icons.close),
-                  splashColor: Colors.transparent,
-                )
-              : const SizedBox(width: 20),
+          ValueListenableBuilder<TextEditingValue>(
+            valueListenable: searchBarController,
+            builder:
+                (BuildContext context, TextEditingValue value, Widget? child) {
+                  if (value.text.isNotEmpty) {
+                    return IconButton(
+                      onPressed: () {
+                        _onSearchChanged("");
+                        searchBarController.clear();
+                      },
+                      splashRadius: Constants.splashRadius,
+                      icon: const Icon(Icons.close),
+                      splashColor: Colors.transparent,
+                    );
+                  }
+                  return const SizedBox(width: 20);
+                },
+          ),
         ],
       ),
-      body: widget.articleTags == null
-          ? _searchQuery == null
-                ? null
-                : ArticlesTab(mask: _searchQuery!)
-          : _searchQuery == null
-          ? ArticlesTab(tags: widget.articleTags![0].code)
-          : ArticlesTab(mask: _searchQuery!, tags: widget.articleTags![0].code),
+      body: ValueListenableBuilder<String>(
+        valueListenable: _searchQuery,
+        builder: (BuildContext context, String value, Widget? child) {
+          return ArticlesTab(
+            mask: _searchQuery,
+            tags: widget.articleTags?[0].code,
+            isCacheEnabled: false,
+          );
+        },
+      ),
     );
   }
 }

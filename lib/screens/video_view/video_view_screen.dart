@@ -18,9 +18,9 @@ class VideoViewScreen extends StatefulWidget {
 }
 
 class _VideoViewScreenState extends State<VideoViewScreen> {
-  late VideoPlayerController videoPlayerController;
+  late VideoPlayerController _videoPlayerController;
   late Future<void> _initializeVideoPlayerFuture;
-  late final DownloadController _downloadController;
+  late final DownloadController _downloadController = DownloadController();
   final List<DeviceOrientation> _orientations = <DeviceOrientation>[
     DeviceOrientation.portraitUp,
     DeviceOrientation.landscapeLeft,
@@ -32,12 +32,13 @@ class _VideoViewScreenState extends State<VideoViewScreen> {
   @override
   void initState() {
     super.initState();
-    _downloadController = DownloadController();
-    videoPlayerController = VideoPlayerController.networkUrl(
+    _videoPlayerController = VideoPlayerController.networkUrl(
       Uri.parse(widget.video.url),
     );
-    _initializeVideoPlayerFuture = videoPlayerController.initialize().then((_) {
-      videoPlayerController.play();
+    _initializeVideoPlayerFuture = _videoPlayerController.initialize().then((
+      _,
+    ) {
+      _videoPlayerController.play();
       SystemChrome.setPreferredOrientations(<DeviceOrientation>[
         DeviceOrientation.portraitUp,
       ]);
@@ -52,7 +53,7 @@ class _VideoViewScreenState extends State<VideoViewScreen> {
     _downloadController.dispose();
     _showBottomSlider.dispose();
     _isMuted.dispose();
-    videoPlayerController.dispose();
+    _videoPlayerController.dispose();
     super.dispose();
   }
 
@@ -69,10 +70,10 @@ class _VideoViewScreenState extends State<VideoViewScreen> {
   }
 
   void _togglePlayPause() {
-    if (videoPlayerController.value.isPlaying) {
-      videoPlayerController.pause();
+    if (_videoPlayerController.value.isPlaying) {
+      _videoPlayerController.pause();
     } else {
-      videoPlayerController.play();
+      _videoPlayerController.play();
     }
   }
 
@@ -83,9 +84,9 @@ class _VideoViewScreenState extends State<VideoViewScreen> {
   void _toggleVolume() {
     _isMuted.value = !_isMuted.value;
     if (_isMuted.value) {
-      videoPlayerController.setVolume(0.0);
+      _videoPlayerController.setVolume(0.0);
     } else {
-      videoPlayerController.setVolume(1.0);
+      _videoPlayerController.setVolume(1.0);
     }
   }
 
@@ -120,9 +121,9 @@ class _VideoViewScreenState extends State<VideoViewScreen> {
                         child: FittedBox(
                           fit: BoxFit.contain,
                           child: SizedBox(
-                            width: videoPlayerController.value.size.width,
-                            height: videoPlayerController.value.size.height,
-                            child: VideoPlayer(videoPlayerController),
+                            width: _videoPlayerController.value.size.width,
+                            height: _videoPlayerController.value.size.height,
+                            child: VideoPlayer(_videoPlayerController),
                           ),
                         ),
                       ),
@@ -137,10 +138,13 @@ class _VideoViewScreenState extends State<VideoViewScreen> {
                       right: 0,
                       top: 0,
                       bottom: 0,
-                      child: CachedNetworkImage(
-                        imageUrl: widget.video.thumbnail,
-                        fit: BoxFit.fitWidth,
-                        filterQuality: FilterQuality.low,
+                      child: GestureDetector(
+                        onTap: _toggleBottomSlider,
+                        child: CachedNetworkImage(
+                          imageUrl: widget.video.thumbnail,
+                          fit: BoxFit.fitWidth,
+                          filterQuality: FilterQuality.low,
+                        ),
                       ),
                     ),
                     const Center(child: CircularProgressIndicator()),
@@ -151,7 +155,7 @@ class _VideoViewScreenState extends State<VideoViewScreen> {
           ),
           Center(
             child: ValueListenableBuilder<VideoPlayerValue>(
-              valueListenable: videoPlayerController,
+              valueListenable: _videoPlayerController,
               builder:
                   (
                     BuildContext context,
@@ -176,7 +180,7 @@ class _VideoViewScreenState extends State<VideoViewScreen> {
                   child: GestureDetector(
                     onTap: _togglePlayPause,
                     child: ValueListenableBuilder<VideoPlayerValue>(
-                      valueListenable: videoPlayerController,
+                      valueListenable: _videoPlayerController,
                       builder:
                           (
                             BuildContext context,
@@ -295,7 +299,7 @@ class _VideoViewScreenState extends State<VideoViewScreen> {
                           children: <Widget>[
                             // Current time
                             ValueListenableBuilder<VideoPlayerValue>(
-                              valueListenable: videoPlayerController,
+                              valueListenable: _videoPlayerController,
                               builder:
                                   (
                                     BuildContext context,
@@ -316,7 +320,7 @@ class _VideoViewScreenState extends State<VideoViewScreen> {
                             // Progress slider
                             Expanded(
                               child: ValueListenableBuilder<VideoPlayerValue>(
-                                valueListenable: videoPlayerController,
+                                valueListenable: _videoPlayerController,
                                 builder:
                                     (
                                       BuildContext context,
@@ -352,7 +356,7 @@ class _VideoViewScreenState extends State<VideoViewScreen> {
                                                               .inMilliseconds)
                                                       .round(),
                                             );
-                                            videoPlayerController.seekTo(
+                                            _videoPlayerController.seekTo(
                                               position,
                                             );
                                           },
@@ -365,7 +369,7 @@ class _VideoViewScreenState extends State<VideoViewScreen> {
 
                             // Total duration
                             ValueListenableBuilder<VideoPlayerValue>(
-                              valueListenable: videoPlayerController,
+                              valueListenable: _videoPlayerController,
                               builder:
                                   (
                                     BuildContext context,
