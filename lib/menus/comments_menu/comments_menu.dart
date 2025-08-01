@@ -21,13 +21,15 @@ class CommentsMenu extends StatelessWidget {
           bottom: TabBar(
             textScaler: const TextScaler.linear(Constants.tabTextScale),
             indicatorColor: Colors.white,
-            tabs: [
+            tabs: <Widget>[
               Tab(text: appLocalizations.myComments.toUpperCase()),
               Tab(text: appLocalizations.writtenToMe.toUpperCase()),
             ],
           ),
         ),
-        body: const TabBarView(children: [CommentsTab(), MyCommentsTab()]),
+        body: const TabBarView(
+          children: <Widget>[CommentsTab(), MyCommentsTab()],
+        ),
       ),
     );
   }

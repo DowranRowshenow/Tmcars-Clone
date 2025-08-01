@@ -20,7 +20,7 @@ class LocationManager extends ChangeNotifier {
   }
 
   static Location getLocationFromString(String location) {
-    final locationMap = {
+    final Map<String, Location> locationMap = <String, Location>{
       'ashgabat': Location.none,
       'arkadag': Location.arkadag,
       'ahal': Location.ahal,
@@ -35,7 +35,7 @@ class LocationManager extends ChangeNotifier {
   static String getLocalizedLocation(BuildContext context) {
     final AppLocalizations appLocalizations = AppLocalizations.of(context)!;
     final Location location = context.watch<LocationManager>().location;
-    final locationMap = {
+    final Map<Location, String> locationMap = <Location, String>{
       Location.ashgabat: appLocalizations.ashgabat,
       Location.arkadag: appLocalizations.arkadag,
       Location.ahal: appLocalizations.ahal,

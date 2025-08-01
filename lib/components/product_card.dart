@@ -22,7 +22,7 @@ class _ProductCardState extends State<ProductCard> {
       color: Colors.transparent,
       border: const Border(bottom: BorderSide(color: Colors.grey, width: 0.5)),
       child: Row(
-        children: [
+        children: <Widget>[
           Image.network(
             widget.product.img,
             height: 90,
@@ -34,7 +34,7 @@ class _ProductCardState extends State<ProductCard> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
+              children: <Widget>[
                 Text(
                   widget.product.title,
                   style: const TextStyle(fontSize: 16),

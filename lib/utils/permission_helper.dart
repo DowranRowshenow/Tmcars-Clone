@@ -76,7 +76,7 @@ class PermissionHelper {
     String? customDeniedMessage,
     String? customPermanentlyDeniedMessage,
   }) async {
-    final status = await Permission.camera.request();
+    final PermissionStatus status = await Permission.camera.request();
 
     if (status.isGranted) {
       return true;
@@ -119,7 +119,7 @@ class PermissionHelper {
       return true;
     }
 
-    final status = await Permission.notification.request();
+    final PermissionStatus status = await Permission.notification.request();
 
     if (status.isGranted) {
       return true;

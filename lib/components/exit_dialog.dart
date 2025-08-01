@@ -32,7 +32,7 @@ Future<bool?> showExitDialog({
           localizations.confirmExit,
           style: TextStyle(color: appColors.textThemeColor),
         ),
-        actions: [
+        actions: <Widget>[
           TextButton(
             child: Text(
               localizations.yes,

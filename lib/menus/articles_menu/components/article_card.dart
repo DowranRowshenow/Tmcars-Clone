@@ -1,26 +1,34 @@
+// THIS CUSTOM WIDGETS USAGE FREQUENCY IS {HIGH} AND {DYNAMIC}
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../../models/article_model.dart';
-import '../../../providers/locale.dart';
 import '../../../providers/navigation.dart';
-import '../../../providers/themes.dart';
 import 'article_card_image.dart';
 
 class ArticleCard extends StatelessWidget {
-  const ArticleCard({super.key, required this.article});
+  const ArticleCard({
+    super.key,
+    required this.article,
+    required this.isStandardTraffic,
+    required this.imageWidth,
+    required this.dividerColor,
+    required this.textHintThemeColor,
+    required this.locale,
+  });
   final Article article;
+  final bool isStandardTraffic;
+  final double imageWidth;
+  final Locale locale;
+  final Color dividerColor;
+  final Color textHintThemeColor;
 
   @override
   Widget build(BuildContext context) {
-    final AppColors appColors = Theme.of(context).extension<AppColors>()!;
-    final Locale locale = context.watch<LocaleManager>().locale;
-
     return Container(
       decoration: BoxDecoration(
-        border: Border(
-          bottom: BorderSide(color: appColors.dividerColor!, width: 1),
-        ),
+        border: Border(bottom: BorderSide(color: dividerColor, width: 1)),
       ),
       child: ListTile(
         minVerticalPadding: 0,
@@ -41,7 +49,7 @@ class ArticleCard extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.center,
-                children: [
+                children: <Widget>[
                   Text(
                     locale.languageCode == 'ru'
                         ? article.titleRu
@@ -63,7 +71,7 @@ class ArticleCard extends StatelessWidget {
                     overflow: TextOverflow.clip,
                     style: TextStyle(
                       fontSize: 12,
-                      color: appColors.textHintThemeColor,
+                      color: textHintThemeColor,
                       fontWeight: FontWeight.w400,
                     ),
                   ),
@@ -74,6 +82,8 @@ class ArticleCard extends StatelessWidget {
             ArticleCardImage(
               articleImg: article.img,
               videoExist: article.videoExist,
+              width: imageWidth,
+              isStandardTraffic: isStandardTraffic,
             ),
           ],
         ),

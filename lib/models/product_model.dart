@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart'; // Added for Equatable
+
 import '../utils/server.dart'; // Assuming this path is correct
 
 class ProductLocation extends Equatable {
@@ -14,11 +15,11 @@ class ProductLocation extends Equatable {
 
   Map<String, dynamic> toJson() {
     // Added toJson
-    return {'name': name};
+    return <String, dynamic>{'name': name};
   }
 
   @override
-  List<Object?> get props => [name]; // Implemented Equatable
+  List<Object?> get props => <Object?>[name]; // Implemented Equatable
 
   ProductLocation copyWith({String? name}) {
     // Added copyWith
@@ -39,11 +40,11 @@ class ProductCategory extends Equatable {
 
   Map<String, dynamic> toJson() {
     // Added toJson
-    return {'name': name};
+    return <String, dynamic>{'name': name};
   }
 
   @override
-  List<Object?> get props => [name]; // Implemented Equatable
+  List<Object?> get props => <Object?>[name]; // Implemented Equatable
 
   ProductCategory copyWith({String? name}) {
     // Added copyWith
@@ -64,14 +65,14 @@ class ProductImage extends Equatable {
 
   Map<String, dynamic> toJson() {
     // Added toJson
-    return {
+    return <String, dynamic>{
       'url': url,
     }; // Note: This toJson creates 'url', not 'image' as in original fromJson.
     // Adjust if the backend expects 'image' in toJson.
   }
 
   @override
-  List<Object?> get props => [url]; // Implemented Equatable
+  List<Object?> get props => <Object?>[url]; // Implemented Equatable
 
   ProductImage copyWith({String? url}) {
     // Added copyWith
@@ -111,10 +112,10 @@ class Product extends Equatable {
       phone: json['phone'] as String? ?? '',
       description: json['description'] as String? ?? '',
       location: ProductLocation.fromJson(
-        json['location'] as Map<String, dynamic>? ?? {},
+        json['location'] as Map<String, dynamic>? ?? <String, dynamic>{},
       ), // Handle null map
       category: ProductCategory.fromJson(
-        json['category'] as Map<String, dynamic>? ?? {},
+        json['category'] as Map<String, dynamic>? ?? <String, dynamic>{},
       ), // Handle null map
       price:
           double.tryParse(json['price']?.toString() ?? '0.0') ??
@@ -122,9 +123,11 @@ class Product extends Equatable {
       viewCount: json['view_count'] as int? ?? 0,
       images:
           (json['images'] as List<dynamic>?) // Concise list parsing
-              ?.map((e) => ProductImage.fromJson(e as Map<String, dynamic>))
+              ?.map(
+                (dynamic e) => ProductImage.fromJson(e as Map<String, dynamic>),
+              )
               .toList() ??
-          const [], // Default to empty list
+          const <ProductImage>[], // Default to empty list
       createdAt: json['created_at'] as String? ?? '',
       updatedAt: json['updated_at'] as String? ?? '',
     );
@@ -132,7 +135,7 @@ class Product extends Equatable {
 
   Map<String, dynamic> toJson() {
     // Added toJson
-    return {
+    return <String, dynamic>{
       'id': id,
       'name': name,
       'phone': phone,
@@ -141,14 +144,14 @@ class Product extends Equatable {
       'category': category.toJson(),
       'price': price,
       'view_count': viewCount,
-      'images': images.map((e) => e.toJson()).toList(),
+      'images': images.map((ProductImage e) => e.toJson()).toList(),
       'created_at': createdAt,
       'updated_at': updatedAt,
     };
   }
 
   @override
-  List<Object?> get props => [
+  List<Object?> get props => <Object?>[
     // Implemented Equatable
     id,
     name,

@@ -33,7 +33,7 @@ Future<bool?> showSetLocationDialog({
           width: double.maxFinite,
           child: ListView(
             shrinkWrap: true,
-            children: [
+            children: <Widget>[
               ListTile(
                 title: Text(appLocalizations.notSelected),
                 onTap: () {
@@ -97,7 +97,7 @@ Future<bool?> showSetLocationDialog({
             ],
           ),
         ),
-        actions: [
+        actions: <Widget>[
           TextButton(
             child: Text(
               appLocalizations.cancel,

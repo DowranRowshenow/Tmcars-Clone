@@ -49,7 +49,7 @@ class PopularProduct extends Equatable {
 
   Map<String, dynamic> toJson() {
     // Added toJson method
-    return {
+    return <String, dynamic>{
       'id': id,
       'activeAdvId': activeAdvId,
       'productId': productId,
@@ -66,7 +66,7 @@ class PopularProduct extends Equatable {
   }
 
   @override
-  List<Object?> get props => [
+  List<Object?> get props => <Object?>[
     // Implemented Equatable props
     id,
     activeAdvId,

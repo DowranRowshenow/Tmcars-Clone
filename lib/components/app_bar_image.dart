@@ -26,23 +26,24 @@ class AppBarImage extends StatefulWidget {
 class _AppBarImageState extends State<AppBarImage>
     with SingleTickerProviderStateMixin {
   late TabController controller;
-  final ValueNotifier<int> _currentTabIndexNotifier = ValueNotifier<int>(0);
   late int length;
   final double width = 400.0;
+
+  // Cache the total length to avoid recalculation
+  int get totalLength => widget.mainVideo == null
+      ? widget.imageUrls.length
+      : widget.imageUrls.length + 1;
 
   @override
   void initState() {
     super.initState();
-    length = widget.mainVideo == null
-        ? widget.imageUrls.length
-        : widget.imageUrls.length + 1;
+    length = totalLength;
     controller = TabController(length: length, vsync: this);
   }
 
   @override
   void dispose() {
     controller.dispose();
-    _currentTabIndexNotifier.dispose();
     super.dispose();
   }
 
@@ -52,68 +53,15 @@ class _AppBarImageState extends State<AppBarImage>
       onTap: widget.onTapImage as GestureTapCallback,
       child: Stack(
         children: <Widget>[
+          // Optimized TabBarView with better image handling
           TabBarView(
             controller: controller,
             children: <Widget>[
-              if (widget.mainVideo != null)
-                GestureDetector(
-                  onTap: widget.onTapVideo as GestureTapCallback,
-                  child: Stack(
-                    children: <Widget>[
-                      Positioned(
-                        top: 0,
-                        bottom: 0,
-                        left: 0,
-                        right: 0,
-                        child: CachedNetworkImage(
-                          imageUrl: widget.mainVideo!.thumbnail,
-                          fit: BoxFit.cover,
-                          memCacheWidth: width.toInt(),
-                          filterQuality: FilterQuality.low,
-                          placeholder: (context, url) =>
-                              const Center(child: CircularProgressIndicator()),
-                          errorWidget: (context, url, error) =>
-                              buildImagePlaceholder(context),
-                        ),
-                      ),
-                      const Positioned(
-                        top: 0,
-                        right: 0,
-                        left: 0,
-                        bottom: 0,
-                        child: Icon(
-                          Icons.circle,
-                          color: Colors.black,
-                          size: 40.0,
-                        ),
-                      ),
-                      const Positioned(
-                        top: 0,
-                        right: 0,
-                        left: 0,
-                        bottom: 0,
-                        child: Icon(
-                          Icons.play_circle_fill,
-                          color: Colors.white,
-                          size: 50.0,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              for (int i = 0; i < widget.imageUrls.length; i++)
-                CachedNetworkImage(
-                  imageUrl: widget.imageUrls[i],
-                  fit: BoxFit.cover,
-                  filterQuality: FilterQuality.low,
-                  memCacheWidth: width.toInt(),
-                  placeholder: (context, url) =>
-                      const Center(child: CircularProgressIndicator()),
-                  errorWidget: (context, url, error) =>
-                      buildImagePlaceholder(context),
-                ),
+              if (widget.mainVideo != null) _buildVideoThumbnail(),
+              ...widget.imageUrls.map((String url) => _buildImage(url)),
             ],
           ),
+          // Dot indicators
           Positioned(
             right: 0,
             left: 0,
@@ -122,6 +70,56 @@ class _AppBarImageState extends State<AppBarImage>
           ),
         ],
       ),
+    );
+  }
+
+  Widget _buildVideoThumbnail() {
+    return GestureDetector(
+      onTap: widget.onTapVideo as GestureTapCallback,
+      child: Stack(
+        children: <Widget>[
+          // Video thumbnail - ensure it fills the entire space
+          Positioned.fill(
+            child: CachedNetworkImage(
+              imageUrl: widget.mainVideo!.thumbnail,
+              fit: BoxFit.cover,
+              memCacheWidth: width.toInt(),
+              filterQuality: FilterQuality.low,
+              placeholder: (BuildContext context, String url) =>
+                  const Center(child: CircularProgressIndicator()),
+              errorWidget: (BuildContext context, String url, Object error) =>
+                  buildImagePlaceholder(context),
+            ),
+          ),
+          // Play button overlay
+          Center(
+            child: Container(
+              decoration: BoxDecoration(
+                color: Colors.black.withValues(alpha: 0.3),
+                shape: BoxShape.circle,
+              ),
+              child: const Icon(
+                Icons.play_arrow,
+                color: Colors.white,
+                size: 40.0,
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildImage(String imageUrl) {
+    return CachedNetworkImage(
+      imageUrl: imageUrl,
+      fit: BoxFit.cover,
+      filterQuality: FilterQuality.low,
+      memCacheWidth: width.toInt(),
+      placeholder: (BuildContext context, String url) =>
+          const Center(child: CircularProgressIndicator()),
+      errorWidget: (BuildContext context, String url, Object error) =>
+          buildImagePlaceholder(context),
     );
   }
 }

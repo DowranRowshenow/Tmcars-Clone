@@ -34,10 +34,12 @@ Future<bool?> showSetLanguageDialog({
         content: SizedBox(
           width: double.maxFinite,
           child: StatefulBuilder(
-            builder: (context, setState) {
+            builder: (BuildContext context, StateSetter setState) {
               return ListView(
                 shrinkWrap: true,
-                children: AppLocalizations.supportedLocales.map((locale) {
+                children: AppLocalizations.supportedLocales.map((
+                  Locale locale,
+                ) {
                   return RadioListTile<bool>(
                     title: Text(
                       LocaleManager.getCurrentLocaleLanguage(
@@ -61,7 +63,7 @@ Future<bool?> showSetLanguageDialog({
             },
           ),
         ),
-        actions: [
+        actions: <Widget>[
           TextButton(
             child: Text(
               appLocalizations.select,

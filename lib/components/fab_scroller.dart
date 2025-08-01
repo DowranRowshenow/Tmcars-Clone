@@ -1,4 +1,5 @@
 import 'dart:async';
+
 import 'package:flutter/material.dart';
 
 import '../utils/constants.dart'; // Ensure this path is correct for your Constants
@@ -77,7 +78,7 @@ class _FabScrollerState extends State<FabScroller> {
   void _onScroll() {
     if (!widget.scrollController.hasClients) return;
 
-    final currentOffset = widget.scrollController.offset;
+    final double currentOffset = widget.scrollController.offset;
 
     // Direct actions based on scroll direction/position
     if (currentOffset <= 0) {
@@ -118,7 +119,7 @@ class _FabScrollerState extends State<FabScroller> {
   Widget build(BuildContext context) {
     return ValueListenableBuilder<bool>(
       valueListenable: _fabVisibleNotifier,
-      builder: (context, isVisible, child) {
+      builder: (BuildContext context, bool isVisible, Widget? child) {
         return AnimatedScale(
           scale: isVisible ? 1.0 : 0.0,
           duration: const Duration(milliseconds: 300),

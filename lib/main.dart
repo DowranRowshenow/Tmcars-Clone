@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:provider/provider.dart';
+import 'package:provider/single_child_widget.dart';
 
 import 'components/scroll/app_scroll_behavior.dart';
 import 'l10n/app_localizations.dart';
@@ -15,6 +16,8 @@ import 'screens/menu/menu_screen.dart';
 import 'utils/constants.dart';
 import 'utils/server.dart';
 import 'utils/storage.dart';
+
+// MARKED DOWN HIGH USAGE FREQUENCY WIDGETS WITH {HIGH} AND {DYNAMIC}
 
 // TODO: Write Documentation and Code Patterns
 // TODO: Write Tests Widget Unit
@@ -54,7 +57,7 @@ void main() async {
 
   // Load initial values from storage before the app starts.
   // Grouping them into a single object can improve readability.
-  final initialData = _InitialData(
+  final _InitialData initialData = _InitialData(
     themeMode: await storage.getThemeMode(),
     locale: await storage.getLocale(),
     trafficMode: await storage.getTrafficMode(),
@@ -63,11 +66,13 @@ void main() async {
   );
 
   // Set preferred orientation once for the entire app lifecycle.
-  await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
+  await SystemChrome.setPreferredOrientations(<DeviceOrientation>[
+    DeviceOrientation.portraitUp,
+  ]);
 
   runApp(
     MultiProvider(
-      providers: [
+      providers: <SingleChildWidget>[
         ChangeNotifierProvider<ThemeManager>(
           create: (_) => ThemeManager()..setThemeMode(initialData.themeMode),
         ),
@@ -112,7 +117,7 @@ class TmcarsApp extends StatelessWidget {
       theme: lightThemeData,
       darkTheme: darkThemeData,
       themeMode: themeManager.themeMode,
-      localizationsDelegates: const [
+      localizationsDelegates: const <LocalizationsDelegate<dynamic>>[
         AppLocalizations.delegate,
         GlobalMaterialLocalizations.delegate,
         GlobalWidgetsLocalizations.delegate,
@@ -120,7 +125,7 @@ class TmcarsApp extends StatelessWidget {
       ],
       supportedLocales: AppLocalizations.supportedLocales,
       locale: localeManager.locale,
-      builder: (context, child) {
+      builder: (BuildContext context, Widget? child) {
         return ScrollConfiguration(
           behavior: const AppScrollBehavior(),
           child: child!,

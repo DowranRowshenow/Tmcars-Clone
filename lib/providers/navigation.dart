@@ -86,18 +86,26 @@ class NavigationManager extends ChangeNotifier {
   late final Map<MenuState, Widget> _menuWidgets;
 
   NavigationManager() {
-    _menuTitles = {
-      MenuState.home: (context) => AppLocalizations.of(context)!.home,
-      MenuState.others: (context) => AppLocalizations.of(context)!.others,
-      MenuState.add: (context) => AppLocalizations.of(context)!.add,
-      MenuState.comments: (context) => AppLocalizations.of(context)!.comments,
-      MenuState.articles: (context) => AppLocalizations.of(context)!.news,
-      MenuState.profiles: (context) => AppLocalizations.of(context)!.profiles,
-      MenuState.parts: (context) => AppLocalizations.of(context)!.parts,
-      MenuState.cars: (context) => AppLocalizations.of(context)!.cars,
+    _menuTitles = <MenuState, String Function(BuildContext p1)>{
+      MenuState.home: (BuildContext context) =>
+          AppLocalizations.of(context)!.home,
+      MenuState.others: (BuildContext context) =>
+          AppLocalizations.of(context)!.others,
+      MenuState.add: (BuildContext context) =>
+          AppLocalizations.of(context)!.add,
+      MenuState.comments: (BuildContext context) =>
+          AppLocalizations.of(context)!.comments,
+      MenuState.articles: (BuildContext context) =>
+          AppLocalizations.of(context)!.news,
+      MenuState.profiles: (BuildContext context) =>
+          AppLocalizations.of(context)!.profiles,
+      MenuState.parts: (BuildContext context) =>
+          AppLocalizations.of(context)!.parts,
+      MenuState.cars: (BuildContext context) =>
+          AppLocalizations.of(context)!.cars,
     };
 
-    _menuWidgets = const {
+    _menuWidgets = const <MenuState, Widget>{
       MenuState.home: HomeMenu(),
       MenuState.add: AddMenu(),
       MenuState.others: OthersMenu(),
@@ -137,17 +145,17 @@ class NavigationManager extends ChangeNotifier {
     switch (_currentMenu) {
       case MenuState.home:
         return Constants.isRegistered
-            ? [
+            ? <Widget>[
                 _buildIconButton(
                   onPressed: () =>
                       _navigateToScreen(context, ScreenState.notifications),
                   icon: Icons.notifications,
                 ),
               ]
-            : [];
+            : <Widget>[];
 
       case MenuState.articles:
-        return [
+        return <Widget>[
           _buildIconButton(
             onPressed: () =>
                 _navigateToScreen(context, ScreenState.searchArticles),
@@ -158,7 +166,7 @@ class NavigationManager extends ChangeNotifier {
       case MenuState.others:
       case MenuState.parts:
       case MenuState.cars:
-        return [
+        return <Widget>[
           _buildIconButton(
             onPressed: () {
               // Add specific sort logic here if different for each menu
@@ -174,7 +182,7 @@ class NavigationManager extends ChangeNotifier {
       case MenuState.add:
       case MenuState.profiles:
       case MenuState.comments:
-        return [];
+        return <Widget>[];
     }
   }
 
@@ -202,7 +210,7 @@ class NavigationManager extends ChangeNotifier {
 
     switch (state) {
       case ScreenState.articleDetail:
-        final args = arguments as _ArticleDetailArgs?;
+        final _ArticleDetailArgs? args = arguments as _ArticleDetailArgs?;
         if (args == null) {
           debugPrint('Error: ArticleDetailScreen requires _ArticleDetailArgs.');
           return; // Exit if arguments are missing
@@ -228,7 +236,7 @@ class NavigationManager extends ChangeNotifier {
         screenToPush = const RegisterScreen();
         break;
       case ScreenState.webview:
-        final args = arguments as _WebViewArgs?;
+        final _WebViewArgs? args = arguments as _WebViewArgs?;
         if (args == null) {
           debugPrint('Error: WebViewScreen requires _WebViewArgs.');
           return; // Exit if arguments are missing
@@ -236,7 +244,7 @@ class NavigationManager extends ChangeNotifier {
         screenToPush = WebViewScreen(url: args.url, title: args.title);
         break;
       case ScreenState.imageView:
-        final args = arguments as _ImageViewArgs?;
+        final _ImageViewArgs? args = arguments as _ImageViewArgs?;
         if (args == null) {
           debugPrint('Error: ImageViewScreen requires _ImageViewArgs.');
           return; // Exit if arguments are missing
@@ -244,7 +252,7 @@ class NavigationManager extends ChangeNotifier {
         screenToPush = ImageViewScreen(imageUrls: args.imageUrls);
         break;
       case ScreenState.videoView:
-        final args = arguments as _VideoViewArgs?;
+        final _VideoViewArgs? args = arguments as _VideoViewArgs?;
         if (args == null) {
           debugPrint('Error: ImageViewScreen requires _VideoViewArgs.');
           return; // Exit if arguments are missing
@@ -252,7 +260,7 @@ class NavigationManager extends ChangeNotifier {
         screenToPush = VideoViewScreen(video: args.video);
         break;
       case ScreenState.searchArticles:
-        final args = arguments as _SearchArticleArgs?;
+        final _SearchArticleArgs? args = arguments as _SearchArticleArgs?;
         screenToPush = args == null
             ? const SearchArticlesScreen()
             : SearchArticlesScreen(articleTags: args.articleTags);
@@ -261,7 +269,9 @@ class NavigationManager extends ChangeNotifier {
 
     Navigator.push(
       context,
-      MaterialPageRoute<void>(builder: (ctx) => screenToPush), // No '!' needed
+      MaterialPageRoute<void>(
+        builder: (BuildContext ctx) => screenToPush,
+      ), // No '!' needed
     );
   }
 

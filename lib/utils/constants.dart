@@ -40,16 +40,16 @@ class Constants {
   static const double dialogPadding = 15.0;
 
   // COLORS
-  static const colorAccent = Color(0xFF4e82ab);
-  static const colorPrimary = Color(0xFF2d5575);
-  static const blueGrey800 = Color(0xFF37474F);
-  static const blueGrey900 = Color(0xFF263238);
-  static const blueGrey950 = Color(0xFF21272b);
-  static const grey90 = Color(0xFF263228);
-  static const grey900 = Color(0xFF212121);
-  static const grey1000 = Color(0xFF1a1a1a);
-  static const darkSurface = Color(0xFF121212);
-  static const darkBackground = Color(0xFF656565);
-  static const darkAdvBackground = Color(0xFF4e4d4d);
-  static const baseTintColor = Color.fromARGB(255, 253, 250, 253);
+  static const Color colorAccent = Color(0xFF4e82ab);
+  static const Color colorPrimary = Color(0xFF2d5575);
+  static const Color blueGrey800 = Color(0xFF37474F);
+  static const Color blueGrey900 = Color(0xFF263238);
+  static const Color blueGrey950 = Color(0xFF21272b);
+  static const Color grey90 = Color(0xFF263228);
+  static const Color grey900 = Color(0xFF212121);
+  static const Color grey1000 = Color(0xFF1a1a1a);
+  static const Color darkSurface = Color(0xFF121212);
+  static const Color darkBackground = Color(0xFF656565);
+  static const Color darkAdvBackground = Color(0xFF4e4d4d);
+  static const Color baseTintColor = Color.fromARGB(255, 253, 250, 253);
 }

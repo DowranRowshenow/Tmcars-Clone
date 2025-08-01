@@ -23,7 +23,7 @@ class AddMenu extends StatelessWidget {
           bottom: TabBar(
             textScaler: const TextScaler.linear(Constants.tabTextScale),
             indicatorColor: Colors.white,
-            tabs: [
+            tabs: <Widget>[
               Tab(text: AppLocalizations.of(context)!.cars.toUpperCase()),
               Tab(text: AppLocalizations.of(context)!.parts.toUpperCase()),
               Tab(text: AppLocalizations.of(context)!.others.toUpperCase()),
@@ -31,7 +31,7 @@ class AddMenu extends StatelessWidget {
           ),
         ),
         body: const TabBarView(
-          children: [AddCarsTab(), AddCarPartsTab(), AddOthersTab()],
+          children: <Widget>[AddCarsTab(), AddCarPartsTab(), AddOthersTab()],
         ),
         floatingActionButton: FloatingActionButton(
           backgroundColor: Constants.colorPrimary,

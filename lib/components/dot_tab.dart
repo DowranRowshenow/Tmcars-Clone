@@ -9,7 +9,7 @@ class DotTab extends StatelessWidget {
   Widget build(BuildContext context) {
     return AnimatedBuilder(
       animation: controller.animation!,
-      builder: (context, child) {
+      builder: (BuildContext context, Widget? child) {
         final double animationValue = controller.animation!.value;
         final int primaryIndex = animationValue.floor();
         final int secondaryIndex = (animationValue + 1).floor();

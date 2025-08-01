@@ -14,7 +14,7 @@ class HtmlRenderer extends StatelessWidget {
 
     return FutureBuilder<String>(
       future: future,
-      builder: (context, snapshot) {
+      builder: (BuildContext context, AsyncSnapshot<String> snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return Container(
             margin: const EdgeInsets.all(60),
@@ -31,16 +31,18 @@ class HtmlRenderer extends StatelessWidget {
         } else if (snapshot.hasData) {
           return Html(
             data: snapshot.data,
-            onLinkTap: (url, attributes, element) async {
-              if (url != null) {
-                try {
-                  await launchUrl(Uri.parse(url));
-                } catch (e) {
-                  // TODO: implement intent tel:
-                }
-              }
-            },
-            style: {
+            onLinkTap:
+                // ignore: always_specify_types
+                (String? url, Map<String, String> attributes, element) async {
+                  if (url != null) {
+                    try {
+                      await launchUrl(Uri.parse(url));
+                    } catch (e) {
+                      // TODO: implement intent tel:
+                    }
+                  }
+                },
+            style: <String, Style>{
               "*": Style(backgroundColor: Colors.transparent),
               "body": Style(
                 backgroundColor: Colors.transparent,

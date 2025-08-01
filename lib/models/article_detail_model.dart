@@ -70,18 +70,22 @@ class ArticleDetail extends Equatable {
       img: json['img'] as String,
       imgs:
           (json['imgs'] as List<dynamic>?)
-              ?.map((e) => ArticleImage.fromJson(e as Map<String, dynamic>))
+              ?.map(
+                (dynamic e) => ArticleImage.fromJson(e as Map<String, dynamic>),
+              )
               .toList() ??
-          const [],
+          const <ArticleImage>[],
       shareSiteUrl: json['shareSiteUrl'] as String,
       shareSiteUrlRu: json['shareSiteUrlRu'] as String,
       shareUrl: json['shareUrl'] as String?,
       shareUrlRu: json['shareUrlRu'] as String?,
       tags:
           (json['tags'] as List<dynamic>?)
-              ?.map((e) => ArticleTag.fromJson(e as Map<String, dynamic>))
+              ?.map(
+                (dynamic e) => ArticleTag.fromJson(e as Map<String, dynamic>),
+              )
               .toList() ??
-          const [],
+          const <ArticleTag>[],
       viewCount: json['viewCount'] as int,
       // Parse mainVideo if it exists
       mainVideo: json['mainVideo'] != null
@@ -91,7 +95,7 @@ class ArticleDetail extends Equatable {
   }
 
   Map<String, dynamic> toJson() {
-    return {
+    return <String, dynamic>{
       'id': id,
       'title': title,
       'titleRu': titleRu,
@@ -107,19 +111,19 @@ class ArticleDetail extends Equatable {
       'elapsedTime': elapsedTime,
       'elapsedTimeRu': elapsedTimeRu,
       'img': img,
-      'imgs': imgs.map((e) => e.toJson()).toList(),
+      'imgs': imgs.map((ArticleImage e) => e.toJson()).toList(),
       'shareSiteUrl': shareSiteUrl,
       'shareSiteUrlRu': shareSiteUrlRu,
       'shareUrl': shareUrl,
       'shareUrlRu': shareUrlRu,
-      'tags': tags.map((e) => e.toJson()).toList(),
+      'tags': tags.map((ArticleTag e) => e.toJson()).toList(),
       'viewCount': viewCount,
       'mainVideo': mainVideo?.toJson(), // Added to toJson
     };
   }
 
   @override
-  List<Object?> get props => [
+  List<Object?> get props => <Object?>[
     id,
     title,
     titleRu,
@@ -199,8 +203,8 @@ class ArticleDetail extends Equatable {
 
   List<String> getImageUrls({bool isThumbnail = false}) {
     return isThumbnail
-        ? imgs.map((image) => image.thumbnail).toList()
-        : imgs.map((image) => image.original).toList();
+        ? imgs.map((ArticleImage image) => image.thumbnail).toList()
+        : imgs.map((ArticleImage image) => image.original).toList();
   }
 }
 
@@ -218,11 +222,11 @@ class ArticleImage extends Equatable {
   }
 
   Map<String, dynamic> toJson() {
-    return {'thumbnail': thumbnail, 'original': original};
+    return <String, dynamic>{'thumbnail': thumbnail, 'original': original};
   }
 
   @override
-  List<Object> get props => [thumbnail, original];
+  List<Object> get props => <Object>[thumbnail, original];
 
   ArticleImage copyWith({String? thumbnail, String? original}) {
     return ArticleImage(
@@ -252,11 +256,11 @@ class ArticleTag extends Equatable {
   }
 
   Map<String, dynamic> toJson() {
-    return {'code': code, 'name': name, 'nameRu': nameRu};
+    return <String, dynamic>{'code': code, 'name': name, 'nameRu': nameRu};
   }
 
   @override
-  List<Object> get props => [code, name, nameRu];
+  List<Object> get props => <Object>[code, name, nameRu];
 
   ArticleTag copyWith({String? code, String? name, String? nameRu}) {
     return ArticleTag(
@@ -291,7 +295,7 @@ class MainVideo extends Equatable {
   }
 
   Map<String, dynamic> toJson() {
-    return {
+    return <String, dynamic>{
       'streamUrl': streamUrl,
       'url': url,
       'thumbnail': thumbnail,
@@ -300,7 +304,7 @@ class MainVideo extends Equatable {
   }
 
   @override
-  List<Object> get props => [streamUrl, url, thumbnail, smallThumbnail];
+  List<Object> get props => <Object>[streamUrl, url, thumbnail, smallThumbnail];
 
   MainVideo copyWith({
     String? streamUrl,

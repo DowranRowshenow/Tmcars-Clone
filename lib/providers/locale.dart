@@ -20,7 +20,7 @@ class LocaleManager extends ChangeNotifier {
   }
 
   static String getCurrentLocaleLanguage(String code) {
-    final Map<String, String> map = {
+    final Map<String, String> map = <String, String>{
       'en': AppLocalizationsEn().lang,
       'ru': AppLocalizationsRu().lang,
       'tk': AppLocalizationsTk().lang,

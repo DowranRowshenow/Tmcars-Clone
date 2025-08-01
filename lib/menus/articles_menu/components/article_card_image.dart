@@ -1,42 +1,40 @@
+// THIS CUSTOM WIDGETS USAGE FREQUENCY IS {HIGH} AND {DYNAMIC}
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
 import '../../../components/placeholder_image.dart';
-import '../../../providers/traffic.dart';
 
 class ArticleCardImage extends StatelessWidget {
   const ArticleCardImage({
     super.key,
     required this.articleImg,
     required this.videoExist,
+    this.height = 90.0,
+    required this.width,
+    required this.isStandardTraffic,
   });
 
   final String? articleImg;
   final bool? videoExist;
-  final double height = 90.0;
-  // final double width = 170.0;
+  final double height;
+  final double width;
+  final bool isStandardTraffic;
 
-  Widget _buildImageOrPlaceholder(BuildContext context) {
-    final bool isStandardTraffic = context.watch<TrafficManager>().isStandart();
-    final double width = MediaQuery.of(context).size.width * 0.4;
-
-    if (isStandardTraffic && articleImg != null) {
-      return CachedNetworkImage(
-        imageUrl: articleImg!,
-        width: width,
-        height: height,
-        fit: BoxFit.cover,
-        filterQuality: FilterQuality.low,
-        memCacheWidth: width.toInt(),
-        placeholder: (context, url) =>
-            buildImagePlaceholder(context, height: height, width: width),
-        errorWidget: (context, url, error) =>
-            buildImagePlaceholder(context, height: height, width: width),
-      );
-    } else {
-      return buildImagePlaceholder(context, height: height, width: width);
-    }
+  Widget _buildImage(BuildContext context) {
+    return CachedNetworkImage(
+      imageUrl: articleImg!,
+      width: width,
+      height: height,
+      fit: BoxFit.cover,
+      filterQuality: FilterQuality.none,
+      memCacheHeight: height.toInt(),
+      memCacheWidth: width.toInt(),
+      placeholder: (BuildContext context, String url) =>
+          buildImagePlaceholder(context, height: height, width: width),
+      errorWidget: (BuildContext context, String url, Object error) =>
+          buildImagePlaceholder(context, height: height, width: width),
+    );
   }
 
   @override
@@ -44,7 +42,9 @@ class ArticleCardImage extends StatelessWidget {
     if (videoExist == true) {
       return Stack(
         children: <Widget>[
-          _buildImageOrPlaceholder(context),
+          isStandardTraffic && articleImg != null
+              ? _buildImage(context)
+              : buildImagePlaceholder(context, height: height, width: width),
           const Positioned(
             top: 10,
             right: 10,
@@ -62,7 +62,7 @@ class ArticleCardImage extends StatelessWidget {
         ],
       );
     } else {
-      return _buildImageOrPlaceholder(context);
+      return _buildImage(context);
     }
   }
 }

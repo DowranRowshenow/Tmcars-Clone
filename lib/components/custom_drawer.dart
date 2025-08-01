@@ -23,16 +23,18 @@ class CustomDrawer extends StatelessWidget {
       shadowColor: Colors.transparent,
       backgroundColor: appColors.scaffoldBackgroundThemeColor,
       child: ListView(
-        children: [
+        children: <Widget>[
           Center(
             child: Column(
-              children: [
+              children: <Widget>[
                 const SizedBox(height: 20),
-                Image(
-                  image: themeManager.isDark()
-                      ? const AssetImage(Constants.drawerLogoDark)
-                      : const AssetImage(Constants.drawerLogoLight),
-                  height: 60,
+                RepaintBoundary(
+                  child: Image(
+                    image: themeManager.isDark()
+                        ? const AssetImage(Constants.drawerLogoDark)
+                        : const AssetImage(Constants.drawerLogoLight),
+                    height: 60,
+                  ),
                 ),
                 GestureDetector(
                   child: Text(
@@ -155,7 +157,8 @@ class CustomDrawer extends StatelessWidget {
             trailing: Switch(
               value: themeManager.isDark(),
               activeColor: appColors.focusColor,
-              onChanged: (value) => context.read<ThemeManager>().toggleTheme(),
+              onChanged: (bool value) =>
+                  context.read<ThemeManager>().toggleTheme(),
             ),
           ),
           ListTile(

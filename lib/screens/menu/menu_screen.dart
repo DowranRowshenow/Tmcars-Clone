@@ -44,7 +44,7 @@ class MenuScreen extends StatelessWidget {
           actions: navigationManager.getMenuTabs(context),
         ),
         drawer: CustomDrawer(
-          onTap: (state) {
+          onTap: (MenuState state) {
             navigationManager.scaffoldKey.currentState?.closeDrawer();
             context.read<NavigationManager>().setMenu(state);
           },

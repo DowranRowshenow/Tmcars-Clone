@@ -54,7 +54,7 @@ class Article extends Equatable {
   }
 
   Map<String, dynamic> toJson() {
-    return {
+    return <String, dynamic>{
       'id': id,
       'viewCount': viewCount,
       'title': title,
@@ -73,7 +73,7 @@ class Article extends Equatable {
   }
 
   @override
-  List<Object?> get props => [
+  List<Object?> get props => <Object?>[
     // Implemented Equatable props
     id,
     viewCount,

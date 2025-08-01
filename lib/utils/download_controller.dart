@@ -3,11 +3,13 @@ import 'package:flutter/foundation.dart';
 import '../utils/downloader.dart';
 
 class DownloadController {
-  final isDownloadComplete = ValueNotifier<bool>(false);
-  final isDownloading = ValueNotifier<bool>(false);
-  final downloadProgress = ValueNotifier<double>(0.0);
-  final currentDownloadCancellationToken =
-      ValueNotifier<DownloadCancellationToken>(DownloadCancellationToken());
+  final ValueNotifier<bool> isDownloadComplete = ValueNotifier<bool>(false);
+  final ValueNotifier<bool> isDownloading = ValueNotifier<bool>(false);
+  final ValueNotifier<double> downloadProgress = ValueNotifier<double>(0.0);
+  final ValueNotifier<DownloadCancellationToken>
+  currentDownloadCancellationToken = ValueNotifier<DownloadCancellationToken>(
+    DownloadCancellationToken(),
+  );
 
   /// Reset all download states to initial values
   void reset() {

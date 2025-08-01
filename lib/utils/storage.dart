@@ -31,7 +31,7 @@ class Storage {
   }
 
   Future<void> setThemeMode(ThemeMode themeMode) async {
-    final prefs = await _getPrefs();
+    final SharedPreferences prefs = await _getPrefs();
     await prefs.setInt(
       'themeMode',
       themeMode == ThemeMode.system
@@ -43,7 +43,7 @@ class Storage {
   }
 
   Future<ThemeMode> getThemeMode() async {
-    final prefs = await _getPrefs();
+    final SharedPreferences prefs = await _getPrefs();
     int mode = prefs.getInt('themeMode') ?? 0;
     return mode == 0
         ? ThemeMode.system
@@ -53,32 +53,32 @@ class Storage {
   }
 
   Future<void> setLocale(String localeCode) async {
-    final prefs = await _getPrefs();
+    final SharedPreferences prefs = await _getPrefs();
     await prefs.setString('locale', localeCode);
   }
 
   Future<Locale> getLocale() async {
-    final prefs = await _getPrefs();
+    final SharedPreferences prefs = await _getPrefs();
     return Locale.fromSubtags(languageCode: prefs.getString('locale') ?? "en");
   }
 
   Future<void> setTrafficMode(int value) async {
-    final prefs = await _getPrefs();
+    final SharedPreferences prefs = await _getPrefs();
     await prefs.setInt('traffic', value);
   }
 
   Future<int> getTrafficMode() async {
-    final prefs = await _getPrefs();
+    final SharedPreferences prefs = await _getPrefs();
     return prefs.getInt('traffic') ?? 0;
   }
 
   Future<void> setLocation(Location location) async {
-    final prefs = await _getPrefs();
+    final SharedPreferences prefs = await _getPrefs();
     await prefs.setString('location', location.toString());
   }
 
   Future<Location> getLocation() async {
-    final prefs = await _getPrefs();
+    final SharedPreferences prefs = await _getPrefs();
     return LocationManager.getLocationFromString(
       prefs.getString('location') ?? "none",
     );
@@ -86,8 +86,8 @@ class Storage {
 
   Future<void> setArticleCategories(String data) async {
     try {
-      final dir = await getApplicationDocumentsDirectory();
-      final file = File('${dir.path}/articleCategories.json');
+      final Directory dir = await getApplicationDocumentsDirectory();
+      final File file = File('${dir.path}/articleCategories.json');
       await file.writeAsString(data);
     } catch (e) {
       debugPrint('Error saving article categories: $e');
@@ -96,43 +96,54 @@ class Storage {
 
   Future<List<ArticleCategory>> getArticleCategories() async {
     try {
-      final dir = await getApplicationDocumentsDirectory();
-      final file = File('${dir.path}/articleCategories.json');
-      if (!await file.exists()) return [];
-      final jsonString = await file.readAsString();
+      final Directory dir = await getApplicationDocumentsDirectory();
+      final File file = File('${dir.path}/articleCategories.json');
+      if (!await file.exists()) return <ArticleCategory>[];
+      final String jsonString = await file.readAsString();
       final List<dynamic> jsonList = jsonDecode(jsonString) as List<dynamic>;
       return jsonList
-          .map((json) => ArticleCategory.fromJson(json as Map<String, dynamic>))
+          .map(
+            (dynamic json) =>
+                ArticleCategory.fromJson(json as Map<String, dynamic>),
+          )
           .toList();
     } catch (e) {
       debugPrint('Error loading article categories: $e');
-      return [];
+      return <ArticleCategory>[];
     }
   }
 
-  Future<void> setArticlesByCategory(String data, int id) async {
+  Future<void> cacheData(int id, String data) async {
     try {
-      final dir = await getApplicationDocumentsDirectory();
-      final file = File('${dir.path}/articles_$id.json');
+      final Directory dir = await getApplicationDocumentsDirectory();
+      final File file = File('${dir.path}/articles_$id.json');
       await file.writeAsString(data);
     } catch (e) {
       debugPrint('Error saving articles for category $id: $e');
     }
   }
 
+  Future<void> cacheArticles(int? categoryId, List<Article> articles) async {
+    if (categoryId == null) return;
+    final String articlesJson = jsonEncode(
+      articles.map((Article a) => a.toJson()).toList(),
+    );
+    cacheData(categoryId, articlesJson);
+  }
+
   Future<List<Article>> getArticlesByCategory(int id) async {
     try {
-      final dir = await getApplicationDocumentsDirectory();
-      final file = File('${dir.path}/articles_$id.json');
-      if (!await file.exists()) return [];
-      final jsonString = await file.readAsString();
+      final Directory dir = await getApplicationDocumentsDirectory();
+      final File file = File('${dir.path}/articles_$id.json');
+      if (!await file.exists()) return <Article>[];
+      final String jsonString = await file.readAsString();
       final List<dynamic> jsonList = jsonDecode(jsonString) as List<dynamic>;
       return jsonList
-          .map((json) => Article.fromJson(json as Map<String, dynamic>))
+          .map((dynamic json) => Article.fromJson(json as Map<String, dynamic>))
           .toList();
     } catch (e) {
       debugPrint('Error loading articles for category $id: $e');
-      return [];
+      return <Article>[];
     }
   }
 

@@ -21,14 +21,13 @@ class _VideoViewScreenState extends State<VideoViewScreen> {
   late VideoPlayerController videoPlayerController;
   late Future<void> _initializeVideoPlayerFuture;
   late final DownloadController _downloadController;
-  final List<DeviceOrientation> _orientations = [
+  final List<DeviceOrientation> _orientations = <DeviceOrientation>[
     DeviceOrientation.portraitUp,
     DeviceOrientation.landscapeLeft,
   ];
   int _currentOrientationIndex = 0;
-
-  // Bottom slider visibility state
-  bool _showBottomSlider = false;
+  final ValueNotifier<bool> _showBottomSlider = ValueNotifier<bool>(true);
+  final ValueNotifier<bool> _isMuted = ValueNotifier<bool>(false);
 
   @override
   void initState() {
@@ -39,14 +38,20 @@ class _VideoViewScreenState extends State<VideoViewScreen> {
     );
     _initializeVideoPlayerFuture = videoPlayerController.initialize().then((_) {
       videoPlayerController.play();
-      SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
+      SystemChrome.setPreferredOrientations(<DeviceOrientation>[
+        DeviceOrientation.portraitUp,
+      ]);
     });
   }
 
   @override
   void dispose() {
-    SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
+    SystemChrome.setPreferredOrientations(<DeviceOrientation>[
+      DeviceOrientation.portraitUp,
+    ]);
     _downloadController.dispose();
+    _showBottomSlider.dispose();
+    _isMuted.dispose();
     videoPlayerController.dispose();
     super.dispose();
   }
@@ -56,7 +61,7 @@ class _VideoViewScreenState extends State<VideoViewScreen> {
       setState(() {
         _currentOrientationIndex =
             (_currentOrientationIndex + 1) % _orientations.length;
-        SystemChrome.setPreferredOrientations([
+        SystemChrome.setPreferredOrientations(<DeviceOrientation>[
           _orientations[_currentOrientationIndex],
         ]);
       });
@@ -72,15 +77,22 @@ class _VideoViewScreenState extends State<VideoViewScreen> {
   }
 
   void _toggleBottomSlider() {
-    setState(() {
-      _showBottomSlider = !_showBottomSlider;
-    });
+    _showBottomSlider.value = !_showBottomSlider.value;
+  }
+
+  void _toggleVolume() {
+    _isMuted.value = !_isMuted.value;
+    if (_isMuted.value) {
+      videoPlayerController.setVolume(0.0);
+    } else {
+      videoPlayerController.setVolume(1.0);
+    }
   }
 
   String _formatDuration(Duration duration) {
     String twoDigits(int n) => n.toString().padLeft(2, '0');
-    final minutes = twoDigits(duration.inMinutes.remainder(60));
-    final seconds = twoDigits(duration.inSeconds.remainder(60));
+    final String minutes = twoDigits(duration.inMinutes.remainder(60));
+    final String seconds = twoDigits(duration.inSeconds.remainder(60));
     return '$minutes:$seconds';
   }
 
@@ -89,36 +101,19 @@ class _VideoViewScreenState extends State<VideoViewScreen> {
     return Scaffold(
       extendBodyBehindAppBar: true,
       backgroundColor: Colors.black,
-      appBar: AppBar(
-        elevation: 0,
-        backgroundColor: Colors.transparent,
-        leading: buildBackIconButton(context),
-        actions: <Widget>[
-          IconButton(
-            splashColor: Colors.transparent,
-            splashRadius: Constants.splashRadius,
-            icon: const Icon(Icons.screen_rotation, color: Colors.white),
-            onPressed: _rotateScreen,
-          ),
-          DownloadButton(
-            url: widget.video.url,
-            downloadController: _downloadController,
-          ),
-        ],
-      ),
       body: Stack(
         children: <Widget>[
-          FutureBuilder(
+          FutureBuilder<void>(
             future: _initializeVideoPlayerFuture,
-            builder: (context, snapshot) {
+            builder: (BuildContext context, AsyncSnapshot<void> snapshot) {
               if (snapshot.connectionState == ConnectionState.done) {
-                return GestureDetector(
-                  onTap: _toggleBottomSlider,
-                  child: Center(
-                    child: InteractiveViewer(
-                      panEnabled: true,
-                      minScale: 0.5,
-                      maxScale: 5.0,
+                return Center(
+                  child: InteractiveViewer(
+                    panEnabled: false,
+                    minScale: 0.5,
+                    maxScale: 5.0,
+                    child: GestureDetector(
+                      onTap: _toggleBottomSlider,
                       child: SizedBox(
                         width: MediaQuery.of(context).size.width,
                         height: MediaQuery.of(context).size.height,
@@ -157,113 +152,244 @@ class _VideoViewScreenState extends State<VideoViewScreen> {
           Center(
             child: ValueListenableBuilder<VideoPlayerValue>(
               valueListenable: videoPlayerController,
-              builder: (context, value, child) {
-                return value.isBuffering
-                    ? const CircularProgressIndicator()
-                    : const SizedBox();
-              },
+              builder:
+                  (
+                    BuildContext context,
+                    VideoPlayerValue value,
+                    Widget? child,
+                  ) {
+                    return value.isBuffering
+                        ? const CircularProgressIndicator()
+                        : const SizedBox();
+                  },
             ),
           ),
           // Bottom video controls
-          if (_showBottomSlider)
-            Center(
-              child: GestureDetector(
-                onTap: _togglePlayPause,
-                child: ValueListenableBuilder<VideoPlayerValue>(
-                  valueListenable: videoPlayerController,
-                  builder: (context, value, child) {
-                    return Icon(
-                      value.isPlaying
-                          ? Icons.pause_circle_filled
-                          : Icons.play_circle_filled,
-                      color: Colors.white,
-                      size: 50,
-                    );
-                  },
-                ),
-              ),
-            ),
-          if (_showBottomSlider)
-            Positioned(
-              left: 0,
-              right: 0,
-              bottom: 10,
-              child: SafeArea(
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 20),
-                  child: Row(
-                    children: [
-                      // Current time
-                      ValueListenableBuilder<VideoPlayerValue>(
-                        valueListenable: videoPlayerController,
-                        builder: (context, value, child) {
-                          return Text(
-                            _formatDuration(value.position),
-                            style: const TextStyle(
+          // Animated play/pause button
+          Center(
+            child: ValueListenableBuilder<bool>(
+              valueListenable: _showBottomSlider,
+              builder: (BuildContext context, bool showSlider, Widget? child) {
+                return AnimatedOpacity(
+                  opacity: showSlider ? 1.0 : 0.0,
+                  duration: const Duration(milliseconds: 300),
+                  child: GestureDetector(
+                    onTap: _togglePlayPause,
+                    child: ValueListenableBuilder<VideoPlayerValue>(
+                      valueListenable: videoPlayerController,
+                      builder:
+                          (
+                            BuildContext context,
+                            VideoPlayerValue value,
+                            Widget? child,
+                          ) {
+                            return Icon(
+                              value.isPlaying
+                                  ? Icons.pause_circle_filled
+                                  : Icons.play_circle_filled,
                               color: Colors.white,
-                              fontSize: 14,
-                            ),
-                          );
-                        },
-                      ),
-                      const SizedBox(width: 10),
-
-                      // Progress slider
-                      Expanded(
-                        child: ValueListenableBuilder<VideoPlayerValue>(
-                          valueListenable: videoPlayerController,
-                          builder: (context, value, child) {
-                            return SliderTheme(
-                              data: SliderTheme.of(context).copyWith(
-                                activeTrackColor: Colors.white,
-                                inactiveTrackColor: Colors.white.withValues(
-                                  alpha: 0.3,
-                                ),
-                                thumbColor: Colors.white,
-                                overlayColor: Colors.white.withValues(
-                                  alpha: 0.2,
-                                ),
-                                trackHeight: 2,
-                              ),
-                              child: Slider(
-                                value: value.duration.inMilliseconds > 0
-                                    ? value.position.inMilliseconds /
-                                          value.duration.inMilliseconds
-                                    : 0.0,
-                                onChanged: (newValue) {
-                                  final duration = value.duration;
-                                  final position = Duration(
-                                    milliseconds:
-                                        (newValue * duration.inMilliseconds)
-                                            .round(),
-                                  );
-                                  videoPlayerController.seekTo(position);
-                                },
-                              ),
+                              size: 50,
                             );
                           },
-                        ),
+                    ),
+                  ),
+                );
+              },
+            ),
+          ),
+          Positioned(
+            top: 0,
+            left: 0,
+            right: 0,
+            child: ValueListenableBuilder<bool>(
+              valueListenable: _showBottomSlider,
+              builder: (BuildContext context, bool showSlider, Widget? child) {
+                return AnimatedContainer(
+                  height: 80,
+                  duration: const Duration(milliseconds: 300),
+                  curve: Curves.easeInOut,
+                  transform: Matrix4.translationValues(
+                    0,
+                    showSlider ? 0 : -100, // Move up to hide off screen
+                    0,
+                  ),
+                  child: AppBar(
+                    elevation: 0,
+                    backgroundColor: Colors.transparent,
+                    leading: buildBackIconButton(context),
+                    actions: <Widget>[
+                      ValueListenableBuilder<bool>(
+                        valueListenable: _isMuted,
+                        builder:
+                            (
+                              BuildContext context,
+                              bool isMuted,
+                              Widget? child,
+                            ) {
+                              return IconButton(
+                                splashColor: Colors.transparent,
+                                splashRadius: Constants.splashRadius,
+                                icon: Icon(
+                                  isMuted
+                                      ? Icons.volume_off_outlined
+                                      : Icons.volume_up_outlined,
+                                  color: Colors.white,
+                                ),
+                                onPressed: _toggleVolume,
+                              );
+                            },
                       ),
-                      const SizedBox(width: 10),
-
-                      // Total duration
-                      ValueListenableBuilder<VideoPlayerValue>(
-                        valueListenable: videoPlayerController,
-                        builder: (context, value, child) {
-                          return Text(
-                            _formatDuration(value.duration),
-                            style: const TextStyle(
-                              color: Colors.white,
-                              fontSize: 14,
-                            ),
-                          );
-                        },
+                      IconButton(
+                        splashColor: Colors.transparent,
+                        splashRadius: Constants.splashRadius,
+                        icon: const Icon(
+                          Icons.screen_rotation,
+                          color: Colors.white,
+                        ),
+                        onPressed: _rotateScreen,
+                      ),
+                      DownloadButton(
+                        url: widget.video.url,
+                        downloadController: _downloadController,
                       ),
                     ],
                   ),
-                ),
-              ),
+                );
+              },
             ),
+          ),
+          // Animated bottom video controls
+          Positioned(
+            left: 0,
+            right: 0,
+            bottom: 0,
+            child: ValueListenableBuilder<bool>(
+              valueListenable: _showBottomSlider,
+              builder: (BuildContext context, bool showSlider, Widget? child) {
+                return AnimatedContainer(
+                  duration: const Duration(milliseconds: 300),
+                  curve: Curves.easeInOut,
+                  transform: Matrix4.translationValues(
+                    0,
+                    showSlider ? 0 : 100, // Move up from bottom when shown
+                    0,
+                  ),
+                  child: Container(
+                    decoration: BoxDecoration(
+                      gradient: LinearGradient(
+                        begin: Alignment.topCenter,
+                        end: Alignment.bottomCenter,
+                        colors: <Color>[
+                          Colors.transparent,
+                          Colors.black.withValues(alpha: 0.7),
+                        ],
+                      ),
+                    ),
+                    child: SafeArea(
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 20,
+                          vertical: 10,
+                        ),
+                        child: Row(
+                          children: <Widget>[
+                            // Current time
+                            ValueListenableBuilder<VideoPlayerValue>(
+                              valueListenable: videoPlayerController,
+                              builder:
+                                  (
+                                    BuildContext context,
+                                    VideoPlayerValue value,
+                                    Widget? child,
+                                  ) {
+                                    return Text(
+                                      _formatDuration(value.position),
+                                      style: const TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 14,
+                                      ),
+                                    );
+                                  },
+                            ),
+                            const SizedBox(width: 10),
+
+                            // Progress slider
+                            Expanded(
+                              child: ValueListenableBuilder<VideoPlayerValue>(
+                                valueListenable: videoPlayerController,
+                                builder:
+                                    (
+                                      BuildContext context,
+                                      VideoPlayerValue value,
+                                      Widget? child,
+                                    ) {
+                                      return SliderTheme(
+                                        data: SliderTheme.of(context).copyWith(
+                                          activeTrackColor: Colors.white,
+                                          inactiveTrackColor: Colors.white
+                                              .withValues(alpha: 0.3),
+                                          thumbColor: Colors.white,
+                                          overlayColor: Colors.white.withValues(
+                                            alpha: 0.2,
+                                          ),
+                                          trackHeight: 2,
+                                        ),
+                                        child: Slider(
+                                          value:
+                                              value.duration.inMilliseconds > 0
+                                              ? value.position.inMilliseconds /
+                                                    value
+                                                        .duration
+                                                        .inMilliseconds
+                                              : 0.0,
+                                          onChanged: (double newValue) {
+                                            final Duration duration =
+                                                value.duration;
+                                            final Duration position = Duration(
+                                              milliseconds:
+                                                  (newValue *
+                                                          duration
+                                                              .inMilliseconds)
+                                                      .round(),
+                                            );
+                                            videoPlayerController.seekTo(
+                                              position,
+                                            );
+                                          },
+                                        ),
+                                      );
+                                    },
+                              ),
+                            ),
+                            const SizedBox(width: 10),
+
+                            // Total duration
+                            ValueListenableBuilder<VideoPlayerValue>(
+                              valueListenable: videoPlayerController,
+                              builder:
+                                  (
+                                    BuildContext context,
+                                    VideoPlayerValue value,
+                                    Widget? child,
+                                  ) {
+                                    return Text(
+                                      _formatDuration(value.duration),
+                                      style: const TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 14,
+                                      ),
+                                    );
+                                  },
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                );
+              },
+            ),
+          ),
         ],
       ),
     );

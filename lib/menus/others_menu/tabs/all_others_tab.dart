@@ -38,14 +38,14 @@ class _AllOthersTabState extends State<AllOthersTab> {
   @override
   Widget build(BuildContext context) {
     return Column(
-      children: [
+      children: <Widget>[
         Container(
           padding: const EdgeInsets.all(10),
           decoration: const BoxDecoration(
             border: Border(bottom: BorderSide(width: 0.5)),
           ),
           child: Row(
-            children: [
+            children: <Widget>[
               Flexible(
                 child: TextField(
                   controller: searchBarController,
@@ -55,7 +55,7 @@ class _AllOthersTabState extends State<AllOthersTab> {
                   decoration: InputDecoration.collapsed(
                     hintText: AppLocalizations.of(context)!.search,
                   ),
-                  onChanged: (value) {
+                  onChanged: (String value) {
                     if (value.length <= 255) {
                       searchText = value;
                     } else {
@@ -71,36 +71,42 @@ class _AllOthersTabState extends State<AllOthersTab> {
         Expanded(
           child: FutureBuilder<List<PopularProduct>>(
             future: _popularProductsFuture,
-            builder: (context, snapshot) {
-              if (snapshot.connectionState == ConnectionState.waiting) {
-                return const Center(child: CircularProgressIndicator());
-              } else if (snapshot.hasError) {
-                return NoConnection(onTap: () => _handleRefresh());
-              } else if (snapshot.hasData) {
-                final popularProducts = snapshot.data!;
-                if (popularProducts.isEmpty) {
-                  return NoConnection(onTap: () => _handleRefresh());
-                }
-                return RefreshIndicator(
-                  onRefresh: _handleRefresh,
-                  child: ListView.builder(
-                    itemExtent: Constants.popularProductItemExtent,
-                    shrinkWrap: true,
-                    itemCount: popularProducts.length,
-                    itemBuilder: (context, index) {
-                      return PopularProductCard(
-                        key: ValueKey(popularProducts[index].id),
-                        product: popularProducts[index],
-                      );
-                    },
-                  ),
-                );
-              }
-              // Fallback, should ideally not be reached if other states are handled.
-              return Center(
-                child: Text(AppLocalizations.of(context)!.somethingWentWrong),
-              );
-            },
+            builder:
+                (
+                  BuildContext context,
+                  AsyncSnapshot<List<PopularProduct>> snapshot,
+                ) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return const Center(child: CircularProgressIndicator());
+                  } else if (snapshot.hasError) {
+                    return NoConnection(onTap: () => _handleRefresh());
+                  } else if (snapshot.hasData) {
+                    final List<PopularProduct> popularProducts = snapshot.data!;
+                    if (popularProducts.isEmpty) {
+                      return NoConnection(onTap: () => _handleRefresh());
+                    }
+                    return RefreshIndicator(
+                      onRefresh: _handleRefresh,
+                      child: ListView.builder(
+                        itemExtent: Constants.popularProductItemExtent,
+                        shrinkWrap: true,
+                        itemCount: popularProducts.length,
+                        itemBuilder: (BuildContext context, int index) {
+                          return PopularProductCard(
+                            key: ValueKey<int>(popularProducts[index].id),
+                            product: popularProducts[index],
+                          );
+                        },
+                      ),
+                    );
+                  }
+                  // Fallback, should ideally not be reached if other states are handled.
+                  return Center(
+                    child: Text(
+                      AppLocalizations.of(context)!.somethingWentWrong,
+                    ),
+                  );
+                },
           ),
         ),
       ],

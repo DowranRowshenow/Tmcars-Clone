@@ -22,10 +22,10 @@ class ProfileCategoryCard extends StatelessWidget {
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
       color: appColors.themedSurface,
       child: Stack(
-        children: [
+        children: <Widget>[
           Column(
             mainAxisAlignment: MainAxisAlignment.center, // Center content
-            children: [
+            children: <Widget>[
               Expanded(
                 child: context.watch<TrafficManager>().isStandart()
                     ? CachedNetworkImage(
@@ -33,12 +33,14 @@ class ProfileCategoryCard extends StatelessWidget {
                         height: 185,
                         width: 185,
                         fit: BoxFit.cover, // Ensure image covers the space
-                        placeholder: (context, url) => Center(
-                          child: Image.memory(kTransparentImage),
-                          //child: CircularProgressIndicator(),
-                        ),
-                        errorWidget: (context, url, error) =>
-                            buildImagePlaceholder(context),
+                        placeholder: (BuildContext context, String url) =>
+                            Center(
+                              child: Image.memory(kTransparentImage),
+                              //child: CircularProgressIndicator(),
+                            ),
+                        errorWidget:
+                            (BuildContext context, String url, Object error) =>
+                                buildImagePlaceholder(context),
                       )
                     : buildImagePlaceholder(context),
               ),

@@ -22,7 +22,7 @@ class CarsMenu extends StatelessWidget {
           bottom: TabBar(
             textScaler: const TextScaler.linear(Constants.tabTextScale),
             indicatorColor: Colors.white,
-            tabs: [
+            tabs: <Widget>[
               Tab(text: appLocalizations.cars.toUpperCase()),
               Tab(text: appLocalizations.selected.toUpperCase()),
               Tab(text: appLocalizations.category.toUpperCase()),
@@ -30,7 +30,11 @@ class CarsMenu extends StatelessWidget {
           ),
         ),
         body: const TabBarView(
-          children: [AllCarsTab(), SelectionCarsTab(), CategoryCarsTab()],
+          children: <Widget>[
+            AllCarsTab(),
+            SelectionCarsTab(),
+            CategoryCarsTab(),
+          ],
         ),
       ),
     );

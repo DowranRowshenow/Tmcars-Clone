@@ -22,7 +22,7 @@ class Server {
   static final http.Client _client = http.Client();
 
   // Cache for API responses
-  static final Map<String, dynamic> _cache = {};
+  static final Map<String, dynamic> _cache = <String, dynamic>{};
   static const Duration _cacheExpiry = Duration(minutes: 1);
 
   // ENDPOINTS
@@ -50,7 +50,7 @@ class Server {
     const String cacheKey = 'popular_products';
 
     if (_cache.containsKey(cacheKey)) {
-      final cached = _cache[cacheKey];
+      final dynamic cached = _cache[cacheKey];
       // Fix: Explicitly cast 'timestamp' to String before parsing
       if (cached['timestamp'] != null) {
         try {
@@ -75,17 +75,36 @@ class Server {
           .timeout(const Duration(seconds: 10)); // Added timeout
 
       if (response.statusCode == 200) {
-        List<PopularProduct> products = [];
+        List<PopularProduct> products = <PopularProduct>[];
         // Fix: Explicitly cast json.decode result to Map<String, dynamic>
-        final data = json.decode(response.body) as Map<String, dynamic>;
+        final Map<String, dynamic> data =
+            json.decode(response.body) as Map<String, dynamic>;
         // Fix: Explicitly cast data["dashFeatured"] to List<dynamic> for iteration
-        for (var productJson in data["dashFeatured"] as List<dynamic>) {
-          // Fix: Explicitly cast each item to Map<String, dynamic> before passing to fromJson
-          products.add(
-            PopularProduct.fromJson(productJson as Map<String, dynamic>),
+        // Check if 'dashFeatured' exists and is a List before processing
+        if (data["dashFeatured"] is List) {
+          // Cast the raw list to List<dynamic>
+          final List<dynamic> rawProductJsons =
+              data["dashFeatured"] as List<dynamic>;
+
+          // Map each dynamic element to PopularProduct.fromJson,
+          // explicitly casting each 'e' to Map<String, dynamic>
+          products.addAll(
+            rawProductJsons
+                .map(
+                  (dynamic e) =>
+                      PopularProduct.fromJson(e as Map<String, dynamic>),
+                )
+                .toList(),
           );
+        } else {
+          // Handle case where 'dashFeatured' is missing or not a List
+          // For example, print a warning or initialize products as empty
+          debugPrint("Warning: 'dashFeatured' is not a List or is missing.");
         }
-        _cache[cacheKey] = {'data': products, 'timestamp': DateTime.now()};
+        _cache[cacheKey] = <String, Object>{
+          'data': products,
+          'timestamp': DateTime.now(),
+        };
         return products;
       } else {
         debugPrint(
@@ -97,14 +116,14 @@ class Server {
     } catch (e) {
       debugPrint('Error fetching popular products: $e');
     }
-    return [];
+    return <PopularProduct>[];
   }
 
   static Future<List<ArticleCategory>> getArticleCategories() async {
     const String cacheKey = 'article_categories';
 
     if (_cache.containsKey(cacheKey)) {
-      final cached = _cache[cacheKey];
+      final dynamic cached = _cache[cacheKey];
       // Fix: Explicitly cast 'timestamp' to String before parsing
       if (cached['timestamp'] != null) {
         try {
@@ -124,17 +143,23 @@ class Server {
     }
 
     try {
-      final response = await _client.get(
+      final http.Response response = await _client.get(
         Uri.https(host, "/tmcars/articleCategory/categories"),
       );
       if (response.statusCode == 200) {
         // Fix: Explicitly cast json.decode result to List<dynamic>
         final List<dynamic> data = json.decode(response.body) as List<dynamic>;
         // Fix: Explicitly cast each item to Map<String, dynamic> before passing to fromJson
-        final categories = data
-            .map((e) => ArticleCategory.fromJson(e as Map<String, dynamic>))
+        final List<ArticleCategory> categories = data
+            .map(
+              (dynamic e) =>
+                  ArticleCategory.fromJson(e as Map<String, dynamic>),
+            )
             .toList();
-        _cache[cacheKey] = {'data': categories, 'timestamp': DateTime.now()};
+        _cache[cacheKey] = <String, Object>{
+          'data': categories,
+          'timestamp': DateTime.now(),
+        };
         Storage.instance.setArticleCategories(response.body);
         return categories;
       } else {
@@ -143,10 +168,10 @@ class Server {
     } catch (e) {
       debugPrint(e.toString());
     }
-    return [];
+    return <ArticleCategory>[];
   }
 
-  static Future<List<Article>> getArticles({
+  static Future<List<Article>?> getArticles({
     int offset = 0,
     int max = 40,
     int categoryId = 0,
@@ -154,7 +179,7 @@ class Server {
     String mask = "",
     String tags = "",
   }) async {
-    final Map<String, dynamic> map = {'max': max.toString()};
+    final Map<String, dynamic> map = <String, dynamic>{'max': max.toString()};
     if (offset != 0) {
       map['offset'] = offset.toString();
     }
@@ -172,15 +197,13 @@ class Server {
     }
 
     try {
-      final response = await http.get(
+      final http.Response response = await http.get(
         Uri.https(host, "/tmcars/article/articles", map),
       );
       if (response.statusCode == 200) {
-        // Fix: Explicitly cast json.decode result to List<dynamic>
         final List<dynamic> data = json.decode(response.body) as List<dynamic>;
-        // Fix: Explicitly cast each item to Map<String, dynamic> before passing to fromJson
         return data
-            .map((e) => Article.fromJson(e as Map<String, dynamic>))
+            .map((dynamic e) => Article.fromJson(e as Map<String, dynamic>))
             .toList();
       } else {
         debugPrint('Failed to load articles');
@@ -188,14 +211,14 @@ class Server {
     } catch (e) {
       debugPrint(e.toString());
     }
-    return [];
+    return null;
   }
 
   static Future<List<Article>> getNearestArticles(int id) async {
     final String cacheKey = 'nearest_articles_$id';
 
     if (_cache.containsKey(cacheKey)) {
-      final cached = _cache[cacheKey];
+      final dynamic cached = _cache[cacheKey];
       // Fix: Explicitly cast 'timestamp' to String before parsing
       if (cached['timestamp'] != null) {
         try {
@@ -214,10 +237,12 @@ class Server {
       }
     }
 
-    final Map<String, dynamic> map = {'sourceId': id.toString()};
+    final Map<String, dynamic> map = <String, dynamic>{
+      'sourceId': id.toString(),
+    };
 
     try {
-      final response = await http.get(
+      final http.Response response = await http.get(
         Uri.https(host, "/tmcars/article/nearestNews", map),
       );
       if (response.statusCode == 200) {
@@ -225,9 +250,12 @@ class Server {
         final List<dynamic> data = json.decode(response.body) as List<dynamic>;
         // Fix: Explicitly cast each item to Map<String, dynamic> before passing to fromJson
         final List<Article> res = data
-            .map((e) => Article.fromJson(e as Map<String, dynamic>))
+            .map((dynamic e) => Article.fromJson(e as Map<String, dynamic>))
             .toList();
-        _cache[cacheKey] = {'data': res, 'timestamp': DateTime.now()};
+        _cache[cacheKey] = <String, Object>{
+          'data': res,
+          'timestamp': DateTime.now(),
+        };
         return res;
       } else {
         debugPrint('Failed to load articles');
@@ -235,7 +263,7 @@ class Server {
     } catch (e) {
       debugPrint('Failed to load articles');
     }
-    return [];
+    return <Article>[];
   }
 
   static Future<ArticleDetail?> getArticle(int id) async {
@@ -243,7 +271,7 @@ class Server {
 
     // Check cache first
     if (_cache.containsKey(cacheKey)) {
-      final cached = _cache[cacheKey];
+      final dynamic cached = _cache[cacheKey];
       // Fix: Explicitly cast 'timestamp' to String before parsing
       if (cached['timestamp'] != null) {
         try {
@@ -262,9 +290,9 @@ class Server {
       }
     }
 
-    final Map<String, dynamic> map = {'id': id.toString()};
+    final Map<String, dynamic> map = <String, dynamic>{'id': id.toString()};
     try {
-      final response = await http.get(
+      final http.Response response = await http.get(
         Uri.https(host, "/tmcars/article/getArticle", map),
       );
       if (response.statusCode == 200) {
@@ -272,7 +300,10 @@ class Server {
         final ArticleDetail data = ArticleDetail.fromJson(
           json.decode(response.body) as Map<String, dynamic>,
         );
-        _cache[cacheKey] = {'data': data, 'timestamp': DateTime.now()};
+        _cache[cacheKey] = <String, Object>{
+          'data': data,
+          'timestamp': DateTime.now(),
+        };
         return data;
       } else {
         debugPrint('Failed to load articles');
@@ -285,9 +316,9 @@ class Server {
 
   static Future<String> fetchHtmlContent(String url) async {
     try {
-      final response = await http.get(
+      final http.Response response = await http.get(
         Uri.parse(url),
-        headers: {
+        headers: <String, String>{
           'Accept':
               'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
           'Accept-Charset': 'utf-8',
@@ -298,7 +329,7 @@ class Server {
       if (response.statusCode == 200) {
         debugPrint('Response headers: ${response.headers}');
         debugPrint('Content-Type: ${response.headers['content-type']}');
-        final contentType = response.headers['content-type'] ?? '';
+        final String contentType = response.headers['content-type'] ?? '';
         String htmlContent = response.body;
         if (!contentType.toLowerCase().contains('charset')) {
           if (htmlContent.contains('<meta charset="')) {
@@ -376,6 +407,6 @@ class Server {
     } catch (e) {
       debugPrint('Error fetching data: $e');
     }*/
-    return [];
+    return <Product>[];
   }
 }

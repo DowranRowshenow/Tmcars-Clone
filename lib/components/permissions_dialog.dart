@@ -13,7 +13,9 @@ Future<bool?> showPermissionDialog({
     barrierDismissible: barrierDismissible,
     barrierColor: Colors.black.withValues(alpha: Constants.blurAlpha),
     builder: (BuildContext dialogContext) {
-      final appColors = Theme.of(dialogContext).extension<AppColors>()!;
+      final AppColors appColors = Theme.of(
+        dialogContext,
+      ).extension<AppColors>()!;
       return PopScope(
         canPop: false,
         child: AlertDialog(

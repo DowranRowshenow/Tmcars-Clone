@@ -25,13 +25,13 @@ class DownloadButton extends StatelessWidget {
     downloadController.isDownloading.value = true;
     // ToastHelper.showToast(message: "Download started!");
 
-    final token = DownloadCancellationToken();
+    final DownloadCancellationToken token = DownloadCancellationToken();
     downloadController.currentDownloadCancellationToken.value = token;
 
     try {
-      final success = await downloadFromUrl(
+      final bool success = await downloadFromUrl(
         url,
-        onProgress: (receivedBytes, totalBytes) {
+        onProgress: (int receivedBytes, int totalBytes) {
           downloadController.downloadProgress.value =
               receivedBytes / totalBytes;
         },
@@ -72,54 +72,71 @@ class DownloadButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return ValueListenableBuilder<bool>(
       valueListenable: downloadController.isDownloading,
-      builder: (context, isDownloadingValue, child) {
+      builder: (BuildContext context, bool isDownloadingValue, Widget? child) {
         return ValueListenableBuilder<bool>(
           valueListenable: downloadController.isDownloadComplete,
-          builder: (context, isDownloadCompleteValue, child) {
-            Widget iconWidget;
-            if (isDownloadingValue) {
-              iconWidget = SizedBox(
-                width: 25,
-                height: 25,
-                child: ValueListenableBuilder<double>(
-                  valueListenable: downloadController.downloadProgress,
-                  builder: (context, downloadProgressValue, child) {
-                    return Stack(
-                      alignment: Alignment.center,
-                      children: [
-                        CircularProgressIndicator(
-                          value: downloadProgressValue > 0.0
-                              ? downloadProgressValue
-                              : null,
-                          color: Colors.white,
-                          strokeWidth: 2,
-                        ),
-                        const Icon(Icons.close, color: Colors.white, size: 16),
-                      ],
-                    );
-                  },
-                ),
-              );
-            } else if (isDownloadCompleteValue) {
-              iconWidget = const Icon(Icons.download_done, color: Colors.white);
-            } else {
-              iconWidget = const Icon(
-                Icons.download_outlined,
-                color: Colors.white,
-              );
-            }
+          builder:
+              (
+                BuildContext context,
+                bool isDownloadCompleteValue,
+                Widget? child,
+              ) {
+                Widget iconWidget;
+                if (isDownloadingValue) {
+                  iconWidget = SizedBox(
+                    width: 25,
+                    height: 25,
+                    child: ValueListenableBuilder<double>(
+                      valueListenable: downloadController.downloadProgress,
+                      builder:
+                          (
+                            BuildContext context,
+                            double downloadProgressValue,
+                            Widget? child,
+                          ) {
+                            return Stack(
+                              alignment: Alignment.center,
+                              children: <Widget>[
+                                CircularProgressIndicator(
+                                  value: downloadProgressValue > 0.0
+                                      ? downloadProgressValue
+                                      : null,
+                                  color: Colors.white,
+                                  strokeWidth: 2,
+                                ),
+                                const Icon(
+                                  Icons.close,
+                                  color: Colors.white,
+                                  size: 16,
+                                ),
+                              ],
+                            );
+                          },
+                    ),
+                  );
+                } else if (isDownloadCompleteValue) {
+                  iconWidget = const Icon(
+                    Icons.download_done,
+                    color: Colors.white,
+                  );
+                } else {
+                  iconWidget = const Icon(
+                    Icons.download_outlined,
+                    color: Colors.white,
+                  );
+                }
 
-            return IconButton(
-              splashColor: Colors.transparent,
-              splashRadius: Constants.splashRadius,
-              onPressed: isDownloadCompleteValue
-                  ? null
-                  : isDownloadingValue
-                  ? _cancelDownload
-                  : _handleDownload,
-              icon: iconWidget,
-            );
-          },
+                return IconButton(
+                  splashColor: Colors.transparent,
+                  splashRadius: Constants.splashRadius,
+                  onPressed: isDownloadCompleteValue
+                      ? null
+                      : isDownloadingValue
+                      ? _cancelDownload
+                      : _handleDownload,
+                  icon: iconWidget,
+                );
+              },
         );
       },
     );

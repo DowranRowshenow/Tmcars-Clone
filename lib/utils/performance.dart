@@ -6,8 +6,8 @@ import 'package:flutter/material.dart';
 
 /// A collection of utilities for performance measurement and optimization.
 class PerformanceUtils {
-  static final Map<String, Timer> _timers = {};
-  static final Map<String, DateTime> _startTimes = {};
+  static final Map<String, Timer> _timers = <String, Timer>{};
+  static final Map<String, DateTime> _startTimes = <String, DateTime>{};
 
   /// Start performance measurement
   ///
@@ -23,7 +23,7 @@ class PerformanceUtils {
   /// End performance measurement and log
   static void endTimer(String name) {
     if (kDebugMode && _startTimes.containsKey(name)) {
-      final duration = DateTime.now().difference(_startTimes[name]!);
+      final Duration duration = DateTime.now().difference(_startTimes[name]!);
       // Finish the timeline event so it appears in DevTools.
       developer.Timeline.finishSync();
       developer.log('Performance: $name took ${duration.inMilliseconds}ms');
@@ -50,7 +50,7 @@ class PerformanceUtils {
 
   /// Clear all debounced functions
   static void clearAllDebounce() {
-    for (final timer in _timers.values) {
+    for (final Timer timer in _timers.values) {
       timer.cancel();
     }
     _timers.clear();

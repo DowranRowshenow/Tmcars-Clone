@@ -19,7 +19,7 @@ class ShouldRegister extends StatelessWidget {
         padding: const EdgeInsets.all(30),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
-          children: [
+          children: <Widget>[
             Text(
               appLocalizations.shouldRegister,
               softWrap: true,

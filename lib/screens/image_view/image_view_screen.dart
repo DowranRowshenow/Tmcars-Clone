@@ -25,10 +25,11 @@ class _ImageViewScreenState extends State<ImageViewScreen>
 
   // Map to store rotation state for each image, keyed by index
   final ValueNotifier<Map<int, int>> _imageQuarterTurns =
-      ValueNotifier<Map<int, int>>({});
+      ValueNotifier<Map<int, int>>(<int, int>{});
 
   // --- Maps to manage download state for each image ---
-  final Map<int, DownloadController> _downloadControllers = {};
+  final Map<int, DownloadController> _downloadControllers =
+      <int, DownloadController>{};
 
   @override
   void initState() {
@@ -55,7 +56,7 @@ class _ImageViewScreenState extends State<ImageViewScreen>
       _imageQuarterTurns.value[i] = 0; // Initialize rotation for each image
     }
     // Trigger a rebuild for _imageQuarterTurns to reflect initial values
-    _imageQuarterTurns.value = Map.from(_imageQuarterTurns.value);
+    _imageQuarterTurns.value = Map<int, int>.from(_imageQuarterTurns.value);
   }
 
   @override
@@ -75,7 +76,7 @@ class _ImageViewScreenState extends State<ImageViewScreen>
     final int currentIndex = _tabController.index;
     int currentTurns = _imageQuarterTurns.value[currentIndex] ?? 0;
     final int newTurns = (currentTurns - 1 + 4) % 4;
-    _imageQuarterTurns.value = {
+    _imageQuarterTurns.value = <int, int>{
       ..._imageQuarterTurns.value,
       currentIndex: newTurns,
     };
@@ -107,7 +108,7 @@ class _ImageViewScreenState extends State<ImageViewScreen>
           ),
           ValueListenableBuilder<int>(
             valueListenable: _currentTabIndexNotifier,
-            builder: (context, currentIndex, child) {
+            builder: (BuildContext context, int currentIndex, Widget? child) {
               return DownloadButton(
                 url: widget.imageUrls[currentIndex],
                 downloadController: _downloadControllers[currentIndex]!,
@@ -126,27 +127,40 @@ class _ImageViewScreenState extends State<ImageViewScreen>
               maxScale: 5.0,
               child: ValueListenableBuilder<Map<int, int>>(
                 valueListenable: _imageQuarterTurns,
-                builder: (context, imageQuarterTurnsValue, child) {
-                  return TabBarView(
-                    controller: _tabController,
-                    children: <Widget>[
-                      for (int i = 0; i < widget.imageUrls.length; i++)
-                        RotatedBox(
-                          quarterTurns: imageQuarterTurnsValue[i] ?? 0,
-                          child: CachedNetworkImage(
-                            imageUrl: widget.imageUrls[i],
-                            fit: BoxFit.contain,
-                            placeholder: (context, url) => const Center(
-                              child: CircularProgressIndicator(),
+                builder:
+                    (
+                      BuildContext context,
+                      Map<int, int> imageQuarterTurnsValue,
+                      Widget? child,
+                    ) {
+                      return TabBarView(
+                        controller: _tabController,
+                        children: <Widget>[
+                          for (int i = 0; i < widget.imageUrls.length; i++)
+                            RotatedBox(
+                              quarterTurns: imageQuarterTurnsValue[i] ?? 0,
+                              child: CachedNetworkImage(
+                                imageUrl: widget.imageUrls[i],
+                                fit: BoxFit.contain,
+                                placeholder:
+                                    (BuildContext context, String url) =>
+                                        const Center(
+                                          child: CircularProgressIndicator(),
+                                        ),
+                                errorWidget:
+                                    (
+                                      BuildContext context,
+                                      String url,
+                                      Object error,
+                                    ) => buildImagePlaceholder(context),
+                                fadeInDuration: const Duration(
+                                  milliseconds: 200,
+                                ),
+                              ),
                             ),
-                            errorWidget: (context, url, error) =>
-                                buildImagePlaceholder(context),
-                            fadeInDuration: const Duration(milliseconds: 200),
-                          ),
-                        ),
-                    ],
-                  );
-                },
+                        ],
+                      );
+                    },
               ),
             ),
           ),

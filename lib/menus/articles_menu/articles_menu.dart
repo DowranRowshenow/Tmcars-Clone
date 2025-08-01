@@ -1,31 +1,42 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:tmcarsclone/components/scroll/low_friction_scroll_physics.dart';
 
 import '../../models/article_category_model.dart';
 import '../../providers/locale.dart';
 import '../../utils/constants.dart';
 import 'tabs/articles_tab.dart';
 
+String _getCategoryName(ArticleCategory category, String languageCode) {
+  switch (languageCode) {
+    case 'ru':
+      return category.categoryNameRu;
+    default:
+      return category.categoryName; // Fallback to default
+  }
+}
+
 class ArticlesMenu extends StatelessWidget {
   const ArticlesMenu({super.key});
 
-  String getCategoryName(ArticleCategory category, String languageCode) {
-    switch (languageCode) {
-      case 'ru':
-        return category.categoryNameRu;
-      default:
-        return category.categoryName; // Fallback to default
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
-    final categories = context.watch<List<ArticleCategory>>();
+    final List<ArticleCategory> categories = context
+        .watch<List<ArticleCategory>>();
     if (categories.isEmpty) {
       return const Center(child: CircularProgressIndicator());
     }
 
-    final locale = context.watch<LocaleManager>().locale;
+    // It's a good practice to create the list of widgets for TabBarView outside
+    // the build method of the TabBarView itself to avoid recreating it on every build.
+    // Adding a ValueKey helps Flutter to correctly identify and manage the state
+    // of each tab, especially if the list of categories can change dynamically.
+    final List<ArticlesTab> articleTabs = categories
+        .map(
+          (ArticleCategory cat) =>
+              ArticlesTab(key: ValueKey<int>(cat.id), category: cat),
+        )
+        .toList();
 
     return DefaultTabController(
       length: categories.length,
@@ -35,25 +46,37 @@ class ArticlesMenu extends StatelessWidget {
           toolbarHeight: 0,
           bottom: PreferredSize(
             preferredSize: const Size.fromHeight(60),
-            child: TabBar(
-              padding: const EdgeInsets.all(5),
-              textScaler: const TextScaler.linear(Constants.tabTextScale),
-              indicatorColor: Colors.white,
-              isScrollable: true,
-              tabs: categories
-                  .map(
-                    (cat) =>
-                        Tab(text: getCategoryName(cat, locale.languageCode)),
-                  )
-                  .toList(),
+            child: Consumer<LocaleManager>(
+              builder:
+                  (
+                    BuildContext context,
+                    LocaleManager localeManager,
+                    Widget? child,
+                  ) {
+                    return TabBar(
+                      padding: const EdgeInsets.all(5),
+                      textScaler: const TextScaler.linear(
+                        Constants.tabTextScale,
+                      ),
+                      indicatorColor: Colors.white,
+                      isScrollable: true,
+                      physics: const LowFrictionScrollPhysics(),
+                      tabs: categories
+                          .map(
+                            (ArticleCategory cat) => Tab(
+                              text: _getCategoryName(
+                                cat,
+                                localeManager.locale.languageCode,
+                              ),
+                            ),
+                          )
+                          .toList(),
+                    );
+                  },
             ),
           ),
         ),
-        body: TabBarView(
-          children: categories
-              .map((cat) => ArticlesTab(category: cat))
-              .toList(),
-        ),
+        body: TabBarView(children: articleTabs),
       ),
     );
   }

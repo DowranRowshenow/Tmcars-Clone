@@ -44,6 +44,9 @@ linter:
     # - always_put_control_flow_in_brackets # Enforce braces even for single statements
     # - always_use_package_imports # Prefer package: imports over relative imports
 
+    # Enforce explicit type annotations for all variables, parameters, and return types.
+    always_specify_types: true
+
     # Disable specific rules from flutter_lints if they don't fit your style
     # (e.g., if you prefer double quotes or don't mind print statements during development)
     # - prefer_single_quotes # If you like double quotes

@@ -38,7 +38,7 @@ class ArticleDetailContent extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisSize: MainAxisSize.min,
-      children: [
+      children: <Widget>[
         articleDetail != null
             ? CategoryTagChip(
                 categoryName: languageCode == 'ru'
@@ -89,14 +89,14 @@ class ArticleDetailContent extends StatelessWidget {
           Wrap(
             spacing: 8.0,
             runSpacing: 8.0,
-            children: articleDetail!.tags.map((tag) {
+            children: articleDetail!.tags.map((ArticleTag tag) {
               return ArticleTagChip(
                 articleTag: tag,
                 onTap: () {
                   context.read<NavigationManager>().setScreen(
                     context,
                     ScreenState.searchArticles,
-                    articleTags: [tag],
+                    articleTags: <ArticleTag>[tag],
                   );
                 },
               );
@@ -114,9 +114,9 @@ class ArticleDetailContent extends StatelessWidget {
           shrinkWrap: true,
           physics: const NeverScrollableScrollPhysics(),
           itemCount: nearestArticles.length,
-          itemBuilder: (context, index) {
+          itemBuilder: (BuildContext context, int index) {
             return NearestArticleCard(
-              key: ValueKey(nearestArticles[index].id),
+              key: ValueKey<int>(nearestArticles[index].id),
               nearestArticle: nearestArticles[index],
             );
           },

@@ -261,7 +261,7 @@ final ThemeData lightThemeData = ThemeData.light(useMaterial3: false).copyWith(
     ),
   ),
   checkboxTheme: CheckboxThemeData(
-    fillColor: WidgetStateProperty.resolveWith((states) {
+    fillColor: WidgetStateProperty.resolveWith((Set<WidgetState> states) {
       if (states.contains(WidgetState.selected)) {
         return AppColors.light.focusColor;
       }
@@ -269,7 +269,7 @@ final ThemeData lightThemeData = ThemeData.light(useMaterial3: false).copyWith(
     }),
   ),
   radioTheme: RadioThemeData(
-    fillColor: WidgetStateProperty.resolveWith((states) {
+    fillColor: WidgetStateProperty.resolveWith((Set<WidgetState> states) {
       if (states.contains(WidgetState.selected)) {
         return AppColors.light.focusColor;
       }
@@ -278,12 +278,12 @@ final ThemeData lightThemeData = ThemeData.light(useMaterial3: false).copyWith(
   ),
   switchTheme: SwitchThemeData(
     thumbColor: WidgetStateProperty.resolveWith(
-      (states) => states.contains(WidgetState.selected)
+      (Set<WidgetState> states) => states.contains(WidgetState.selected)
           ? AppColors.light.focusColor
           : null,
     ),
     trackColor: WidgetStateProperty.resolveWith(
-      (states) => states.contains(WidgetState.selected)
+      (Set<WidgetState> states) => states.contains(WidgetState.selected)
           ? AppColors.light.focusColor?.withAlpha(127)
           : null,
     ),
@@ -346,7 +346,7 @@ final ThemeData darkThemeData = ThemeData.dark(useMaterial3: false).copyWith(
   ),
   checkboxTheme: CheckboxThemeData(
     checkColor: WidgetStateProperty.all(Colors.white),
-    fillColor: WidgetStateProperty.resolveWith((states) {
+    fillColor: WidgetStateProperty.resolveWith((Set<WidgetState> states) {
       if (states.contains(WidgetState.selected)) {
         return AppColors.dark.focusColor;
       }
@@ -354,7 +354,7 @@ final ThemeData darkThemeData = ThemeData.dark(useMaterial3: false).copyWith(
     }),
   ),
   radioTheme: RadioThemeData(
-    fillColor: WidgetStateProperty.resolveWith((states) {
+    fillColor: WidgetStateProperty.resolveWith((Set<WidgetState> states) {
       if (states.contains(WidgetState.selected)) {
         return AppColors.dark.focusColor;
       }
@@ -363,12 +363,12 @@ final ThemeData darkThemeData = ThemeData.dark(useMaterial3: false).copyWith(
   ),
   switchTheme: SwitchThemeData(
     thumbColor: WidgetStateProperty.resolveWith(
-      (states) => states.contains(WidgetState.selected)
+      (Set<WidgetState> states) => states.contains(WidgetState.selected)
           ? AppColors.dark.focusColor
           : null,
     ),
     trackColor: WidgetStateProperty.resolveWith(
-      (states) => states.contains(WidgetState.selected)
+      (Set<WidgetState> states) => states.contains(WidgetState.selected)
           ? AppColors.dark.focusColor?.withAlpha(127)
           : null,
     ),

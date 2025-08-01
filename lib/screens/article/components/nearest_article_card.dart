@@ -35,17 +35,21 @@ class NearestArticleCard extends StatelessWidget {
                       fit: BoxFit.fitWidth,
                       width: double.infinity,
                       memCacheWidth: width.toInt(),
-                      placeholder: (context, url) => Container(
-                        height: height,
-                        color: Colors.grey[200],
-                        child: const Center(child: CircularProgressIndicator()),
-                      ),
-                      errorWidget: (context, url, error) =>
-                          buildImagePlaceholder(
-                            context,
-                            width: double.infinity,
+                      placeholder: (BuildContext context, String url) =>
+                          Container(
                             height: height,
+                            color: Colors.grey[200],
+                            child: const Center(
+                              child: CircularProgressIndicator(),
+                            ),
                           ),
+                      errorWidget:
+                          (BuildContext context, String url, Object error) =>
+                              buildImagePlaceholder(
+                                context,
+                                width: double.infinity,
+                                height: height,
+                              ),
                     )
                   : buildImagePlaceholder(
                       context,
@@ -59,11 +63,11 @@ class NearestArticleCard extends StatelessWidget {
                   gradient: LinearGradient(
                     begin: Alignment.topCenter,
                     end: Alignment.bottomCenter,
-                    colors: [
+                    colors: <Color>[
                       Colors.transparent, // Top is transparent
                       Colors.black.withValues(alpha: 0.8),
                     ],
-                    stops: const [0.5, 1.0],
+                    stops: const <double>[0.5, 1.0],
                   ),
                 ),
               ),

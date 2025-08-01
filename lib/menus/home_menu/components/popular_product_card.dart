@@ -42,16 +42,19 @@ class PopularProductCard extends StatelessWidget {
                     height: height,
                     width: width,
                     memCacheWidth: width.toInt(),
-                    placeholder: (context, url) => buildImagePlaceholder(
-                      context,
-                      height: height,
-                      width: width,
-                    ),
-                    errorWidget: (context, url, error) => buildImagePlaceholder(
-                      context,
-                      height: height,
-                      width: width,
-                    ),
+                    placeholder: (BuildContext context, String url) =>
+                        buildImagePlaceholder(
+                          context,
+                          height: height,
+                          width: width,
+                        ),
+                    errorWidget:
+                        (BuildContext context, String url, Object error) =>
+                            buildImagePlaceholder(
+                              context,
+                              height: height,
+                              width: width,
+                            ),
                   )
                 : buildImagePlaceholder(context, height: height, width: width),
             const SizedBox(width: 10),
@@ -59,7 +62,7 @@ class PopularProductCard extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.center,
-                children: [
+                children: <Widget>[
                   Text(
                     product.title,
                     maxLines: 1,

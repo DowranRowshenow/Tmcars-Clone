@@ -15,7 +15,7 @@ class AllProfilesTab extends StatelessWidget {
       color: appColors.menuBackgroundColor,
       padding: const EdgeInsets.all(5),
       child: Column(
-        children: [
+        children: <Widget>[
           Container(
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(5), // Use appColors
@@ -24,7 +24,7 @@ class AllProfilesTab extends StatelessWidget {
             padding: const EdgeInsets.all(5),
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
+              children: <Widget>[
                 const SizedBox(width: 10),
                 Flexible(
                   child: TextField(

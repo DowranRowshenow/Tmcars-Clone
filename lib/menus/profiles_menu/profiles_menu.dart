@@ -21,14 +21,14 @@ class ProfilesMenu extends StatelessWidget {
           bottom: TabBar(
             textScaler: const TextScaler.linear(Constants.tabTextScale),
             indicatorColor: Colors.white,
-            tabs: [
+            tabs: <Widget>[
               Tab(text: appLocalizations.all.toUpperCase()),
               Tab(text: appLocalizations.category.toUpperCase()),
             ],
           ),
         ),
         body: const TabBarView(
-          children: [AllProfilesTab(), ProfilesCategoryTab()],
+          children: <Widget>[AllProfilesTab(), ProfilesCategoryTab()],
         ),
       ),
     );

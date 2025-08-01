@@ -34,12 +34,12 @@ class DownloadCancellationToken {
 /// permission denial or cancellation.
 Future<bool> downloadFromUrl(
   String imageUrl, {
-  bool showToast = true,
+  bool showToast = false,
   DownloadProgressCallback? onProgress,
   DownloadCancellationToken? cancellationToken,
 }) async {
   // Request storage permission using the helper
-  final hasPermission = await PermissionHelper.requestStoragePermission(
+  final bool hasPermission = await PermissionHelper.requestStoragePermission(
     showToast: showToast,
   );
 
@@ -78,8 +78,10 @@ Future<bool> downloadFromUrl(
 
     // 4. Use HttpClient for a streaming download with progress.
     httpClient = HttpClient();
-    final request = await httpClient.getUrl(Uri.parse(imageUrl));
-    final response = await request.close();
+    final HttpClientRequest request = await httpClient.getUrl(
+      Uri.parse(imageUrl),
+    );
+    final HttpClientResponse response = await request.close();
 
     if (response.statusCode != HttpStatus.ok) {
       throw HttpException(
@@ -87,11 +89,11 @@ Future<bool> downloadFromUrl(
       );
     }
 
-    final contentLength = response.contentLength;
+    final int contentLength = response.contentLength;
     int receivedBytes = 0;
     final IOSink sink = file.openWrite();
 
-    await for (final chunk in response) {
+    await for (final List<int> chunk in response) {
       // Check for cancellation before processing the chunk.
       if (cancellationToken?.isCancelled ?? false) {
         await sink.close();

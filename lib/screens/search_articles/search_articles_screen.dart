@@ -34,7 +34,7 @@ class _SearchArticlesScreenState extends State<SearchArticlesScreen> {
   void _onSearchChanged(String query) {
     // Prevent input longer than 50 chars.
     if (query.length > 50) {
-      final truncatedQuery = query.substring(0, 50);
+      final String truncatedQuery = query.substring(0, 50);
       // Setting the controller's value will trigger onChanged again with the truncated value.
       searchBarController.value = TextEditingValue(
         text: truncatedQuery,
@@ -74,7 +74,7 @@ class _SearchArticlesScreenState extends State<SearchArticlesScreen> {
                     spacing: 8.0,
                     runSpacing: 8.0,
                     alignment: WrapAlignment.start,
-                    children: widget.articleTags!.map((tag) {
+                    children: widget.articleTags!.map((ArticleTag tag) {
                       return ArticleTagChip(articleTag: widget.articleTags![0]);
                     }).toList(),
                   ),
@@ -98,7 +98,7 @@ class _SearchArticlesScreenState extends State<SearchArticlesScreen> {
           onChanged: _onSearchChanged,
         ),
         leading: buildBackIconButton(context),
-        actions: [
+        actions: <Widget>[
           searchBarController.text.isNotEmpty
               ? IconButton(
                   onPressed: () {

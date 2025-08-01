@@ -39,7 +39,7 @@ class _WebViewScreenState extends State<WebViewScreen> {
       ..setBackgroundColor(Colors.transparent)
       ..setNavigationDelegate(
         NavigationDelegate(
-          onProgress: (value) {
+          onProgress: (int value) {
             if (mounted) {
               setState(() {
                 progress = value / 100;
@@ -85,7 +85,7 @@ class _WebViewScreenState extends State<WebViewScreen> {
         leading: buildBackIconButton(context),
       ),
       body: Stack(
-        children: [
+        children: <Widget>[
           _hasError
               ? Center(child: NoConnection(onTap: _retryLoad))
               : WebViewWidget(controller: _controller),

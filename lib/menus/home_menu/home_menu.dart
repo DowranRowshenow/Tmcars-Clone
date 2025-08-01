@@ -36,35 +36,36 @@ class _HomeMenuState extends State<HomeMenu> {
   Widget build(BuildContext context) {
     return FutureBuilder<List<PopularProduct>>(
       future: _popularProductsFuture,
-      builder: (context, snapshot) {
-        if (snapshot.connectionState == ConnectionState.waiting) {
-          return const Center(child: CircularProgressIndicator());
-        } else if (snapshot.hasError) {
-          return NoConnection(onTap: _handleRefresh);
-        } else if (snapshot.hasData) {
-          final popularProducts = snapshot.data!;
-          if (popularProducts.isEmpty) {
-            return NoConnection(onTap: _handleRefresh);
-          }
-          return RefreshIndicator(
-            onRefresh: _handleRefresh,
-            child: ListView.builder(
-              itemExtent: Constants.popularProductItemExtent,
-              shrinkWrap: true,
-              itemCount: popularProducts.length,
-              itemBuilder: (context, index) {
-                return PopularProductCard(
-                  key: ValueKey(popularProducts[index].id),
-                  product: popularProducts[index],
-                );
-              },
-            ),
-          );
-        }
-        return Center(
-          child: Text(AppLocalizations.of(context)!.somethingWentWrong),
-        );
-      },
+      builder:
+          (BuildContext context, AsyncSnapshot<List<PopularProduct>> snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return const Center(child: CircularProgressIndicator());
+            } else if (snapshot.hasError) {
+              return NoConnection(onTap: _handleRefresh);
+            } else if (snapshot.hasData) {
+              final List<PopularProduct> popularProducts = snapshot.data!;
+              if (popularProducts.isEmpty) {
+                return NoConnection(onTap: _handleRefresh);
+              }
+              return RefreshIndicator(
+                onRefresh: _handleRefresh,
+                child: ListView.builder(
+                  itemExtent: Constants.popularProductItemExtent,
+                  shrinkWrap: true,
+                  itemCount: popularProducts.length,
+                  itemBuilder: (BuildContext context, int index) {
+                    return PopularProductCard(
+                      key: ValueKey<int>(popularProducts[index].id),
+                      product: popularProducts[index],
+                    );
+                  },
+                ),
+              );
+            }
+            return Center(
+              child: Text(AppLocalizations.of(context)!.somethingWentWrong),
+            );
+          },
     );
   }
 }

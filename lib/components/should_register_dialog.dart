@@ -38,7 +38,7 @@ Future<bool?> shouldRegisterDialog({
             style: TextStyle(color: appColors.textThemeColor),
           ),
           content: Text(localizations.notRegistered),
-          actions: [
+          actions: <Widget>[
             TextButton(
               onPressed: () {
                 Navigator.of(dialogContext).pop(true);

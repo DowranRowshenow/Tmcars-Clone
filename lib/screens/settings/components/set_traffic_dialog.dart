@@ -32,10 +32,10 @@ Future<bool?> showSetTrafficDialog({
         content: SizedBox(
           width: double.maxFinite,
           child: StatefulBuilder(
-            builder: (context, setState) {
+            builder: (BuildContext context, StateSetter setState) {
               return ListView(
                 shrinkWrap: true,
-                children: [
+                children: <Widget>[
                   RadioListTile<int>(
                     title: Text(AppLocalizations.of(context)!.standard),
                     value: 0,
@@ -69,7 +69,7 @@ Future<bool?> showSetTrafficDialog({
             },
           ),
         ),
-        actions: [
+        actions: <Widget>[
           TextButton(
             child: Text(
               AppLocalizations.of(context)!.select,

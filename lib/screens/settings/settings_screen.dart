@@ -38,7 +38,7 @@ class SettingsScreen extends StatelessWidget {
         leading: buildBackIconButton(context),
       ),
       body: ListView(
-        children: [
+        children: <Widget>[
           ListTile(
             title: Text(
               appLocalizations.generalSettings,

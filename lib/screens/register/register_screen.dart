@@ -21,8 +21,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
   bool isChecked = false;
   bool isEmail = false;
   String phoneNumber = "";
-  final emailAddressController = TextEditingController();
-  final phoneNumberController = TextEditingController();
+  final TextEditingController emailAddressController = TextEditingController();
+  final TextEditingController phoneNumberController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -40,7 +40,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
           width: double.infinity,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
+            children: <Widget>[
               const SizedBox(height: 15),
               Container(
                 padding: const EdgeInsets.all(25),
@@ -57,7 +57,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
               Container(
                 child: isEmail
                     ? Row(
-                        children: [
+                        children: <Widget>[
                           Text(
                             appLocalizations.emailField,
                             style: const TextStyle(fontSize: 18),
@@ -80,7 +80,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         ],
                       )
                     : Row(
-                        children: [
+                        children: <Widget>[
                           const Text(
                             Constants.phoneCode,
                             style: TextStyle(fontSize: 18),
@@ -98,7 +98,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                   context,
                                 )!.phoneNumber,
                               ),
-                              onChanged: (value) => value.length <= 8
+                              onChanged: (String value) => value.length <= 8
                                   ? phoneNumber = value
                                   : phoneNumberController.text = phoneNumber,
                             ),
@@ -119,10 +119,10 @@ class _RegisterScreenState extends State<RegisterScreen> {
               ),
               const SizedBox(height: 15),
               Row(
-                children: [
+                children: <Widget>[
                   Checkbox(
                     value: isChecked,
-                    onChanged: (value) {
+                    onChanged: (bool? value) {
                       if (mounted) {
                         setState(() => isChecked = !isChecked);
                       }

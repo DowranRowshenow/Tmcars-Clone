@@ -21,7 +21,7 @@ class _ContactScreenState extends State<ContactScreen> {
         leading: buildBackIconButton(context),
       ),
       body: Column(
-        children: [
+        children: <Widget>[
           Expanded(
             // This Expanded widget will take up all available vertical space for messages.
             child: RefreshIndicator(
@@ -30,7 +30,7 @@ class _ContactScreenState extends State<ContactScreen> {
               child: ListView(
                 reverse:
                     true, // Typically true for chat lists to show newest at bottom
-                children: const [
+                children: const <Widget>[
                   // Example: Your message widgets would go here
                   // ListTile(title: Text("Hello")),
                   // ListTile(title: Text("How are you?")),
@@ -50,7 +50,7 @@ class _ContactScreenState extends State<ContactScreen> {
             decoration: const BoxDecoration(color: Colors.transparent),
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
+              children: <Widget>[
                 Flexible(
                   child: TextField(
                     autocorrect: false,

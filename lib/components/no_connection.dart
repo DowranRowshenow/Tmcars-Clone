@@ -24,7 +24,7 @@ class NoConnection extends StatelessWidget {
           decoration: BoxDecoration(borderRadius: BorderRadius.circular(100)),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
-            children: [
+            children: <Widget>[
               const Icon(Icons.wifi_off, size: 50),
               const SizedBox(height: 10),
               Text(
@@ -37,7 +37,7 @@ class NoConnection extends StatelessWidget {
               const SizedBox(height: 10),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
-                children: [
+                children: <Widget>[
                   const Icon(Icons.refresh, size: 16),
                   Text(appLocalizations.tryAgain),
                 ],

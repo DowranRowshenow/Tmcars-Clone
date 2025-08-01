@@ -37,7 +37,7 @@ class RippleContainer extends StatelessWidget {
       margin: margin,
       child: Column(
         mainAxisSize: MainAxisSize.min,
-        children: [
+        children: <Widget>[
           Material(
             color: color,
             borderRadius: BorderRadius.circular(borderRadius),
@@ -61,7 +61,7 @@ class RippleContainer extends StatelessWidget {
               ),
             ),
           ),
-          if (text != null) ...[
+          if (text != null) ...<Widget>[
             const Padding(padding: EdgeInsets.all(5)),
             Text(
               text!,

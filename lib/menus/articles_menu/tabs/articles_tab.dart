@@ -1,13 +1,17 @@
 import 'dart:async';
-import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import '../../../components/fab_scroller.dart';
 import '../../../components/no_connection.dart';
 import '../../../components/no_result.dart';
 import '../../../models/article_category_model.dart';
 import '../../../models/article_model.dart';
+import '../../../providers/locale.dart';
+import '../../../providers/themes.dart';
+import '../../../providers/traffic.dart';
+import '../../../utils/articles_controller.dart';
 import '../../../utils/constants.dart';
 import '../../../utils/server.dart';
 import '../../../utils/storage.dart';
@@ -24,11 +28,17 @@ class ArticlesTab extends StatefulWidget {
 
 class _ArticlesTabState extends State<ArticlesTab> {
   final ScrollController _scrollController = ScrollController();
-  List<Article> _articles = [];
+  final ValueNotifier<List<Article>> _articles = ValueNotifier<List<Article>>(
+    <Article>[],
+  );
   int _offset = 0;
   bool _isLoading = false;
   bool _hasMore = true;
   bool _hasError = false;
+  final double _imageHeight = 90.0;
+  final double _imageMaxWidth = 260.0;
+  final AriclesLoadingController _articlesLoadingController =
+      AriclesLoadingController();
 
   @override
   void initState() {
@@ -39,8 +49,10 @@ class _ArticlesTabState extends State<ArticlesTab> {
 
   @override
   void dispose() {
+    _articles.dispose();
     _scrollController.removeListener(_onScroll);
     _scrollController.dispose();
+    _articlesLoadingController.dispose();
     super.dispose();
   }
 
@@ -55,77 +67,53 @@ class _ArticlesTabState extends State<ArticlesTab> {
 
   Future<void> _initializeData() async {
     // First, try to load articles from local storage to show data quickly.
-    final cachedArticles = await Storage.instance.getArticlesByCategory(
-      widget.category?.id ?? 0,
-    );
+    final List<Article> cachedArticles = await Storage.instance
+        .getArticlesByCategory(widget.category?.id ?? 0);
     if (mounted && cachedArticles.isNotEmpty) {
-      setState(() {
-        _articles = cachedArticles;
-      });
+      _articles.value = cachedArticles;
     }
 
     await _loadArticles(refresh: true);
   }
 
   Future<void> _loadArticles({bool refresh = false}) async {
-    if (_isLoading) return;
-    if (mounted) {
-      setState(() {
-        _isLoading = true;
-        if (refresh) {
-          _hasError = false; // Reset error state on refresh
-        }
-      });
-    }
-    if (refresh) {
-      _offset = 0;
-      _hasMore = true;
-    }
+    if (_isLoading || !mounted) return;
+    setState(() {
+      _isLoading = true;
+      if (refresh) {
+        _hasError = false;
+        _hasMore = true;
+        _offset = 0;
+      }
+    });
 
-    try {
-      final newArticles = await Server.getArticles(
-        offset: _offset,
-        mask: widget.mask ?? "",
-        tags: widget.tags ?? "",
-        categoryCode: widget.category?.code ?? "",
-        categoryId: widget.category?.id ?? 0,
-      );
-      if (mounted) {
-        setState(() {
-          if (refresh) {
-            _articles = newArticles;
-          } else {
-            _articles.addAll(newArticles);
-          }
-          _offset = _articles.length;
-          _hasMore = newArticles.isNotEmpty;
-          _hasError = false; // Data loaded successfully
-        });
-        // After updating the UI, save the complete list to the cache.
-        if (newArticles.isNotEmpty) {
-          await _saveArticlesToCache();
-        }
-      }
-    } catch (e) {
-      // If an error occurs, set the error flag.
-      if (mounted) {
-        setState(() => _hasError = true);
-      }
-    } finally {
-      if (mounted) {
-        setState(() => _isLoading = false);
-      }
-    }
-  }
-
-  Future<void> _saveArticlesToCache() async {
-    if (widget.category?.id == null) return;
-    // We convert the list of Article objects back to a JSON string to save it.
-    final articlesJson = jsonEncode(_articles.map((a) => a.toJson()).toList());
-    await Storage.instance.setArticlesByCategory(
-      articlesJson,
-      widget.category?.id ?? 0,
+    final List<Article>? newArticles = await Server.getArticles(
+      offset: _offset,
+      mask: widget.mask ?? "",
+      tags: widget.tags ?? "",
+      categoryCode: widget.category?.code ?? "",
+      categoryId: widget.category?.id ?? 0,
     );
+    if (!mounted) return;
+
+    if (newArticles == null) {
+      _hasError = true;
+    } else {
+      if (refresh) {
+        _articles.value = newArticles;
+      } else {
+        _articles.value = <Article>[..._articles.value, ...newArticles];
+      }
+      _offset = _articles.value.length;
+      _hasMore = newArticles.isNotEmpty;
+      _hasError = false;
+      if (newArticles.isNotEmpty) {
+        Storage.instance.cacheArticles(widget.category?.id, _articles.value);
+      }
+    }
+    setState(() {
+      _isLoading = false;
+    });
   }
 
   @override
@@ -145,45 +133,58 @@ class _ArticlesTabState extends State<ArticlesTab> {
   @override
   Widget build(BuildContext context) {
     // If there's an error and we have no articles, show the NoConnection widget.
-    if (_hasError && _articles.isEmpty) {
+    if (_hasError && _articles.value.isEmpty) {
       return NoConnection(onTap: _handleRefresh);
     }
-
     // Show a loading indicator on initial load.
-    if (_articles.isEmpty && _isLoading) {
+    else if (_articles.value.isEmpty && _isLoading) {
       return const Center(child: CircularProgressIndicator());
     }
-
     // If loading is finished and there are no articles, show NoResult.
-    if (_articles.isEmpty && !_isLoading) {
+    else if (_articles.value.isEmpty && !_isLoading) {
       return const NoResult();
     }
-
-    // final AppColors appColors = Theme.of(context).extension<AppColors>()!;
+    final bool isStandardTraffic = context.watch<TrafficManager>().isStandart();
+    final double width = (MediaQuery.of(context).size.width * 0.4).clamp(
+      _imageHeight,
+      _imageMaxWidth,
+    );
+    final AppColors appColors = Theme.of(context).extension<AppColors>()!;
+    final Locale locale = context.watch<LocaleManager>().locale;
 
     // Otherwise, display the list of articles.
     return Scaffold(
       floatingActionButton: FabScroller(scrollController: _scrollController),
       body: RefreshIndicator(
         onRefresh: _handleRefresh,
-        child: ListView.builder(
-          itemExtent: Constants.articleItemExtent,
-          controller: _scrollController,
-          shrinkWrap: true,
-          itemCount: _articles.length + (_hasMore ? 1 : 0),
-          itemBuilder: (context, index) {
-            if (index < _articles.length) {
-              return ArticleCard(
-                key: ValueKey(_articles[index].id),
-                article: _articles[index],
-              );
-            } else {
-              // Show loading indicator at the bottom
-              return const Padding(
-                padding: EdgeInsets.symmetric(vertical: 16),
-                child: Center(child: CircularProgressIndicator()),
-              );
-            }
+        child: ValueListenableBuilder<List<Article>>(
+          valueListenable: _articles,
+          builder: (BuildContext context, List<Article> value, Widget? child) {
+            return ListView.builder(
+              itemExtent: Constants.articleItemExtent,
+              controller: _scrollController,
+              shrinkWrap: true,
+              itemCount: _articles.value.length + (_hasMore ? 1 : 0),
+              itemBuilder: (BuildContext context, int index) {
+                if (index < _articles.value.length) {
+                  return ArticleCard(
+                    key: ValueKey<int>(_articles.value[index].id),
+                    article: _articles.value[index],
+                    isStandardTraffic: isStandardTraffic,
+                    imageWidth: width,
+                    dividerColor: appColors.dividerColor!,
+                    textHintThemeColor: appColors.textHintThemeColor!,
+                    locale: locale,
+                  );
+                } else {
+                  // Show loading indicator at the bottom
+                  return const Padding(
+                    padding: EdgeInsets.symmetric(vertical: 16),
+                    child: Center(child: CircularProgressIndicator()),
+                  );
+                }
+              },
+            );
           },
         ),
       ),
