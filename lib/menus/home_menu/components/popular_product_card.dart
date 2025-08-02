@@ -15,7 +15,7 @@ class PopularProductCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final AppColors appColors = Theme.of(context).extension<AppColors>()!;
-    final Locale locale = context.watch<LocaleManager>().locale;
+    final Locale locale = context.read<LocaleManager>().locale;
     const double width = 95.0;
     const double height = 85.0;
 
@@ -34,7 +34,7 @@ class PopularProductCard extends StatelessWidget {
         title: Row(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
-            context.watch<TrafficManager>().isStandart()
+            context.read<TrafficManager>().isStandart()
                 ? CachedNetworkImage(
                     imageUrl: product.img,
                     fit: BoxFit.fill,
@@ -74,18 +74,14 @@ class PopularProductCard extends StatelessWidget {
                   ),
                   const SizedBox(height: 4),
                   Text(
-                    locale.languageCode == "ru"
-                        ? product.descriptionRu
-                        : product.description,
+                    product.getDescription(locale.languageCode),
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
                     style: const TextStyle(fontSize: 13),
                   ),
                   const SizedBox(height: 4),
                   Text(
-                    locale.languageCode == 'ru'
-                        ? product.timeLocationRu
-                        : product.timeLocation,
+                    product.getTimeLocation(locale.languageCode),
                     maxLines: 1,
                     textWidthBasis: TextWidthBasis.parent,
                     overflow: TextOverflow.clip,

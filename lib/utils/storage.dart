@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -86,9 +87,17 @@ class Storage {
 
   Future<void> setArticleCategories(String data) async {
     try {
-      final Directory dir = await getApplicationDocumentsDirectory();
-      final File file = File('${dir.path}/articleCategories.json');
-      await file.writeAsString(data);
+      if (kIsWeb) {
+        // Use shared_preferences for web
+        final SharedPreferences prefs = await SharedPreferences.getInstance();
+        final String jsonString = jsonEncode(data);
+        await prefs.setString('article_categories', jsonString);
+      } else {
+        // Use path_provider and dart:io for native
+        final Directory directory = await getApplicationDocumentsDirectory();
+        final File file = File('${directory.path}/articles.json');
+        await file.writeAsString(jsonEncode(data));
+      }
     } catch (e) {
       debugPrint('Error saving article categories: $e');
     }
@@ -96,11 +105,19 @@ class Storage {
 
   Future<List<ArticleCategory>> getArticleCategories() async {
     try {
-      final Directory dir = await getApplicationDocumentsDirectory();
-      final File file = File('${dir.path}/articleCategories.json');
-      if (!await file.exists()) return <ArticleCategory>[];
-      final String jsonString = await file.readAsString();
-      final List<dynamic> jsonList = jsonDecode(jsonString) as List<dynamic>;
+      String jsonString = "";
+      if (kIsWeb) {
+        // Use shared_preferences for web
+        final SharedPreferences prefs = await SharedPreferences.getInstance();
+        jsonString = prefs.getString('article_categories') ?? "";
+      } else {
+        // Use path_provider and dart:io for native
+        final Directory directory = await getApplicationDocumentsDirectory();
+        final File file = File('${directory.path}/articleCategories.json');
+        jsonString = await file.readAsString();
+        // if (!await file.exists()) return <ArticleCategory>[];
+      }
+      final List<dynamic> jsonList = jsonString as List<dynamic>;
       return jsonList
           .map(
             (dynamic json) =>
@@ -115,9 +132,16 @@ class Storage {
 
   Future<void> cacheData(int id, String data) async {
     try {
-      final Directory dir = await getApplicationDocumentsDirectory();
-      final File file = File('${dir.path}/articles_$id.json');
-      await file.writeAsString(data);
+      if (kIsWeb) {
+        // Use shared_preferences for web
+        final SharedPreferences prefs = await SharedPreferences.getInstance();
+        await prefs.setString('articles_$id', data);
+      } else {
+        // Use path_provider and dart:io for native
+        final Directory directory = await getApplicationDocumentsDirectory();
+        final File file = File('${directory.path}/articles_$id.json');
+        await file.writeAsString(data);
+      }
     } catch (e) {
       debugPrint('Error saving articles for category $id: $e');
     }
@@ -133,10 +157,18 @@ class Storage {
 
   Future<List<Article>> getArticlesByCategory(int id) async {
     try {
-      final Directory dir = await getApplicationDocumentsDirectory();
-      final File file = File('${dir.path}/articles_$id.json');
-      if (!await file.exists()) return <Article>[];
-      final String jsonString = await file.readAsString();
+      String jsonString = "";
+      if (kIsWeb) {
+        // Use shared_preferences for web
+        final SharedPreferences prefs = await SharedPreferences.getInstance();
+        jsonString = prefs.getString('articles_$id') ?? "";
+      } else {
+        // Use path_provider and dart:io for native
+        final Directory directory = await getApplicationDocumentsDirectory();
+        final File file = File('${directory.path}/articles_$id.json');
+        jsonString = await file.readAsString();
+        // if (!await file.exists()) return <Article>[];
+      }
       final List<dynamic> jsonList = jsonDecode(jsonString) as List<dynamic>;
       return jsonList
           .map((dynamic json) => Article.fromJson(json as Map<String, dynamic>))

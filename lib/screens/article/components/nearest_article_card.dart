@@ -28,7 +28,7 @@ class NearestArticleCard extends StatelessWidget {
           children: <Widget>[
             SizedBox(
               width: double.infinity,
-              child: context.watch<TrafficManager>().isStandart()
+              child: context.read<TrafficManager>().isStandart()
                   ? CachedNetworkImage(
                       imageUrl: nearestArticle.img,
                       filterQuality: FilterQuality.low,
@@ -77,9 +77,7 @@ class NearestArticleCard extends StatelessWidget {
               left: 10,
               right: 10,
               child: Text(
-                languageCode == 'ru'
-                    ? nearestArticle.titleRu
-                    : nearestArticle.title,
+                nearestArticle.getTitle(languageCode),
                 style: const TextStyle(
                   color: Colors.white,
                   fontSize: 16,
@@ -94,9 +92,7 @@ class NearestArticleCard extends StatelessWidget {
               left: 10,
               right: 10,
               child: Text(
-                languageCode == 'ru'
-                    ? nearestArticle.elapsedTimeRu
-                    : nearestArticle.elapsedTime,
+                nearestArticle.getElapsedTime(languageCode),
                 style: TextStyle(
                   color: Colors.grey.shade300,
                   fontSize: 14,

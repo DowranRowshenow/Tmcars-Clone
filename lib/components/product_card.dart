@@ -41,9 +41,9 @@ class _ProductCardState extends State<ProductCard> {
                 ),
                 const SizedBox(height: 5),
                 Text(
-                  context.watch<LocaleManager>().locale.languageCode == 'ru'
-                      ? widget.product.timeLocationRu
-                      : widget.product.timeLocation,
+                  widget.product.getTimeLocation(
+                    context.read<LocaleManager>().locale.languageCode,
+                  ),
                   softWrap: true,
                   textWidthBasis: TextWidthBasis.parent,
                   overflow: TextOverflow.clip,

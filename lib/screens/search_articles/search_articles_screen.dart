@@ -56,7 +56,7 @@ class _SearchArticlesScreenState extends State<SearchArticlesScreen> {
   @override
   Widget build(BuildContext context) {
     final AppColors appColors = Theme.of(context).extension<AppColors>()!;
-    final AppLocalizations appLocalizations = AppLocalizations.of(context)!;
+    final AppLocalizations appLocalizations = Localizations.of<AppLocalizations>(context, AppLocalizations)!;
 
     return Scaffold(
       appBar: AppBar(

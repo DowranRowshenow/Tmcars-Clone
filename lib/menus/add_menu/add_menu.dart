@@ -12,7 +12,8 @@ class AddMenu extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // final AppLocalizations appLocalizations = AppLocalizations.of(context)!;
+    final AppLocalizations appLocalizations =
+        Localizations.of<AppLocalizations>(context, AppLocalizations)!;
 
     return DefaultTabController(
       length: 3,
@@ -24,9 +25,9 @@ class AddMenu extends StatelessWidget {
             textScaler: const TextScaler.linear(Constants.tabTextScale),
             indicatorColor: Colors.white,
             tabs: <Widget>[
-              Tab(text: AppLocalizations.of(context)!.cars.toUpperCase()),
-              Tab(text: AppLocalizations.of(context)!.parts.toUpperCase()),
-              Tab(text: AppLocalizations.of(context)!.others.toUpperCase()),
+              Tab(text: appLocalizations.cars.toUpperCase()),
+              Tab(text: appLocalizations.parts.toUpperCase()),
+              Tab(text: appLocalizations.others.toUpperCase()),
             ],
           ),
         ),

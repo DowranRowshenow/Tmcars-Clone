@@ -12,7 +12,7 @@ class MenuScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final NavigationManager navigationManager = context
-        .watch<NavigationManager>();
+        .read<NavigationManager>();
 
     return PopScope(
       canPop: false,
@@ -25,7 +25,7 @@ class MenuScreen extends StatelessWidget {
           if (navigationManager.currentMenu == MenuState.home) {
             showExitDialog(context: context);
           } else {
-            context.read<NavigationManager>().setMenu(MenuState.home);
+            navigationManager.setMenu(MenuState.home);
             return;
           }
         }
@@ -33,7 +33,7 @@ class MenuScreen extends StatelessWidget {
       child: Scaffold(
         key: navigationManager.scaffoldKey,
         appBar: AppBar(
-          title: Text(navigationManager.getMenuTitle(context)),
+          title: Text(context.watch<NavigationManager>().getMenuTitle(context)),
           leading: IconButton(
             icon: const Icon(Icons.menu),
             splashRadius: Constants.splashRadius,
@@ -46,7 +46,7 @@ class MenuScreen extends StatelessWidget {
         drawer: CustomDrawer(
           onTap: (MenuState state) {
             navigationManager.scaffoldKey.currentState?.closeDrawer();
-            context.read<NavigationManager>().setMenu(state);
+            navigationManager.setMenu(state);
           },
         ),
         body: navigationManager.getCurrentMenu(),

@@ -4,31 +4,30 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../../models/article_model.dart';
+import '../../../providers/locale.dart';
 import '../../../providers/navigation.dart';
+import '../../../providers/themes.dart';
 import 'article_card_image.dart';
 
 class ArticleCard extends StatelessWidget {
   const ArticleCard({
     super.key,
     required this.article,
-    required this.isStandardTraffic,
     required this.imageWidth,
-    required this.dividerColor,
-    required this.textHintThemeColor,
-    required this.locale,
   });
   final Article article;
-  final bool isStandardTraffic;
   final double imageWidth;
-  final Locale locale;
-  final Color dividerColor;
-  final Color textHintThemeColor;
 
   @override
   Widget build(BuildContext context) {
+    final Locale locale = context.read<LocaleManager>().locale;
+    final AppColors appColors = Theme.of(context).extension<AppColors>()!;
+
     return Container(
       decoration: BoxDecoration(
-        border: Border(bottom: BorderSide(color: dividerColor, width: 1)),
+        border: Border(
+          bottom: BorderSide(color: appColors.dividerColor!, width: 1),
+        ),
       ),
       child: ListTile(
         minVerticalPadding: 0,
@@ -51,9 +50,7 @@ class ArticleCard extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
                   Text(
-                    locale.languageCode == 'ru'
-                        ? article.titleRu
-                        : article.title,
+                    article.getTitle(locale.languageCode),
                     maxLines: 3,
                     overflow: TextOverflow.ellipsis,
                     style: const TextStyle(
@@ -63,15 +60,13 @@ class ArticleCard extends StatelessWidget {
                   ),
                   const SizedBox(height: 10),
                   Text(
-                    locale.languageCode == 'ru'
-                        ? article.elapsedTimeRu
-                        : article.elapsedTime,
+                    article.getElapsedTime(locale.languageCode),
                     maxLines: 1,
                     textWidthBasis: TextWidthBasis.parent,
                     overflow: TextOverflow.clip,
                     style: TextStyle(
                       fontSize: 12,
-                      color: textHintThemeColor,
+                      color: appColors.textHintThemeColor,
                       fontWeight: FontWeight.w400,
                     ),
                   ),
@@ -83,7 +78,6 @@ class ArticleCard extends StatelessWidget {
               articleImg: article.img,
               videoExist: article.videoExist,
               width: imageWidth,
-              isStandardTraffic: isStandardTraffic,
             ),
           ],
         ),

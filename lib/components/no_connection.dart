@@ -8,7 +8,8 @@ class NoConnection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final AppLocalizations appLocalizations = AppLocalizations.of(context)!;
+    final AppLocalizations appLocalizations =
+        Localizations.of<AppLocalizations>(context, AppLocalizations)!;
 
     return Center(
       child: InkWell(
@@ -19,8 +20,8 @@ class NoConnection extends StatelessWidget {
         highlightColor: Colors.black12,
         onTap: onTap,
         child: Container(
-          height: 200,
-          width: 200,
+          height: 230,
+          width: 230,
           decoration: BoxDecoration(borderRadius: BorderRadius.circular(100)),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -29,6 +30,8 @@ class NoConnection extends StatelessWidget {
               const SizedBox(height: 10),
               Text(
                 appLocalizations.noInternet,
+                overflow: TextOverflow.ellipsis,
+                textAlign: TextAlign.center,
                 style: const TextStyle(
                   fontWeight: FontWeight.bold,
                   fontSize: 18,
@@ -39,7 +42,10 @@ class NoConnection extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
                   const Icon(Icons.refresh, size: 16),
-                  Text(appLocalizations.tryAgain),
+                  Text(
+                    appLocalizations.tryAgain,
+                    overflow: TextOverflow.ellipsis,
+                  ),
                 ],
               ),
             ],

@@ -1,20 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:tmcarsclone/components/scroll/low_friction_scroll_physics.dart';
 
+import '../../components/scroll/low_friction_scroll_physics.dart';
 import '../../models/article_category_model.dart';
 import '../../providers/locale.dart';
 import '../../utils/constants.dart';
 import 'tabs/articles_tab.dart';
-
-String _getCategoryName(ArticleCategory category, String languageCode) {
-  switch (languageCode) {
-    case 'ru':
-      return category.categoryNameRu;
-    default:
-      return category.categoryName; // Fallback to default
-  }
-}
 
 class ArticlesMenu extends StatelessWidget {
   const ArticlesMenu({super.key});
@@ -22,7 +13,7 @@ class ArticlesMenu extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final List<ArticleCategory> categories = context
-        .watch<List<ArticleCategory>>();
+        .read<List<ArticleCategory>>();
     if (categories.isEmpty) {
       return const Center(child: CircularProgressIndicator());
     }
@@ -64,8 +55,7 @@ class ArticlesMenu extends StatelessWidget {
                       tabs: categories
                           .map(
                             (ArticleCategory cat) => Tab(
-                              text: _getCategoryName(
-                                cat,
+                              text: cat.getCategoryName(
                                 localeManager.locale.languageCode,
                               ),
                             ),

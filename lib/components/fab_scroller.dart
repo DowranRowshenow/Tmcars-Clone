@@ -126,8 +126,7 @@ class _FabScrollerState extends State<FabScroller> {
           curve: Curves.easeOutCubic,
           child: FloatingActionButton(
             mini: true,
-            backgroundColor: Constants
-                .colorPrimary, // Or Theme.of(context).colorScheme.primary,
+            backgroundColor: Constants.colorPrimary,
             onPressed: () {
               // Ensure controller has clients before animating
               if (widget.scrollController.hasClients) {

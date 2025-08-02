@@ -70,4 +70,8 @@ class ArticleCategory extends Equatable {
       colorCode: colorCode ?? this.colorCode,
     );
   }
+
+  String getCategoryName(String languageCode) {
+    return languageCode == "ru" ? categoryNameRu : categoryName;
+  }
 }

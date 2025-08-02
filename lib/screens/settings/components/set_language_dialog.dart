@@ -17,9 +17,10 @@ Future<bool?> showSetLanguageDialog({
     barrierColor:
         barrierColor ?? Colors.black.withValues(alpha: Constants.blurAlpha),
     builder: (BuildContext dialogContext) {
-      final LocaleManager localeManager = context.watch<LocaleManager>();
       final AppColors appColors = Theme.of(context).extension<AppColors>()!;
-      final AppLocalizations appLocalizations = AppLocalizations.of(context)!;
+      final AppLocalizations appLocalizations =
+          Localizations.of<AppLocalizations>(context, AppLocalizations)!;
+      final LocaleManager localeManager = context.read<LocaleManager>();
       String selectedLanguageCode = localeManager.locale.languageCode;
 
       return AlertDialog(
@@ -70,7 +71,7 @@ Future<bool?> showSetLanguageDialog({
               style: const TextStyle(color: Constants.colorPrimary),
             ),
             onPressed: () {
-              context.read<LocaleManager>().setLocale(selectedLanguageCode);
+              localeManager.setLocale(selectedLanguageCode);
               Navigator.of(dialogContext).pop();
             },
           ),

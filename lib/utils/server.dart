@@ -10,7 +10,6 @@ import '../models/article_category_model.dart';
 import '../models/article_detail_model.dart';
 import '../models/article_model.dart';
 import '../models/popular_product_model.dart';
-import '../models/product_model.dart';
 import 'storage.dart';
 
 class Server {
@@ -23,7 +22,7 @@ class Server {
 
   // Cache for API responses
   static final Map<String, dynamic> _cache = <String, dynamic>{};
-  static const Duration _cacheExpiry = Duration(minutes: 1);
+  static const Duration _cacheExpiry = Duration(minutes: 2);
 
   // ENDPOINTS
   static const String currentUrl = '';
@@ -143,9 +142,10 @@ class Server {
     }
 
     try {
-      final http.Response response = await _client.get(
-        Uri.https(host, "/tmcars/articleCategory/categories"),
-      );
+      final http.Response response = await _client
+          .get(Uri.https(host, "/tmcars/articleCategory/categories"))
+          .timeout(const Duration(seconds: 10)); // Added timeout
+
       if (response.statusCode == 200) {
         // Fix: Explicitly cast json.decode result to List<dynamic>
         final List<dynamic> data = json.decode(response.body) as List<dynamic>;
@@ -197,9 +197,10 @@ class Server {
     }
 
     try {
-      final http.Response response = await http.get(
-        Uri.https(host, "/tmcars/article/articles", map),
-      );
+      final http.Response response = await http
+          .get(Uri.https(host, "/tmcars/article/articles", map))
+          .timeout(const Duration(seconds: 10)); // Added timeout
+
       if (response.statusCode == 200) {
         final List<dynamic> data = json.decode(response.body) as List<dynamic>;
         return data
@@ -242,9 +243,10 @@ class Server {
     };
 
     try {
-      final http.Response response = await http.get(
-        Uri.https(host, "/tmcars/article/nearestNews", map),
-      );
+      final http.Response response = await http
+          .get(Uri.https(host, "/tmcars/article/nearestNews", map))
+          .timeout(const Duration(seconds: 10)); // Added timeout
+
       if (response.statusCode == 200) {
         // Fix: Explicitly cast json.decode result to List<dynamic>
         final List<dynamic> data = json.decode(response.body) as List<dynamic>;
@@ -292,9 +294,10 @@ class Server {
 
     final Map<String, dynamic> map = <String, dynamic>{'id': id.toString()};
     try {
-      final http.Response response = await http.get(
-        Uri.https(host, "/tmcars/article/getArticle", map),
-      );
+      final http.Response response = await http
+          .get(Uri.https(host, "/tmcars/article/getArticle", map))
+          .timeout(const Duration(seconds: 10)); // Added timeout
+
       if (response.statusCode == 200) {
         // Fix: Explicitly cast json.decode result to Map<String, dynamic>
         final ArticleDetail data = ArticleDetail.fromJson(
@@ -316,15 +319,17 @@ class Server {
 
   static Future<String> fetchHtmlContent(String url) async {
     try {
-      final http.Response response = await http.get(
-        Uri.parse(url),
-        headers: <String, String>{
-          'Accept':
-              'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
-          'Accept-Charset': 'utf-8',
-          'Accept-Encoding': 'gzip, deflate',
-        },
-      );
+      final http.Response response = await http
+          .get(
+            Uri.parse(url),
+            headers: <String, String>{
+              'Accept':
+                  'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
+              'Accept-Charset': 'utf-8',
+              'Accept-Encoding': 'gzip, deflate',
+            },
+          )
+          .timeout(const Duration(seconds: 10)); // Added timeout
 
       if (response.statusCode == 200) {
         debugPrint('Response headers: ${response.headers}');
@@ -365,48 +370,5 @@ class Server {
       debugPrint('Error fetching HTML: $e');
     }
     return '';
-  }
-
-  static Future<List<Product>> getProducts({
-    String name = '',
-    String category = '',
-    String priceMin = '',
-    String priceMax = '',
-    String location = '',
-    String limit = '',
-  }) async {
-    /*
-    final Map<String, String> queryParams = {
-      'format': 'json',
-      'name': name,
-      'category': category,
-      'price_min': priceMin,
-      'price_max': priceMax,
-      'location': location,
-      'limit': limit,
-    };
-    try {
-      final http.Response response = await http.get(
-        Uri.http(host, '/api/products/', queryParams),
-        headers: <String, String>{
-          'Content-Type': 'application/json; charset=UTF-8',
-        },
-      );
-      if (response.statusCode == 200) {
-        // Fix: Explicitly cast json.decode result to List<dynamic>
-        final data = json.decode(utf8convert(response.body)) as List<dynamic>;
-        List<Product> products = [];
-        // Fix: Explicitly cast each item to Map<String, dynamic> before passing to fromJson
-        for (var productJson in data) {
-          products.add(Product.fromJson(productJson as Map<String, dynamic>));
-        }
-        return products;
-      } else {
-        debugPrint('${response.statusCode}: Product Get Failed!');
-      }
-    } catch (e) {
-      debugPrint('Error fetching data: $e');
-    }*/
-    return <Product>[];
   }
 }

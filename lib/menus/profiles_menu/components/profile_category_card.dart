@@ -27,7 +27,7 @@ class ProfileCategoryCard extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center, // Center content
             children: <Widget>[
               Expanded(
-                child: context.watch<TrafficManager>().isStandart()
+                child: context.read<TrafficManager>().isStandart()
                     ? CachedNetworkImage(
                         imageUrl: Constants.tempImageUrl,
                         height: 185,
@@ -47,7 +47,10 @@ class ProfileCategoryCard extends StatelessWidget {
               Padding(
                 padding: const EdgeInsets.all(5.0),
                 child: Text(
-                  AppLocalizations.of(context)!.carsAndParts,
+                  Localizations.of<AppLocalizations>(
+                    context,
+                    AppLocalizations,
+                  )!.carsAndParts,
                   overflow: TextOverflow.ellipsis,
                   style: TextStyle(color: appColors.textThemeColor),
                 ),

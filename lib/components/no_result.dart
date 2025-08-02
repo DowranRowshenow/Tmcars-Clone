@@ -22,7 +22,9 @@ class NoResult extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             const Icon(Icons.search_off),
-            Text("${AppLocalizations.of(context)!.noResult}!"),
+            Text(
+              "${Localizations.of<AppLocalizations>(context, AppLocalizations)!.noResult}!",
+            ),
           ],
         ),
       ),

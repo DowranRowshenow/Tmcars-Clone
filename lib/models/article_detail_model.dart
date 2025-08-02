@@ -206,6 +206,26 @@ class ArticleDetail extends Equatable {
         ? imgs.map((ArticleImage image) => image.thumbnail).toList()
         : imgs.map((ArticleImage image) => image.original).toList();
   }
+
+  String getTitle(String languageCode) {
+    return languageCode == "ru" ? titleRu : title;
+  }
+
+  String getOpenUrl(String languageCode) {
+    return languageCode == "ru" ? openUrlRu : openUrl;
+  }
+
+  String getShareSiteUrl(String languageCode) {
+    return languageCode == "ru" ? categoryNameRu : categoryName;
+  }
+
+  String getElapsedTime(String languageCode) {
+    return languageCode == "ru" ? elapsedTimeRu : elapsedTime;
+  }
+
+  String getCategoryName(String languageCode) {
+    return languageCode == "ru" ? categoryNameRu : categoryName;
+  }
 }
 
 class ArticleImage extends Equatable {
@@ -268,6 +288,10 @@ class ArticleTag extends Equatable {
       name: name ?? this.name,
       nameRu: nameRu ?? this.nameRu,
     );
+  }
+
+  String getName(String languageCode) {
+    return languageCode == "ru" ? nameRu : name;
   }
 }
 

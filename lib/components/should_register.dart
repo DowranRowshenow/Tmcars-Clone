@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:tmcarsclone/providers/themes.dart';
 
 import '../l10n/app_localizations.dart';
 import '../providers/navigation.dart';
+import '../providers/themes.dart';
 import '../utils/constants.dart';
 
 class ShouldRegister extends StatelessWidget {
@@ -11,7 +11,8 @@ class ShouldRegister extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final AppLocalizations appLocalizations = AppLocalizations.of(context)!;
+    final AppLocalizations appLocalizations =
+        Localizations.of<AppLocalizations>(context, AppLocalizations)!;
     final AppColors appColors = Theme.of(context).extension<AppColors>()!;
 
     return Center(

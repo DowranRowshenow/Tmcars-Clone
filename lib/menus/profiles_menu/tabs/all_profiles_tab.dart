@@ -33,7 +33,10 @@ class AllProfilesTab extends StatelessWidget {
                     keyboardType: TextInputType.multiline,
                     maxLines: 1,
                     decoration: InputDecoration.collapsed(
-                      hintText: AppLocalizations.of(context)!.search,
+                      hintText: Localizations.of<AppLocalizations>(
+                        context,
+                        AppLocalizations,
+                      )!.search,
                     ),
                   ),
                 ),

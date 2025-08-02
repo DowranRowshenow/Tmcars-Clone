@@ -27,7 +27,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
   @override
   Widget build(BuildContext context) {
     final AppColors appColors = Theme.of(context).extension<AppColors>()!;
-    final AppLocalizations appLocalizations = AppLocalizations.of(context)!;
+    final AppLocalizations appLocalizations =
+        Localizations.of<AppLocalizations>(context, AppLocalizations)!;
 
     return Scaffold(
       appBar: AppBar(
@@ -46,7 +47,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 padding: const EdgeInsets.all(25),
                 child: Image(
                   image: AssetImage(
-                    context.watch<ThemeManager>().isDark()
+                    context.read<ThemeManager>().isDark()
                         ? Constants.drawerLogoDark
                         : Constants.drawerLogoLight,
                   ),

@@ -18,7 +18,9 @@ Future<bool?> showSetLocationDialog({
         barrierColor ?? Colors.black.withValues(alpha: Constants.blurAlpha),
     builder: (BuildContext dialogContext) {
       final AppColors appColors = Theme.of(context).extension<AppColors>()!;
-      final AppLocalizations appLocalizations = AppLocalizations.of(context)!;
+      final AppLocalizations appLocalizations =
+          Localizations.of<AppLocalizations>(context, AppLocalizations)!;
+      final LocationManager location = context.read<LocationManager>();
 
       return AlertDialog(
         insetPadding: const EdgeInsets.all(Constants.dialogPadding),
@@ -37,60 +39,56 @@ Future<bool?> showSetLocationDialog({
               ListTile(
                 title: Text(appLocalizations.notSelected),
                 onTap: () {
-                  context.read<LocationManager>().setLocation(Location.none);
+                  location.setLocation(Location.none);
                   Navigator.of(context).pop();
                 },
               ),
               ListTile(
                 title: Text(appLocalizations.ashgabat),
                 onTap: () {
-                  context.read<LocationManager>().setLocation(
-                    Location.ashgabat,
-                  );
+                  location.setLocation(Location.ashgabat);
                   Navigator.of(context).pop();
                 },
               ),
               ListTile(
                 title: Text(appLocalizations.arkadag),
                 onTap: () {
-                  context.read<LocationManager>().setLocation(Location.arkadag);
+                  location.setLocation(Location.arkadag);
                   Navigator.of(context).pop();
                 },
               ),
               ListTile(
                 title: Text(appLocalizations.ahal),
                 onTap: () {
-                  context.read<LocationManager>().setLocation(Location.ahal);
+                  location.setLocation(Location.ahal);
                   Navigator.of(context).pop();
                 },
               ),
               ListTile(
                 title: Text(appLocalizations.balkan),
                 onTap: () {
-                  context.read<LocationManager>().setLocation(Location.balkan);
+                  location.setLocation(Location.balkan);
                   Navigator.of(context).pop();
                 },
               ),
               ListTile(
                 title: Text(appLocalizations.mary),
                 onTap: () {
-                  context.read<LocationManager>().setLocation(Location.mary);
+                  location.setLocation(Location.mary);
                   Navigator.of(context).pop();
                 },
               ),
               ListTile(
                 title: Text(appLocalizations.dashoguz),
                 onTap: () {
-                  context.read<LocationManager>().setLocation(
-                    Location.dashoguz,
-                  );
+                  location.setLocation(Location.dashoguz);
                   Navigator.of(context).pop();
                 },
               ),
               ListTile(
                 title: Text(appLocalizations.lebap),
                 onTap: () {
-                  context.read<LocationManager>().setLocation(Location.lebap);
+                  location.setLocation(Location.lebap);
                   Navigator.of(context).pop();
                 },
               ),

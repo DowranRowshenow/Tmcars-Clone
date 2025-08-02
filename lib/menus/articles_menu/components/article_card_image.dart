@@ -2,24 +2,24 @@
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import '../../../components/placeholder_image.dart';
+import '../../../providers/traffic.dart';
 
 class ArticleCardImage extends StatelessWidget {
   const ArticleCardImage({
     super.key,
     required this.articleImg,
     required this.videoExist,
-    this.height = 90.0,
-    required this.width,
-    required this.isStandardTraffic,
+    this.width,
   });
 
   final String? articleImg;
   final bool? videoExist;
-  final double height;
-  final double width;
-  final bool isStandardTraffic;
+  final double? width;
+  static const double maxWidth = 260.0;
+  static const double height = 90.0;
 
   Widget _buildImage(BuildContext context) {
     return CachedNetworkImage(
@@ -29,7 +29,13 @@ class ArticleCardImage extends StatelessWidget {
       fit: BoxFit.cover,
       filterQuality: FilterQuality.none,
       memCacheHeight: height.toInt(),
-      memCacheWidth: width.toInt(),
+      memCacheWidth:
+          (width ??
+                  (MediaQuery.of(context).size.width * 0.4).clamp(
+                    height,
+                    maxWidth,
+                  ))
+              .toInt(),
       placeholder: (BuildContext context, String url) =>
           buildImagePlaceholder(context, height: height, width: width),
       errorWidget: (BuildContext context, String url, Object error) =>
@@ -42,7 +48,7 @@ class ArticleCardImage extends StatelessWidget {
     if (videoExist == true) {
       return Stack(
         children: <Widget>[
-          isStandardTraffic && articleImg != null
+          context.read<TrafficManager>().isStandart() && articleImg != null
               ? _buildImage(context)
               : buildImagePlaceholder(context, height: height, width: width),
           const Positioned(

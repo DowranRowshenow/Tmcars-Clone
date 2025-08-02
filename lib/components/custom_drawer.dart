@@ -13,8 +13,9 @@ class CustomDrawer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final AppColors appColors = Theme.of(context).extension<AppColors>()!;
-    final ThemeManager themeManager = context.watch<ThemeManager>();
-    final AppLocalizations appLocalizations = AppLocalizations.of(context)!;
+    final ThemeManager themeManager = context.read<ThemeManager>();
+    final AppLocalizations appLocalizations =
+        Localizations.of<AppLocalizations>(context, AppLocalizations)!;
 
     return Drawer(
       width: 270,
@@ -33,7 +34,7 @@ class CustomDrawer extends StatelessWidget {
                     image: themeManager.isDark()
                         ? const AssetImage(Constants.drawerLogoDark)
                         : const AssetImage(Constants.drawerLogoLight),
-                    height: 60,
+                    height: 70,
                   ),
                 ),
                 GestureDetector(

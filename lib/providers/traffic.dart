@@ -5,7 +5,7 @@ import '../utils/storage.dart';
 class TrafficManager extends ChangeNotifier {
   int _trafficMode = 0;
 
-  int get getTrafficMode => _trafficMode;
+  int get trafficMode => _trafficMode;
 
   Future<void> setTrafficMode(int mode) async {
     if (mode == _trafficMode) {

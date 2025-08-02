@@ -63,7 +63,12 @@ class _HomeMenuState extends State<HomeMenu> {
               );
             }
             return Center(
-              child: Text(AppLocalizations.of(context)!.somethingWentWrong),
+              child: Text(
+                Localizations.of<AppLocalizations>(
+                  context,
+                  AppLocalizations,
+                )!.somethingWentWrong,
+              ),
             );
           },
     );

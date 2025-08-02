@@ -125,4 +125,20 @@ class Article extends Equatable {
       videoExist: videoExist ?? this.videoExist,
     );
   }
+
+  String getTitle(String languageCode) {
+    return languageCode == "ru" ? titleRu : title;
+  }
+
+  String getOpenUrl(String languageCode) {
+    return languageCode == "ru" ? openUrlRu : openUrl;
+  }
+
+  String getElapsedTime(String languageCode) {
+    return languageCode == "ru" ? elapsedTimeRu : elapsedTime;
+  }
+
+  String getCategoryName(String languageCode) {
+    return languageCode == "ru" ? categoryNameRu : categoryName;
+  }
 }

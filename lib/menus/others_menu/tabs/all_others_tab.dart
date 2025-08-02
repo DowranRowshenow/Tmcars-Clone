@@ -53,7 +53,10 @@ class _AllOthersTabState extends State<AllOthersTab> {
                   style: const TextStyle(fontSize: 20),
                   keyboardType: TextInputType.text,
                   decoration: InputDecoration.collapsed(
-                    hintText: AppLocalizations.of(context)!.search,
+                    hintText: Localizations.of<AppLocalizations>(
+                      context,
+                      AppLocalizations,
+                    )!.search,
                   ),
                   onChanged: (String value) {
                     if (value.length <= 255) {
@@ -103,7 +106,10 @@ class _AllOthersTabState extends State<AllOthersTab> {
                   // Fallback, should ideally not be reached if other states are handled.
                   return Center(
                     child: Text(
-                      AppLocalizations.of(context)!.somethingWentWrong,
+                      Localizations.of<AppLocalizations>(
+                        context,
+                        AppLocalizations,
+                      )!.somethingWentWrong,
                     ),
                   );
                 },

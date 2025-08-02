@@ -17,7 +17,12 @@ class _ContactScreenState extends State<ContactScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(AppLocalizations.of(context)!.administrator),
+        title: Text(
+          Localizations.of<AppLocalizations>(
+            context,
+            AppLocalizations,
+          )!.administrator,
+        ),
         leading: buildBackIconButton(context),
       ),
       body: Column(
@@ -58,7 +63,10 @@ class _ContactScreenState extends State<ContactScreen> {
                     keyboardType: TextInputType.multiline,
                     maxLines: 1,
                     decoration: InputDecoration.collapsed(
-                      hintText: AppLocalizations.of(context)!.yourMessage,
+                      hintText: Localizations.of<AppLocalizations>(
+                        context,
+                        AppLocalizations,
+                      )!.yourMessage,
                     ),
                   ),
                 ),

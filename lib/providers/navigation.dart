@@ -88,21 +88,27 @@ class NavigationManager extends ChangeNotifier {
   NavigationManager() {
     _menuTitles = <MenuState, String Function(BuildContext p1)>{
       MenuState.home: (BuildContext context) =>
-          AppLocalizations.of(context)!.home,
+          Localizations.of<AppLocalizations>(context, AppLocalizations)!.home,
       MenuState.others: (BuildContext context) =>
-          AppLocalizations.of(context)!.others,
+          Localizations.of<AppLocalizations>(context, AppLocalizations)!.others,
       MenuState.add: (BuildContext context) =>
-          AppLocalizations.of(context)!.add,
+          Localizations.of<AppLocalizations>(context, AppLocalizations)!.add,
       MenuState.comments: (BuildContext context) =>
-          AppLocalizations.of(context)!.comments,
+          Localizations.of<AppLocalizations>(
+            context,
+            AppLocalizations,
+          )!.comments,
       MenuState.articles: (BuildContext context) =>
-          AppLocalizations.of(context)!.news,
+          Localizations.of<AppLocalizations>(context, AppLocalizations)!.news,
       MenuState.profiles: (BuildContext context) =>
-          AppLocalizations.of(context)!.profiles,
+          Localizations.of<AppLocalizations>(
+            context,
+            AppLocalizations,
+          )!.profiles,
       MenuState.parts: (BuildContext context) =>
-          AppLocalizations.of(context)!.parts,
+          Localizations.of<AppLocalizations>(context, AppLocalizations)!.parts,
       MenuState.cars: (BuildContext context) =>
-          AppLocalizations.of(context)!.cars,
+          Localizations.of<AppLocalizations>(context, AppLocalizations)!.cars,
     };
 
     _menuWidgets = const <MenuState, Widget>{
@@ -119,7 +125,10 @@ class NavigationManager extends ChangeNotifier {
 
   String getMenuTitle(BuildContext context) {
     return _menuTitles[_currentMenu]?.call(context) ??
-        AppLocalizations.of(context)!.home; // Fallback to home
+        Localizations.of<AppLocalizations>(
+          context,
+          AppLocalizations,
+        )!.home; // Fallback to home
   }
 
   Widget getCurrentMenu() {

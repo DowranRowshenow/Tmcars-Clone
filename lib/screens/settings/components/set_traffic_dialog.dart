@@ -17,7 +17,7 @@ Future<bool?> showSetTrafficDialog({
     barrierColor:
         barrierColor ?? Colors.black.withValues(alpha: Constants.blurAlpha),
     builder: (BuildContext dialogContext) {
-      int selectedTrafficMode = context.watch<TrafficManager>().getTrafficMode;
+      int selectedTrafficMode = context.read<TrafficManager>().trafficMode;
       final AppColors appColors = Theme.of(context).extension<AppColors>()!;
 
       return AlertDialog(
@@ -26,7 +26,10 @@ Future<bool?> showSetTrafficDialog({
         backgroundColor: appColors.themedSurface,
         elevation: Constants.elevation,
         title: Text(
-          AppLocalizations.of(context)!.selectLanguage,
+          Localizations.of<AppLocalizations>(
+            context,
+            AppLocalizations,
+          )!.selectLanguage,
           style: TextStyle(color: appColors.textThemeColor),
         ),
         content: SizedBox(
@@ -37,7 +40,12 @@ Future<bool?> showSetTrafficDialog({
                 shrinkWrap: true,
                 children: <Widget>[
                   RadioListTile<int>(
-                    title: Text(AppLocalizations.of(context)!.standard),
+                    title: Text(
+                      Localizations.of<AppLocalizations>(
+                        context,
+                        AppLocalizations,
+                      )!.standard,
+                    ),
                     value: 0,
                     groupValue: selectedTrafficMode,
                     onChanged: (int? value) {
@@ -51,7 +59,12 @@ Future<bool?> showSetTrafficDialog({
                     controlAffinity: ListTileControlAffinity.leading,
                   ),
                   RadioListTile<int>(
-                    title: Text(AppLocalizations.of(context)!.econom),
+                    title: Text(
+                      Localizations.of<AppLocalizations>(
+                        context,
+                        AppLocalizations,
+                      )!.econom,
+                    ),
                     value: 1,
                     groupValue: selectedTrafficMode,
                     onChanged: (int? value) {
@@ -72,7 +85,10 @@ Future<bool?> showSetTrafficDialog({
         actions: <Widget>[
           TextButton(
             child: Text(
-              AppLocalizations.of(context)!.select,
+              Localizations.of<AppLocalizations>(
+                context,
+                AppLocalizations,
+              )!.select,
               style: const TextStyle(color: Constants.colorPrimary),
             ),
             onPressed: () {
@@ -84,7 +100,10 @@ Future<bool?> showSetTrafficDialog({
           ),
           TextButton(
             child: Text(
-              AppLocalizations.of(context)!.cancel,
+              Localizations.of<AppLocalizations>(
+                context,
+                AppLocalizations,
+              )!.cancel,
               style: const TextStyle(color: Constants.colorPrimary),
             ),
             onPressed: () => Navigator.of(context).pop(),

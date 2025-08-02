@@ -1,3 +1,5 @@
+import 'dart:developer' as developer;
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -22,12 +24,8 @@ import 'utils/storage.dart';
 // TODO: Write Documentation and Code Patterns
 // TODO: Write Tests Widget Unit
 // TODO: Throw Server errors to handle refresh
-// TODO: Articles_menu list gets empty list on server error leading to clear existing cached list to clear.
-// TODO: Don't write functions of {onTap} or {onPressed} in custom Component widgets
-// TODO: Force Impeller
-// TODO: Optimize shader compile with caching
-// TODO: Dispose() all statefull widgets
-// TODO: Optimize all widgets
+// TODO: Force Impeller & Optimize shader compile with caching
+// TODO: Optimize all widgets & Check Dispose all statefull widgets listeners
 // TODO: Change Menus Structure to Indexed
 
 /// A helper class to bundle all the initial data needed by the providers.
@@ -55,14 +53,22 @@ void main() async {
   // Initialize storage singleton
   final Storage storage = await Storage.getInstance();
 
-  // Load initial values from storage before the app starts.
-  // Grouping them into a single object can improve readability.
+  // Load initial values from storage in parallel to speed up app launch.
+  final List<dynamic> initialValues = await Future.wait(<Future<dynamic>>[
+    storage.getThemeMode(),
+    storage.getLocale(),
+    storage.getTrafficMode(),
+    storage.getLocation(),
+    storage.getArticleCategories(),
+  ]);
+
+  // Grouping them into a single object improves readability and data flow.
   final _InitialData initialData = _InitialData(
-    themeMode: await storage.getThemeMode(),
-    locale: await storage.getLocale(),
-    trafficMode: await storage.getTrafficMode(),
-    location: await storage.getLocation(),
-    articleCategories: await storage.getArticleCategories(),
+    themeMode: initialValues[0] as ThemeMode,
+    locale: initialValues[1] as Locale,
+    trafficMode: initialValues[2] as int,
+    location: initialValues[3] as Location,
+    articleCategories: initialValues[4] as List<ArticleCategory>,
   );
 
   // Set preferred orientation once for the entire app lifecycle.
@@ -94,6 +100,13 @@ void main() async {
         FutureProvider<List<ArticleCategory>>(
           create: (_) => Server.getArticleCategories(),
           initialData: initialData.articleCategories,
+          // Gracefully handle errors, e.g., by logging and returning cached data.
+          // This prevents the app from crashing on a failed network request.
+          catchError: (BuildContext context, Object? error) {
+            developer.log('Failed to fetch article categories', error: error);
+            // Return the stale data from storage as a fallback.
+            return initialData.articleCategories;
+          },
         ),
       ],
       child: const TmcarsApp(),

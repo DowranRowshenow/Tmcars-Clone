@@ -13,7 +13,7 @@ class ArticleTagChip extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final AppColors appColors = Theme.of(context).extension<AppColors>()!;
-    final Locale locale = context.watch<LocaleManager>().locale;
+    final Locale locale = context.read<LocaleManager>().locale;
 
     return ElevatedButton(
       onPressed: onTap == null ? null : onTap as void Function(),
@@ -22,10 +22,8 @@ class ArticleTagChip extends StatelessWidget {
         backgroundColor: WidgetStateProperty.all(appColors.tagColor),
       ),
       child: Text(
+        articleTag.getName(locale.languageCode),
         style: TextStyle(color: appColors.textThemeColor),
-        locale.languageCode == 'ru'
-            ? "#${articleTag.nameRu}"
-            : "#${articleTag.name}",
       ),
     );
   }

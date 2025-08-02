@@ -52,9 +52,11 @@ Future<bool> downloadFromUrl(
   try {
     // 1. Get the platform-specific downloads directory.
     // Using path_provider is more robust than hardcoding paths.
-    final Directory downloadsDirectory = Directory(
-      '/storage/emulated/0/Download',
-    );
+    Directory downloadsDirectory = Directory('/storage/emulated/0/Download');
+
+    if (!await downloadsDirectory.exists()) {
+      downloadsDirectory = Directory("");
+    }
 
     // 2. Create the Tmcars subfolder if it doesn't exist.
     final Directory tmcarsFolder = Directory(

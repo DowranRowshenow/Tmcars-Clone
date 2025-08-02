@@ -73,10 +73,6 @@ class _WebViewScreenState extends State<WebViewScreen> {
       ..loadRequest(Uri.parse(widget.url));
   }
 
-  void _retryLoad() {
-    _initWebViewController();
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -87,7 +83,7 @@ class _WebViewScreenState extends State<WebViewScreen> {
       body: Stack(
         children: <Widget>[
           _hasError
-              ? Center(child: NoConnection(onTap: _retryLoad))
+              ? Center(child: NoConnection(onTap: _initWebViewController))
               : WebViewWidget(controller: _controller),
           if (_isLoading)
             Center(child: CircularProgressIndicator(value: progress)),

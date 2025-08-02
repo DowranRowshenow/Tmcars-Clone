@@ -33,7 +33,8 @@ class ArticleDetailContent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final AppLocalizations appLocalizations = AppLocalizations.of(context)!;
+    final AppLocalizations appLocalizations =
+        Localizations.of<AppLocalizations>(context, AppLocalizations)!;
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -41,14 +42,12 @@ class ArticleDetailContent extends StatelessWidget {
       children: <Widget>[
         articleDetail != null
             ? CategoryTagChip(
-                categoryName: languageCode == 'ru'
-                    ? articleDetail!.categoryNameRu
-                    : articleDetail!.categoryName,
+                categoryName: articleDetail!.getCategoryName(languageCode),
                 color: tagColor,
               )
             : const SizedBox(height: 44),
         Text(
-          languageCode == 'ru' ? article.titleRu : article.title,
+          article.getTitle(languageCode),
           style: const TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
         ),
         const SizedBox(height: 8),
@@ -57,9 +56,7 @@ class ArticleDetailContent extends StatelessWidget {
             const Icon(Icons.calendar_today, size: 16, color: Colors.grey),
             const SizedBox(width: 4),
             Text(
-              languageCode == 'ru'
-                  ? article.elapsedTimeRu
-                  : article.elapsedTime,
+              article.getElapsedTime(languageCode),
               style: const TextStyle(fontSize: 14, color: Colors.grey),
             ),
             const SizedBox(width: 16),

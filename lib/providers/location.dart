@@ -33,8 +33,9 @@ class LocationManager extends ChangeNotifier {
   }
 
   static String getLocalizedLocation(BuildContext context) {
-    final AppLocalizations appLocalizations = AppLocalizations.of(context)!;
-    final Location location = context.watch<LocationManager>().location;
+    final AppLocalizations appLocalizations =
+        Localizations.of<AppLocalizations>(context, AppLocalizations)!;
+    final Location location = context.read<LocationManager>().location;
     final Map<Location, String> locationMap = <Location, String>{
       Location.ashgabat: appLocalizations.ashgabat,
       Location.arkadag: appLocalizations.arkadag,

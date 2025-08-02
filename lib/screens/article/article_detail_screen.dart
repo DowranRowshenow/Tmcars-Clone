@@ -76,8 +76,6 @@ class _ArticleDetailScreenState extends State<ArticleDetailScreen> {
   final ValueNotifier<ScrollState> _scrollStateNotifier =
       ValueNotifier<ScrollState>(ScrollState.initial);
 
-  // Cache computed values
-  String? _cachedTitle;
   String? _cachedColorCode;
 
   @override
@@ -86,9 +84,7 @@ class _ArticleDetailScreenState extends State<ArticleDetailScreen> {
     _loadArticle();
     _loadNearestArticles();
     _htmlContentFuture = Server.fetchHtmlContent(
-      widget.languageCode == "ru"
-          ? widget.article.openUrlRu
-          : widget.article.openUrl,
+      widget.article.getOpenUrl(widget.languageCode),
     );
     _scrollController.addListener(_onScroll);
   }
@@ -144,14 +140,8 @@ class _ArticleDetailScreenState extends State<ArticleDetailScreen> {
   @override
   Widget build(BuildContext context) {
     final AppColors appColors = Theme.of(context).extension<AppColors>()!;
-
-    // Cache computed values to avoid recalculation on every build
-    _cachedTitle ??= widget.languageCode == "ru"
-        ? widget.article.titleRu
-        : widget.article.title;
-
     final List<ArticleCategory> allCategories = context
-        .watch<List<ArticleCategory>>();
+        .read<List<ArticleCategory>>();
     final ArticleCategory? category = allCategories.firstWhereOrNull(
       (ArticleCategory c) => c.categoryName == widget.article.categoryName,
     );
@@ -181,7 +171,9 @@ class _ArticleDetailScreenState extends State<ArticleDetailScreen> {
                         return AnimatedOpacity(
                           opacity: scrollState.showTitle ? 1.0 : 0.0,
                           duration: const Duration(milliseconds: 200),
-                          child: Text(_cachedTitle!),
+                          child: Text(
+                            widget.article.getTitle(widget.languageCode),
+                          ),
                         );
                       },
                 ),
@@ -229,7 +221,10 @@ class _ArticleDetailScreenState extends State<ArticleDetailScreen> {
                                   PopupMenuItem<int>(
                                     value: 0,
                                     child: Text(
-                                      AppLocalizations.of(context)!.shareLink,
+                                      Localizations.of<AppLocalizations>(
+                                        context,
+                                        AppLocalizations,
+                                      )!.shareLink,
                                     ),
                                   ),
                                 ],
@@ -238,9 +233,11 @@ class _ArticleDetailScreenState extends State<ArticleDetailScreen> {
                                 case 0:
                                   SharePlus.instance.share(
                                     ShareParams(
-                                      text: widget.languageCode == 'ru'
-                                          ? articleDetail?.shareSiteUrlRu ?? ""
-                                          : articleDetail?.shareSiteUrl ?? "",
+                                      text:
+                                          articleDetail?.getShareSiteUrl(
+                                            widget.languageCode,
+                                          ) ??
+                                          "",
                                     ),
                                   );
                                   break;

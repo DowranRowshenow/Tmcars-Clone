@@ -112,4 +112,12 @@ class PopularProduct extends Equatable {
       title: title ?? this.title,
     );
   }
+
+  String getTimeLocation(String languageCode) {
+    return languageCode == "ru" ? timeLocationRu : timeLocation;
+  }
+
+  String getDescription(String languageCode) {
+    return languageCode == "ru" ? descriptionRu : description;
+  }
 }
