@@ -6,7 +6,7 @@ import '../utils/constants.dart';
 
 Future<bool?> showPermissionDialog({
   required BuildContext context,
-  bool barrierDismissible = true,
+  bool barrierDismissible = false,
 }) {
   return showDialog<bool>(
     context: context,
@@ -16,39 +16,39 @@ Future<bool?> showPermissionDialog({
       final AppColors appColors = Theme.of(
         dialogContext,
       ).extension<AppColors>()!;
-      return PopScope(
-        canPop: false,
-        child: AlertDialog(
-          backgroundColor: appColors.themedSurface,
-          elevation: Constants.elevation,
-          title: Text(
-            "Localization.permissionRequest",
-            style: TextStyle(color: appColors.textThemeColor),
-          ),
-          contentPadding: const EdgeInsets.fromLTRB(20.0, 20.0, 24.0, 0),
-          contentTextStyle: TextStyle(color: appColors.textHintThemeColor),
-          content: const Text("Localization.permissionRequestContext"),
-          actions: <Widget>[
-            TextButton(
-              style: TextButton.styleFrom(
-                splashFactory: InkSparkle.splashFactory,
-              ),
-              onPressed: () {
-                openAppSettings(); // This function from permission_handler opens app settings
-              },
-              child: const Text("Localization.openSettings.toUpperCase()"),
-            ),
-            TextButton(
-              style: TextButton.styleFrom(
-                splashFactory: InkSparkle.splashFactory,
-              ),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-              child: const Text("Localization.cancel.toUpperCase()"),
-            ),
-          ],
+      return AlertDialog(
+        backgroundColor: appColors.themedSurface,
+        elevation: Constants.elevation,
+        title: Text(
+          "Localization.permissionRequest",
+          style: TextStyle(color: appColors.textThemeColor),
         ),
+        contentPadding: const EdgeInsets.fromLTRB(20.0, 20.0, 24.0, 0),
+        contentTextStyle: TextStyle(color: appColors.textHintThemeColor),
+        content: const SizedBox(
+          width: Constants.dialogWidth,
+          child: Text("Localization.permissionRequestContext"),
+        ),
+        actions: <Widget>[
+          TextButton(
+            style: TextButton.styleFrom(
+              splashFactory: InkSparkle.splashFactory,
+            ),
+            onPressed: () {
+              openAppSettings();
+            },
+            child: const Text("Localization.openSettings.toUpperCase()"),
+          ),
+          TextButton(
+            style: TextButton.styleFrom(
+              splashFactory: InkSparkle.splashFactory,
+            ),
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+            child: const Text("Localization.cancel.toUpperCase()"),
+          ),
+        ],
       );
     },
   );

@@ -33,7 +33,7 @@ Future<bool?> showSetLanguageDialog({
           style: TextStyle(color: appColors.textThemeColor),
         ),
         content: SizedBox(
-          width: double.maxFinite,
+          width: Constants.dialogWidth,
           child: StatefulBuilder(
             builder: (BuildContext context, StateSetter setState) {
               return ListView(

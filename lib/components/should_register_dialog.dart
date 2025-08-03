@@ -37,7 +37,10 @@ Future<bool?> shouldRegisterDialog({
             localizations.notification,
             style: TextStyle(color: appColors.textThemeColor),
           ),
-          content: Text(localizations.notRegistered),
+          content: SizedBox(
+            width: Constants.dialogWidth,
+            child: Text(localizations.notRegistered),
+          ),
           actions: <Widget>[
             TextButton(
               onPressed: () {

@@ -182,7 +182,7 @@ class _ArticlesTabState extends State<ArticlesTab> {
             return ListView.builder(
               itemExtent: Constants.articleItemExtent,
               controller: _scrollController,
-              shrinkWrap: true,
+
               itemCount:
                   _articles.value.length +
                   (_articlesLoadingController.hasMore.value ? 1 : 0),

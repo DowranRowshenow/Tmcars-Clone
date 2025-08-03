@@ -20,8 +20,9 @@ Future<bool?> showExitDialog({
       final AppColors appColors = Theme.of(
         dialogContext,
       ).extension<AppColors>()!;
-      final AppLocalizations localizations = AppLocalizations.of(
+      final AppLocalizations localizations = Localizations.of<AppLocalizations>(
         dialogContext,
+        AppLocalizations,
       )!;
 
       return AlertDialog(

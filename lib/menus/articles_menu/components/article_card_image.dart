@@ -22,25 +22,28 @@ class ArticleCardImage extends StatelessWidget {
   static const double height = 90.0;
 
   Widget _buildImage(BuildContext context) {
-    return CachedNetworkImage(
-      imageUrl: articleImg!,
-      width: width,
-      height: height,
-      fit: BoxFit.cover,
-      filterQuality: FilterQuality.none,
-      memCacheHeight: height.toInt(),
-      memCacheWidth:
-          (width ??
-                  (MediaQuery.of(context).size.width * 0.4).clamp(
-                    height,
-                    maxWidth,
-                  ))
-              .toInt(),
-      placeholder: (BuildContext context, String url) =>
-          buildImagePlaceholder(context, height: height, width: width),
-      errorWidget: (BuildContext context, String url, Object error) =>
-          buildImagePlaceholder(context, height: height, width: width),
-    );
+    if (context.read<TrafficManager>().isStandart() && articleImg != null) {
+      return CachedNetworkImage(
+        imageUrl: articleImg!,
+        width: width,
+        height: height,
+        fit: BoxFit.cover,
+        filterQuality: FilterQuality.none,
+        memCacheHeight: height.toInt(),
+        memCacheWidth:
+            (width ??
+                    (MediaQuery.of(context).size.width * 0.4).clamp(
+                      height,
+                      maxWidth,
+                    ))
+                .toInt(),
+        placeholder: (BuildContext context, String url) =>
+            buildImagePlaceholder(context, height: height, width: width),
+        errorWidget: (BuildContext context, String url, Object error) =>
+            buildImagePlaceholder(context, height: height, width: width),
+      );
+    }
+    return buildImagePlaceholder(context, height: height, width: width);
   }
 
   @override
@@ -48,9 +51,7 @@ class ArticleCardImage extends StatelessWidget {
     if (videoExist == true) {
       return Stack(
         children: <Widget>[
-          context.read<TrafficManager>().isStandart() && articleImg != null
-              ? _buildImage(context)
-              : buildImagePlaceholder(context, height: height, width: width),
+          _buildImage(context),
           const Positioned(
             top: 10,
             right: 10,
@@ -67,8 +68,7 @@ class ArticleCardImage extends StatelessWidget {
           ),
         ],
       );
-    } else {
-      return _buildImage(context);
     }
+    return _buildImage(context);
   }
 }

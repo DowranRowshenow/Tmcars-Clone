@@ -51,7 +51,6 @@ class _HomeMenuState extends State<HomeMenu> {
                 onRefresh: _handleRefresh,
                 child: ListView.builder(
                   itemExtent: Constants.popularProductItemExtent,
-                  shrinkWrap: true,
                   itemCount: popularProducts.length,
                   itemBuilder: (BuildContext context, int index) {
                     return PopularProductCard(

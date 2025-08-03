@@ -50,7 +50,7 @@ class _FabScrollerState extends State<FabScroller> {
   @override
   void dispose() {
     // Only remove listeners if the controller was attached
-    if (widget.scrollController.hasClients) {
+    if (widget.scrollController.hasClients && mounted) {
       widget.scrollController.removeListener(_onScroll);
       widget.scrollController.position.isScrollingNotifier.removeListener(
         _handleScrollActivityChange,
@@ -129,7 +129,7 @@ class _FabScrollerState extends State<FabScroller> {
             backgroundColor: Constants.colorPrimary,
             onPressed: () {
               // Ensure controller has clients before animating
-              if (widget.scrollController.hasClients) {
+              if (widget.scrollController.hasClients && mounted) {
                 widget.scrollController.animateTo(
                   0,
                   duration: Duration(

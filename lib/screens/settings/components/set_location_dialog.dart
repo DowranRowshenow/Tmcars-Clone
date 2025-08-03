@@ -32,7 +32,7 @@ Future<bool?> showSetLocationDialog({
           style: TextStyle(color: appColors.textThemeColor),
         ),
         content: SizedBox(
-          width: double.maxFinite,
+          width: Constants.dialogWidth,
           child: ListView(
             shrinkWrap: true,
             children: <Widget>[

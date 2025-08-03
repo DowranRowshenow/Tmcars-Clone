@@ -92,7 +92,7 @@ class _AllOthersTabState extends State<AllOthersTab> {
                       onRefresh: _handleRefresh,
                       child: ListView.builder(
                         itemExtent: Constants.popularProductItemExtent,
-                        shrinkWrap: true,
+
                         itemCount: popularProducts.length,
                         itemBuilder: (BuildContext context, int index) {
                           return PopularProductCard(
