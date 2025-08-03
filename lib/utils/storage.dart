@@ -85,7 +85,7 @@ class Storage {
     );
   }
 
-  Future<void> setArticleCategories(String data) async {
+  Future<void> cacheArticleCategories(String data) async {
     try {
       if (kIsWeb) {
         // Use shared_preferences for web
@@ -117,7 +117,7 @@ class Storage {
         jsonString = await file.readAsString();
         // if (!await file.exists()) return <ArticleCategory>[];
       }
-      final List<dynamic> jsonList = jsonString as List<dynamic>;
+      final List<dynamic> jsonList = jsonDecode(jsonString) as List<dynamic>;
       return jsonList
           .map(
             (dynamic json) =>

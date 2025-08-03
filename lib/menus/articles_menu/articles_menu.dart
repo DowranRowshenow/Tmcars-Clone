@@ -13,7 +13,7 @@ class ArticlesMenu extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final List<ArticleCategory> categories = context
-        .read<List<ArticleCategory>>();
+        .watch<List<ArticleCategory>>();
     if (categories.isEmpty) {
       return const Center(child: CircularProgressIndicator());
     }

@@ -90,6 +90,18 @@ class _ArticlesTabState extends State<ArticlesTab> {
     await _loadArticles(refresh: true);
   }
 
+  @override
+  void didUpdateWidget(covariant ArticlesTab oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    // If the direct mask or the category has changed, reload the articles.
+    /*
+    if (oldWidget.mask != widget.mask ||
+        oldWidget.category?.id != widget.category?.id) {
+      _loadArticles(refresh: true);
+    }
+    */
+  }
+
   Future<void> _loadArticles({bool refresh = false}) async {
     if (_articlesLoadingController.isLoading.value || !mounted) return;
     _articlesLoadingController.isLoading.value = true;
@@ -117,9 +129,10 @@ class _ArticlesTabState extends State<ArticlesTab> {
         _articles.value = <Article>[..._articles.value, ...newArticles];
       }
       _offset = _articles.value.length;
-      _articlesLoadingController.hasMore.value = newArticles.isNotEmpty;
+      _articlesLoadingController.hasMore.value = newArticles.length >= 40;
       _articlesLoadingController.hasError.value = false;
-      if (newArticles.isNotEmpty && widget.isCacheEnabled) {
+      if (newArticles.isNotEmpty && widget.isCacheEnabled && query == "") {
+        // TODO: Consider caching only first 40 Item
         Storage.instance.cacheArticles(widget.category?.id, _articles.value);
       }
     }
@@ -154,8 +167,7 @@ class _ArticlesTabState extends State<ArticlesTab> {
             }
             // Show a loading indicator on initial load.
             else if (_articlesLoadingController.isLoading.value &&
-                    (_articles.value.isEmpty || query != "") ||
-                (widget.isCacheEnabled && _articles.value.isEmpty)) {
+                ((_articles.value.isEmpty || query != ""))) {
               return const Center(child: CircularProgressIndicator());
             }
             // If loading is finished and there are no articles, show NoResult.

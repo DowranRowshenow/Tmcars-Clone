@@ -160,7 +160,7 @@ class Server {
           'data': categories,
           'timestamp': DateTime.now(),
         };
-        Storage.instance.setArticleCategories(response.body);
+        Storage.instance.cacheArticleCategories(jsonEncode(response.body));
         return categories;
       } else {
         debugPrint('Failed to load news categories');
