@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:tmcarsclone/providers/navigation.dart';
 
 import '../../l10n/app_localizations.dart';
 import '../../utils/constants.dart';
@@ -12,13 +14,23 @@ class ProfilesMenu extends StatelessWidget {
   Widget build(BuildContext context) {
     final AppLocalizations appLocalizations =
         Localizations.of<AppLocalizations>(context, AppLocalizations)!;
+    final NavigationManager navigationManager = context
+        .read<NavigationManager>();
 
     return DefaultTabController(
       length: 2,
       child: Scaffold(
         appBar: AppBar(
-          elevation: 0,
-          toolbarHeight: 0,
+          title: Text(
+            Localizations.of<AppLocalizations>(context, AppLocalizations)!.cars,
+          ),
+          leading: IconButton(
+            icon: const Icon(Icons.menu),
+            splashRadius: Constants.splashRadius,
+            onPressed: () =>
+                navigationManager.scaffoldKey.currentState?.openDrawer(),
+            splashColor: Colors.transparent,
+          ),
           bottom: TabBar(
             textScaler: const TextScaler.linear(Constants.tabTextScale),
             indicatorColor: Colors.white,

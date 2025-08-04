@@ -1,14 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:tmcarsclone/models/car_query_model.dart';
 
-import '../components/should_register_dialog.dart';
-import '../l10n/app_localizations.dart';
 import '../menus/add_menu/add_menu.dart';
 import '../menus/articles_menu/articles_menu.dart';
 import '../menus/car_parts_menu/car_parts_menu.dart';
 import '../menus/cars_menu/cars_menu.dart';
-import '../menus/cars_menu/components/filter_dialog.dart';
 import '../menus/comments_menu/comments_menu.dart';
 import '../menus/home_menu/home_menu.dart';
 import '../menus/others_menu/others_menu.dart';
@@ -26,7 +22,6 @@ import '../screens/search_articles/search_articles_screen.dart';
 import '../screens/settings/settings_screen.dart';
 import '../screens/video_view/video_view_screen.dart';
 import '../screens/webview/webview_screen.dart';
-import '../utils/constants.dart';
 
 class _ArticleDetailArgs {
   final Article article;
@@ -84,35 +79,9 @@ class NavigationManager extends ChangeNotifier {
   MenuState get currentMenu => _currentMenu;
   GlobalKey<ScaffoldState> get scaffoldKey => _scaffoldKey;
 
-  late final Map<MenuState, String Function(BuildContext)> _menuTitles;
   late final Map<MenuState, Widget> _menuWidgets;
 
   NavigationManager() {
-    _menuTitles = <MenuState, String Function(BuildContext p1)>{
-      MenuState.home: (BuildContext context) =>
-          Localizations.of<AppLocalizations>(context, AppLocalizations)!.home,
-      MenuState.others: (BuildContext context) =>
-          Localizations.of<AppLocalizations>(context, AppLocalizations)!.others,
-      MenuState.add: (BuildContext context) =>
-          Localizations.of<AppLocalizations>(context, AppLocalizations)!.add,
-      MenuState.comments: (BuildContext context) =>
-          Localizations.of<AppLocalizations>(
-            context,
-            AppLocalizations,
-          )!.comments,
-      MenuState.articles: (BuildContext context) =>
-          Localizations.of<AppLocalizations>(context, AppLocalizations)!.news,
-      MenuState.profiles: (BuildContext context) =>
-          Localizations.of<AppLocalizations>(
-            context,
-            AppLocalizations,
-          )!.profiles,
-      MenuState.parts: (BuildContext context) =>
-          Localizations.of<AppLocalizations>(context, AppLocalizations)!.parts,
-      MenuState.cars: (BuildContext context) =>
-          Localizations.of<AppLocalizations>(context, AppLocalizations)!.cars,
-    };
-
     _menuWidgets = const <MenuState, Widget>{
       MenuState.home: HomeMenu(),
       MenuState.add: AddMenu(),
@@ -125,79 +94,9 @@ class NavigationManager extends ChangeNotifier {
     };
   }
 
-  String getMenuTitle(BuildContext context) {
-    return _menuTitles[_currentMenu]?.call(context) ??
-        Localizations.of<AppLocalizations>(
-          context,
-          AppLocalizations,
-        )!.home; // Fallback to home
-  }
-
   Widget getCurrentMenu() {
     return _menuWidgets[_currentMenu] ??
         const HomeMenu(); // Fallback to HomeMenu
-  }
-
-  IconButton _buildIconButton({
-    required VoidCallback onPressed,
-    required IconData icon,
-    Color color = Colors.white, // Default color
-  }) {
-    return IconButton(
-      color: color,
-      onPressed: onPressed,
-      splashRadius: Constants.splashRadius,
-      icon: Icon(icon),
-      splashColor: Colors.transparent, // Consistent splash behavior
-    );
-  }
-
-  List<Widget> getMenuButtons(
-    BuildContext context, {
-    ValueNotifier<CarQuery>? carQuery,
-  }) {
-    switch (_currentMenu) {
-      case MenuState.home:
-        return Constants.isRegistered
-            ? <Widget>[
-                _buildIconButton(
-                  onPressed: () =>
-                      _navigateToScreen(context, ScreenState.notifications),
-                  icon: Icons.notifications,
-                ),
-              ]
-            : <Widget>[];
-
-      case MenuState.articles:
-        return <Widget>[
-          _buildIconButton(
-            onPressed: () =>
-                _navigateToScreen(context, ScreenState.searchArticles),
-            icon: Icons.search,
-          ),
-        ];
-
-      case MenuState.others:
-      case MenuState.parts:
-      case MenuState.cars:
-        return <Widget>[
-          _buildIconButton(
-            onPressed: () {
-              showFilterDialog(context: context, query: carQuery);
-            },
-            icon: Icons.sort,
-          ),
-          _buildIconButton(
-            onPressed: () => shouldRegisterDialog(context: context),
-            icon: Icons.star,
-          ),
-        ];
-
-      case MenuState.add:
-      case MenuState.profiles:
-      case MenuState.comments:
-        return <Widget>[];
-    }
   }
 
   void setMenu(MenuState state) {
@@ -318,7 +217,7 @@ class NavigationManager extends ChangeNotifier {
       }
       args = _WebViewArgs(
         url: url,
-        title: title ?? getMenuTitle(context), // Fallback title
+        title: title ?? "", // Fallback title
       );
     } else if (state == ScreenState.imageView) {
       if (imageUrls == null) {

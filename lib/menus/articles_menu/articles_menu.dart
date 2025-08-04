@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../components/scroll/low_friction_scroll_physics.dart';
+import '../../l10n/app_localizations.dart';
 import '../../models/article_category_model.dart';
 import '../../providers/locale.dart';
+import '../../providers/navigation.dart';
 import '../../utils/constants.dart';
 import 'tabs/articles_tab.dart';
 
@@ -28,13 +30,34 @@ class ArticlesMenu extends StatelessWidget {
               ArticlesTab(key: ValueKey<int>(cat.id), category: cat),
         )
         .toList();
+    final NavigationManager navigationManager = context
+        .read<NavigationManager>();
 
     return DefaultTabController(
       length: categories.length,
       child: Scaffold(
         appBar: AppBar(
-          elevation: 0,
-          toolbarHeight: 0,
+          title: Text(
+            Localizations.of<AppLocalizations>(context, AppLocalizations)!.cars,
+          ),
+          leading: IconButton(
+            icon: const Icon(Icons.menu),
+            splashRadius: Constants.splashRadius,
+            onPressed: () =>
+                navigationManager.scaffoldKey.currentState?.openDrawer(),
+            splashColor: Colors.transparent,
+          ),
+          actions: <Widget>[
+            IconButton(
+              icon: const Icon(Icons.search),
+              onPressed: () {
+                navigationManager.setScreen(
+                  context,
+                  ScreenState.searchArticles,
+                );
+              },
+            ),
+          ],
           bottom: PreferredSize(
             preferredSize: const Size.fromHeight(60),
             child: Consumer<LocaleManager>(

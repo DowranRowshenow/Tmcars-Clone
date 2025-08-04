@@ -23,7 +23,19 @@ Future<bool?> showFilterDialog({
       CarQuery carQuery = CarQuery();
       String selected = appLocalizations.filterDefault;
       if (query != null) {
-        selected = query.value.sort ?? selected;
+        if (query.value.sort != null && query.value.order != null) {
+          if (query.value.sort == "price" && query.value.order == "asc") {
+            selected = appLocalizations.filterPrice;
+          } else if (query.value.sort == "price" &&
+              query.value.order == "desc") {
+            selected = appLocalizations.filterPriceDesc;
+          } else if (query.value.sort == "year" &&
+              query.value.order == "desc") {
+            selected = appLocalizations.filterYear;
+          } else if (query.value.sort == "year" && query.value.order == "asc") {
+            selected = appLocalizations.filterYearDesc;
+          }
+        }
       }
 
       return AlertDialog(
@@ -57,25 +69,6 @@ Future<bool?> showFilterDialog({
                       if (context.mounted) {
                         setState(() {
                           selected = translations;
-                          if (translations == appLocalizations.filterPrice) {
-                            carQuery.sort = "price";
-                            carQuery.order = "asc";
-                          } else if (translations ==
-                              appLocalizations.filterPriceDesc) {
-                            carQuery.sort = "price";
-                            carQuery.order = "desc";
-                          } else if (translations ==
-                              appLocalizations.filterYear) {
-                            carQuery.sort = "year";
-                            carQuery.order = "asc";
-                          } else if (translations ==
-                              appLocalizations.filterPrice) {
-                            carQuery.sort = "year";
-                            carQuery.order = "desc";
-                          } else if (translations ==
-                              appLocalizations.filterDefault) {
-                            carQuery = CarQuery();
-                          }
                         });
                       }
                     },
@@ -94,6 +87,21 @@ Future<bool?> showFilterDialog({
               style: const TextStyle(color: Constants.colorPrimary),
             ),
             onPressed: () {
+              if (selected == appLocalizations.filterPrice) {
+                carQuery.sort = "price";
+                carQuery.order = "asc";
+              } else if (selected == appLocalizations.filterPriceDesc) {
+                carQuery.sort = "price";
+                carQuery.order = "desc";
+              } else if (selected == appLocalizations.filterYear) {
+                carQuery.sort = "year";
+                carQuery.order = "desc";
+              } else if (selected == appLocalizations.filterYearDesc) {
+                carQuery.sort = "year";
+                carQuery.order = "asc";
+              } else if (selected == appLocalizations.filterDefault) {
+                carQuery = CarQuery();
+              }
               query?.value = carQuery;
               Navigator.of(dialogContext).pop();
             },

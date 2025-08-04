@@ -4,7 +4,6 @@ import 'package:provider/provider.dart';
 import '../../components/custom_drawer.dart';
 import '../../components/exit_dialog.dart';
 import '../../providers/navigation.dart';
-import '../../utils/constants.dart';
 
 class MenuScreen extends StatelessWidget {
   const MenuScreen({super.key});
@@ -32,24 +31,13 @@ class MenuScreen extends StatelessWidget {
       },
       child: Scaffold(
         key: navigationManager.scaffoldKey,
-        appBar: AppBar(
-          title: Text(context.watch<NavigationManager>().getMenuTitle(context)),
-          leading: IconButton(
-            icon: const Icon(Icons.menu),
-            splashRadius: Constants.splashRadius,
-            onPressed: () =>
-                navigationManager.scaffoldKey.currentState?.openDrawer(),
-            splashColor: Colors.transparent,
-          ),
-          actions: navigationManager.getMenuButtons(context),
-        ),
         drawer: CustomDrawer(
           onTap: (MenuState state) {
             navigationManager.scaffoldKey.currentState?.closeDrawer();
             navigationManager.setMenu(state);
           },
         ),
-        body: navigationManager.getCurrentMenu(),
+        body: context.watch<NavigationManager>().getCurrentMenu(),
       ),
     );
   }

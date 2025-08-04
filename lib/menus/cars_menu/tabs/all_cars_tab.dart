@@ -13,8 +13,12 @@ import '../../../utils/server.dart';
 import '../components/car_card.dart';
 
 class AllCarsTab extends StatefulWidget {
-  const AllCarsTab({super.key, this.query, this.isCacheEnabled = false});
-  final ValueNotifier<CarQuery>? query;
+  const AllCarsTab({
+    super.key,
+    required this.query,
+    this.isCacheEnabled = false,
+  });
+  final ValueNotifier<CarQuery> query;
   // TODO: Decide whether it should be cashed or not
   final bool isCacheEnabled;
 
@@ -31,7 +35,7 @@ class _AllCarsTabState extends State<AllCarsTab> {
   void initState() {
     super.initState();
     _initializeData();
-    widget.query?.addListener(_onQueryChange);
+    widget.query.addListener(_onQueryChange);
     _scrollController.addListener(_onScroll);
   }
 
@@ -39,16 +43,13 @@ class _AllCarsTabState extends State<AllCarsTab> {
   void dispose() {
     _cars.dispose();
     _scrollController.removeListener(_onScroll);
-    widget.query?.removeListener(_onQueryChange);
+    widget.query.removeListener(_onQueryChange);
     _scrollController.dispose();
     _loadingController.dispose();
     super.dispose();
   }
 
   void _onQueryChange() {
-    if (widget.query != null) {
-      // query = widget.query!.value;
-    }
     _loadCars(refresh: true);
   }
 
@@ -83,10 +84,10 @@ class _AllCarsTabState extends State<AllCarsTab> {
     if (refresh) {
       _loadingController.hasError.value = false;
       _loadingController.hasMore.value = true;
-      widget.query?.value.offset = 0;
+      widget.query.value.offset = 0;
     }
 
-    final List<Car>? newCars = await Server.getCars(widget.query?.value);
+    final List<Car>? newCars = await Server.getCars(widget.query.value);
     if (!mounted) return;
 
     if (newCars == null) {
@@ -97,14 +98,11 @@ class _AllCarsTabState extends State<AllCarsTab> {
       } else {
         _cars.value = <Car>[..._cars.value, ...newCars];
       }
-      // Checking if Query exist
-      if (widget.query != null) {
-        widget.query!.value.offset = 0;
-      }
 
+      widget.query.value.offset = 0;
       _loadingController.hasMore.value = newCars.length >= 40;
       _loadingController.hasError.value = false;
-      if (newCars.isNotEmpty && widget.isCacheEnabled && widget.query == null) {
+      if (newCars.isNotEmpty && widget.isCacheEnabled) {
         // TODO: Consider caching only first 40 Item
         // Storage.instance.cacheCars(widget.category?.id, _cars.value);
       }
@@ -140,7 +138,7 @@ class _AllCarsTabState extends State<AllCarsTab> {
             }
             // Show a loading indicator on initial load.
             else if (_loadingController.isLoading.value &&
-                ((_cars.value.isEmpty || widget.query != null))) {
+                _cars.value.isEmpty) {
               return const Center(child: CircularProgressIndicator());
             }
             // If loading is finished and there are no articles, show NoResult.
@@ -151,7 +149,6 @@ class _AllCarsTabState extends State<AllCarsTab> {
             return ListView.builder(
               itemExtent: Constants.articleItemExtent,
               controller: _scrollController,
-
               itemCount:
                   _cars.value.length +
                   (_loadingController.hasMore.value ? 1 : 0),

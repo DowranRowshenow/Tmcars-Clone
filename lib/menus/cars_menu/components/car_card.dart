@@ -62,7 +62,7 @@ class CarCard extends StatelessWidget {
                   ),
                   const SizedBox(height: 10),
                   Text(
-                    "${car.getCityName(locale.languageCode)} ${car.elapsedTime ?? ""}",
+                    "${car.getCityName(locale.languageCode)} ${car.elapsedTime ?? ''}",
                     maxLines: 1,
                     textWidthBasis: TextWidthBasis.parent,
                     overflow: TextOverflow.clip,
@@ -88,19 +88,31 @@ class CarCard extends StatelessWidget {
                     children: <Widget>[
                       Text(appLocalizations.credit),
                       const SizedBox(width: 2),
-                      Icon(
-                        car.isCredit! ? Icons.check_circle : Icons.close,
-                        size: 16,
-                        color: car.isCredit! ? Colors.green : Colors.red,
-                      ),
+                      car.isCredit!
+                          ? const Icon(
+                              Icons.check_circle,
+                              size: 16,
+                              color: Colors.green,
+                            )
+                          : const CircleAvatar(
+                              backgroundColor: Colors.red,
+                              radius: 8,
+                              child: Icon(Icons.close, size: 16),
+                            ),
                       const SizedBox(width: 8),
                       Text(appLocalizations.exchange),
                       const SizedBox(width: 2),
-                      Icon(
-                        car.isSwap! ? Icons.check_circle : Icons.close,
-                        size: 16,
-                        color: car.isSwap! ? Colors.green : Colors.red,
-                      ),
+                      car.isSwap!
+                          ? const Icon(
+                              Icons.check_circle,
+                              size: 16,
+                              color: Colors.green,
+                            )
+                          : const CircleAvatar(
+                              backgroundColor: Colors.red,
+                              radius: 8,
+                              child: Icon(Icons.close, size: 16),
+                            ),
                     ],
                   ),
                 ],
