@@ -117,8 +117,7 @@ class AppLocalizationsTk extends AppLocalizations {
   String get enterWithEmail => 'Email bilen girmek';
 
   @override
-  String get registerDescription =>
-      'Ulgama girmek bilen, siz öz bildirişleriňizi we profiliňizi sazlap bilersiňiz, we özüňiziň başga telefonlaryňyza geçirip bilersiňiz';
+  String get registerDescription => 'Ulgama girmek bilen, siz öz bildirişleriňizi we profiliňizi sazlap bilersiňiz, we özüňiziň başga telefonlaryňyza geçirip bilersiňiz';
 
   @override
   String get administrator => 'Administrator';
@@ -235,14 +234,35 @@ class AppLocalizationsTk extends AppLocalizations {
   String get tags => 'Tegler';
 
   @override
-  String get notRegistered =>
-      'Siz ulgama girmändirsiňiz! Ulgama girip, siz bildiriş goşup bilersiňiz, öz bildirişleriňizi we profiliňizi sazlap bilersiňiz, we özüňiziň başga telefonlaryňyza geçirip bilersiňiz.';
+  String get credit => 'Kredit';
 
   @override
-  String get shouldRegister =>
-      'Size ýazylan we siziň ýazan teswirleriňizi görmek üçin ulgama girmelisiňiz!';
+  String get exchange => 'Obmen';
 
   @override
-  String get shareText =>
-      'Iň uly awtoulag we awtoşaýlaryň jemlenen android programmasy TMCARS';
+  String get filterSelect => 'Birini saýlaň';
+
+  @override
+  String get filterPrice => 'Arzandan gymmada';
+
+  @override
+  String get filterPriceDesc => 'Gymmatdan arzana';
+
+  @override
+  String get filterYear => 'Ýyly täzeler başda';
+
+  @override
+  String get filterYearDesc => 'Ýyly köneler başda';
+
+  @override
+  String get filterDefault => 'Asyl tertipde';
+
+  @override
+  String get notRegistered => 'Siz ulgama girmändirsiňiz! Ulgama girip, siz bildiriş goşup bilersiňiz, öz bildirişleriňizi we profiliňizi sazlap bilersiňiz, we özüňiziň başga telefonlaryňyza geçirip bilersiňiz.';
+
+  @override
+  String get shouldRegister => 'Size ýazylan we siziň ýazan teswirleriňizi görmek üçin ulgama girmelisiňiz!';
+
+  @override
+  String get shareText => 'Iň uly awtoulag we awtoşaýlaryň jemlenen android programmasy TMCARS';
 }

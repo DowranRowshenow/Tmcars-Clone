@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -169,11 +168,7 @@ class SettingsScreen extends StatelessWidget {
               softWrap: false,
               style: const TextStyle(overflow: TextOverflow.ellipsis),
             ),
-            trailing: SvgPicture.asset(
-              Constants.arrowRight,
-              colorFilter: const ColorFilter.mode(Colors.grey, BlendMode.srcIn),
-              width: 6,
-            ),
+            trailing: const Icon(Icons.arrow_forward_ios),
             onTap: () {
               SharePlus.instance.share(
                 ShareParams(
@@ -325,11 +320,7 @@ class SettingsScreen extends StatelessWidget {
               maxLines: 1,
               style: const TextStyle(overflow: TextOverflow.ellipsis),
             ),
-            trailing: SvgPicture.asset(
-              Constants.arrowRight,
-              colorFilter: const ColorFilter.mode(Colors.grey, BlendMode.srcIn),
-              width: 6,
-            ),
+            trailing: const Icon(Icons.arrow_forward_ios),
             onTap: () {
               launchUrl(Uri.parse(Server.CONTACT_URL));
             },

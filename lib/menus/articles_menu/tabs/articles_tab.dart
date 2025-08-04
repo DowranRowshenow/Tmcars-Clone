@@ -7,8 +7,8 @@ import '../../../components/no_connection.dart';
 import '../../../components/no_result.dart';
 import '../../../models/article_category_model.dart';
 import '../../../models/article_model.dart';
-import '../../../utils/articles_controller.dart';
 import '../../../utils/constants.dart';
+import '../../../utils/loading_controller.dart';
 import '../../../utils/server.dart';
 import '../../../utils/storage.dart';
 import '../components/article_card.dart';
@@ -35,8 +35,7 @@ class _ArticlesTabState extends State<ArticlesTab> {
   final ValueNotifier<List<Article>> _articles = ValueNotifier<List<Article>>(
     <Article>[],
   );
-  final AriclesLoadingController _articlesLoadingController =
-      AriclesLoadingController();
+  final LoadingController _articlesLoadingController = LoadingController();
   int _offset = 0;
   String query = "";
 

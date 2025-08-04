@@ -107,10 +107,12 @@ class _ArticleDetailScreenState extends State<ArticleDetailScreen> {
   }
 
   Future<void> _loadNearestArticles() async {
-    final List<Article> nearestArticles = await Server.getNearestArticles(
+    final List<Article>? nearestArticles = await Server.getNearestArticles(
       widget.article.id,
     );
-    if (mounted) _nearestArticlesNotifier.value = nearestArticles;
+    if (mounted && nearestArticles != null) {
+      _nearestArticlesNotifier.value = nearestArticles;
+    }
   }
 
   void _onScroll() {

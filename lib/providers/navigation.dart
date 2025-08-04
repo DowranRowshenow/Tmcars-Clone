@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:tmcarsclone/models/car_query_model.dart';
 
 import '../components/should_register_dialog.dart';
 import '../l10n/app_localizations.dart';
@@ -7,6 +8,7 @@ import '../menus/add_menu/add_menu.dart';
 import '../menus/articles_menu/articles_menu.dart';
 import '../menus/car_parts_menu/car_parts_menu.dart';
 import '../menus/cars_menu/cars_menu.dart';
+import '../menus/cars_menu/components/filter_dialog.dart';
 import '../menus/comments_menu/comments_menu.dart';
 import '../menus/home_menu/home_menu.dart';
 import '../menus/others_menu/others_menu.dart';
@@ -150,7 +152,10 @@ class NavigationManager extends ChangeNotifier {
     );
   }
 
-  List<Widget> getMenuTabs(BuildContext context) {
+  List<Widget> getMenuButtons(
+    BuildContext context, {
+    ValueNotifier<CarQuery>? carQuery,
+  }) {
     switch (_currentMenu) {
       case MenuState.home:
         return Constants.isRegistered
@@ -178,7 +183,7 @@ class NavigationManager extends ChangeNotifier {
         return <Widget>[
           _buildIconButton(
             onPressed: () {
-              // Add specific sort logic here if different for each menu
+              showFilterDialog(context: context, query: carQuery);
             },
             icon: Icons.sort,
           ),

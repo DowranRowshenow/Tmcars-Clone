@@ -3,6 +3,7 @@
 .gemini/
 .roo/
 .rooignore
+web/
 
 # Miscellaneous
 *.class

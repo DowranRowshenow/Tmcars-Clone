@@ -21,6 +21,7 @@ import 'utils/storage.dart';
 
 // MARKED DOWN HIGH USAGE FREQUENCY WIDGETS WITH {HIGH} AND {DYNAMIC}
 
+// TODO: Setup Hive for caching and
 // TODO: Write Documentation and Code Patterns
 // TODO: Write Tests Widget Unit
 // TODO: Throw Server errors to handle refresh
@@ -30,6 +31,7 @@ import 'utils/storage.dart';
 
 /// A helper class to bundle all the initial data needed by the providers.
 /// This makes the main function cleaner and the data flow more explicit.
+@immutable
 class _InitialData {
   const _InitialData({
     required this.themeMode,
@@ -54,21 +56,28 @@ void main() async {
   final Storage storage = await Storage.getInstance();
 
   // Load initial values from storage in parallel to speed up app launch.
-  final List<dynamic> initialValues = await Future.wait(<Future<dynamic>>[
+  // Using a record for concurrent futures is type-safe and avoids index-based errors.
+  final (
+    ThemeMode themeMode,
+    Locale locale,
+    int trafficMode,
+    Location location,
+    List<ArticleCategory> articleCategories,
+  ) = await (
     storage.getThemeMode(),
     storage.getLocale(),
     storage.getTrafficMode(),
     storage.getLocation(),
     storage.getArticleCategories(),
-  ]);
+  ).wait;
 
   // Grouping them into a single object improves readability and data flow.
   final _InitialData initialData = _InitialData(
-    themeMode: initialValues[0] as ThemeMode,
-    locale: initialValues[1] as Locale,
-    trafficMode: initialValues[2] as int,
-    location: initialValues[3] as Location,
-    articleCategories: initialValues[4] as List<ArticleCategory>,
+    themeMode: themeMode,
+    locale: locale,
+    trafficMode: trafficMode,
+    location: location,
+    articleCategories: articleCategories,
   );
 
   // Set preferred orientation once for the entire app lifecycle.
@@ -97,7 +106,7 @@ void main() async {
           create: (_) => NavigationManager(),
         ),
         // Use FutureProvider to handle async data loading for the UI.
-        FutureProvider<List<ArticleCategory>>(
+        FutureProvider<List<ArticleCategory>?>(
           create: (_) => Server.getArticleCategories(),
           initialData: initialData.articleCategories,
           // Gracefully handle errors, e.g., by logging and returning cached data.

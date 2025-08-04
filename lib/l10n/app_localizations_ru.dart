@@ -117,8 +117,7 @@ class AppLocalizationsRu extends AppLocalizations {
   String get enterWithEmail => 'Войти с Email';
 
   @override
-  String get registerDescription =>
-      'Зарегистрировавшись, вы можете управлять своими объявлениями и профилем, а также переносить их на другие телефоны';
+  String get registerDescription => 'Зарегистрировавшись, вы можете управлять своими объявлениями и профилем, а также переносить их на другие телефоны';
 
   @override
   String get administrator => 'Администратор';
@@ -235,14 +234,35 @@ class AppLocalizationsRu extends AppLocalizations {
   String get tags => 'Теги';
 
   @override
-  String get notRegistered =>
-      'Вы не вошли в систему! Войдя в систему, вы сможете добавлять объявления, управлять своими объявлениями и профилем, а также переносить свои данные на другие телефоны.';
+  String get credit => 'Кредит';
 
   @override
-  String get shouldRegister =>
-      'Чтобы увидеть свои комментарии и комментарии, которые вы написали, вам нужно войти в систему!';
+  String get exchange => 'Обмен';
 
   @override
-  String get shareText =>
-      'Крупнейшее Android-приложение, объединяющее автомобили и автозапчасти TMCARS';
+  String get filterSelect => 'Выберите вид';
+
+  @override
+  String get filterPrice => 'Стоимость по возрастанию';
+
+  @override
+  String get filterPriceDesc => 'Стоимость по убыванию';
+
+  @override
+  String get filterYear => 'Год выпуска по убыванию';
+
+  @override
+  String get filterYearDesc => 'Год выпуска по возрастанию';
+
+  @override
+  String get filterDefault => 'По умолчанию';
+
+  @override
+  String get notRegistered => 'Вы не вошли в систему! Войдя в систему, вы сможете добавлять объявления, управлять своими объявлениями и профилем, а также переносить свои данные на другие телефоны.';
+
+  @override
+  String get shouldRegister => 'Чтобы увидеть свои комментарии и комментарии, которые вы написали, вам нужно войти в систему!';
+
+  @override
+  String get shareText => 'Крупнейшее Android-приложение, объединяющее автомобили и автозапчасти TMCARS';
 }

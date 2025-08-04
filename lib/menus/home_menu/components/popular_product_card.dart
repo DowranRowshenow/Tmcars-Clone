@@ -3,14 +3,14 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../../components/placeholder_image.dart';
-import '../../../models/popular_product_model.dart';
+import '../../../models/app_settings_model.dart';
 import '../../../providers/locale.dart';
 import '../../../providers/themes.dart';
 import '../../../providers/traffic.dart';
 
 class PopularProductCard extends StatelessWidget {
   const PopularProductCard({super.key, required this.product});
-  final PopularProduct product;
+  final DashFeaturedItem product;
 
   @override
   Widget build(BuildContext context) {

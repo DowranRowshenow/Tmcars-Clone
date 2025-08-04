@@ -5,11 +5,14 @@ import 'dart:convert';
 
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
+import 'package:tmcarsclone/models/car_model.dart';
 
+import '../models/app_settings_model.dart';
 import '../models/article_category_model.dart';
 import '../models/article_detail_model.dart';
 import '../models/article_model.dart';
-import '../models/popular_product_model.dart';
+import '../models/car_list_model.dart';
+import '../models/car_query_model.dart';
 import 'storage.dart';
 
 class Server {
@@ -22,7 +25,8 @@ class Server {
 
   // Cache for API responses
   static final Map<String, dynamic> _cache = <String, dynamic>{};
-  static const Duration _cacheExpiry = Duration(minutes: 2);
+  static const Duration _cacheExpiry = Duration(minutes: 3);
+  static const Duration _cacheExpiryLong = Duration(minutes: 10);
 
   // ENDPOINTS
   static const String currentUrl = '';
@@ -45,25 +49,24 @@ class Server {
     return utf8.decode(bytes);
   }
 
-  static Future<List<PopularProduct>> getSettings() async {
-    const String cacheKey = 'popular_products';
+  static Future<List<DashFeaturedItem>> getSettings() async {
+    const String cacheKey = 'appSettings';
 
     if (_cache.containsKey(cacheKey)) {
       final dynamic cached = _cache[cacheKey];
-      // Fix: Explicitly cast 'timestamp' to String before parsing
       if (cached['timestamp'] != null) {
         try {
           final DateTime cachedTimestamp = DateTime.parse(
             cached['timestamp'] as String,
           );
-          if (DateTime.now().difference(cachedTimestamp) < _cacheExpiry) {
-            return cached['data'] as List<PopularProduct>;
+          if (DateTime.now().difference(cachedTimestamp) < _cacheExpiryLong) {
+            return cached['data']['dashFeatured'] as List<DashFeaturedItem>;
           }
         } catch (e) {
+          // Treat cache as expired if timestamp is invalid
           debugPrint(
             'Warning: Could not parse cached timestamp for $cacheKey: $e',
           );
-          // Treat cache as expired if timestamp is invalid
         }
       }
     }
@@ -74,37 +77,14 @@ class Server {
           .timeout(const Duration(seconds: 10)); // Added timeout
 
       if (response.statusCode == 200) {
-        List<PopularProduct> products = <PopularProduct>[];
-        // Fix: Explicitly cast json.decode result to Map<String, dynamic>
-        final Map<String, dynamic> data =
-            json.decode(response.body) as Map<String, dynamic>;
-        // Fix: Explicitly cast data["dashFeatured"] to List<dynamic> for iteration
-        // Check if 'dashFeatured' exists and is a List before processing
-        if (data["dashFeatured"] is List) {
-          // Cast the raw list to List<dynamic>
-          final List<dynamic> rawProductJsons =
-              data["dashFeatured"] as List<dynamic>;
-
-          // Map each dynamic element to PopularProduct.fromJson,
-          // explicitly casting each 'e' to Map<String, dynamic>
-          products.addAll(
-            rawProductJsons
-                .map(
-                  (dynamic e) =>
-                      PopularProduct.fromJson(e as Map<String, dynamic>),
-                )
-                .toList(),
-          );
-        } else {
-          // Handle case where 'dashFeatured' is missing or not a List
-          // For example, print a warning or initialize products as empty
-          debugPrint("Warning: 'dashFeatured' is not a List or is missing.");
-        }
+        AppSettings appSettings = AppSettings.fromJson(
+          json.decode(response.body) as Map<String, dynamic>,
+        );
         _cache[cacheKey] = <String, Object>{
-          'data': products,
+          'data': appSettings,
           'timestamp': DateTime.now(),
         };
-        return products;
+        return appSettings.dashFeatured;
       } else {
         debugPrint(
           'Failed to load popular products: ${response.statusCode}, Body: ${response.body}',
@@ -115,10 +95,40 @@ class Server {
     } catch (e) {
       debugPrint('Error fetching popular products: $e');
     }
-    return <PopularProduct>[];
+    // TODO: make it return null
+    return <DashFeaturedItem>[];
   }
 
-  static Future<List<ArticleCategory>> getArticleCategories() async {
+  static Future<List<Car>?> getCars(CarQuery? query) async {
+    try {
+      final http.Response response = await http
+          .get(
+            Uri.https(
+              host,
+              "/tmcars/carProduct/getCars",
+              // Check if query null and pass map
+              query == null ? <String, String>{} : query.map(),
+            ),
+          )
+          .timeout(const Duration(seconds: 10)); // Added timeout
+
+      if (response.statusCode == 200) {
+        final dynamic data = json.decode(response.body);
+        return CarList.fromJson(
+          data as Map<String, dynamic>,
+          // NOTE: It is for detecting the api response version
+          isV2: data["cars"][0]["cityName"] == null ? true : false,
+        ).cars;
+      } else {
+        debugPrint('Failed to load articles');
+      }
+    } catch (e) {
+      debugPrint(e.toString());
+    }
+    return null;
+  }
+
+  static Future<List<ArticleCategory>?> getArticleCategories() async {
     const String cacheKey = 'article_categories';
 
     if (_cache.containsKey(cacheKey)) {
@@ -168,7 +178,7 @@ class Server {
     } catch (e) {
       debugPrint(e.toString());
     }
-    return <ArticleCategory>[];
+    return null;
   }
 
   static Future<List<Article>?> getArticles({
@@ -215,7 +225,7 @@ class Server {
     return null;
   }
 
-  static Future<List<Article>> getNearestArticles(int id) async {
+  static Future<List<Article>?> getNearestArticles(int id) async {
     final String cacheKey = 'nearest_articles_$id';
 
     if (_cache.containsKey(cacheKey)) {
@@ -265,7 +275,7 @@ class Server {
     } catch (e) {
       debugPrint('Failed to load articles');
     }
-    return <Article>[];
+    return null;
   }
 
   static Future<ArticleDetail?> getArticle(int id) async {
@@ -369,6 +379,6 @@ class Server {
     } catch (e) {
       debugPrint('Error fetching HTML: $e');
     }
-    return '';
+    return "";
   }
 }

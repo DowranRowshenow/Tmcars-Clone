@@ -1,6 +1,6 @@
 import 'package:flutter/foundation.dart';
 
-class AriclesLoadingController {
+class LoadingController {
   final ValueNotifier<bool> isLoading = ValueNotifier<bool>(false);
   final ValueNotifier<bool> hasError = ValueNotifier<bool>(false);
   final ValueNotifier<bool> hasMore = ValueNotifier<bool>(false);

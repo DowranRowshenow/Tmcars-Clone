@@ -41,7 +41,7 @@ class MenuScreen extends StatelessWidget {
                 navigationManager.scaffoldKey.currentState?.openDrawer(),
             splashColor: Colors.transparent,
           ),
-          actions: navigationManager.getMenuTabs(context),
+          actions: navigationManager.getMenuButtons(context),
         ),
         drawer: CustomDrawer(
           onTap: (MenuState state) {

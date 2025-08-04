@@ -11,7 +11,7 @@ class ArticleCardImage extends StatelessWidget {
   const ArticleCardImage({
     super.key,
     required this.articleImg,
-    required this.videoExist,
+    this.videoExist = false,
     this.width,
   });
 
