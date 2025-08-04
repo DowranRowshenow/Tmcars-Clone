@@ -357,12 +357,6 @@ abstract class AppLocalizations {
   /// **'Search'**
   String get search;
 
-  /// No description provided for @selected.
-  ///
-  /// In en, this message translates to:
-  /// **'Selected'**
-  String get selected;
-
   /// No description provided for @carsAndParts.
   ///
   /// In en, this message translates to:
@@ -596,6 +590,36 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Default'**
   String get filterDefault;
+
+  /// No description provided for @selected.
+  ///
+  /// In en, this message translates to:
+  /// **'Selected'**
+  String get selected;
+
+  /// No description provided for @brand.
+  ///
+  /// In en, this message translates to:
+  /// **'Brand'**
+  String get brand;
+
+  /// No description provided for @model.
+  ///
+  /// In en, this message translates to:
+  /// **'Model'**
+  String get model;
+
+  /// No description provided for @year.
+  ///
+  /// In en, this message translates to:
+  /// **'Year'**
+  String get year;
+
+  /// No description provided for @showAll.
+  ///
+  /// In en, this message translates to:
+  /// **'Show all'**
+  String get showAll;
 
   /// No description provided for @notRegistered.
   ///

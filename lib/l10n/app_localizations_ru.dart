@@ -138,9 +138,6 @@ class AppLocalizationsRu extends AppLocalizations {
   String get search => 'Поиск';
 
   @override
-  String get selected => 'Выбрано';
-
-  @override
   String get carsAndParts => 'Автомобили и запчасти';
 
   @override
@@ -256,6 +253,21 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get filterDefault => 'По умолчанию';
+
+  @override
+  String get selected => 'Выбрано';
+
+  @override
+  String get brand => 'Марка';
+
+  @override
+  String get model => 'Модель';
+
+  @override
+  String get year => 'Год';
+
+  @override
+  String get showAll => 'Показать все';
 
   @override
   String get notRegistered => 'Вы не вошли в систему! Войдя в систему, вы сможете добавлять объявления, управлять своими объявлениями и профилем, а также переносить свои данные на другие телефоны.';

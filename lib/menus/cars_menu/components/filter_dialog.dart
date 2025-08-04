@@ -7,7 +7,8 @@ import '../../../utils/constants.dart';
 
 Future<bool?> showFilterDialog({
   required BuildContext context,
-  required ValueNotifier<CarQuery>? query,
+  required ValueNotifier<CarQuery> query,
+  required TabController tabController,
   Color? barrierColor,
   bool barrierDismissible = true,
 }) {
@@ -22,20 +23,45 @@ Future<bool?> showFilterDialog({
           Localizations.of<AppLocalizations>(context, AppLocalizations)!;
       CarQuery carQuery = CarQuery();
       String selected = appLocalizations.filterDefault;
-      if (query != null) {
-        if (query.value.sort != null && query.value.order != null) {
-          if (query.value.sort == "price" && query.value.order == "asc") {
-            selected = appLocalizations.filterPrice;
-          } else if (query.value.sort == "price" &&
-              query.value.order == "desc") {
-            selected = appLocalizations.filterPriceDesc;
-          } else if (query.value.sort == "year" &&
-              query.value.order == "desc") {
-            selected = appLocalizations.filterYear;
-          } else if (query.value.sort == "year" && query.value.order == "asc") {
-            selected = appLocalizations.filterYearDesc;
-          }
+      final List<String> list = <String>[
+        appLocalizations.filterPrice,
+        appLocalizations.filterPriceDesc,
+        appLocalizations.filterYear,
+        appLocalizations.filterYearDesc,
+        appLocalizations.filterDefault,
+      ];
+      if (query.value.sort != null && query.value.order != null) {
+        if (query.value.sort == "price" && query.value.order == "asc") {
+          selected = appLocalizations.filterPrice;
+        } else if (query.value.sort == "price" && query.value.order == "desc") {
+          selected = appLocalizations.filterPriceDesc;
+        } else if (query.value.sort == "year" && query.value.order == "desc") {
+          selected = appLocalizations.filterYear;
+        } else if (query.value.sort == "year" && query.value.order == "asc") {
+          selected = appLocalizations.filterYearDesc;
         }
+      }
+
+      void setQuery() {
+        carQuery = query.value.copyWith();
+
+        if (selected == appLocalizations.filterPrice) {
+          carQuery.sort = "price";
+          carQuery.order = "asc";
+        } else if (selected == appLocalizations.filterPriceDesc) {
+          carQuery.sort = "price";
+          carQuery.order = "desc";
+        } else if (selected == appLocalizations.filterYear) {
+          carQuery.sort = "year";
+          carQuery.order = "desc";
+        } else if (selected == appLocalizations.filterYearDesc) {
+          carQuery.sort = "year";
+          carQuery.order = "asc";
+        } else if (selected == appLocalizations.filterDefault) {
+          carQuery.sort = null;
+          carQuery.order = null;
+        }
+        query.value = carQuery.copyWith();
       }
 
       return AlertDialog(
@@ -51,13 +77,6 @@ Future<bool?> showFilterDialog({
           width: Constants.dialogWidth,
           child: StatefulBuilder(
             builder: (BuildContext context, StateSetter setState) {
-              final List<String> list = <String>[
-                appLocalizations.filterPrice,
-                appLocalizations.filterPriceDesc,
-                appLocalizations.filterYear,
-                appLocalizations.filterYearDesc,
-                appLocalizations.filterDefault,
-              ];
               return ListView(
                 shrinkWrap: true,
                 children: list.map((String translations) {
@@ -87,22 +106,8 @@ Future<bool?> showFilterDialog({
               style: const TextStyle(color: Constants.colorPrimary),
             ),
             onPressed: () {
-              if (selected == appLocalizations.filterPrice) {
-                carQuery.sort = "price";
-                carQuery.order = "asc";
-              } else if (selected == appLocalizations.filterPriceDesc) {
-                carQuery.sort = "price";
-                carQuery.order = "desc";
-              } else if (selected == appLocalizations.filterYear) {
-                carQuery.sort = "year";
-                carQuery.order = "desc";
-              } else if (selected == appLocalizations.filterYearDesc) {
-                carQuery.sort = "year";
-                carQuery.order = "asc";
-              } else if (selected == appLocalizations.filterDefault) {
-                carQuery = CarQuery();
-              }
-              query?.value = carQuery;
+              setQuery();
+              tabController.animateTo(0);
               Navigator.of(dialogContext).pop();
             },
           ),

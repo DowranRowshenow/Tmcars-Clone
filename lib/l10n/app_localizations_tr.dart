@@ -138,9 +138,6 @@ class AppLocalizationsTr extends AppLocalizations {
   String get search => 'Arama';
 
   @override
-  String get selected => 'Seçilen';
-
-  @override
   String get carsAndParts => 'Arabalar ve parçalar';
 
   @override
@@ -256,6 +253,21 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get filterDefault => 'Varsayılan';
+
+  @override
+  String get selected => 'Seçilen';
+
+  @override
+  String get brand => 'Marka';
+
+  @override
+  String get model => 'Model';
+
+  @override
+  String get year => 'Yıl';
+
+  @override
+  String get showAll => 'Hepsini göster';
 
   @override
   String get notRegistered => 'Hesabınıza giriş yapmadınız! Giriş yaparak ilan ekleyebilir, kendi ilanlarınızı ve profilinizi düzenleyebilir ve verilerinizi diğer telefonlarınıza aktarabilirsiniz.';

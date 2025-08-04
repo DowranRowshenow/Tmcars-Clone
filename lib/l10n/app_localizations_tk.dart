@@ -138,9 +138,6 @@ class AppLocalizationsTk extends AppLocalizations {
   String get search => 'Gözleg';
 
   @override
-  String get selected => 'Saýlanan';
-
-  @override
   String get carsAndParts => 'Awtoulag we şaýlar';
 
   @override
@@ -256,6 +253,21 @@ class AppLocalizationsTk extends AppLocalizations {
 
   @override
   String get filterDefault => 'Asyl tertipde';
+
+  @override
+  String get selected => 'Saýlanan';
+
+  @override
+  String get brand => 'Marka';
+
+  @override
+  String get model => 'Model';
+
+  @override
+  String get year => 'Ýyl';
+
+  @override
+  String get showAll => 'Hemmesini Görkez';
 
   @override
   String get notRegistered => 'Siz ulgama girmändirsiňiz! Ulgama girip, siz bildiriş goşup bilersiňiz, öz bildirişleriňizi we profiliňizi sazlap bilersiňiz, we özüňiziň başga telefonlaryňyza geçirip bilersiňiz.';

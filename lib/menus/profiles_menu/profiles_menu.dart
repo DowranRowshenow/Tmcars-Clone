@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:tmcarsclone/providers/navigation.dart';
 
 import '../../l10n/app_localizations.dart';
+import '../../providers/navigation.dart';
 import '../../utils/constants.dart';
 import 'tabs/all_profiles_tab.dart';
 import 'tabs/profiles_category_tab.dart';

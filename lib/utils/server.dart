@@ -5,13 +5,14 @@ import 'dart:convert';
 
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
-import 'package:tmcarsclone/models/car_model.dart';
 
 import '../models/app_settings_model.dart';
 import '../models/article_category_model.dart';
 import '../models/article_detail_model.dart';
 import '../models/article_model.dart';
 import '../models/car_list_model.dart';
+import '../models/car_model.dart';
+import '../models/car_product_filter_model.dart';
 import '../models/car_query_model.dart';
 import 'storage.dart';
 
@@ -128,6 +129,36 @@ class Server {
     return null;
   }
 
+  static Future<List<CarProductFilter>> getCarProductFilter(
+    CarProductFilter? query,
+  ) async {
+    try {
+      final http.Response response = await http
+          .get(
+            Uri.https(
+              host,
+              "/tmcars/carProductFilter/getFilters",
+              query == null ? <String, String>{} : query.map(),
+            ),
+          )
+          .timeout(const Duration(seconds: 10)); // Added timeout
+
+      if (response.statusCode == 200) {
+        return (json.decode(response.body) as List<dynamic>)
+            .map(
+              (dynamic e) =>
+                  CarProductFilter.fromJson(e as Map<String, dynamic>),
+            )
+            .toList();
+      } else {
+        debugPrint('Failed to load articles');
+      }
+    } catch (e) {
+      debugPrint(e.toString());
+    }
+    return <CarProductFilter>[];
+  }
+
   static Future<List<ArticleCategory>?> getArticleCategories() async {
     const String cacheKey = 'article_categories';
 
@@ -170,7 +201,7 @@ class Server {
           'data': categories,
           'timestamp': DateTime.now(),
         };
-        Storage.instance.cacheArticleCategories(jsonEncode(response.body));
+        Storage.instance.cacheArticleCategories(response.body);
         return categories;
       } else {
         debugPrint('Failed to load news categories');

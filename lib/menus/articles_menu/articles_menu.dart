@@ -50,6 +50,8 @@ class ArticlesMenu extends StatelessWidget {
           actions: <Widget>[
             IconButton(
               icon: const Icon(Icons.search),
+              splashRadius: Constants.splashRadius,
+              splashColor: Colors.transparent,
               onPressed: () {
                 navigationManager.setScreen(
                   context,

@@ -180,11 +180,14 @@ class NavigationManager extends ChangeNotifier {
         break;
     }
 
+    /*
     Navigator.push(
       context,
-      MaterialPageRoute<void>(
-        builder: (BuildContext ctx) => screenToPush,
-      ), // No '!' needed
+      MaterialPageRoute<void>(builder: (BuildContext context) => screenToPush),
+    );*/
+    Navigator.of(context).pushAndRemoveUntil(
+      MaterialPageRoute<void>(builder: (BuildContext context) => screenToPush),
+      (Route<dynamic> route) => route.isFirst,
     );
   }
 

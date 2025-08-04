@@ -138,9 +138,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get search => 'Search';
 
   @override
-  String get selected => 'Selected';
-
-  @override
   String get carsAndParts => 'Cars and parts';
 
   @override
@@ -256,6 +253,21 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get filterDefault => 'Default';
+
+  @override
+  String get selected => 'Selected';
+
+  @override
+  String get brand => 'Brand';
+
+  @override
+  String get model => 'Model';
+
+  @override
+  String get year => 'Year';
+
+  @override
+  String get showAll => 'Show all';
 
   @override
   String get notRegistered => 'You are not logged in! By logging in, you can add notifications, manage your notifications and profile, and transfer your data to other phones.';

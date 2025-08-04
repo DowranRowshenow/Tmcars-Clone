@@ -11,9 +11,9 @@ import '../../../providers/traffic.dart';
 class NearestArticleCard extends StatelessWidget {
   const NearestArticleCard({super.key, required this.nearestArticle});
   final Article nearestArticle;
-  final double height = 300.0;
+  final double height = 280.0;
   final double cacheHeight = 200.0;
-  final double width = 300.0;
+  final double width = 280.0;
 
   @override
   Widget build(BuildContext context) {
@@ -38,7 +38,7 @@ class NearestArticleCard extends StatelessWidget {
                       placeholder: (BuildContext context, String url) =>
                           Container(
                             height: height,
-                            color: Colors.grey[200],
+                            color: Colors.black.withAlpha(100),
                             child: const Center(
                               child: CircularProgressIndicator(),
                             ),
@@ -59,15 +59,15 @@ class NearestArticleCard extends StatelessWidget {
             ),
             Positioned.fill(
               child: Container(
-                decoration: BoxDecoration(
+                decoration: const BoxDecoration(
                   gradient: LinearGradient(
                     begin: Alignment.topCenter,
                     end: Alignment.bottomCenter,
                     colors: <Color>[
                       Colors.transparent, // Top is transparent
-                      Colors.black.withValues(alpha: 0.8),
+                      Colors.black,
                     ],
-                    stops: const <double>[0.5, 1.0],
+                    stops: <double>[0.5, 1.0],
                   ),
                 ),
               ),
@@ -106,6 +106,9 @@ class NearestArticleCard extends StatelessWidget {
               child: Material(
                 color: Colors.transparent,
                 child: InkWell(
+                  highlightColor: Colors.black.withAlpha(60),
+                  splashColor: Colors.black.withAlpha(60),
+                  hoverColor: Colors.black.withAlpha(60),
                   onTap: () {
                     context.read<NavigationManager>().setScreen(
                       context,
@@ -113,7 +116,6 @@ class NearestArticleCard extends StatelessWidget {
                       article: nearestArticle,
                     );
                   },
-                  splashColor: Colors.grey.withAlpha(100),
                 ),
               ),
             ),

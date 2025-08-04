@@ -90,13 +90,12 @@ class Storage {
       if (kIsWeb) {
         // Use shared_preferences for web
         final SharedPreferences prefs = await SharedPreferences.getInstance();
-        final String jsonString = jsonEncode(data);
-        await prefs.setString('article_categories', jsonString);
+        await prefs.setString('article_categories', data);
       } else {
         // Use path_provider and dart:io for native
         final Directory directory = await getApplicationDocumentsDirectory();
         final File file = File('${directory.path}/articles.json');
-        await file.writeAsString(jsonEncode(data));
+        await file.writeAsString(data);
       }
     } catch (e) {
       debugPrint('Error saving article categories: $e');

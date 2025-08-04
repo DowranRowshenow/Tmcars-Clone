@@ -96,8 +96,12 @@ class CarCard extends StatelessWidget {
                             )
                           : const CircleAvatar(
                               backgroundColor: Colors.red,
-                              radius: 8,
-                              child: Icon(Icons.close, size: 16),
+                              radius: 6,
+                              child: Icon(
+                                Icons.close,
+                                size: 12,
+                                color: Colors.white,
+                              ),
                             ),
                       const SizedBox(width: 8),
                       Text(appLocalizations.exchange),
@@ -110,8 +114,12 @@ class CarCard extends StatelessWidget {
                             )
                           : const CircleAvatar(
                               backgroundColor: Colors.red,
-                              radius: 8,
-                              child: Icon(Icons.close, size: 16),
+                              radius: 6,
+                              child: Icon(
+                                Icons.close,
+                                size: 12,
+                                color: Colors.white,
+                              ),
                             ),
                     ],
                   ),
