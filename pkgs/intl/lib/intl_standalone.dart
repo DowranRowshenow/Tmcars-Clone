@@ -12,7 +12,7 @@ import 'dart:io';
 
 import 'intl.dart';
 
-// (alanknight): The need to do this by forcing the user to specially
+// TODO(alanknight): The need to do this by forcing the user to specially
 // import a particular library is a horrible hack, only done because there
 // seems to be no graceful way to do this at all. Either mirror access on
 // dart2js or the ability to do spawnUri in the browser would be promising

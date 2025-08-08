@@ -120,7 +120,7 @@ class DateSymbols {
       required this.QUARTERS,
       required this.AMPMS,
       this.ZERODIGIT,
-      // (alanknight): These formats are taken from Closure,
+      // TODO(alanknight): These formats are taken from Closure,
       // where there's only a fixed set of available formats.
       // Here we have the patterns separately. These should
       // either be used, or removed.
@@ -132,7 +132,7 @@ class DateSymbols {
       required this.FIRSTWEEKCUTOFFDAY,
       required this.DATETIMEFORMATS});
 
-  // (alanknight): Replace this with use of a more general serialization
+  // TODO(alanknight): Replace this with use of a more general serialization
   // facility once one is available. Issue 4926.
   factory DateSymbols.deserializeFromMap(Map<dynamic, dynamic> map) {
     List<String> getStringList(String name) => List<String>.from(map[name]);

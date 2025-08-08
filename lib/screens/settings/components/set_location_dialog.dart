@@ -21,10 +21,11 @@ Future<bool?> showSetLocationDialog({
       final AppLocalizations appLocalizations =
           Localizations.of<AppLocalizations>(context, AppLocalizations)!;
       final LocationManager location = context.read<LocationManager>();
+      const double padding = 30;
 
       return AlertDialog(
         insetPadding: const EdgeInsets.all(Constants.dialogPadding),
-        contentPadding: const EdgeInsets.fromLTRB(20, 20, 20, 0),
+        contentPadding: const EdgeInsets.only(top: 20),
         backgroundColor: appColors.themedSurface,
         elevation: Constants.elevation,
         title: Text(
@@ -37,6 +38,7 @@ Future<bool?> showSetLocationDialog({
             shrinkWrap: true,
             children: <Widget>[
               ListTile(
+                contentPadding: const EdgeInsets.only(left: padding),
                 title: Text(appLocalizations.notSelected),
                 onTap: () {
                   location.setLocation(Location.none);
@@ -44,6 +46,7 @@ Future<bool?> showSetLocationDialog({
                 },
               ),
               ListTile(
+                contentPadding: const EdgeInsets.only(left: padding),
                 title: Text(appLocalizations.ashgabat),
                 onTap: () {
                   location.setLocation(Location.ashgabat);
@@ -51,6 +54,7 @@ Future<bool?> showSetLocationDialog({
                 },
               ),
               ListTile(
+                contentPadding: const EdgeInsets.only(left: padding),
                 title: Text(appLocalizations.arkadag),
                 onTap: () {
                   location.setLocation(Location.arkadag);
@@ -58,6 +62,7 @@ Future<bool?> showSetLocationDialog({
                 },
               ),
               ListTile(
+                contentPadding: const EdgeInsets.only(left: padding),
                 title: Text(appLocalizations.ahal),
                 onTap: () {
                   location.setLocation(Location.ahal);
@@ -65,6 +70,7 @@ Future<bool?> showSetLocationDialog({
                 },
               ),
               ListTile(
+                contentPadding: const EdgeInsets.only(left: padding),
                 title: Text(appLocalizations.balkan),
                 onTap: () {
                   location.setLocation(Location.balkan);
@@ -72,6 +78,7 @@ Future<bool?> showSetLocationDialog({
                 },
               ),
               ListTile(
+                contentPadding: const EdgeInsets.only(left: padding),
                 title: Text(appLocalizations.mary),
                 onTap: () {
                   location.setLocation(Location.mary);
@@ -79,6 +86,7 @@ Future<bool?> showSetLocationDialog({
                 },
               ),
               ListTile(
+                contentPadding: const EdgeInsets.only(left: padding),
                 title: Text(appLocalizations.dashoguz),
                 onTap: () {
                   location.setLocation(Location.dashoguz);
@@ -86,6 +94,7 @@ Future<bool?> showSetLocationDialog({
                 },
               ),
               ListTile(
+                contentPadding: const EdgeInsets.only(left: padding),
                 title: Text(appLocalizations.lebap),
                 onTap: () {
                   location.setLocation(Location.lebap);

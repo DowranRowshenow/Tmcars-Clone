@@ -6,6 +6,7 @@ import 'package:provider/provider.dart';
 import '../../../l10n/app_localizations.dart';
 import '../../../models/car_model.dart';
 import '../../../providers/locale.dart';
+import '../../../providers/navigation.dart';
 import '../../../providers/themes.dart';
 import 'car_card_image.dart';
 
@@ -32,13 +33,11 @@ class CarCard extends StatelessWidget {
         // minTileHeight: Constants.articleItemExtent,
         contentPadding: const EdgeInsets.fromLTRB(8, 0, 8, 0),
         onTap: () {
-          /*
           context.read<NavigationManager>().setScreen(
             context,
             ScreenState.carDetail,
             car: car,
           );
-          */
         },
         titleAlignment: ListTileTitleAlignment.center,
         title: Row(

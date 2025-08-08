@@ -8,6 +8,7 @@ import '../../../components/no_result.dart';
 import '../../../l10n/app_localizations.dart';
 import '../../../models/car_model.dart';
 import '../../../models/car_query_model.dart';
+import '../../../providers/themes.dart';
 import '../../../utils/constants.dart';
 import '../../../utils/loading_controller.dart';
 import '../../../utils/server.dart';
@@ -18,10 +19,12 @@ class AllCarsTab extends StatefulWidget {
     super.key,
     required this.query,
     this.isCacheEnabled = false,
+    required this.searchBarController,
   });
   final ValueNotifier<CarQuery> query;
   // TODO: Decide whether it should be cashed or not
   final bool isCacheEnabled;
+  final TextEditingController searchBarController;
 
   @override
   State<AllCarsTab> createState() => _AllCarsTabState();
@@ -32,8 +35,6 @@ class _AllCarsTabState extends State<AllCarsTab>
   final ScrollController _scrollController = ScrollController();
   final ValueNotifier<List<Car>> _cars = ValueNotifier<List<Car>>(<Car>[]);
   final LoadingController _loadingController = LoadingController();
-  final TextEditingController searchBarController = TextEditingController();
-  String searchText = "";
 
   @override
   bool get wantKeepAlive => true;
@@ -124,72 +125,63 @@ class _AllCarsTabState extends State<AllCarsTab>
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    // Otherwise, display the list of articles.
     return Scaffold(
       appBar: AppBar(
-        toolbarHeight: 0,
-        bottom: PreferredSize(
-          preferredSize: const Size.fromHeight(50),
-          child: Container(
-            padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
-            decoration: const BoxDecoration(
-              color: Colors.transparent,
-              border: Border(bottom: BorderSide(width: 0.5)),
-            ),
-            child: Row(
-              children: <Widget>[
-                Flexible(
-                  child: TextField(
-                    controller: searchBarController,
-                    autocorrect: false,
-                    style: const TextStyle(fontSize: 16),
-                    keyboardType: TextInputType.text,
-                    decoration: InputDecoration.collapsed(
-                      hintText: Localizations.of<AppLocalizations>(
-                        context,
-                        AppLocalizations,
-                      )!.search,
-                    ),
-                    onChanged: (String value) {
-                      if (value.length <= 255) {
-                        searchText = value;
-                      } else {
-                        searchBarController.text = searchText;
-                      }
-                    },
-                  ),
+        elevation: 1.0,
+        backgroundColor: Theme.of(
+          context,
+        ).extension<AppColors>()!.themedSurface,
+        automaticallyImplyLeading: false,
+        title: Row(
+          children: <Widget>[
+            Flexible(
+              child: TextField(
+                readOnly: true,
+                controller: widget.searchBarController,
+                autocorrect: false,
+                style: const TextStyle(fontSize: 16),
+                keyboardType: TextInputType.text,
+                decoration: InputDecoration.collapsed(
+                  hintText: Localizations.of<AppLocalizations>(
+                    context,
+                    AppLocalizations,
+                  )!.search,
                 ),
-                ValueListenableBuilder<TextEditingValue>(
-                  valueListenable: searchBarController,
-                  builder:
-                      (
-                        BuildContext context,
-                        TextEditingValue value,
-                        Widget? child,
-                      ) {
-                        if (value.text.isNotEmpty) {
-                          return IconButton(
-                            icon: const Icon(Icons.close, color: Colors.red),
-                            splashRadius: Constants.splashRadius,
-                            splashColor: Colors.transparent,
-                            onPressed: () {
-                              searchText = "";
-                              searchBarController.text = "";
-                              widget.query.value = CarQuery();
-                            },
-                          );
-                        }
-                        return IconButton(
-                          icon: const Icon(Icons.search),
-                          splashRadius: Constants.splashRadius,
-                          splashColor: Colors.transparent,
-                          onPressed: () {},
-                        );
-                      },
-                ),
-              ],
+              ),
             ),
-          ),
+            ValueListenableBuilder<TextEditingValue>(
+              valueListenable: widget.searchBarController,
+              builder:
+                  (
+                    BuildContext context,
+                    TextEditingValue value,
+                    Widget? child,
+                  ) {
+                    if (value.text.isNotEmpty) {
+                      return IconButton(
+                        icon: const Icon(Icons.close, color: Colors.red),
+                        splashRadius: Constants.splashRadius,
+                        splashColor: Colors.transparent,
+                        onPressed: () {
+                          widget.searchBarController.text = "";
+                          widget.query.value = CarQuery();
+                        },
+                      );
+                    }
+                    return IconButton(
+                      icon: Icon(
+                        Icons.search,
+                        color: Theme.of(
+                          context,
+                        ).extension<AppColors>()!.iconThemeColor,
+                      ),
+                      splashRadius: Constants.splashRadius,
+                      splashColor: Colors.transparent,
+                      onPressed: () {},
+                    );
+                  },
+            ),
+          ],
         ),
       ),
       floatingActionButton: ValueListenableBuilder<List<Car>>(

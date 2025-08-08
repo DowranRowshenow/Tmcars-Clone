@@ -359,7 +359,7 @@ void testCurrency(
 }
 
 /// Locales that have problems in the short format.
-// (alanknight): Don't just skip the whole locale if there's one problem
+// TODO(alanknight): Don't just skip the whole locale if there's one problem
 // case.
 var _skipLocalsShort = <String>{
   'bn', // Bug in CLDR: ambiguous parsing: 10^9 ("000 কো") and 10^11 ("000কো") only differ by a nbsp.
@@ -392,7 +392,7 @@ void _validateShort(String locale, List<List<String>> expected) {
         var int64Number = Int64(number.round());
         _validateNumber(int64Number, shortFormat, data[1]);
       }
-      // (alanknight): Make this work for MicroMoney
+      // TODO(alanknight): Make this work for MicroMoney
     }
   }, skip: skip);
 }

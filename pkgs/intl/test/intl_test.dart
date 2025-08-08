@@ -13,7 +13,7 @@ void main() {
   });
 
   test('DateFormat creation does verify the locale', () {
-    // (alanknight): We need to make the locale verification be on a per
+    // TODO(alanknight): We need to make the locale verification be on a per
     // usage basis rather than once for the entire Intl object. The set of
     // locales covered for messages may be different from that for date
     // formatting.
@@ -40,7 +40,7 @@ void main() {
     expect(Intl.shortLocale('gsw_CH'), 'gsw');
     expect(Intl.shortLocale('C'), 'C');
     expect(Intl.shortLocale('test-locale'), 'test-locale');
-    // (b/241094372): Remove this check.
+    // TODO(b/241094372): Remove this check.
     expect(Intl.shortLocale('invalid'), 'in');
   });
 
@@ -51,6 +51,10 @@ void main() {
     expect(Intl.verifiedLocale('en-ZZ', NumberFormat.localeExists), 'en');
     expect(Intl.verifiedLocale('es-999', NumberFormat.localeExists), 'es');
     expect(Intl.verifiedLocale('gsw-CH', NumberFormat.localeExists), 'gsw');
+    expect(
+      Intl.verifiedLocale('zh-Hant-CN', NumberFormat.localeExists),
+      'zh_CN',
+    );
 
     void checkAsNumberDefault(String locale, String expected) {
       var oldDefault = Intl.defaultLocale;
@@ -74,7 +78,8 @@ void main() {
     expect(Intl.verifiedLocale('en-ZZ', DateFormat.localeExists), 'en');
     expect(Intl.verifiedLocale('es-999', DateFormat.localeExists), 'es');
     expect(Intl.verifiedLocale('gsw-CH', DateFormat.localeExists), 'gsw');
-    // (b/241094372): Remove this check.
+    expect(Intl.verifiedLocale('zh-Hant-CN', DateFormat.localeExists), 'zh_CN');
+    // TODO(b/241094372): Remove this check.
     expect(Intl.verifiedLocale('invalid', DateFormat.localeExists), 'in');
 
     void checkAsDateDefault(String locale, String expected) {

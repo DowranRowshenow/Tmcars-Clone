@@ -7,7 +7,7 @@ class Constants {
   // STRINGS
   static const String appVersion = '3.6.1';
   static const String appType = 'android';
-  static const String packageVersion = '0.4.8';
+  static const String packageVersion = '0.5.1';
   static const String appName = 'Tmcars Clone';
   static const String phoneCode = "+993";
   static const String drawerLogoDark = 'assets/images/drawer_logo_dark.webp';

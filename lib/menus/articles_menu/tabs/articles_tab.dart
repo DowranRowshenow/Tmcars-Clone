@@ -30,7 +30,8 @@ class ArticlesTab extends StatefulWidget {
   State<ArticlesTab> createState() => _ArticlesTabState();
 }
 
-class _ArticlesTabState extends State<ArticlesTab> {
+class _ArticlesTabState extends State<ArticlesTab>
+    with AutomaticKeepAliveClientMixin {
   final ScrollController _scrollController = ScrollController();
   final ValueNotifier<List<Article>> _articles = ValueNotifier<List<Article>>(
     <Article>[],
@@ -38,6 +39,9 @@ class _ArticlesTabState extends State<ArticlesTab> {
   final LoadingController _articlesLoadingController = LoadingController();
   int _offset = 0;
   String query = "";
+
+  @override
+  bool get wantKeepAlive => true;
 
   @override
   void initState() {
@@ -144,6 +148,7 @@ class _ArticlesTabState extends State<ArticlesTab> {
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     // Otherwise, display the list of articles.
     return Scaffold(
       floatingActionButton: ValueListenableBuilder<List<Article>>(

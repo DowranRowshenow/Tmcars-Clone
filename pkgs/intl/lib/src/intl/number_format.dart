@@ -83,7 +83,7 @@ class NumberFormat {
 
   /// Explicitly store if we are a currency format, and so should use the
   /// appropriate number of decimal digits for a currency.
-  // (alanknight): Handle currency formats which are specified in a raw
+  // TODO(alanknight): Handle currency formats which are specified in a raw
   /// pattern, not using one of the currency constructors.
   final bool _isForCurrency;
 
@@ -290,7 +290,7 @@ class NumberFormat {
   /// The [customPattern] parameter can be used to specify a particular
   /// format. This is useful if you have your own locale data which includes
   /// unsupported formats (e.g. accounting format for currencies.)
-  // (alanknight): Should we allow decimalDigits on other numbers.
+  // TODO(alanknight): Should we allow decimalDigits on other numbers.
   factory NumberFormat.currency(
           {String? locale,
           String? name,
@@ -583,7 +583,7 @@ class NumberFormat {
   }
 
   /// Used to test if we have exceeded integer limits.
-  // (alanknight): Do we have a MaxInt constant we could use instead?
+  // TODO(alanknight): Do we have a MaxInt constant we could use instead?
   static final _maxInt = 1 is double ? pow(2, 52) : 1.0e300.floor();
   static final _maxDigits = (log(_maxInt) / log(10)).ceil();
 
@@ -617,7 +617,7 @@ class NumberFormat {
       // Not a normal number, but int-like, e.g. Int64
       return number;
     } else {
-      // (alanknight): Do this more efficiently. If IntX had floor and
+      // TODO(alanknight): Do this more efficiently. If IntX had floor and
       // round we could avoid this.
       var basic = _floor(number);
       var fraction = (number - basic).toDouble().round();

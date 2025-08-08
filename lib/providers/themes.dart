@@ -226,7 +226,7 @@ final ThemeData lightThemeData = ThemeData.light(useMaterial3: false).copyWith(
   iconTheme: IconThemeData(color: AppColors.light.iconThemeColor),
   focusColor: AppColors.light.focusColor,
   extensions: <ThemeExtension<dynamic>>[AppColors.light],
-  splashFactory: InkSparkle.splashFactory,
+  splashFactory: NoSplash.splashFactory,
   progressIndicatorTheme: ProgressIndicatorThemeData(
     color: AppColors.light.progressIndicatorColor,
   ),

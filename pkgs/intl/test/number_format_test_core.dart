@@ -47,9 +47,9 @@ Map<String, double> testExponential = const {
   '1.23E0': 1.23
 };
 
-// (alanknight): Test against currency, which requires generating data
+// TODO(alanknight): Test against currency, which requires generating data
 // for the three different forms that this now supports.
-// (alanknight): Test against scientific, which requires significant
+// TODO(alanknight): Test against scientific, which requires significant
 // digit support.
 List<NumberFormat> standardFormats(String locale) {
   return [
@@ -649,6 +649,17 @@ void runTests(Map<String, num> allTestNumbers) {
         expect(f.format(entry.key), entry.value);
       });
     }
+  });
+
+  test('Use script', () {
+    expect(
+      NumberFormat.currency(locale: 'zh_Hant_TW').format(12),
+      'TWD12.00',
+    );
+    expect(
+      NumberFormat.currency(locale: 'zh_Hant_CN').format(12),
+      'CNY12.00',
+    );
   });
 }
 

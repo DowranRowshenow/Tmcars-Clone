@@ -265,7 +265,7 @@ class _CompactNumberFormat extends NumberFormat {
       bool lookupSimpleCurrencySymbol = false,
       bool isForCurrency = false}) {
     // Initialization copied from `NumberFormat` constructor.
-    // (davidmorgan): deduplicate.
+    // TODO(davidmorgan): deduplicate.
     locale = helpers.verifiedLocale(locale, NumberFormat.localeExists, null)!;
     var symbols = numberFormatSymbols[locale]!;
     var localeZero = symbols.ZERO_DIGIT.codeUnitAt(0);

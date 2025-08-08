@@ -153,12 +153,12 @@ void main() {
     }
   });
 
-  // : determine appropriate behaviour for the following examples.
+  // TODO: determine appropriate behaviour for the following examples.
 
   // // 'mo' is deprecated, and is a tag that ought to be replaced by *two*
   // // subtags (ro-MD), although Chrome Unstable also doesn't presently do
   // // that (replaces it by 'ro' only).
-  // // : check up on the Chrome implementation.
+  // // TODO: check up on the Chrome implementation.
   // testParse('mo', 'ro', null, 'MD', [], 'ro-MD');
 
   // // Script deprecation.

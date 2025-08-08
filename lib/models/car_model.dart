@@ -165,6 +165,10 @@ class Car extends Equatable {
   String? getCityName(String languageCode) {
     return languageCode == "ru" ? cityNameRu : cityName;
   }
+
+  String getTitle() {
+    return "$brandName $modelName $year";
+  }
 }
 /*
 class CarV2 extends Equatable {

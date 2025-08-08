@@ -11,8 +11,10 @@ import '../menus/others_menu/others_menu.dart';
 import '../menus/profiles_menu/profiles_menu.dart';
 import '../models/article_detail_model.dart';
 import '../models/article_model.dart';
+import '../models/car_model.dart';
 import '../providers/locale.dart';
 import '../screens/article/article_detail_screen.dart';
+import '../screens/car/car_detail_screen.dart';
 import '../screens/contact/contact_screen.dart';
 import '../screens/image_view/image_view_screen.dart';
 import '../screens/menu/menu_screen.dart';
@@ -28,6 +30,13 @@ class _ArticleDetailArgs {
   final String languageCode;
 
   const _ArticleDetailArgs({required this.article, required this.languageCode});
+}
+
+class _CarDetailArgs {
+  final Car car;
+  final String languageCode;
+
+  const _CarDetailArgs({required this.car, required this.languageCode});
 }
 
 class _WebViewArgs {
@@ -66,6 +75,7 @@ enum ScreenState {
   searchArticles,
   notifications,
   articleDetail,
+  carDetail,
   imageView,
   videoView,
 }
@@ -130,6 +140,17 @@ class NavigationManager extends ChangeNotifier {
         }
         screenToPush = ArticleDetailScreen(
           article: args.article,
+          languageCode: args.languageCode,
+        );
+        break;
+      case ScreenState.carDetail:
+        final _CarDetailArgs? args = arguments as _CarDetailArgs?;
+        if (args == null) {
+          debugPrint('Error: ArticleDetailScreen requires _CarDetailArgs.');
+          return; // Exit if arguments are missing
+        }
+        screenToPush = CarDetailScreen(
+          car: args.car,
           languageCode: args.languageCode,
         );
         break;
@@ -200,6 +221,7 @@ class NavigationManager extends ChangeNotifier {
     Article? article,
     List<String>? imageUrls,
     List<ArticleTag>? articleTags,
+    Car? car,
   }) {
     Object? args;
     if (state == ScreenState.articleDetail) {
@@ -211,6 +233,15 @@ class NavigationManager extends ChangeNotifier {
       }
       args = _ArticleDetailArgs(
         article: article,
+        languageCode: context.read<LocaleManager>().locale.languageCode,
+      );
+    } else if (state == ScreenState.carDetail) {
+      if (car == null) {
+        debugPrint('Error: Car argument is required for CarDetailScreen.');
+        return;
+      }
+      args = _CarDetailArgs(
+        car: car,
         languageCode: context.read<LocaleManager>().locale.languageCode,
       );
     } else if (state == ScreenState.webview) {

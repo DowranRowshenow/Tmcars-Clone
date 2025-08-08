@@ -5,21 +5,33 @@ import '../../../models/car_product_filter_model.dart';
 import '../../../models/car_query_model.dart';
 import '../../../utils/server.dart';
 
-class CategoryCarsTab extends StatelessWidget {
+class CategoryCarsTab extends StatefulWidget {
   const CategoryCarsTab({
     super.key,
     required this.tabController,
     required this.query,
+    required this.searchBarController,
   });
+  final TextEditingController searchBarController;
   final TabController tabController;
   final ValueNotifier<CarQuery> query;
 
+  @override
+  State<CategoryCarsTab> createState() => _CategoryCarsTabState();
+}
+
+class _CategoryCarsTabState extends State<CategoryCarsTab>
+    with AutomaticKeepAliveClientMixin {
   Future<List<CarProductFilter>> _future() {
     return Server.getCarProductFilter(const CarProductFilter(onlyBrand: true));
   }
 
   @override
+  bool get wantKeepAlive => true;
+
+  @override
   Widget build(BuildContext context) {
+    super.build(context);
     return FutureBuilder<List<CarProductFilter>>(
       future: _future(),
       builder: (BuildContext context, AsyncSnapshot<Object?> snapshot) {
@@ -36,8 +48,8 @@ class CategoryCarsTab extends StatelessWidget {
                 titleAlignment: ListTileTitleAlignment.center,
                 key: ValueKey<int>(index),
                 leading: CachedNetworkImage(
-                  width: 35.0,
-                  height: 35.0,
+                  width: 30.0,
+                  height: 30.0,
                   imageUrl: items[index].imgUrl ?? "",
                 ),
                 title: Text(
@@ -45,9 +57,11 @@ class CategoryCarsTab extends StatelessWidget {
                 ),
                 trailing: const Icon(Icons.arrow_forward_ios, size: 16),
                 onTap: () {
-                  query.value.filterId = items[index].id;
-                  query.value = query.value.copyWith();
-                  tabController.animateTo(0);
+                  widget.query.value.filterId = items[index].id;
+                  widget.query.value = widget.query.value.copyWith();
+                  widget.searchBarController.text =
+                      items[index].filterName ?? "";
+                  widget.tabController.animateTo(0);
                 },
               );
             },

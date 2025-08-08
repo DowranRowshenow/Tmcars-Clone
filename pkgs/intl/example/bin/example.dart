@@ -3,9 +3,12 @@
 // BSD-style license that can be found in the LICENSE file.
 
 import 'package:intl/intl.dart';
+import 'package:intl/date_symbol_data_local.dart';
 
-void main(List<String> arguments) {
+void main(List<String> arguments) async {
   // These examples were all run with locale en_US.
+  await initializeDateFormatting('tk');
+  Intl.defaultLocale = 'tk';
 
   final numberFormatters = [
     NumberFormat.compact(), // 2M

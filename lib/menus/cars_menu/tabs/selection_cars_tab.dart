@@ -11,15 +11,25 @@ import '../../../providers/traffic.dart';
 import '../../../utils/constants.dart';
 import '../../../utils/server.dart';
 
-class SelectionCarsTab extends StatelessWidget {
+class SelectionCarsTab extends StatefulWidget {
   const SelectionCarsTab({
     super.key,
     required this.tabController,
     required this.query,
+    required this.searchBarController,
   });
+  final TextEditingController searchBarController;
   final TabController tabController;
   final ValueNotifier<CarQuery> query;
+
+  @override
+  State<SelectionCarsTab> createState() => _SelectionCarsTabState();
+}
+
+class _SelectionCarsTabState extends State<SelectionCarsTab>
+    with AutomaticKeepAliveClientMixin {
   final double height = 200.0;
+
   final double width = 600.0;
 
   Future<List<CarProductFilter>> _future() {
@@ -27,7 +37,13 @@ class SelectionCarsTab extends StatelessWidget {
   }
 
   @override
+  bool get wantKeepAlive => true;
+
+  @override
   Widget build(BuildContext context) {
+    super.build(context);
+    final Locale locale = context.read<LocaleManager>().locale;
+
     return FutureBuilder<List<CarProductFilter>>(
       future: _future(),
       builder: (BuildContext context, AsyncSnapshot<Object?> snapshot) {
@@ -109,21 +125,25 @@ class SelectionCarsTab extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: <Widget>[
                           Text(
-                            items[index].getFilterName(
-                                  context
-                                      .read<LocaleManager>()
-                                      .locale
-                                      .languageCode,
-                                ) ??
+                            items[index].getFilterName(locale.languageCode) ??
                                 '',
                             overflow: TextOverflow.ellipsis,
-                            style: const TextStyle(fontSize: 20),
+                            style: const TextStyle(
+                              fontSize: 20,
+                              color: Colors.white,
+                            ),
                           ),
                           GestureDetector(
                             onTap: () {
-                              query.value.filterId = items[index].id;
-                              query.value = query.value.copyWith();
-                              tabController.animateTo(0);
+                              widget.query.value.filterId = items[index].id;
+                              widget.query.value = widget.query.value
+                                  .copyWith();
+                              widget.searchBarController.text =
+                                  items[index].getFilterName(
+                                    locale.languageCode,
+                                  ) ??
+                                  "";
+                              widget.tabController.animateTo(0);
                             },
                             child: Container(
                               padding: const EdgeInsets.fromLTRB(12, 6, 12, 6),
@@ -133,7 +153,10 @@ class SelectionCarsTab extends StatelessWidget {
                               ),
                               child: Text(
                                 "${Localizations.of<AppLocalizations>(context, AppLocalizations)!.showAll} (${items[index].productCount ?? ''}+)",
-                                style: const TextStyle(fontSize: 12),
+                                style: const TextStyle(
+                                  fontSize: 12,
+                                  color: Colors.white,
+                                ),
                                 overflow: TextOverflow.ellipsis,
                               ),
                             ),

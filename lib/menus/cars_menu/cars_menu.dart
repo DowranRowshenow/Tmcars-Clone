@@ -19,22 +19,36 @@ class CarsMenu extends StatefulWidget {
 }
 
 class _CarsMenuState extends State<CarsMenu> with TickerProviderStateMixin {
+  final TextEditingController searchBarController = TextEditingController();
+  late TabController tabController;
+  final PageController _pageController = PageController();
+  final ValueNotifier<CarQuery> carQuery = ValueNotifier<CarQuery>(CarQuery());
+
+  @override
+  void initState() {
+    super.initState();
+    tabController = TabController(length: 3, vsync: this);
+  }
+
+  @override
+  void dispose() {
+    tabController.dispose();
+    searchBarController.dispose();
+    carQuery.dispose();
+    _pageController.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
-    final AppLocalizations appLocalizations =
-        Localizations.of<AppLocalizations>(context, AppLocalizations)!;
     final NavigationManager navigationManager = context
         .read<NavigationManager>();
-    final ValueNotifier<CarQuery> carQuery = ValueNotifier<CarQuery>(
-      CarQuery(),
-    );
-    final TabController tabController = TabController(length: 3, vsync: this);
+    final AppLocalizations appLocalizations =
+        Localizations.of<AppLocalizations>(context, AppLocalizations)!;
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(
-          Localizations.of<AppLocalizations>(context, AppLocalizations)!.cars,
-        ),
+        title: Text(appLocalizations.cars),
         leading: IconButton(
           icon: const Icon(Icons.menu),
           splashRadius: Constants.splashRadius,
@@ -78,9 +92,17 @@ class _CarsMenuState extends State<CarsMenu> with TickerProviderStateMixin {
       body: TabBarView(
         controller: tabController,
         children: <Widget>[
-          AllCarsTab(query: carQuery),
-          SelectionCarsTab(tabController: tabController, query: carQuery),
-          CategoryCarsTab(tabController: tabController, query: carQuery),
+          AllCarsTab(query: carQuery, searchBarController: searchBarController),
+          SelectionCarsTab(
+            tabController: tabController,
+            query: carQuery,
+            searchBarController: searchBarController,
+          ),
+          CategoryCarsTab(
+            tabController: tabController,
+            query: carQuery,
+            searchBarController: searchBarController,
+          ),
         ],
       ),
     );

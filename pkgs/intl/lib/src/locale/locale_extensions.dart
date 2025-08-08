@@ -27,7 +27,7 @@ class LocaleExtensions {
         uExtensions == null ||
             uExtensions.entries.every((e) {
               if (!_uExtensionsValidKeysRE.hasMatch(e.key)) return false;
-              // (hugovdm) reconsider this representation: "true" values are
+              // TODO(hugovdm) reconsider this representation: "true" values are
               // suppressed in canonical Unicode BCP47 Locale Identifiers, but
               // we may choose to represent them as "true" in memory.
               if (e.value == '' && e.key != '') return true;
