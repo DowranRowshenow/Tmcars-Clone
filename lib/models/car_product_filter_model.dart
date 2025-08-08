@@ -4,8 +4,8 @@ class CarProductFilter extends Equatable {
   final int? id;
   final String? filterName;
   final String? filterNameRu;
-  final int? priceStart;
-  final int? priceEnd;
+  final double? priceStart;
+  final double? priceEnd;
   final String? cityName;
   final String? brandName;
   final int? brandId;
@@ -54,8 +54,8 @@ class CarProductFilter extends Equatable {
       id: json['id'] as int? ?? 0,
       filterName: json['filterName'] as String?,
       filterNameRu: json['filterNameRu'] as String?,
-      priceStart: json['priceStart'] as int?,
-      priceEnd: json['priceEnd'] as int?,
+      priceStart: json['priceStart'] as double?,
+      priceEnd: json['priceEnd'] as double?,
       cityName: json['cityName'] as String?,
       brandName: json['brandName'] as String?,
       brandId: json['brandId'] as int?,

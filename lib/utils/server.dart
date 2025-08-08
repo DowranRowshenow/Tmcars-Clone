@@ -141,8 +141,7 @@ class Server {
               query == null ? <String, String>{} : query.map(),
             ),
           )
-          .timeout(const Duration(seconds: 10)); // Added timeout
-
+          .timeout(const Duration(seconds: 10));
       if (response.statusCode == 200) {
         return (json.decode(response.body) as List<dynamic>)
             .map(
@@ -154,7 +153,7 @@ class Server {
         debugPrint('Failed to load articles');
       }
     } catch (e) {
-      debugPrint(e.toString());
+      debugPrint("Fetch error getCarProductsFilter $e");
     }
     return <CarProductFilter>[];
   }

@@ -18,8 +18,7 @@ class CarsMenu extends StatefulWidget {
   State<CarsMenu> createState() => _CarsMenuState();
 }
 
-class _CarsMenuState extends State<CarsMenu>
-    with SingleTickerProviderStateMixin {
+class _CarsMenuState extends State<CarsMenu> with TickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     final AppLocalizations appLocalizations =

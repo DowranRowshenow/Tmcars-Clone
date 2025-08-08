@@ -19,7 +19,8 @@ class SelectionCarsTab extends StatelessWidget {
   });
   final TabController tabController;
   final ValueNotifier<CarQuery> query;
-  final double height = 240.0;
+  final double height = 200.0;
+  final double width = 600.0;
 
   Future<List<CarProductFilter>> _future() {
     return Server.getCarProductFilter(const CarProductFilter());
@@ -33,6 +34,7 @@ class SelectionCarsTab extends StatelessWidget {
         if (snapshot.hasData) {
           final List<CarProductFilter> items =
               snapshot.data as List<CarProductFilter>;
+
           return ListView.builder(
             itemCount: items.length,
             itemBuilder: (BuildContext context, int index) {
@@ -45,10 +47,8 @@ class SelectionCarsTab extends StatelessWidget {
                             imageUrl: items[index].imgUrl ?? "",
                             filterQuality: FilterQuality.low,
                             fit: BoxFit.fitWidth,
-                            height: height,
                             width: double.infinity,
-                            memCacheHeight: height.toInt(),
-                            memCacheWidth: height.toInt(),
+                            memCacheWidth: width.toInt(),
                             placeholder: (BuildContext context, String url) =>
                                 Container(
                                   height: height,

@@ -36,10 +36,8 @@ class CategoryCarsTab extends StatelessWidget {
                 titleAlignment: ListTileTitleAlignment.center,
                 key: ValueKey<int>(index),
                 leading: CachedNetworkImage(
-                  width: 40.0,
-                  height: 40.0,
-                  memCacheHeight: 40,
-                  memCacheWidth: 40,
+                  width: 35.0,
+                  height: 35.0,
                   imageUrl: items[index].imgUrl ?? "",
                 ),
                 title: Text(

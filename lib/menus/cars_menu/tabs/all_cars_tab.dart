@@ -129,10 +129,11 @@ class _AllCarsTabState extends State<AllCarsTab>
       appBar: AppBar(
         toolbarHeight: 0,
         bottom: PreferredSize(
-          preferredSize: const Size.fromHeight(65),
+          preferredSize: const Size.fromHeight(50),
           child: Container(
-            padding: const EdgeInsets.all(10),
+            padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
             decoration: const BoxDecoration(
+              color: Colors.transparent,
               border: Border(bottom: BorderSide(width: 0.5)),
             ),
             child: Row(
