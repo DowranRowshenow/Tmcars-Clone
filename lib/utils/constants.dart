@@ -10,6 +10,7 @@ class Constants {
   static const String packageVersion = '0.5.1';
   static const String appName = 'Tmcars Clone';
   static const String phoneCode = "+993";
+  static const String dateFormat = "dd MMMM yyyy";
   static const String drawerLogoDark = 'assets/images/drawer_logo_dark.webp';
   static const String drawerLogoLight = 'assets/images/drawer_logo_light.webp';
   static const String tempImageUrl =

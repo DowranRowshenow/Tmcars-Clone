@@ -7,6 +7,7 @@ import '../../../components/no_connection.dart';
 import '../../../components/no_result.dart';
 import '../../../models/article_category_model.dart';
 import '../../../models/article_model.dart';
+import '../../../models/article_query_model.dart';
 import '../../../utils/constants.dart';
 import '../../../utils/loading_controller.dart';
 import '../../../utils/server.dart';
@@ -115,11 +116,13 @@ class _ArticlesTabState extends State<ArticlesTab>
     }
 
     final List<Article>? newArticles = await Server.getArticles(
-      offset: _offset,
-      mask: query,
-      tags: widget.tags ?? "",
-      categoryCode: widget.category?.code ?? "",
-      categoryId: widget.category?.id ?? 0,
+      ArticleQuery(
+        offset: _offset,
+        mask: query,
+        tags: widget.tags,
+        categoryCode: widget.category?.code,
+        categoryId: widget.category?.id,
+      ),
     );
     if (!mounted) return;
 

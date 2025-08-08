@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
 
 import '../../../models/car_detail_model.dart';
 import '../../../models/car_model.dart';
+import '../../../providers/locale.dart';
+import '../../../utils/constants.dart';
 
 class CarDetailContent extends StatelessWidget {
   final CarDetail? carDetail;
@@ -32,12 +35,22 @@ class CarDetailContent extends StatelessWidget {
           children: <Widget>[
             const Icon(Icons.calendar_today, size: 16, color: Colors.grey),
             const SizedBox(width: 4),
-            Text(
-              DateFormat(
-                'dd MMMM yyyy',
-                'tk',
-              ).format(DateTime.parse(car.publishedDate ?? "")),
-              style: const TextStyle(fontSize: 14, color: Colors.grey),
+            Builder(
+              builder: (BuildContext context) {
+                String date = "";
+                try {
+                  DateFormat(
+                    Constants.dateFormat,
+                    context.read<LocaleManager>().locale.languageCode,
+                  ).format(DateTime.parse(car.publishedDate ?? ""));
+                } catch (e) {
+                  debugPrint(e.toString());
+                }
+                return Text(
+                  date,
+                  style: const TextStyle(fontSize: 14, color: Colors.grey),
+                );
+              },
             ),
             const SizedBox(width: 16),
             const Icon(Icons.visibility, size: 16, color: Colors.grey),

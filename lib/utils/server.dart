@@ -10,6 +10,7 @@ import '../models/app_settings_model.dart';
 import '../models/article_category_model.dart';
 import '../models/article_detail_model.dart';
 import '../models/article_model.dart';
+import '../models/article_query_model.dart';
 import '../models/car_detail_model.dart';
 import '../models/car_list_model.dart';
 import '../models/car_model.dart';
@@ -52,51 +53,60 @@ class Server {
     return utf8.decode(bytes);
   }
 
-  static Future<List<DashFeaturedItem>> getSettings() async {
-    const String cacheKey = 'appSettings';
-
+  static Future<dynamic> _getCache(String cacheKey, Duration duration) async {
     if (_cache.containsKey(cacheKey)) {
       final dynamic cached = _cache[cacheKey];
-      if (cached['timestamp'] != null) {
-        try {
-          final DateTime cachedTimestamp = DateTime.parse(
-            cached['timestamp'] as String,
-          );
-          if (DateTime.now().difference(cachedTimestamp) < _cacheExpiryLong) {
-            return cached['data']['dashFeatured'] as List<DashFeaturedItem>;
-          }
-        } catch (e) {
-          // Treat cache as expired if timestamp is invalid
-          debugPrint(
-            'Warning: Could not parse cached timestamp for $cacheKey: $e',
-          );
+      if (cached['timestamp'] != null && cached['data'] != null) {
+        if (DateTime.now().difference(cached['timestamp'] as DateTime) <
+            duration) {
+          return cached;
         }
       }
     }
+  }
+
+  static Future<String> _fetchUrl(
+    String url, {
+    Map<String, String> headers = const <String, String>{},
+    Map<String, String> query = const <String, String>{},
+  }) async {
+    final http.Response response = await _client
+        .get(Uri.https(host, url, query), headers: headers)
+        .timeout(const Duration(seconds: 10));
+    if (response.statusCode == 200) {
+      return response.body;
+    } else {
+      debugPrint("Failed to fetch: $url");
+    }
+    return "";
+  }
+
+  static Future<List<DashFeaturedItem>> getSettings() async {
+    const String cacheKey = 'appSettings';
+    final dynamic cached = await _getCache(cacheKey, _cacheExpiryLong);
+
+    if (cached != null) {
+      return cached['data'].dashFeatured as List<DashFeaturedItem>;
+    }
 
     try {
-      final http.Response response = await _client
-          .get(Uri.https(host, "/tmcars/setting/getAppSettingsV1"))
-          .timeout(const Duration(seconds: 10)); // Added timeout
+      final String jsonString = await _fetchUrl(
+        "/tmcars/setting/getAppSettingsV1",
+      );
 
-      if (response.statusCode == 200) {
-        AppSettings appSettings = AppSettings.fromJson(
-          json.decode(response.body) as Map<String, dynamic>,
-        );
-        _cache[cacheKey] = <String, Object>{
-          'data': appSettings,
-          'timestamp': DateTime.now(),
-        };
-        return appSettings.dashFeatured;
-      } else {
-        debugPrint(
-          'Failed to load popular products: ${response.statusCode}, Body: ${response.body}',
-        );
-      }
+      final AppSettings appSettings = AppSettings.fromJson(
+        json.decode(jsonString) as Map<String, dynamic>,
+      );
+      _cache[cacheKey] = <String, Object>{
+        'data': appSettings,
+        'timestamp': DateTime.now(),
+      };
+      Storage.instance.cacheAppSettings(jsonString);
+      return appSettings.dashFeatured;
     } on TimeoutException catch (e) {
-      debugPrint('Error fetching popular products (timeout): $e');
+      debugPrint('Error fetching Settings (timeout): $e');
     } catch (e) {
-      debugPrint('Error fetching popular products: $e');
+      debugPrint('Error fetching Settings: $e');
     }
     // TODO: make it return null
     return <DashFeaturedItem>[];
@@ -104,48 +114,26 @@ class Server {
 
   static Future<CarDetail?> getCar(int id) async {
     final String cacheKey = 'car_$id';
+    final dynamic cached = await _getCache(cacheKey, _cacheExpiryLong);
 
-    if (_cache.containsKey(cacheKey)) {
-      final dynamic cached = _cache[cacheKey];
-      if (cached['timestamp'] != null && cached['data'] != null) {
-        try {
-          final DateTime cachedTimestamp = DateTime.parse(
-            cached['timestamp'] as String,
-          );
-          if (DateTime.now().difference(cachedTimestamp) < _cacheExpiryLong) {
-            return cached['data'] as CarDetail;
-          }
-        } catch (e) {
-          // Treat cache as expired if timestamp is invalid
-          debugPrint(
-            'Warning: Could not parse cached timestamp for $cacheKey: $e',
-          );
-        }
-      }
+    if (cached != null) {
+      return cached['data'] as CarDetail;
     }
 
     try {
-      final http.Response response = await http
-          .get(
-            Uri.https(host, "/tmcars/v1/vehicle/getCar", <String, String>{
-              'id': id.toString(),
-            }),
-          )
-          .timeout(const Duration(seconds: 10)); // Added timeout
+      final String jsonString = await _fetchUrl(
+        "/tmcars/v1/vehicle/getCar",
+        query: <String, String>{'id': id.toString()},
+      );
 
-      if (response.statusCode == 200) {
-        final dynamic data = json.decode(response.body);
-        final CarDetail carDetail = CarDetail.fromJson(
-          data as Map<String, dynamic>,
-        );
-        _cache[cacheKey] = <String, Object>{
-          'data': carDetail,
-          'timestamp': DateTime.now(),
-        };
-        return carDetail;
-      } else {
-        debugPrint('Failed to load car detail');
-      }
+      final CarDetail carDetail = CarDetail.fromJson(
+        json.decode(jsonString) as Map<String, dynamic>,
+      );
+      _cache[cacheKey] = <String, Object>{
+        'data': carDetail,
+        'timestamp': DateTime.now(),
+      };
+      return carDetail;
     } catch (e) {
       debugPrint(e.toString());
     }
@@ -154,56 +142,30 @@ class Server {
 
   static Future<List<Car>?> getCars(CarQuery? query) async {
     const String cacheKey = 'cars';
+    final dynamic cached = await _getCache(cacheKey, _cacheExpiryLong);
 
-    if (_cache.containsKey(cacheKey)) {
-      final dynamic cached = _cache[cacheKey];
-      if (cached['timestamp'] != null &&
-          cached['data'] != null &&
-          cached['hashcode'] != query.hashCode) {
-        try {
-          final DateTime cachedTimestamp = DateTime.parse(
-            cached['timestamp'] as String,
-          );
-          if (DateTime.now().difference(cachedTimestamp) < _cacheExpiryLong) {
-            return cached['data']['cars'] as List<Car>;
-          }
-        } catch (e) {
-          // Treat cache as expired if timestamp is invalid
-          debugPrint(
-            'Warning: Could not parse cached timestamp for $cacheKey: $e',
-          );
-        }
-      }
+    if (cached != null && cached['hashedcode'] != query.hashCode) {
+      return cached['data'].cars as List<Car>;
     }
 
     try {
-      final http.Response response = await http
-          .get(
-            Uri.https(
-              host,
-              "/tmcars/carProduct/getCars",
-              // Check if query null and pass map
-              query == null ? <String, String>{} : query.map(),
-            ),
-          )
-          .timeout(const Duration(seconds: 10)); // Added timeout
+      final String jsonString = await _fetchUrl(
+        "/tmcars/carProduct/getCars",
+        query: query?.map() ?? <String, String>{},
+      );
 
-      if (response.statusCode == 200) {
-        final dynamic data = json.decode(response.body);
-        final CarList carList = CarList.fromJson(
-          data as Map<String, dynamic>,
-          // NOTE: It is for detecting the api response version
-          isV2: data["cars"][0]["cityName"] == null ? true : false,
-        );
-        _cache[cacheKey] = <String, Object>{
-          'data': carList,
-          'timestamp': DateTime.now(),
-          'hashcode': query.hashCode,
-        };
-        return carList.cars;
-      } else {
-        debugPrint('Failed to load cars');
-      }
+      final dynamic data = json.decode(jsonString);
+      final CarList carList = CarList.fromJson(
+        data as Map<String, dynamic>,
+        // NOTE: It is for detecting the api response version
+        isV2: data["cars"][0]["cityName"] == null ? true : false,
+      );
+      _cache[cacheKey] = <String, Object>{
+        'data': carList,
+        'timestamp': DateTime.now(),
+        'hashcode': query.hashCode,
+      };
+      return carList.cars;
     } catch (e) {
       debugPrint(e.toString());
     }
@@ -214,55 +176,31 @@ class Server {
     CarProductFilter? query,
   ) async {
     final String cacheKey = 'carProducts_${query?.onlyBrand ?? ""}';
+    final dynamic cached = await _getCache(cacheKey, _cacheExpiryLong);
 
-    if (_cache.containsKey(cacheKey)) {
-      final dynamic cached = _cache[cacheKey];
-      if (cached['timestamp'] != null &&
-          cached['data'] != null &&
-          cached['hashcode'] != query.hashCode) {
-        try {
-          final DateTime cachedTimestamp = DateTime.parse(
-            cached['timestamp'] as String,
-          );
-          if (DateTime.now().difference(cachedTimestamp) < _cacheExpiryLong) {
-            return cached['data'] as List<CarProductFilter>;
-          }
-        } catch (e) {
-          // Treat cache as expired if timestamp is invalid
-          debugPrint(
-            'Warning: Could not parse cached timestamp for $cacheKey: $e',
-          );
-        }
-      }
+    if (cached != null && cached['hashcode'] != query.hashCode) {
+      return cached['data'] as List<CarProductFilter>;
     }
 
     try {
-      final http.Response response = await http
-          .get(
-            Uri.https(
-              host,
-              "/tmcars/carProductFilter/getFilters",
-              query == null ? <String, String>{} : query.map(),
-            ),
-          )
-          .timeout(const Duration(seconds: 10));
-      if (response.statusCode == 200) {
-        final List<CarProductFilter> carProductFilters =
-            (json.decode(response.body) as List<dynamic>)
-                .map(
-                  (dynamic e) =>
-                      CarProductFilter.fromJson(e as Map<String, dynamic>),
-                )
-                .toList();
-        _cache[cacheKey] = <String, Object>{
-          'data': carProductFilters,
-          'timestamp': DateTime.now(),
-          'hashcode': query.hashCode,
-        };
-        return carProductFilters;
-      } else {
-        debugPrint('Failed to load car filters');
-      }
+      final String jsonString = await _fetchUrl(
+        "/tmcars/carProductFilter/getFilters",
+        query: query?.map() ?? <String, String>{},
+      );
+
+      final List<CarProductFilter> carProductFilters =
+          (json.decode(jsonString) as List<dynamic>)
+              .map(
+                (dynamic e) =>
+                    CarProductFilter.fromJson(e as Map<String, dynamic>),
+              )
+              .toList();
+      _cache[cacheKey] = <String, Object>{
+        'data': carProductFilters,
+        'timestamp': DateTime.now(),
+        'hashcode': query.hashCode,
+      };
+      return carProductFilters;
     } catch (e) {
       debugPrint("Fetch error getCarProductsFilter $e");
     }
@@ -271,95 +209,47 @@ class Server {
 
   static Future<List<ArticleCategory>?> getArticleCategories() async {
     const String cacheKey = 'article_categories';
+    final dynamic cached = await _getCache(cacheKey, _cacheExpiryLong);
 
-    if (_cache.containsKey(cacheKey)) {
-      final dynamic cached = _cache[cacheKey];
-      // Fix: Explicitly cast 'timestamp' to String before parsing
-      if (cached['timestamp'] != null) {
-        try {
-          final DateTime cachedTimestamp = DateTime.parse(
-            cached['timestamp'] as String,
-          );
-          if (DateTime.now().difference(cachedTimestamp) < _cacheExpiryLong) {
-            return cached['data'] as List<ArticleCategory>;
-          }
-        } catch (e) {
-          debugPrint(
-            'Warning: Could not parse cached timestamp for $cacheKey: $e',
-          );
-          // Treat cache as expired if timestamp is invalid
-        }
-      }
+    if (cached != null) {
+      return cached['data'] as List<ArticleCategory>;
     }
 
     try {
-      final http.Response response = await _client
-          .get(Uri.https(host, "/tmcars/articleCategory/categories"))
-          .timeout(const Duration(seconds: 10)); // Added timeout
+      final String jsonString = await _fetchUrl(
+        "/tmcars/articleCategory/categories",
+      );
 
-      if (response.statusCode == 200) {
-        // Fix: Explicitly cast json.decode result to List<dynamic>
-        final List<dynamic> data = json.decode(response.body) as List<dynamic>;
-        // Fix: Explicitly cast each item to Map<String, dynamic> before passing to fromJson
-        final List<ArticleCategory> categories = data
-            .map(
-              (dynamic e) =>
-                  ArticleCategory.fromJson(e as Map<String, dynamic>),
-            )
-            .toList();
-        _cache[cacheKey] = <String, Object>{
-          'data': categories,
-          'timestamp': DateTime.now(),
-        };
-        Storage.instance.cacheArticleCategories(response.body);
-        return categories;
-      } else {
-        debugPrint('Failed to load article categories');
-      }
+      final List<ArticleCategory> categories =
+          (json.decode(jsonString) as List<dynamic>)
+              .map(
+                (dynamic e) =>
+                    ArticleCategory.fromJson(e as Map<String, dynamic>),
+              )
+              .toList();
+      _cache[cacheKey] = <String, Object>{
+        'data': categories,
+        'timestamp': DateTime.now(),
+      };
+      Storage.instance.cacheArticleCategories(jsonString);
+      return categories;
     } catch (e) {
       debugPrint(e.toString());
     }
     return null;
   }
 
-  static Future<List<Article>?> getArticles({
-    int offset = 0,
-    int max = 40,
-    int categoryId = 0,
-    String categoryCode = "",
-    String mask = "",
-    String tags = "",
-  }) async {
-    final Map<String, dynamic> map = <String, dynamic>{'max': max.toString()};
-    if (offset != 0) {
-      map['offset'] = offset.toString();
-    }
-    if (categoryId != 0) {
-      map['categoryId'] = categoryId.toString();
-    }
-    if (categoryCode != "") {
-      map['categoryCode'] = categoryCode;
-    }
-    if (mask != "") {
-      map['mask'] = mask;
-    }
-    if (tags != "") {
-      map['tags'] = tags;
-    }
-
+  static Future<List<Article>?> getArticles(ArticleQuery query) async {
     try {
-      final http.Response response = await http
-          .get(Uri.https(host, "/tmcars/article/articles", map))
-          .timeout(const Duration(seconds: 10)); // Added timeout
+      final String jsonString = await _fetchUrl(
+        "/tmcars/article/articles",
+        query: query.map(),
+      );
 
-      if (response.statusCode == 200) {
-        final List<dynamic> data = json.decode(response.body) as List<dynamic>;
-        return data
-            .map((dynamic e) => Article.fromJson(e as Map<String, dynamic>))
-            .toList();
-      } else {
-        debugPrint('Failed to load articles');
-      }
+      final List<dynamic> data = json.decode(jsonString) as List<dynamic>;
+      return data
+          .map((dynamic e) => Article.fromJson(e as Map<String, dynamic>))
+          .toList();
     } catch (e) {
       debugPrint(e.toString());
     }
@@ -368,51 +258,26 @@ class Server {
 
   static Future<List<Article>?> getNearestArticles(int id) async {
     final String cacheKey = 'nearest_articles_$id';
+    final dynamic cached = await _getCache(cacheKey, _cacheExpiry);
 
-    if (_cache.containsKey(cacheKey)) {
-      final dynamic cached = _cache[cacheKey];
-      // Fix: Explicitly cast 'timestamp' to String before parsing
-      if (cached['timestamp'] != null) {
-        try {
-          final DateTime cachedTimestamp = DateTime.parse(
-            cached['timestamp'] as String,
-          );
-          if (DateTime.now().difference(cachedTimestamp) < _cacheExpiry) {
-            return cached['data'] as List<Article>;
-          }
-        } catch (e) {
-          debugPrint(
-            'Warning: Could not parse cached timestamp for $cacheKey: $e',
-          );
-          // Treat cache as expired if timestamp is invalid
-        }
-      }
+    if (cached != null) {
+      return cached['data'] as List<Article>;
     }
 
     try {
-      final http.Response response = await http
-          .get(
-            Uri.https(host, "/tmcars/article/nearestNews", <String, String>{
-              'sourceId': id.toString(),
-            }),
-          )
-          .timeout(const Duration(seconds: 10)); // Added timeout
+      final String jsonString = await _fetchUrl(
+        "/tmcars/article/nearestNews",
+        query: <String, String>{'sourceId': id.toString()},
+      );
 
-      if (response.statusCode == 200) {
-        // Fix: Explicitly cast json.decode result to List<dynamic>
-        final List<dynamic> data = json.decode(response.body) as List<dynamic>;
-        // Fix: Explicitly cast each item to Map<String, dynamic> before passing to fromJson
-        final List<Article> res = data
-            .map((dynamic e) => Article.fromJson(e as Map<String, dynamic>))
-            .toList();
-        _cache[cacheKey] = <String, Object>{
-          'data': res,
-          'timestamp': DateTime.now(),
-        };
-        return res;
-      } else {
-        debugPrint('Failed to load nearest articles');
-      }
+      final List<Article> articles = (json.decode(jsonString) as List<dynamic>)
+          .map((dynamic e) => Article.fromJson(e as Map<String, dynamic>))
+          .toList();
+      _cache[cacheKey] = <String, Object>{
+        'data': articles,
+        'timestamp': DateTime.now(),
+      };
+      return articles;
     } catch (e) {
       debugPrint('Failed to load nearest articles');
     }
@@ -421,50 +286,26 @@ class Server {
 
   static Future<ArticleDetail?> getArticle(int id) async {
     final String cacheKey = 'article_$id';
+    final dynamic cached = await _getCache(cacheKey, _cacheExpiryShort);
 
-    // Check cache first
-    if (_cache.containsKey(cacheKey)) {
-      final dynamic cached = _cache[cacheKey];
-      // Fix: Explicitly cast 'timestamp' to String before parsing
-      if (cached['timestamp'] != null) {
-        try {
-          final DateTime cachedTimestamp = DateTime.parse(
-            cached['timestamp'] as String,
-          );
-          if (DateTime.now().difference(cachedTimestamp) < _cacheExpiryShort) {
-            return cached['data'] as ArticleDetail;
-          }
-        } catch (e) {
-          debugPrint(
-            'Warning: Could not parse cached timestamp for $cacheKey: $e',
-          );
-          // Treat cache as expired if timestamp is invalid
-        }
-      }
+    if (cached != null) {
+      return cached['data'] as ArticleDetail;
     }
 
     try {
-      final http.Response response = await http
-          .get(
-            Uri.https(host, "/tmcars/article/getArticle", <String, String>{
-              'id': id.toString(),
-            }),
-          )
-          .timeout(const Duration(seconds: 10)); // Added timeout
+      final String jsonString = await _fetchUrl(
+        "/tmcars/article/getArticle",
+        query: <String, String>{'id': id.toString()},
+      );
 
-      if (response.statusCode == 200) {
-        // Fix: Explicitly cast json.decode result to Map<String, dynamic>
-        final ArticleDetail data = ArticleDetail.fromJson(
-          json.decode(response.body) as Map<String, dynamic>,
-        );
-        _cache[cacheKey] = <String, Object>{
-          'data': data,
-          'timestamp': DateTime.now(),
-        };
-        return data;
-      } else {
-        debugPrint('Failed to load article detail');
-      }
+      final ArticleDetail data = ArticleDetail.fromJson(
+        json.decode(jsonString) as Map<String, dynamic>,
+      );
+      _cache[cacheKey] = <String, Object>{
+        'data': data,
+        'timestamp': DateTime.now(),
+      };
+      return data;
     } catch (e) {
       debugPrint(e.toString());
     }
@@ -483,11 +324,9 @@ class Server {
               'Accept-Encoding': 'gzip, deflate',
             },
           )
-          .timeout(const Duration(seconds: 10)); // Added timeout
+          .timeout(const Duration(seconds: 10));
 
       if (response.statusCode == 200) {
-        debugPrint('Response headers: ${response.headers}');
-        debugPrint('Content-Type: ${response.headers['content-type']}');
         final String contentType = response.headers['content-type'] ?? '';
         String htmlContent = response.body;
         if (!contentType.toLowerCase().contains('charset')) {

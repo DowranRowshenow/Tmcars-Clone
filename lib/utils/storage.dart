@@ -16,6 +16,12 @@ class Storage {
 
   Storage._();
 
+  Future<SharedPreferences> _getPrefs() async {
+    if (_prefs != null) return _prefs!;
+    _prefs = await SharedPreferences.getInstance();
+    return _prefs!;
+  }
+
   static Future<Storage> getInstance() async {
     if (_instance == null) {
       _instance = Storage._();
@@ -85,65 +91,42 @@ class Storage {
     );
   }
 
-  Future<void> cacheArticleCategories(String data) async {
-    try {
-      if (kIsWeb) {
-        // Use shared_preferences for web
-        final SharedPreferences prefs = await SharedPreferences.getInstance();
-        await prefs.setString('article_categories', data);
-      } else {
-        // Use path_provider and dart:io for native
-        final Directory directory = await getApplicationDocumentsDirectory();
-        final File file = File('${directory.path}/articles.json');
-        await file.writeAsString(data);
-      }
-    } catch (e) {
-      debugPrint('Error saving article categories: $e');
-    }
-  }
-
   Future<List<ArticleCategory>> getArticleCategories() async {
+    final String jsonString = await getData("articleCategories");
     try {
-      String jsonString = "";
-      if (kIsWeb) {
-        // Use shared_preferences for web
-        final SharedPreferences prefs = await SharedPreferences.getInstance();
-        jsonString = prefs.getString('article_categories') ?? "";
-      } else {
-        // Use path_provider and dart:io for native
-        final Directory directory = await getApplicationDocumentsDirectory();
-        final File file = File('${directory.path}/articleCategories.json');
-        jsonString = await file.readAsString();
-        // if (!await file.exists()) return <ArticleCategory>[];
+      if (jsonString.isNotEmpty) {
+        final List<dynamic> jsonList = json.decode(jsonString) as List<dynamic>;
+        return jsonList
+            .map(
+              (dynamic json) =>
+                  ArticleCategory.fromJson(json as Map<String, dynamic>),
+            )
+            .toList();
       }
-      final List<dynamic> jsonList = jsonDecode(jsonString) as List<dynamic>;
-      return jsonList
-          .map(
-            (dynamic json) =>
-                ArticleCategory.fromJson(json as Map<String, dynamic>),
-          )
-          .toList();
     } catch (e) {
       debugPrint('Error loading article categories: $e');
-      return <ArticleCategory>[];
     }
+    return <ArticleCategory>[];
   }
 
-  Future<void> cacheData(int id, String data) async {
+  Future<List<Article>> getArticlesByCategory(int id) async {
+    final String jsonString = await getData('articles_$id');
     try {
-      if (kIsWeb) {
-        // Use shared_preferences for web
-        final SharedPreferences prefs = await SharedPreferences.getInstance();
-        await prefs.setString('articles_$id', data);
-      } else {
-        // Use path_provider and dart:io for native
-        final Directory directory = await getApplicationDocumentsDirectory();
-        final File file = File('${directory.path}/articles_$id.json');
-        await file.writeAsString(data);
+      if (jsonString.isNotEmpty) {
+        return (jsonDecode(jsonString) as List<dynamic>)
+            .map(
+              (dynamic json) => Article.fromJson(json as Map<String, dynamic>),
+            )
+            .toList();
       }
     } catch (e) {
-      debugPrint('Error saving articles for category $id: $e');
+      debugPrint('Error loading articles for category $id: $e');
     }
+    return <Article>[];
+  }
+
+  Future<void> cacheArticleCategories(String data) async {
+    cacheData("article_categories", data);
   }
 
   Future<void> cacheArticles(int? categoryId, List<Article> articles) async {
@@ -151,36 +134,43 @@ class Storage {
     final String articlesJson = jsonEncode(
       articles.map((Article a) => a.toJson()).toList(),
     );
-    cacheData(categoryId, articlesJson);
+    cacheData("articles_$categoryId", articlesJson);
   }
 
-  Future<List<Article>> getArticlesByCategory(int id) async {
+  Future<void> cacheAppSettings(String data) async {
+    cacheData("appSettings", data);
+  }
+
+  Future<void> cacheData(String cacheKey, String data) async {
     try {
-      String jsonString = "";
       if (kIsWeb) {
         // Use shared_preferences for web
-        final SharedPreferences prefs = await SharedPreferences.getInstance();
-        jsonString = prefs.getString('articles_$id') ?? "";
+        (await _getPrefs()).setString(cacheKey, data);
       } else {
         // Use path_provider and dart:io for native
         final Directory directory = await getApplicationDocumentsDirectory();
-        final File file = File('${directory.path}/articles_$id.json');
-        jsonString = await file.readAsString();
-        // if (!await file.exists()) return <Article>[];
+        final File file = File('${directory.path}/$cacheKey.json');
+        await file.writeAsString(data);
       }
-      final List<dynamic> jsonList = jsonDecode(jsonString) as List<dynamic>;
-      return jsonList
-          .map((dynamic json) => Article.fromJson(json as Map<String, dynamic>))
-          .toList();
     } catch (e) {
-      debugPrint('Error loading articles for category $id: $e');
-      return <Article>[];
+      debugPrint('Error saving $cacheKey: $e');
     }
   }
 
-  Future<SharedPreferences> _getPrefs() async {
-    if (_prefs != null) return _prefs!;
-    _prefs = await SharedPreferences.getInstance();
-    return _prefs!;
+  Future<String> getData(String cacheKey) async {
+    try {
+      if (kIsWeb) {
+        // Use shared_preferences for web
+        return (await _getPrefs()).getString(cacheKey) ?? "";
+      } else {
+        // Use path_provider and dart:io for native
+        final Directory directory = await getApplicationDocumentsDirectory();
+        final File file = File('${directory.path}/$cacheKey.json');
+        return await file.readAsString();
+      }
+    } catch (e) {
+      debugPrint(e.toString());
+    }
+    return "";
   }
 }

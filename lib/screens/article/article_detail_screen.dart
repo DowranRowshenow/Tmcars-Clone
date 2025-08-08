@@ -16,38 +16,9 @@ import '../../models/article_model.dart';
 import '../../providers/navigation.dart';
 import '../../providers/themes.dart';
 import '../../utils/constants.dart';
+import '../../utils/scroll_state.dart';
 import '../../utils/server.dart';
 import 'components/article_detail_content.dart';
-
-/// Represents the scroll state for the article detail screen
-class ScrollState {
-  final double fabTop;
-  final bool fabVisible;
-  final bool showTitle;
-
-  const ScrollState({
-    required this.fabTop,
-    required this.fabVisible,
-    required this.showTitle,
-  });
-
-  static const double expandedHeight = 250.0;
-  static const double offset = 5.0;
-
-  static const ScrollState initial = ScrollState(
-    fabTop: expandedHeight - offset,
-    fabVisible: true,
-    showTitle: false,
-  );
-
-  ScrollState copyWith({double? fabTop, bool? fabVisible, bool? showTitle}) {
-    return ScrollState(
-      fabTop: fabTop ?? this.fabTop,
-      fabVisible: fabVisible ?? this.fabVisible,
-      showTitle: showTitle ?? this.showTitle,
-    );
-  }
-}
 
 class ArticleDetailScreen extends StatefulWidget {
   const ArticleDetailScreen({
@@ -69,13 +40,9 @@ class _ArticleDetailScreenState extends State<ArticleDetailScreen> {
       ValueNotifier<ArticleDetail?>(null);
   final ValueNotifier<List<Article>?> _nearestArticlesNotifier =
       ValueNotifier<List<Article>?>(null);
-
   late Future<String> _htmlContentFuture;
-
-  // Combine all scroll-related states into a single notifier
   final ValueNotifier<ScrollState> _scrollStateNotifier =
       ValueNotifier<ScrollState>(ScrollState.initial);
-
   String? _cachedColorCode;
 
   @override
