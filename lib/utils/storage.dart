@@ -52,7 +52,6 @@ class Storage {
   Future<ThemeMode> getThemeMode() async {
     final SharedPreferences prefs = await _getPrefs();
     int mode = prefs.getInt('themeMode') ?? 0;
-    print(mode);
     return mode == 0
         ? ThemeMode.system
         : mode == 1

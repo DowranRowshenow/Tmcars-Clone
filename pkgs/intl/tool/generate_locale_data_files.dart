@@ -22,7 +22,7 @@ import 'package:path/path.dart' as path;
 
 import '../test/data_directory.dart' as test;
 
-String? dataDirectoryOverride;
+String dataDirectoryOverride = "lib/src/data/dates";
 
 String get dataDirectory => dataDirectoryOverride ?? test.dataDirectory;
 
