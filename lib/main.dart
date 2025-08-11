@@ -27,7 +27,6 @@ import 'utils/storage.dart';
 // TODO: Throw Server errors to handle refresh
 // TODO: Force Impeller & Optimize shader compile with caching
 // TODO: Optimize all widgets & Check Dispose all statefull widgets listeners
-// TODO: Change Menus Structure to Indexed
 
 /// A helper class to bundle all the initial data needed by the providers.
 /// This makes the main function cleaner and the data flow more explicit.
@@ -109,11 +108,8 @@ void main() async {
         FutureProvider<List<ArticleCategory>?>(
           create: (_) => Server.getArticleCategories(),
           initialData: initialData.articleCategories,
-          // Gracefully handle errors, e.g., by logging and returning cached data.
-          // This prevents the app from crashing on a failed network request.
           catchError: (BuildContext context, Object? error) {
             developer.log('Failed to fetch article categories', error: error);
-            // Return the stale data from storage as a fallback.
             return initialData.articleCategories;
           },
         ),

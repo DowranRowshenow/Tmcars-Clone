@@ -1,4 +1,7 @@
 import 'package:equatable/equatable.dart';
+import 'package:intl/intl.dart';
+
+import '../utils/constants.dart';
 
 class CarDetail extends Equatable {
   final int id;
@@ -44,6 +47,8 @@ class CarDetail extends Equatable {
   final String? sd;
   final String? shareUrl;
   final String? vin;
+  final String? pn;
+  final String? extraPhoneNumbers;
 
   const CarDetail({
     required this.id,
@@ -87,6 +92,8 @@ class CarDetail extends Equatable {
     this.sd,
     this.shareUrl,
     this.vin,
+    this.pn,
+    this.extraPhoneNumbers,
   });
 
   factory CarDetail.fromJson(Map<String, dynamic> json) {
@@ -146,6 +153,8 @@ class CarDetail extends Equatable {
       sd: json['sd'] as String?,
       shareUrl: json['shareUrl'] as String?,
       vin: json['vin'] as String?,
+      pn: json['pn'] as String?,
+      extraPhoneNumbers: json['extraPhoneNumbers'] as String?,
     );
   }
 
@@ -192,6 +201,8 @@ class CarDetail extends Equatable {
       'sd': sd,
       'shareUrl': shareUrl,
       'vin': vin,
+      'pn': pn,
+      'extraPhoneNumbers': extraPhoneNumbers,
     };
   }
 
@@ -238,6 +249,8 @@ class CarDetail extends Equatable {
     sd,
     shareUrl,
     vin,
+    pn,
+    extraPhoneNumbers,
   ];
 
   String getCityName(String languageCode) {
@@ -257,6 +270,13 @@ class CarDetail extends Equatable {
   }
 
   String getTitle() {
-    return "$bn $mn $trim $y";
+    return "$bn $mn ${trim ?? ""} $y";
+  }
+
+  String getPublishedDate(String languageCode) {
+    return DateFormat(
+      Constants.dateFormat,
+      languageCode,
+    ).format(DateTime.parse(pd)).toString();
   }
 }

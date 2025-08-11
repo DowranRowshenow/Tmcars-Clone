@@ -1,4 +1,7 @@
 import 'package:equatable/equatable.dart';
+import 'package:intl/intl.dart';
+
+import '../utils/constants.dart';
 
 class Car extends Equatable {
   final int id;
@@ -169,124 +172,11 @@ class Car extends Equatable {
   String getTitle() {
     return "$brandName $modelName $year";
   }
-}
-/*
-class CarV2 extends Equatable {
-  final int id;
-  final String? cn;
-  final String? cnru;
-  final String bn;
-  final String mn;
-  final String? trim;
-  final int y;
-  final bool? sw;
-  final bool? cr;
-  final String? sd;
-  final bool? vip;
-  final String? gid;
-  final int pr;
-  final String? pd;
-  final String? et;
-  final String? img;
-  final bool? inv;
-  final bool? vic;
-  final bool? toMe;
 
-  const CarV2({
-    required this.id,
-    this.cn,
-    this.cnru,
-    required this.bn,
-    required this.mn,
-    this.trim,
-    required this.y,
-    this.sw,
-    this.cr,
-    this.sd,
-    this.vip,
-    this.gid,
-    required this.pr,
-    this.pd,
-    this.et,
-    this.img,
-    this.inv,
-    this.vic,
-    this.toMe,
-  });
-
-  factory CarV2.fromJson(Map<String, dynamic> json) {
-    return CarV2(
-      id: json['id'] as int? ?? 0,
-      cn: json['cn'] as String?,
-      cnru: json['cnru'] as String?,
-      bn: json['bn'] as String? ?? '',
-      mn: json['mn'] as String? ?? '',
-      trim: json['trim'] as String?,
-      y: json['y'] as int? ?? 0,
-      sw: json['sw'] as bool?,
-      cr: json['cr'] as bool?,
-      sd: json['sd'] as String?,
-      vip: json['vip'] as bool?,
-      gid: json['gid'] as String?,
-      pr: json['pr'] as int? ?? 0,
-      pd: json['pd'] as String?,
-      et: json['et'] as String?,
-      img: json['img'] as String?,
-      inv: json['inv'] as bool?,
-      vic: json['vic'] as bool?,
-      toMe: json['toMe'] as bool?,
-    );
-  }
-
-  Map<String, dynamic> toJson() {
-    return <String, dynamic>{
-      'id': id,
-      'cn': cn,
-      'cnru': cnru,
-      'bn': bn,
-      'mn': mn,
-      'trim': trim,
-      'y': y,
-      'sw': sw,
-      'cr': cr,
-      'sd': sd,
-      'vip': vip,
-      'gid': gid,
-      'pr': pr,
-      'pd': pd,
-      'et': et,
-      'img': img,
-      'inv': inv,
-      'vic': vic,
-      'toMe': toMe,
-    };
-  }
-
-  @override
-  List<Object?> get props => <Object?>[
-    id,
-    cn,
-    cnru,
-    bn,
-    mn,
-    trim,
-    y,
-    sw,
-    cr,
-    sd,
-    vip,
-    gid,
-    pr,
-    pd,
-    et,
-    img,
-    inv,
-    vic,
-    toMe,
-  ];
-
-  String? getCityName(String languageCode) {
-    return languageCode == "ru" ? cnru : cn;
+  String getPublishedDate(String languageCode) {
+    return DateFormat(
+      Constants.dateFormat,
+      languageCode,
+    ).format(DateTime.parse(publishedDate ?? "")).toString();
   }
 }
-*/

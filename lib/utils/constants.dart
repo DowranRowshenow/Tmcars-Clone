@@ -21,6 +21,7 @@ class Constants {
 
   // INTEGERS AND DOUBLES
   static const int animationDuration = 300;
+  static const double detailHorizontalPadding = 15.0;
   static const double dialogWidth = 400.0;
   static const double placeHolderSize = 96.0;
   static const double drawerLeadingWidth = 15.0;

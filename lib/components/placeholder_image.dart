@@ -8,6 +8,7 @@ Widget buildImagePlaceholder(
   double? height,
   double? width,
   double? iconSize,
+  IconData? icon,
 }) {
   final AppColors appColors = Theme.of(context).extension<AppColors>()!;
   return Container(
@@ -16,7 +17,7 @@ Widget buildImagePlaceholder(
     color: appColors.tileThemeColor,
     child: Center(
       child: Icon(
-        Icons.broken_image_outlined,
+        icon ?? Icons.broken_image_outlined,
         size: iconSize ?? 50,
         color: Colors.grey[700]!,
       ),

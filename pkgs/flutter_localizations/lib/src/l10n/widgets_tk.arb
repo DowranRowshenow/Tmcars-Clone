@@ -1,15 +1,15 @@
 {
-  "reorderItemToStart": "Başa taşı",
-  "reorderItemToEnd": "Sona taşı",
-  "reorderItemUp": "Yukarı taşı",
-  "reorderItemDown": "Aşağı taşı",
-  "reorderItemLeft": "Sola taşı",
-  "reorderItemRight": "Sağa taşı",
-  "copyButtonLabel": "Kopyala",
+  "reorderItemToStart": "Başa süýşür",
+  "reorderItemToEnd": "Soňa süýşür",
+  "reorderItemUp": "Ýokary süýşür",
+  "reorderItemDown": "Aşak süýşür",
+  "reorderItemLeft": "Çepe süýşür",
+  "reorderItemRight": "Saga süýşür",
+  "copyButtonLabel": "Kopýala",
   "cutButtonLabel": "Kes",
-  "lookUpButtonLabel": "Ara",
-  "searchWebButtonLabel": "Web'de Ara",
-  "shareButtonLabel": "Paylaş",
-  "pasteButtonLabel": "Yapıştır",
-  "selectAllButtonLabel": "Tümünü seç"
+  "lookUpButtonLabel": "Gözle",
+  "searchWebButtonLabel": "Web'de Gözle",
+  "shareButtonLabel": "Paýlaş",
+  "pasteButtonLabel": "Ýapyşdyr",
+  "selectAllButtonLabel": "Hemmesini saýla"
 }

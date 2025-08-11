@@ -67,11 +67,10 @@ class Server {
 
   static Future<String> _fetchUrl(
     String url, {
-    Map<String, String> headers = const <String, String>{},
     Map<String, String> query = const <String, String>{},
   }) async {
     final http.Response response = await _client
-        .get(Uri.https(host, url, query), headers: headers)
+        .get(Uri.https(host, url, query))
         .timeout(const Duration(seconds: 10));
     if (response.statusCode == 200) {
       return response.body;
@@ -141,13 +140,6 @@ class Server {
   }
 
   static Future<List<Car>?> getCars(CarQuery? query) async {
-    const String cacheKey = 'cars';
-    final dynamic cached = await _getCache(cacheKey, _cacheExpiryLong);
-
-    if (cached != null && cached['hashedcode'] != query.hashCode) {
-      return cached['data'].cars as List<Car>;
-    }
-
     try {
       final String jsonString = await _fetchUrl(
         "/tmcars/carProduct/getCars",
@@ -160,11 +152,8 @@ class Server {
         // NOTE: It is for detecting the api response version
         isV2: data["cars"][0]["cityName"] == null ? true : false,
       );
-      _cache[cacheKey] = <String, Object>{
-        'data': carList,
-        'timestamp': DateTime.now(),
-        'hashcode': query.hashCode,
-      };
+
+      debugPrint(carList.cars[0].toString());
       return carList.cars;
     } catch (e) {
       debugPrint(e.toString());

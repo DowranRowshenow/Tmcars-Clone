@@ -1,14 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
-import 'package:provider/provider.dart';
 
 import '../../../models/car_detail_model.dart';
 import '../../../models/car_model.dart';
-import '../../../providers/locale.dart';
-import '../../../utils/constants.dart';
+import '../../../providers/themes.dart';
+import 'car_detail_body.dart';
+import 'car_detail_header.dart';
 
 class CarDetailContent extends StatelessWidget {
-  final CarDetail? carDetail;
+  final CarDetail carDetail;
   final Car car;
   final String languageCode;
 
@@ -25,56 +24,12 @@ class CarDetailContent extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisSize: MainAxisSize.min,
       children: <Widget>[
-        const SizedBox(height: 20),
-        Text(
-          carDetail?.getTitle() ?? "",
-          style: const TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
-        ),
-        const SizedBox(height: 8),
-        Row(
-          children: <Widget>[
-            const Icon(Icons.calendar_today, size: 16, color: Colors.grey),
-            const SizedBox(width: 4),
-            Builder(
-              builder: (BuildContext context) {
-                String date = "";
-                try {
-                  DateFormat(
-                    Constants.dateFormat,
-                    context.read<LocaleManager>().locale.languageCode,
-                  ).format(DateTime.parse(car.publishedDate ?? ""));
-                } catch (e) {
-                  debugPrint(e.toString());
-                }
-                return Text(
-                  date,
-                  style: const TextStyle(fontSize: 14, color: Colors.grey),
-                );
-              },
-            ),
-            const SizedBox(width: 16),
-            const Icon(Icons.visibility, size: 16, color: Colors.grey),
-            const SizedBox(width: 4),
-            Text(
-              carDetail?.vc.toString() ?? "",
-              style: const TextStyle(fontSize: 14, color: Colors.grey),
-            ),
-          ],
-        ),
-        const SizedBox(height: 30),
-        // Placeholder for an ad or other content
+        buildheader(context, carDetail, languageCode),
         Container(
-          height: 80,
-          width: double.infinity,
-          color: Colors.grey.withAlpha(70),
+          height: 16,
+          color: Theme.of(context).extension<AppColors>()!.tileThemeColor,
         ),
-        const SizedBox(height: 10),
-        Container(
-          color: Colors.grey.withAlpha(70),
-          height: 180,
-          child: Container(),
-        ),
-        const SizedBox(height: 10),
+        buildbody(context, carDetail, languageCode),
       ],
     );
   }

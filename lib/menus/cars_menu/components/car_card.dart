@@ -24,13 +24,36 @@ class CarCard extends StatelessWidget {
 
     return Container(
       decoration: BoxDecoration(
+        gradient: car.vip ?? false
+            ? context.read<ThemeManager>().isDark()
+                  ? const LinearGradient(
+                      stops: <double>[0.2, 0.3, 1.0],
+                      colors: <Color>[
+                        Colors.white10,
+                        Colors.transparent,
+                        Color.fromARGB(255, 58, 66, 83),
+                      ],
+                      begin: Alignment.centerLeft,
+                      end: Alignment.centerRight,
+                    )
+                  : const LinearGradient(
+                      stops: <double>[0.2, 0.75, 1.0],
+                      colors: <Color>[
+                        Color.fromARGB(255, 255, 255, 104),
+                        Color.fromARGB(255, 224, 255, 112),
+                        Colors.white,
+                      ],
+                      begin: Alignment.centerLeft,
+                      end: Alignment.centerRight,
+                    )
+            : null,
         border: Border(
           bottom: BorderSide(color: appColors.dividerColor!, width: 1),
         ),
       ),
       child: ListTile(
+        hoverColor: Colors.black12,
         minVerticalPadding: 0,
-        // minTileHeight: Constants.articleItemExtent,
         contentPadding: const EdgeInsets.fromLTRB(8, 0, 8, 0),
         onTap: () {
           context.read<NavigationManager>().setScreen(
@@ -52,14 +75,14 @@ class CarCard extends StatelessWidget {
                 children: <Widget>[
                   Text(
                     "${car.brandName} ${car.modelName} ${car.year}",
-                    maxLines: 3,
+                    maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                     style: const TextStyle(
                       fontSize: 14,
                       fontWeight: FontWeight.w600,
                     ),
                   ),
-                  const SizedBox(height: 10),
+                  const SizedBox(height: 6),
                   Text(
                     "${car.getCityName(locale.languageCode)} ${car.elapsedTime ?? ''}",
                     maxLines: 1,
@@ -71,7 +94,7 @@ class CarCard extends StatelessWidget {
                       fontWeight: FontWeight.w400,
                     ),
                   ),
-                  const SizedBox(height: 10),
+                  const SizedBox(height: 6),
                   Text(
                     "${car.price} TMT",
                     maxLines: 1,
@@ -83,9 +106,16 @@ class CarCard extends StatelessWidget {
                       fontWeight: FontWeight.w400,
                     ),
                   ),
+                  const SizedBox(height: 6),
                   Row(
                     children: <Widget>[
-                      Text(appLocalizations.credit),
+                      Flexible(
+                        child: Text(
+                          appLocalizations.credit,
+                          overflow: TextOverflow.ellipsis,
+                          style: const TextStyle(fontSize: 14),
+                        ),
+                      ),
                       const SizedBox(width: 2),
                       car.isCredit!
                           ? const Icon(
@@ -103,7 +133,13 @@ class CarCard extends StatelessWidget {
                               ),
                             ),
                       const SizedBox(width: 8),
-                      Text(appLocalizations.exchange),
+                      Flexible(
+                        child: Text(
+                          appLocalizations.exchange,
+                          overflow: TextOverflow.ellipsis,
+                          style: const TextStyle(fontSize: 14),
+                        ),
+                      ),
                       const SizedBox(width: 2),
                       car.isSwap!
                           ? const Icon(
@@ -124,6 +160,15 @@ class CarCard extends StatelessWidget {
                   ),
                 ],
               ),
+            ),
+            SizedBox(
+              child: car.vip ?? false
+                  ? const Icon(
+                      Icons.shield_sharp,
+                      color: Colors.amberAccent,
+                      size: 70,
+                    )
+                  : null,
             ),
           ],
         ),

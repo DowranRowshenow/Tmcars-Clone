@@ -48,12 +48,13 @@ class _CategoryCarsTabState extends State<CategoryCarsTab>
                 titleAlignment: ListTileTitleAlignment.center,
                 key: ValueKey<int>(index),
                 leading: CachedNetworkImage(
-                  width: 30.0,
-                  height: 30.0,
+                  width: 25.0,
+                  height: 25.0,
                   imageUrl: items[index].imgUrl ?? "",
                 ),
                 title: Text(
-                  "  ${items[index].filterName ?? ''} (${items[index].productCount})",
+                  "${items[index].filterName ?? ''} (${items[index].productCount})",
+                  overflow: TextOverflow.ellipsis,
                 ),
                 trailing: const Icon(Icons.arrow_forward_ios, size: 16),
                 onTap: () {

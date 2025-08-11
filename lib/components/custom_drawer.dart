@@ -156,7 +156,7 @@ class CustomDrawer extends StatelessWidget {
                 ? const Icon(Icons.dark_mode_outlined)
                 : const Icon(Icons.light_mode_outlined),
             trailing: Switch(
-              value: themeManager.isDark(),
+              value: context.watch<ThemeManager>().isDark(),
               activeColor: appColors.focusColor,
               onChanged: (bool value) =>
                   context.read<ThemeManager>().toggleTheme(),

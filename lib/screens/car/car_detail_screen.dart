@@ -211,26 +211,75 @@ class _CarDetailScreenState extends State<CarDetailScreen> {
                 ),
               ),
               SliverToBoxAdapter(
-                child: Padding(
-                  padding: const EdgeInsets.all(16.0),
-                  child: ValueListenableBuilder<CarDetail?>(
-                    valueListenable: _carDetailNotifier,
-                    builder:
-                        (
-                          BuildContext context,
-                          CarDetail? carDetail,
-                          Widget? child,
-                        ) {
+                child: ValueListenableBuilder<CarDetail?>(
+                  valueListenable: _carDetailNotifier,
+                  builder:
+                      (
+                        BuildContext context,
+                        CarDetail? carDetail,
+                        Widget? child,
+                      ) {
+                        if (carDetail != null) {
                           return CarDetailContent(
                             carDetail: carDetail,
                             car: widget.car,
                             languageCode: widget.languageCode,
                           );
-                        },
-                  ),
+                        } else {
+                          return const SizedBox(
+                            height: 400,
+                            child: Center(child: CircularProgressIndicator()),
+                          );
+                        }
+                      },
                 ),
               ),
             ],
+          ),
+          Positioned(
+            bottom: 10,
+            left: 0, // Add this to ensure the Row starts at the left edge
+            right: 0, // Add this to ensure the Row extends to the right edge
+            child: Padding(
+              padding: const EdgeInsets.symmetric(
+                horizontal: 16.0,
+              ), // Padding for the whole row
+              child: Row(
+                children: <Widget>[
+                  Expanded(
+                    child: ElevatedButton(
+                      onPressed: () {},
+                      style: ButtonStyle(
+                        backgroundColor: WidgetStateProperty.all(
+                          Constants.colorPrimary,
+                        ),
+                      ),
+                      child: const Text(
+                        "Jaň etmek",
+                        style: TextStyle(color: Colors.white),
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ),
+                  ),
+                  const SizedBox(width: 6),
+                  Expanded(
+                    child: ElevatedButton(
+                      style: ButtonStyle(
+                        backgroundColor: WidgetStateProperty.all(
+                          Colors.greenAccent,
+                        ),
+                      ),
+                      onPressed: () {},
+                      child: const Text(
+                        "SMS ugratmak",
+                        style: TextStyle(color: Colors.white),
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
           ),
           ValueListenableBuilder<ScrollState>(
             valueListenable: _scrollStateNotifier,
