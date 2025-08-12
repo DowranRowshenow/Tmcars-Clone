@@ -3,7 +3,7 @@ import 'package:provider/provider.dart';
 
 import '../../../l10n/app_localizations.dart';
 import '../../../providers/location.dart';
-import '../../../providers/themes.dart';
+import '../../../utils/app_colors.dart';
 import '../../../utils/constants.dart';
 
 Future<bool?> showSetLocationDialog({

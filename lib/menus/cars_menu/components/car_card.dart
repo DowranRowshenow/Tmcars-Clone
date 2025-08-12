@@ -8,6 +8,7 @@ import '../../../models/car_model.dart';
 import '../../../providers/locale.dart';
 import '../../../providers/navigation.dart';
 import '../../../providers/themes.dart';
+import '../../../utils/app_colors.dart';
 import 'car_card_image.dart';
 
 class CarCard extends StatelessWidget {

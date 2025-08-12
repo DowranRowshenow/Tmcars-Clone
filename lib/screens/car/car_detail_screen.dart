@@ -9,7 +9,7 @@ import '../../l10n/app_localizations.dart';
 import '../../models/car_detail_model.dart';
 import '../../models/car_model.dart';
 import '../../providers/navigation.dart';
-import '../../providers/themes.dart';
+import '../../utils/app_colors.dart';
 import '../../utils/constants.dart';
 import '../../utils/scroll_state.dart';
 import '../../utils/server.dart';
@@ -41,8 +41,11 @@ class _CarDetailScreenState extends State<CarDetailScreen> {
   void initState() {
     super.initState();
     _loadCar();
-    _scrollListener = () =>
-        ScrollState.onScroll(_scrollStateNotifier, _scrollController);
+    _scrollListener = () => _scrollStateNotifier.value.onScroll(
+      _scrollStateNotifier,
+      _scrollController,
+      MediaQuery.of(context).padding.top + kToolbarHeight,
+    );
     _scrollController.addListener(_scrollListener);
   }
 
@@ -71,7 +74,7 @@ class _CarDetailScreenState extends State<CarDetailScreen> {
           builder:
               (BuildContext context, ScrollState scrollState, Widget? child) {
                 return AppBar(
-                  elevation: 0,
+                  elevation: scrollState.background ? 1.0 : 0,
                   backgroundColor: scrollState.background
                       ? Theme.of(context).appBarTheme.backgroundColor
                       : Colors.transparent,
@@ -149,7 +152,7 @@ class _CarDetailScreenState extends State<CarDetailScreen> {
           }
 
           return Stack(
-            children: [
+            children: <Widget>[
               SingleChildScrollView(
                 controller: _scrollController,
                 child: Stack(

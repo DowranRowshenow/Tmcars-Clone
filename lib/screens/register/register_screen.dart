@@ -6,6 +6,7 @@ import '../../components/ripple_container.dart';
 import '../../l10n/app_localizations.dart';
 import '../../providers/navigation.dart';
 import '../../providers/themes.dart';
+import '../../utils/app_colors.dart';
 import '../../utils/constants.dart';
 import '../../utils/server.dart';
 

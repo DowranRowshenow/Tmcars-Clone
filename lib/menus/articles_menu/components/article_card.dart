@@ -6,7 +6,7 @@ import 'package:provider/provider.dart';
 import '../../../models/article_model.dart';
 import '../../../providers/locale.dart';
 import '../../../providers/navigation.dart';
-import '../../../providers/themes.dart';
+import '../../../utils/app_colors.dart';
 import 'article_card_image.dart';
 
 class ArticleCard extends StatelessWidget {

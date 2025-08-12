@@ -21,7 +21,7 @@ import 'storage.dart';
 class Server {
   // Consider making this class abstract or using a service locator if it grows
   static const String host = "tapgo.biz:8443";
-  //static String host = "127.0.0.1:8000";
+  static const String host2 = "tm1.tapgo.biz:8443";
 
   // HTTP client with connection pooling and timeout configuration
   static final http.Client _client = http.Client();
@@ -34,10 +34,6 @@ class Server {
 
   // ENDPOINTS
   static const String currentUrl = '';
-  static const String CONTACT_URL =
-      'https://dowranrowshenow.pythonanywhere.com';
-  static const String SHARE_LINK =
-      'https://play.google.com/store/apps/details?id=com.tm.car';
   static const String ABOUT_US_URL = 'https://tmcars.info/tm/aboutUs';
   static const String PRIVACY_POLICY_URL = 'https://tmcars.info/tm/terms';
   static const String PRIVACY_POLICY_RU_URL = 'https://tmcars.info/terms';
@@ -47,6 +43,10 @@ class Server {
       'https://tmcars.info/tm/commentPostingPolicy';
   static const String COMMENT_POST_POLICY_RU_URL =
       'https://tmcars.info/commentPostingPolicy';
+  static const String CONTACT_URL =
+      'https://dowranrowshenow.github.io/Portfolio/';
+  static const String SHARE_LINK =
+      'https://play.google.com/store/apps/details?id=com.tm.car';
 
   static String utf8convert(String text) {
     List<int> bytes = text.toString().codeUnits;
@@ -153,7 +153,6 @@ class Server {
         isV2: data["cars"][0]["cityName"] == null ? true : false,
       );
 
-      debugPrint(carList.cars[0].toString());
       return carList.cars;
     } catch (e) {
       debugPrint(e.toString());

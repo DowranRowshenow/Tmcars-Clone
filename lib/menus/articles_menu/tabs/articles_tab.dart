@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 
+import '/components/scroll/low_friction_scroll_physics.dart';
 import '../../../components/fab_scroller.dart';
 import '../../../components/no_connection.dart';
 import '../../../components/no_result.dart';
@@ -94,18 +95,6 @@ class _ArticlesTabState extends State<ArticlesTab>
     await _loadArticles(refresh: true);
   }
 
-  @override
-  void didUpdateWidget(covariant ArticlesTab oldWidget) {
-    super.didUpdateWidget(oldWidget);
-    // If the direct mask or the category has changed, reload the articles.
-    /*
-    if (oldWidget.mask != widget.mask ||
-        oldWidget.category?.id != widget.category?.id) {
-      _loadArticles(refresh: true);
-    }
-    */
-  }
-
   Future<void> _loadArticles({bool refresh = false}) async {
     if (_articlesLoadingController.isLoading.value || !mounted) return;
     _articlesLoadingController.isLoading.value = true;
@@ -137,8 +126,12 @@ class _ArticlesTabState extends State<ArticlesTab>
       _offset = _articles.value.length;
       _articlesLoadingController.hasMore.value = newArticles.length >= 40;
       _articlesLoadingController.hasError.value = false;
-      if (newArticles.isNotEmpty && widget.isCacheEnabled && query == "") {
-        // TODO: Consider caching only first 40 Item
+
+      // Caches only first items
+      if (newArticles.isNotEmpty &&
+          widget.isCacheEnabled &&
+          query == "" &&
+          _offset == 0) {
         Storage.instance.cacheArticles(widget.category?.id, _articles.value);
       }
     }
@@ -152,7 +145,6 @@ class _ArticlesTabState extends State<ArticlesTab>
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    // Otherwise, display the list of articles.
     return Scaffold(
       floatingActionButton: ValueListenableBuilder<List<Article>>(
         valueListenable: _articles,
@@ -171,25 +163,20 @@ class _ArticlesTabState extends State<ArticlesTab>
             if ((_articlesLoadingController.hasError.value) &&
                 (!widget.isCacheEnabled || _articles.value.isEmpty)) {
               return NoConnection(onTap: _handleRefresh);
-            }
-            // Show a loading indicator on initial load.
-            else if (_articlesLoadingController.isLoading.value &&
+            } else if (_articlesLoadingController.isLoading.value &&
                 ((_articles.value.isEmpty || query != ""))) {
               return const Center(child: CircularProgressIndicator());
-            }
-            // If loading is finished and there are no articles, show NoResult.
-            else if (_articles.value.isEmpty &&
+            } else if (_articles.value.isEmpty &&
                 !_articlesLoadingController.isLoading.value) {
               return const NoResult();
             }
             // Width is reqired for optimization in List item ArticleCardImage
-            // Calculating here seems reasonable
             final double width = (MediaQuery.of(context).size.width * 0.4)
                 .clamp(ArticleCardImage.height, ArticleCardImage.maxWidth);
             return ListView.builder(
+              physics: const LowFrictionScrollPhysics(),
               itemExtent: Constants.articleItemExtent,
               controller: _scrollController,
-
               itemCount:
                   _articles.value.length +
                   (_articlesLoadingController.hasMore.value ? 1 : 0),
@@ -201,7 +188,6 @@ class _ArticlesTabState extends State<ArticlesTab>
                     imageWidth: width,
                   );
                 } else {
-                  // Show loading indicator at the bottom
                   return const Center(
                     child: Padding(
                       padding: EdgeInsets.symmetric(vertical: 16),

@@ -4,29 +4,30 @@ class ScrollState {
   final bool showTitle;
   final bool background;
 
-  const ScrollState({required this.showTitle, required this.background});
+  ScrollState({required this.showTitle, required this.background});
 
   static const double expandedHeight = 250.0;
   static const double offset = 30.0;
 
-  static const ScrollState initial = ScrollState(
-    showTitle: false,
-    background: false,
-  );
+  static ScrollState initial = ScrollState(showTitle: false, background: false);
 
-  static void onScroll(
+  void onScroll(
     ValueNotifier<ScrollState> scrollStateNotifier,
     ScrollController scrollController,
+    double toolbarHeight,
   ) {
-    if (!scrollController.hasClients) return;
-
+    if (!scrollController.hasClients) {
+      return;
+    }
+    if (scrollController.offset >= expandedHeight) {
+      return;
+    }
     final ScrollState newState = scrollStateNotifier.value.copyWith(
       showTitle:
           scrollController.offset >=
-          ScrollState.expandedHeight - kToolbarHeight * 2,
+          ScrollState.expandedHeight - toolbarHeight * 2,
       background:
-          scrollController.offset >=
-          ScrollState.expandedHeight - kToolbarHeight,
+          scrollController.offset >= ScrollState.expandedHeight - toolbarHeight,
     );
 
     if (scrollStateNotifier.value != newState) {

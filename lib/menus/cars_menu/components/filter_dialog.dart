@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../../l10n/app_localizations.dart';
 import '../../../models/car_query_model.dart';
-import '../../../providers/themes.dart';
+import '../../../utils/app_colors.dart';
 import '../../../utils/constants.dart';
 
 Future<bool?> showFilterDialog({

@@ -40,7 +40,7 @@ class _CategoryCarsTabState extends State<CategoryCarsTab>
               snapshot.data as List<CarProductFilter>;
           return ListView.builder(
             itemCount: items.length,
-            itemExtent: 50.0,
+            itemExtent: 55.0,
             itemBuilder: (BuildContext context, int index) {
               return ListTile(
                 minVerticalPadding: 0,

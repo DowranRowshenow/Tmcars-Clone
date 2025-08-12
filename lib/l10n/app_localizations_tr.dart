@@ -33,6 +33,9 @@ class AppLocalizationsTr extends AppLocalizations {
   String get no => 'Hayır';
 
   @override
+  String get ok => 'Ok';
+
+  @override
   String get settings => 'Ayarlar';
 
   @override
@@ -222,7 +225,7 @@ class AppLocalizationsTr extends AppLocalizations {
   String get favorite => 'Favori';
 
   @override
-  String get noResult => 'Sonuç Ýok';
+  String get noResult => 'Sonuç Yok';
 
   @override
   String get shareLink => 'Linki paylaş';
@@ -268,6 +271,63 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get showAll => 'Hepsini göster';
+
+  @override
+  String get moreInformation => 'Daha fazla bilgi';
+
+  @override
+  String get model2 => 'Modeli';
+
+  @override
+  String get year2 => 'Yılı';
+
+  @override
+  String get mileage => 'Kilometre';
+
+  @override
+  String get color => 'Rengi';
+
+  @override
+  String get engine => 'Motoru';
+
+  @override
+  String get body => 'Gövde';
+
+  @override
+  String get gearbox => 'Şanzıman';
+
+  @override
+  String get drivetrain => 'Aktarma organları';
+
+  @override
+  String get vin => 'VIN kod';
+
+  @override
+  String get price => 'Fiyatı';
+
+  @override
+  String get location => 'Konum';
+
+  @override
+  String get published => 'Eklendi';
+
+  @override
+  String get sellerPhoneNumber => 'Satıcı numarası';
+
+  @override
+  String get report => 'Şikayet et';
+
+  @override
+  String get businessProfiles => 'Işletme hesaplar';
+
+  @override
+  String get searchTypes => 'Search types';
+
+  @override
+  String get searchDialog => 'Tam arama - Bu yöntem, ilan başlığında veya ilanın ek bilgilerinde arama sorgusuyla tam olarak eşleşen ilanları bulmanızı sağlar.';
+
+  @override
+  String get searchDialog2 => 'Benzer arama - Bu yöntem, ilan başlığına göre arama sorgusuna benzer ilanları arayacaktır.';
 
   @override
   String get notRegistered => 'Hesabınıza giriş yapmadınız! Giriş yaparak ilan ekleyebilir, kendi ilanlarınızı ve profilinizi düzenleyebilir ve verilerinizi diğer telefonlarınıza aktarabilirsiniz.';

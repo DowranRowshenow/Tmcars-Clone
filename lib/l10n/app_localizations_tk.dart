@@ -33,6 +33,9 @@ class AppLocalizationsTk extends AppLocalizations {
   String get no => 'Ýok';
 
   @override
+  String get ok => 'Ok';
+
+  @override
   String get settings => 'Sazlamalar';
 
   @override
@@ -268,6 +271,63 @@ class AppLocalizationsTk extends AppLocalizations {
 
   @override
   String get showAll => 'Hemmesini Görkez';
+
+  @override
+  String get moreInformation => 'Giňişleýin maglumat';
+
+  @override
+  String get model2 => 'Modeli';
+
+  @override
+  String get year2 => 'Ýyly';
+
+  @override
+  String get mileage => 'Probeg';
+
+  @override
+  String get color => 'Reňki';
+
+  @override
+  String get engine => 'Motory';
+
+  @override
+  String get body => 'Kuzow';
+
+  @override
+  String get gearbox => 'Karobka';
+
+  @override
+  String get drivetrain => 'Ýörediji görnüşi';
+
+  @override
+  String get vin => 'VIN kod';
+
+  @override
+  String get price => 'Bahasy';
+
+  @override
+  String get location => 'Ýeri';
+
+  @override
+  String get published => 'Goýuldy';
+
+  @override
+  String get sellerPhoneNumber => 'Satyjy nomeri';
+
+  @override
+  String get report => 'Nägilelik bildirmek';
+
+  @override
+  String get businessProfiles => 'Biznes hasaplar';
+
+  @override
+  String get searchTypes => 'Gözleg görnüşleri';
+
+  @override
+  String get searchDialog => 'Anyk gözleg - Bu usul gözleg sözi bildirişiň adynda ýa-da bildirişiň goşmaça maglumatynda doly gabat gelýäm bildirişleri gözlär.';
+
+  @override
+  String get searchDialog2 => 'Meňzeş gözleg - Bu usul gözleg sözi bildirişiň adynda meňzeş bildirişleri gözlär.';
 
   @override
   String get notRegistered => 'Siz ulgama girmändirsiňiz! Ulgama girip, siz bildiriş goşup bilersiňiz, öz bildirişleriňizi we profiliňizi sazlap bilersiňiz, we özüňiziň başga telefonlaryňyza geçirip bilersiňiz.';

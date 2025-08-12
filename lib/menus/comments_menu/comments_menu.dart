@@ -22,7 +22,10 @@ class CommentsMenu extends StatelessWidget {
       child: Scaffold(
         appBar: AppBar(
           title: Text(
-            Localizations.of<AppLocalizations>(context, AppLocalizations)!.cars,
+            Localizations.of<AppLocalizations>(
+              context,
+              AppLocalizations,
+            )!.comments,
           ),
           leading: IconButton(
             icon: const Icon(Icons.menu),

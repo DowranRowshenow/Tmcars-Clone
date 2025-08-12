@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 
 import '../../../models/car_detail_model.dart';
 import '../../../providers/themes.dart';
+import '../../../utils/app_colors.dart';
 import '../../../utils/constants.dart';
 
 Widget buildheader(

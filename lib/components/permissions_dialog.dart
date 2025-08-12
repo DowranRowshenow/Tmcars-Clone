@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:permission_handler/permission_handler.dart';
 
-import '../providers/themes.dart';
+import '../utils/app_colors.dart';
 import '../utils/constants.dart';
 
 Future<bool?> showPermissionDialog({

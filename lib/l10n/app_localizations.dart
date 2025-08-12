@@ -147,6 +147,12 @@ abstract class AppLocalizations {
   /// **'No'**
   String get no;
 
+  /// No description provided for @ok.
+  ///
+  /// In en, this message translates to:
+  /// **'Ok'**
+  String get ok;
+
   /// No description provided for @settings.
   ///
   /// In en, this message translates to:
@@ -438,7 +444,7 @@ abstract class AppLocalizations {
   /// No description provided for @profiles.
   ///
   /// In en, this message translates to:
-  /// **'Business accounts'**
+  /// **'Business profiles'**
   String get profiles;
 
   /// No description provided for @news.
@@ -620,6 +626,120 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Show all'**
   String get showAll;
+
+  /// No description provided for @moreInformation.
+  ///
+  /// In en, this message translates to:
+  /// **'More information'**
+  String get moreInformation;
+
+  /// No description provided for @model2.
+  ///
+  /// In en, this message translates to:
+  /// **'Model'**
+  String get model2;
+
+  /// No description provided for @year2.
+  ///
+  /// In en, this message translates to:
+  /// **'Year'**
+  String get year2;
+
+  /// No description provided for @mileage.
+  ///
+  /// In en, this message translates to:
+  /// **'Mileage'**
+  String get mileage;
+
+  /// No description provided for @color.
+  ///
+  /// In en, this message translates to:
+  /// **'Color'**
+  String get color;
+
+  /// No description provided for @engine.
+  ///
+  /// In en, this message translates to:
+  /// **'Engine'**
+  String get engine;
+
+  /// No description provided for @body.
+  ///
+  /// In en, this message translates to:
+  /// **'Body'**
+  String get body;
+
+  /// No description provided for @gearbox.
+  ///
+  /// In en, this message translates to:
+  /// **'Gearbox'**
+  String get gearbox;
+
+  /// No description provided for @drivetrain.
+  ///
+  /// In en, this message translates to:
+  /// **'Drivetrain'**
+  String get drivetrain;
+
+  /// No description provided for @vin.
+  ///
+  /// In en, this message translates to:
+  /// **'VIN code'**
+  String get vin;
+
+  /// No description provided for @price.
+  ///
+  /// In en, this message translates to:
+  /// **'Price'**
+  String get price;
+
+  /// No description provided for @location.
+  ///
+  /// In en, this message translates to:
+  /// **'Location'**
+  String get location;
+
+  /// No description provided for @published.
+  ///
+  /// In en, this message translates to:
+  /// **'Published'**
+  String get published;
+
+  /// No description provided for @sellerPhoneNumber.
+  ///
+  /// In en, this message translates to:
+  /// **'Seller phone'**
+  String get sellerPhoneNumber;
+
+  /// No description provided for @report.
+  ///
+  /// In en, this message translates to:
+  /// **'Report'**
+  String get report;
+
+  /// No description provided for @businessProfiles.
+  ///
+  /// In en, this message translates to:
+  /// **'Business profiles'**
+  String get businessProfiles;
+
+  /// No description provided for @searchTypes.
+  ///
+  /// In en, this message translates to:
+  /// **'Search types'**
+  String get searchTypes;
+
+  /// No description provided for @searchDialog.
+  ///
+  /// In en, this message translates to:
+  /// **'Exact search - This method allows you to find ads that exactly match the search query in the title or in the additional information of the ad.'**
+  String get searchDialog;
+
+  /// No description provided for @searchDialog2.
+  ///
+  /// In en, this message translates to:
+  /// **'Similar search - This method will search for ads that are similar to the search query by the ad\'s title.'**
+  String get searchDialog2;
 
   /// No description provided for @notRegistered.
   ///

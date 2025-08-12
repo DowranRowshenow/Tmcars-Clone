@@ -7,8 +7,8 @@ import '../../../l10n/app_localizations.dart';
 import '../../../models/article_detail_model.dart';
 import '../../../models/article_model.dart';
 import '../../../providers/navigation.dart';
-import '../../../providers/themes.dart';
 import '../../../screens/article/components/nearest_article_card.dart';
+import '../../../utils/app_colors.dart';
 import 'html_renderer.dart';
 
 class ArticleDetailContent extends StatelessWidget {

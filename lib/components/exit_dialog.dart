@@ -1,9 +1,8 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 import '../l10n/app_localizations.dart';
-import '../providers/themes.dart';
+import '../utils/app_colors.dart';
 import '../utils/constants.dart';
 
 Future<bool?> showExitDialog({
@@ -20,30 +19,28 @@ Future<bool?> showExitDialog({
       final AppColors appColors = Theme.of(
         dialogContext,
       ).extension<AppColors>()!;
-      final AppLocalizations localizations = Localizations.of<AppLocalizations>(
-        dialogContext,
-        AppLocalizations,
-      )!;
+      final AppLocalizations appLocalizations =
+          Localizations.of<AppLocalizations>(dialogContext, AppLocalizations)!;
 
       return AlertDialog(
         insetPadding: const EdgeInsets.all(Constants.dialogPadding),
         backgroundColor: appColors.themedSurface,
         elevation: Constants.elevation,
         title: Text(
-          localizations.confirmExit,
+          appLocalizations.confirmExit,
           style: TextStyle(color: appColors.textThemeColor),
         ),
         actions: <Widget>[
           TextButton(
             child: Text(
-              localizations.yes,
+              appLocalizations.yes,
               style: const TextStyle(color: Constants.colorPrimary),
             ),
-            onPressed: () => exit(0),
+            onPressed: () => SystemNavigator.pop(),
           ),
           TextButton(
             child: Text(
-              localizations.no,
+              appLocalizations.no,
               style: const TextStyle(color: Constants.colorPrimary),
             ),
             onPressed: () => Navigator.of(context).pop(false),

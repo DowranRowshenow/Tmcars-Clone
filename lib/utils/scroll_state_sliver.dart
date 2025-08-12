@@ -23,23 +23,20 @@ class ScrollState {
   static void onScroll(
     ValueNotifier<ScrollState> scrollStateNotifier,
     ScrollController scrollController,
+    double toolbarHeight,
   ) {
-    final double offset = scrollController.hasClients
-        ? scrollController.offset
-        : 0.0;
+    if (!scrollController.hasClients ||
+        scrollController.offset >= expandedHeight) {
+      return;
+    }
 
-    double newTop = (ScrollState.expandedHeight - ScrollState.offset) - offset;
-    if (newTop < kToolbarHeight) newTop = kToolbarHeight;
-    bool newVisible = newTop > kToolbarHeight + 1;
-
-    final bool shouldShowTitle =
-        scrollController.hasClients &&
-        scrollController.offset >= ScrollState.expandedHeight - kToolbarHeight;
+    double newTop = (expandedHeight - offset) - scrollController.offset;
+    if (newTop < toolbarHeight) newTop = toolbarHeight;
 
     final ScrollState newState = scrollStateNotifier.value.copyWith(
       fabTop: newTop,
-      fabVisible: newVisible,
-      showTitle: shouldShowTitle,
+      fabVisible: newTop > toolbarHeight + 1,
+      showTitle: scrollController.offset >= expandedHeight - toolbarHeight * 2,
     );
 
     if (scrollStateNotifier.value != newState) {

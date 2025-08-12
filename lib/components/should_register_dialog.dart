@@ -5,7 +5,7 @@ import 'package:provider/provider.dart';
 
 import '../l10n/app_localizations.dart';
 import '../providers/navigation.dart';
-import '../providers/themes.dart';
+import '../utils/app_colors.dart';
 import '../utils/constants.dart';
 
 Future<bool?> shouldRegisterDialog({
@@ -22,7 +22,7 @@ Future<bool?> shouldRegisterDialog({
       final AppColors appColors = Theme.of(
         dialogContext,
       ).extension<AppColors>()!;
-      final AppLocalizations localizations = AppLocalizations.of(
+      final AppLocalizations appLocalizations = AppLocalizations.of(
         dialogContext,
       )!;
 
@@ -34,12 +34,12 @@ Future<bool?> shouldRegisterDialog({
           elevation: Constants.elevation,
           contentPadding: const EdgeInsets.fromLTRB(30, 10, 30, 0),
           title: Text(
-            localizations.notification,
+            appLocalizations.notification,
             style: TextStyle(color: appColors.textThemeColor),
           ),
           content: SizedBox(
             width: Constants.dialogWidth,
-            child: Text(localizations.notRegistered),
+            child: Text(appLocalizations.notRegistered),
           ),
           actions: <Widget>[
             TextButton(
@@ -51,14 +51,14 @@ Future<bool?> shouldRegisterDialog({
                 );
               },
               child: Text(
-                localizations.register.toUpperCase(),
+                appLocalizations.register.toUpperCase(),
                 style: const TextStyle(color: Constants.colorPrimary),
               ),
             ),
             TextButton(
               onPressed: () => Navigator.of(dialogContext).pop(false),
               child: Text(
-                localizations.cancel.toUpperCase(),
+                appLocalizations.cancel.toUpperCase(),
                 style: const TextStyle(color: Constants.colorPrimary),
               ),
             ),

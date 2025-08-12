@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:tmcarsclone/l10n/app_localizations.dart';
 
 import '../../../models/car_detail_model.dart';
-import '../../../providers/themes.dart';
+import '../../../utils/app_colors.dart';
 
 Widget _buildKeyValueRow(
   BuildContext context,
@@ -67,53 +68,94 @@ Widget buildbody(
   CarDetail carDetail,
   String languageCode,
 ) {
+  final AppLocalizations appLocalizations = Localizations.of<AppLocalizations>(
+    context,
+    AppLocalizations,
+  )!;
+
   return Padding(
     padding: const EdgeInsets.symmetric(vertical: 30, horizontal: 15),
     child: Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisSize: MainAxisSize.min,
       children: <Widget>[
-        const Row(
+        Row(
           children: <Widget>[
-            Icon(Icons.info, size: 32),
-            SizedBox(width: 8),
+            const Icon(Icons.info, size: 32),
+            const SizedBox(width: 8),
             Flexible(
               child: Text(
-                "Giňişleýin maglumat",
+                appLocalizations.moreInformation,
                 overflow: TextOverflow.ellipsis,
               ),
             ),
           ],
         ),
-        _buildKeyValueRow(context, "Modeli", "${carDetail.bn} ${carDetail.mn}"),
-        _buildKeyValueRow(context, "Ýyly", carDetail.y.toString()),
-        _buildKeyValueRow(context, "Probeg", carDetail.mil.toString()),
-        _buildKeyValueRow(context, "Reňki", carDetail.getColor(languageCode)),
-        _buildKeyValueRow(context, "Motory", carDetail.e.toString()),
-        _buildKeyValueRow(context, "Kuzow", carDetail.bt),
-        _buildKeyValueRow(context, "Karobka", carDetail.tt),
-        _buildKeyValueRow(context, "Ýörediji görnüşi", carDetail.driveType),
-        _buildKeyValueRow(context, "VIN kod", carDetail.vin ?? "-"),
-        _buildKeyValueRow(context, "Bahasy", "${carDetail.pr.toString()} TMT"),
-        _buildKeyValueRow(context, "Ýeri", carDetail.getCityName(languageCode)),
         _buildKeyValueRow(
           context,
-          "Kredit",
-          carDetail.cr ? "Hawa" : "Ýok",
+          appLocalizations.model,
+          "${carDetail.bn} ${carDetail.mn}",
+        ),
+        _buildKeyValueRow(
+          context,
+          appLocalizations.year,
+          carDetail.y.toString(),
+        ),
+        _buildKeyValueRow(
+          context,
+          appLocalizations.mileage,
+          carDetail.mil.toString(),
+        ),
+        _buildKeyValueRow(
+          context,
+          appLocalizations.color,
+          carDetail.getColor(languageCode),
+        ),
+        _buildKeyValueRow(
+          context,
+          appLocalizations.engine,
+          carDetail.e.toString(),
+        ),
+        _buildKeyValueRow(context, appLocalizations.body, carDetail.bt),
+        _buildKeyValueRow(context, appLocalizations.gearbox, carDetail.tt),
+        _buildKeyValueRow(
+          context,
+          appLocalizations.drivetrain,
+          carDetail.driveType,
+        ),
+        _buildKeyValueRow(context, appLocalizations.vin, carDetail.vin ?? "-"),
+        _buildKeyValueRow(
+          context,
+          appLocalizations.price,
+          "${carDetail.pr.toString()} TMT",
+        ),
+        _buildKeyValueRow(
+          context,
+          appLocalizations.location,
+          carDetail.getCityName(languageCode),
+        ),
+        _buildKeyValueRow(
+          context,
+          appLocalizations.credit,
+          carDetail.cr ? appLocalizations.yes : appLocalizations.no,
           isTrue: carDetail.cr,
         ),
         _buildKeyValueRow(
           context,
-          "Obmen",
-          carDetail.sw ? "Hawa" : "Ýok",
+          appLocalizations.exchange,
+          carDetail.sw ? appLocalizations.yes : appLocalizations.no,
           isTrue: carDetail.sw,
         ),
         _buildKeyValueRow(
           context,
-          "Goýuldy",
+          appLocalizations.published,
           carDetail.getPublishedDate(languageCode),
         ),
-        _buildKeyValueRow(context, "Satyjy nomeri", "+${carDetail.pn ?? ''}"),
+        _buildKeyValueRow(
+          context,
+          appLocalizations.sellerPhoneNumber,
+          "+${carDetail.pn ?? ''}",
+        ),
         const SizedBox(height: 10),
         Container(
           color: Colors.grey.withAlpha(70),
@@ -136,16 +178,16 @@ Widget buildbody(
             padding: const EdgeInsets.symmetric(vertical: 10),
             color: Colors.grey,
             width: double.infinity,
-            child: const Center(
+            child: Center(
               child: Text(
-                "Nägilelik bildirmek",
-                style: TextStyle(color: Colors.white),
+                appLocalizations.report,
+                style: const TextStyle(color: Colors.white),
               ),
             ),
           ),
         ),
         const SizedBox(height: 20),
-        const Text("Biznes hasaplar"),
+        Text(appLocalizations.businessProfiles),
         const SizedBox(height: 20),
         SizedBox(
           height: 200, // Provides a fixed height for the horizontal grid
@@ -156,7 +198,7 @@ Widget buildbody(
               10, // Provide some widgets to display in the grid
               (int index) => Container(
                 alignment: Alignment.center,
-                color: Colors.grey[200],
+                color: Colors.black45,
                 margin: const EdgeInsets.all(4),
                 child: Text(
                   'Grid Item $index',

@@ -7,7 +7,7 @@ import '../../components/back_icon_button.dart';
 import '../../l10n/app_localizations.dart';
 import '../../menus/articles_menu/tabs/articles_tab.dart';
 import '../../models/article_detail_model.dart';
-import '../../providers/themes.dart';
+import '../../utils/app_colors.dart';
 import '../../utils/constants.dart';
 
 class SearchArticlesScreen extends StatefulWidget {
@@ -56,7 +56,8 @@ class _SearchArticlesScreenState extends State<SearchArticlesScreen> {
   @override
   Widget build(BuildContext context) {
     final AppColors appColors = Theme.of(context).extension<AppColors>()!;
-    final AppLocalizations appLocalizations = Localizations.of<AppLocalizations>(context, AppLocalizations)!;
+    final AppLocalizations appLocalizations =
+        Localizations.of<AppLocalizations>(context, AppLocalizations)!;
 
     return Scaffold(
       appBar: AppBar(

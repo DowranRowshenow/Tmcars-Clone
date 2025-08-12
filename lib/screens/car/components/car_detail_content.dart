@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../../models/car_detail_model.dart';
 import '../../../models/car_model.dart';
-import '../../../providers/themes.dart';
+import '../../../utils/app_colors.dart';
 import 'car_detail_body.dart';
 import 'car_detail_header.dart';
 

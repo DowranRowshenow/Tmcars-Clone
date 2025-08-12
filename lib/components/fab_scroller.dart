@@ -76,33 +76,26 @@ class _FabScrollerState extends State<FabScroller> {
   }
 
   void _onScroll() {
-    if (!widget.scrollController.hasClients && !mounted) return;
+    if (!widget.scrollController.hasClients || !mounted) return;
 
     final double currentOffset = widget.scrollController.offset;
+    final bool shouldBeVisible = currentOffset <= 0
+        ? false // Hide FAB at the very top of the scroll view
+        : currentOffset < _lastScrollOffset; // Show FAB when scrolling up
 
-    // Direct actions based on scroll direction/position
-    if (currentOffset <= 0) {
-      // At or above the very top: always hide immediately
-      if (_fabVisibleNotifier.value) {
-        _fabVisibleNotifier.value = false;
-        _hideFabTimer?.cancel(); // Ensure timer is canceled if we hit the top
-      }
-    } else if (currentOffset < _lastScrollOffset) {
-      // Scrolling up: show FAB immediately
-      if (!_fabVisibleNotifier.value) {
-        _fabVisibleNotifier.value = true;
-        _hideFabTimer
-            ?.cancel(); // If shown due to scroll up, cancel any pending hide
-      }
-    } else if (currentOffset > _lastScrollOffset) {
-      // Scrolling down: hide FAB immediately
-      if (_fabVisibleNotifier.value) {
-        _fabVisibleNotifier.value = false;
-        _hideFabTimer?.cancel(); // Ensure timer is canceled if we scroll down
-      }
+    // Early return if the FAB's visibility state is already correct
+    if (_fabVisibleNotifier.value == shouldBeVisible) {
+      _lastScrollOffset = currentOffset;
+      return;
     }
 
+    _fabVisibleNotifier.value = shouldBeVisible;
     _lastScrollOffset = currentOffset;
+
+    if (shouldBeVisible) {
+      // If we're showing the FAB, cancel any pending hide timer
+      _hideFabTimer?.cancel();
+    }
   }
 
   void _startHideTimer() {
@@ -125,6 +118,7 @@ class _FabScrollerState extends State<FabScroller> {
           duration: const Duration(milliseconds: 300),
           curve: Curves.easeOutCubic,
           child: FloatingActionButton(
+            heroTag: Object(),
             mini: true,
             backgroundColor: Constants.colorPrimary,
             onPressed: () {
@@ -132,10 +126,7 @@ class _FabScrollerState extends State<FabScroller> {
               if (widget.scrollController.hasClients && mounted) {
                 widget.scrollController.animateTo(
                   0,
-                  duration: Duration(
-                    milliseconds: (widget.scrollController.position.pixels / 2)
-                        .toInt(),
-                  ),
+                  duration: const Duration(milliseconds: 500),
                   curve: Curves.easeInQuad,
                 );
               }

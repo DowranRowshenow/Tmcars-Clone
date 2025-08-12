@@ -5,10 +5,11 @@ import 'package:flutter/material.dart';
 import '../../../components/fab_scroller.dart';
 import '../../../components/no_connection.dart';
 import '../../../components/no_result.dart';
-import '../../../l10n/app_localizations.dart';
+import '../../../components/scroll/low_friction_scroll_physics.dart';
+import '../../../components/search_product_bar.dart';
 import '../../../models/car_model.dart';
 import '../../../models/car_query_model.dart';
-import '../../../providers/themes.dart';
+import '../../../utils/app_colors.dart';
 import '../../../utils/constants.dart';
 import '../../../utils/loading_controller.dart';
 import '../../../utils/server.dart';
@@ -18,12 +19,9 @@ class AllCarsTab extends StatefulWidget {
   const AllCarsTab({
     super.key,
     required this.query,
-    this.isCacheEnabled = false,
     required this.searchBarController,
   });
   final ValueNotifier<CarQuery> query;
-  // TODO: Decide whether it should be cashed or not
-  final bool isCacheEnabled;
   final TextEditingController searchBarController;
 
   @override
@@ -110,7 +108,7 @@ class _AllCarsTabState extends State<AllCarsTab>
       widget.query.value.offset = 0;
       _loadingController.hasMore.value = newCars.length >= 40;
       _loadingController.hasError.value = false;
-      if (newCars.isNotEmpty && widget.isCacheEnabled) {
+      if (newCars.isNotEmpty) {
         // TODO: Consider caching only first 40 Item
         // Storage.instance.cacheCars(widget.category?.id, _cars.value);
       }
@@ -127,61 +125,16 @@ class _AllCarsTabState extends State<AllCarsTab>
     super.build(context);
     return Scaffold(
       appBar: AppBar(
+        toolbarHeight: SearchProductBar.height,
         elevation: 1.0,
         backgroundColor: Theme.of(
           context,
         ).extension<AppColors>()!.themedSurface,
         automaticallyImplyLeading: false,
-        title: Row(
-          children: <Widget>[
-            Flexible(
-              child: TextField(
-                readOnly: true,
-                controller: widget.searchBarController,
-                autocorrect: false,
-                style: const TextStyle(fontSize: 16),
-                keyboardType: TextInputType.text,
-                decoration: InputDecoration.collapsed(
-                  hintText: Localizations.of<AppLocalizations>(
-                    context,
-                    AppLocalizations,
-                  )!.search,
-                ),
-              ),
-            ),
-            ValueListenableBuilder<TextEditingValue>(
-              valueListenable: widget.searchBarController,
-              builder:
-                  (
-                    BuildContext context,
-                    TextEditingValue value,
-                    Widget? child,
-                  ) {
-                    if (value.text.isNotEmpty) {
-                      return IconButton(
-                        icon: const Icon(Icons.close, color: Colors.red),
-                        splashRadius: Constants.splashRadius,
-                        splashColor: Colors.transparent,
-                        onPressed: () {
-                          widget.searchBarController.text = "";
-                          widget.query.value = CarQuery();
-                        },
-                      );
-                    }
-                    return IconButton(
-                      icon: Icon(
-                        Icons.search,
-                        color: Theme.of(
-                          context,
-                        ).extension<AppColors>()!.iconThemeColor,
-                      ),
-                      splashRadius: Constants.splashRadius,
-                      splashColor: Colors.transparent,
-                      onPressed: () {},
-                    );
-                  },
-            ),
-          ],
+        title: SearchProductBar(
+          searchBarController: widget.searchBarController,
+          query: widget.query,
+          onTap: () {},
         ),
       ),
       floatingActionButton: ValueListenableBuilder<List<Car>>(
@@ -198,8 +151,7 @@ class _AllCarsTabState extends State<AllCarsTab>
         child: ValueListenableBuilder<List<Car>>(
           valueListenable: _cars,
           builder: (BuildContext context, List<Car> value, Widget? child) {
-            if ((_loadingController.hasError.value) &&
-                (!widget.isCacheEnabled || _cars.value.isEmpty)) {
+            if (_loadingController.hasError.value && _cars.value.isEmpty) {
               return NoConnection(onTap: _handleRefresh);
             }
             // Show a loading indicator on initial load.
@@ -213,6 +165,7 @@ class _AllCarsTabState extends State<AllCarsTab>
               return const NoResult();
             }
             return ListView.builder(
+              physics: const LowFrictionScrollPhysics(),
               itemExtent: Constants.articleItemExtent,
               controller: _scrollController,
               itemCount:

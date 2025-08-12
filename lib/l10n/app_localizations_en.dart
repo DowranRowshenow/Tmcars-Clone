@@ -33,6 +33,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get no => 'No';
 
   @override
+  String get ok => 'Ok';
+
+  @override
   String get settings => 'Settings';
 
   @override
@@ -177,7 +180,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get home => 'Home';
 
   @override
-  String get profiles => 'Business accounts';
+  String get profiles => 'Business profiles';
 
   @override
   String get news => 'News';
@@ -268,6 +271,63 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get showAll => 'Show all';
+
+  @override
+  String get moreInformation => 'More information';
+
+  @override
+  String get model2 => 'Model';
+
+  @override
+  String get year2 => 'Year';
+
+  @override
+  String get mileage => 'Mileage';
+
+  @override
+  String get color => 'Color';
+
+  @override
+  String get engine => 'Engine';
+
+  @override
+  String get body => 'Body';
+
+  @override
+  String get gearbox => 'Gearbox';
+
+  @override
+  String get drivetrain => 'Drivetrain';
+
+  @override
+  String get vin => 'VIN code';
+
+  @override
+  String get price => 'Price';
+
+  @override
+  String get location => 'Location';
+
+  @override
+  String get published => 'Published';
+
+  @override
+  String get sellerPhoneNumber => 'Seller phone';
+
+  @override
+  String get report => 'Report';
+
+  @override
+  String get businessProfiles => 'Business profiles';
+
+  @override
+  String get searchTypes => 'Search types';
+
+  @override
+  String get searchDialog => 'Exact search - This method allows you to find ads that exactly match the search query in the title or in the additional information of the ad.';
+
+  @override
+  String get searchDialog2 => 'Similar search - This method will search for ads that are similar to the search query by the ad\'s title.';
 
   @override
   String get notRegistered => 'You are not logged in! By logging in, you can add notifications, manage your notifications and profile, and transfer your data to other phones.';

@@ -39,24 +39,13 @@ class Storage {
 
   Future<void> setThemeMode(ThemeMode themeMode) async {
     final SharedPreferences prefs = await _getPrefs();
-    await prefs.setInt(
-      'themeMode',
-      themeMode == ThemeMode.system
-          ? 0
-          : themeMode == ThemeMode.dark
-          ? 1
-          : 2,
-    );
+    await prefs.setInt('themeMode', themeMode == ThemeMode.dark ? 1 : 2);
   }
 
   Future<ThemeMode> getThemeMode() async {
     final SharedPreferences prefs = await _getPrefs();
-    int mode = prefs.getInt('themeMode') ?? 0;
-    return mode == 0
-        ? ThemeMode.system
-        : mode == 1
-        ? ThemeMode.dark
-        : ThemeMode.light;
+    int mode = prefs.getInt('themeMode') ?? 1;
+    return mode == 1 ? ThemeMode.dark : ThemeMode.light;
   }
 
   Future<void> setLocale(String localeCode) async {

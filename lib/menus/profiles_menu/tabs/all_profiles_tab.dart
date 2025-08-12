@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../../components/ripple_container.dart';
 import '../../../l10n/app_localizations.dart';
-import '../../../providers/themes.dart';
+import '../../../utils/app_colors.dart';
 
 class AllProfilesTab extends StatelessWidget {
   const AllProfilesTab({super.key});

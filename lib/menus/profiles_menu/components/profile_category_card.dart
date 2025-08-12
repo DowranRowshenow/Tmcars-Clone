@@ -5,8 +5,8 @@ import 'package:transparent_image/transparent_image.dart';
 
 import '../../../components/placeholder_image.dart';
 import '../../../l10n/app_localizations.dart';
-import '../../../providers/themes.dart';
 import '../../../providers/traffic.dart';
+import '../../../utils/app_colors.dart';
 import '../../../utils/constants.dart';
 
 class ProfileCategoryCard extends StatelessWidget {

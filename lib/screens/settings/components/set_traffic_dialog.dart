@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../../l10n/app_localizations.dart';
-import '../../../providers/themes.dart';
 import '../../../providers/traffic.dart';
+import '../../../utils/app_colors.dart';
 import '../../../utils/constants.dart';
 
 Future<bool?> showSetTrafficDialog({

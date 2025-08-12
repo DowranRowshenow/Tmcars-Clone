@@ -33,6 +33,9 @@ class AppLocalizationsRu extends AppLocalizations {
   String get no => 'Нет';
 
   @override
+  String get ok => 'Ок';
+
+  @override
   String get settings => 'Настройки';
 
   @override
@@ -268,6 +271,63 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get showAll => 'Показать все';
+
+  @override
+  String get moreInformation => 'Подробнее';
+
+  @override
+  String get model2 => 'Модель';
+
+  @override
+  String get year2 => 'Год';
+
+  @override
+  String get mileage => 'Пробег';
+
+  @override
+  String get color => 'Цвет';
+
+  @override
+  String get engine => 'Двигатель';
+
+  @override
+  String get body => 'Кузов';
+
+  @override
+  String get gearbox => 'Коробка передач';
+
+  @override
+  String get drivetrain => 'Привод';
+
+  @override
+  String get vin => 'VIN код';
+
+  @override
+  String get price => 'Цена';
+
+  @override
+  String get location => 'Местоположение';
+
+  @override
+  String get published => 'Опубликовано';
+
+  @override
+  String get sellerPhoneNumber => 'Телефон продавца';
+
+  @override
+  String get report => 'Пожаловаться';
+
+  @override
+  String get businessProfiles => 'Бизнес профили';
+
+  @override
+  String get searchTypes => 'Типы поиска';
+
+  @override
+  String get searchDialog => 'Точный поиск - Этот метод позволяет найти объявления, которые соответствуют точному поисковому запросу в загаловке или в дополнительой информации к объявлению.';
+
+  @override
+  String get searchDialog2 => 'Аналогичный поиск - Этот метод будет искать объявления, похожие на поисковый запрос по названию объявления.';
 
   @override
   String get notRegistered => 'Вы не вошли в систему! Войдя в систему, вы сможете добавлять объявления, управлять своими объявлениями и профилем, а также переносить свои данные на другие телефоны.';

@@ -3,7 +3,7 @@ import 'package:provider/provider.dart';
 
 import '../models/article_detail_model.dart';
 import '../providers/locale.dart';
-import '../providers/themes.dart';
+import '../utils/app_colors.dart';
 
 class ArticleTagChip extends StatelessWidget {
   const ArticleTagChip({super.key, required this.articleTag, this.onTap});
