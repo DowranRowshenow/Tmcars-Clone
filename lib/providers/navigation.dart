@@ -130,6 +130,7 @@ class NavigationManager extends ChangeNotifier {
     }
 
     Widget screenToPush; // Changed to non-nullable
+    bool isPop = true;
 
     switch (state) {
       case ScreenState.articleDetail:
@@ -170,6 +171,7 @@ class NavigationManager extends ChangeNotifier {
         screenToPush = const RegisterScreen();
         break;
       case ScreenState.webview:
+        isPop = false;
         final _WebViewArgs? args = arguments as _WebViewArgs?;
         if (args == null) {
           debugPrint('Error: WebViewScreen requires _WebViewArgs.');
@@ -178,6 +180,7 @@ class NavigationManager extends ChangeNotifier {
         screenToPush = WebViewScreen(url: args.url, title: args.title);
         break;
       case ScreenState.imageView:
+        isPop = false;
         final _ImageViewArgs? args = arguments as _ImageViewArgs?;
         if (args == null) {
           debugPrint('Error: ImageViewScreen requires _ImageViewArgs.');
@@ -186,6 +189,7 @@ class NavigationManager extends ChangeNotifier {
         screenToPush = ImageViewScreen(imageUrls: args.imageUrls);
         break;
       case ScreenState.videoView:
+        isPop = false;
         final _VideoViewArgs? args = arguments as _VideoViewArgs?;
         if (args == null) {
           debugPrint('Error: ImageViewScreen requires _VideoViewArgs.');
@@ -201,15 +205,21 @@ class NavigationManager extends ChangeNotifier {
         break;
     }
 
-    /*
-    Navigator.push(
-      context,
-      MaterialPageRoute<void>(builder: (BuildContext context) => screenToPush),
-    );*/
-    Navigator.of(context).pushAndRemoveUntil(
-      MaterialPageRoute<void>(builder: (BuildContext context) => screenToPush),
-      (Route<dynamic> route) => route.isFirst,
-    );
+    if (isPop) {
+      Navigator.of(context).pushAndRemoveUntil(
+        MaterialPageRoute<void>(
+          builder: (BuildContext context) => screenToPush,
+        ),
+        (Route<dynamic> route) => route.isFirst,
+      );
+    } else {
+      Navigator.push(
+        context,
+        MaterialPageRoute<void>(
+          builder: (BuildContext context) => screenToPush,
+        ),
+      );
+    }
   }
 
   void setScreen(

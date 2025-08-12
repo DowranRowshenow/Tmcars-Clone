@@ -13,7 +13,7 @@ Widget buildheader(
   return Container(
     padding: const EdgeInsets.fromLTRB(
       Constants.detailHorizontalPadding,
-      45,
+      30,
       Constants.detailHorizontalPadding,
       20,
     ),

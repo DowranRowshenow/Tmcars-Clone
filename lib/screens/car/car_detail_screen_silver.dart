@@ -1,5 +1,3 @@
-// ignore: depend_on_referenced_packages
-import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:share_plus/share_plus.dart';
@@ -10,50 +8,41 @@ import '../../components/scroll/glowless_scroll_behavior.dart';
 import '../../components/scroll/low_friction_scroll_physics.dart';
 import '../../components/should_register_dialog.dart';
 import '../../l10n/app_localizations.dart';
-import '../../models/article_category_model.dart';
-import '../../models/article_detail_model.dart';
-import '../../models/article_model.dart';
+import '../../models/car_detail_model.dart';
+import '../../models/car_model.dart';
 import '../../providers/navigation.dart';
 import '../../providers/themes.dart';
 import '../../utils/constants.dart';
 import '../../utils/scroll_state_silver.dart';
 import '../../utils/server.dart';
-import 'components/article_detail_content.dart';
+import 'components/car_detail_content.dart';
 
-class ArticleDetailScreen extends StatefulWidget {
-  const ArticleDetailScreen({
+class CarDetailScreen extends StatefulWidget {
+  const CarDetailScreen({
     super.key,
-    required this.article,
+    required this.car,
     required this.languageCode,
   });
-  final Article article;
+  final Car car;
   final String languageCode;
 
   @override
   // ignore: library_private_types_in_public_api
-  _ArticleDetailScreenState createState() => _ArticleDetailScreenState();
+  _CarDetailScreenState createState() => _CarDetailScreenState();
 }
 
-class _ArticleDetailScreenState extends State<ArticleDetailScreen> {
+class _CarDetailScreenState extends State<CarDetailScreen> {
   final ScrollController _scrollController = ScrollController();
-  final ValueNotifier<ArticleDetail?> _articleDetailNotifier =
-      ValueNotifier<ArticleDetail?>(null);
-  final ValueNotifier<List<Article>?> _nearestArticlesNotifier =
-      ValueNotifier<List<Article>?>(null);
-  late Future<String> _htmlContentFuture;
+  final ValueNotifier<CarDetail?> _carDetailNotifier =
+      ValueNotifier<CarDetail?>(null);
   final ValueNotifier<ScrollState> _scrollStateNotifier =
       ValueNotifier<ScrollState>(ScrollState.initial);
   late VoidCallback _scrollListener;
-  String? _cachedColorCode;
 
   @override
   void initState() {
     super.initState();
-    _loadArticle();
-    _loadNearestArticles();
-    _htmlContentFuture = Server.fetchHtmlContent(
-      widget.article.getOpenUrl(widget.languageCode),
-    );
+    _loadCar();
     _scrollListener = () =>
         ScrollState.onScroll(_scrollStateNotifier, _scrollController);
     _scrollController.addListener(_scrollListener);
@@ -64,37 +53,17 @@ class _ArticleDetailScreenState extends State<ArticleDetailScreen> {
     _scrollController.removeListener(_scrollListener);
     _scrollController.dispose();
     _scrollStateNotifier.dispose();
-    _articleDetailNotifier.dispose();
-    _nearestArticlesNotifier.dispose();
+    _carDetailNotifier.dispose();
     super.dispose();
   }
 
-  Future<void> _loadArticle() async {
-    final ArticleDetail? articleDetail = await Server.getArticle(
-      widget.article.id,
-    );
-    if (mounted) _articleDetailNotifier.value = articleDetail;
-  }
-
-  Future<void> _loadNearestArticles() async {
-    final List<Article>? nearestArticles = await Server.getNearestArticles(
-      widget.article.id,
-    );
-    if (mounted && nearestArticles != null) {
-      _nearestArticlesNotifier.value = nearestArticles;
-    }
+  Future<void> _loadCar() async {
+    final CarDetail? carDetail = await Server.getCar(widget.car.id);
+    if (mounted) _carDetailNotifier.value = carDetail;
   }
 
   @override
   Widget build(BuildContext context) {
-    final AppColors appColors = Theme.of(context).extension<AppColors>()!;
-    final List<ArticleCategory> allCategories = context
-        .read<List<ArticleCategory>>();
-    final ArticleCategory? category = allCategories.firstWhereOrNull(
-      (ArticleCategory c) => c.categoryName == widget.article.categoryName,
-    );
-    _cachedColorCode ??= category?.colorCode ?? "000000";
-
     return Scaffold(
       body: Stack(
         children: <Widget>[
@@ -106,6 +75,8 @@ class _ArticleDetailScreenState extends State<ArticleDetailScreen> {
               SliverAppBar(
                 expandedHeight: ScrollState.expandedHeight,
                 pinned: true,
+                floating: false,
+                snap: false,
                 title: ValueListenableBuilder<ScrollState>(
                   valueListenable: _scrollStateNotifier,
                   builder:
@@ -118,7 +89,7 @@ class _ArticleDetailScreenState extends State<ArticleDetailScreen> {
                           opacity: scrollState.showTitle ? 1.0 : 0.0,
                           duration: const Duration(milliseconds: 200),
                           child: Text(
-                            widget.article.getTitle(widget.languageCode),
+                            _carDetailNotifier.value?.getTitle() ?? "",
                           ),
                         );
                       },
@@ -146,18 +117,20 @@ class _ArticleDetailScreenState extends State<ArticleDetailScreen> {
                           );
                         },
                   ),
-                  ValueListenableBuilder<ArticleDetail?>(
-                    valueListenable: _articleDetailNotifier,
+                  ValueListenableBuilder<CarDetail?>(
+                    valueListenable: _carDetailNotifier,
                     builder:
                         (
                           BuildContext context,
-                          ArticleDetail? articleDetail,
+                          CarDetail? carDetail,
                           Widget? child,
                         ) {
                           return PopupMenuButton<int>(
                             tooltip: "",
                             menuPadding: const EdgeInsets.all(0),
-                            color: appColors.themedSurface,
+                            color: Theme.of(
+                              context,
+                            ).extension<AppColors>()!.themedSurface,
                             splashRadius: Constants.splashRadius,
                             style: const ButtonStyle(
                               splashFactory: NoSplash.splashFactory,
@@ -178,13 +151,7 @@ class _ArticleDetailScreenState extends State<ArticleDetailScreen> {
                               switch (value) {
                                 case 0:
                                   SharePlus.instance.share(
-                                    ShareParams(
-                                      text:
-                                          articleDetail?.getShareSiteUrl(
-                                            widget.languageCode,
-                                          ) ??
-                                          "",
-                                    ),
+                                    ShareParams(text: carDetail?.shareSiteUrl),
                                   );
                                   break;
                               }
@@ -194,82 +161,104 @@ class _ArticleDetailScreenState extends State<ArticleDetailScreen> {
                   ),
                 ],
                 flexibleSpace: FlexibleSpaceBar(
-                  background: ValueListenableBuilder<ArticleDetail?>(
-                    valueListenable: _articleDetailNotifier,
+                  background: ValueListenableBuilder<CarDetail?>(
+                    valueListenable: _carDetailNotifier,
                     builder:
                         (
                           BuildContext context,
-                          ArticleDetail? articleDetail,
+                          CarDetail? carDetail,
                           Widget? child,
                         ) {
-                          return articleDetail == null
+                          return carDetail == null
                               ? const Center(
                                   child: CircularProgressIndicator(
                                     color: Colors.white,
                                   ),
                                 )
                               : AppBarImage(
-                                  onTapVideo: () {
-                                    context.read<NavigationManager>().setScreen(
-                                      context,
-                                      ScreenState.videoView,
-                                      video: articleDetail.mainVideo,
-                                    );
-                                  },
                                   onTapImage: () {
                                     context.read<NavigationManager>().setScreen(
                                       context,
                                       ScreenState.imageView,
-                                      imageUrls: articleDetail.getImageUrls(),
+                                      imageUrls: carDetail.fullImgs,
                                     );
                                   },
-                                  mainVideo: articleDetail.mainVideo,
-                                  imageUrls: articleDetail.getImageUrls(
-                                    isThumbnail: true,
-                                  ),
+                                  imageUrls: carDetail.imgs,
                                 );
                         },
                   ),
                 ),
               ),
               SliverToBoxAdapter(
-                child: Padding(
-                  padding: const EdgeInsets.all(16.0),
-                  child: ValueListenableBuilder<List<Article>?>(
-                    valueListenable: _nearestArticlesNotifier,
-                    builder:
-                        (
-                          BuildContext context,
-                          List<Article>? nearestArticles,
-                          Widget? child,
-                        ) {
-                          return ValueListenableBuilder<ArticleDetail?>(
-                            valueListenable: _articleDetailNotifier,
-                            builder:
-                                (
-                                  BuildContext context,
-                                  ArticleDetail? articleDetail,
-                                  Widget? child,
-                                ) {
-                                  return ArticleDetailContent(
-                                    articleDetail: articleDetail,
-                                    article: widget.article,
-                                    languageCode: widget.languageCode,
-                                    htmlContentFuture: _htmlContentFuture,
-                                    appColors: appColors,
-                                    tagColor: AppColors.hexToColor(
-                                      _cachedColorCode!,
-                                    ),
-                                    nearestArticles:
-                                        nearestArticles ?? <Article>[],
-                                  );
-                                },
+                child: ValueListenableBuilder<CarDetail?>(
+                  valueListenable: _carDetailNotifier,
+                  builder:
+                      (
+                        BuildContext context,
+                        CarDetail? carDetail,
+                        Widget? child,
+                      ) {
+                        if (carDetail != null) {
+                          return CarDetailContent(
+                            carDetail: carDetail,
+                            car: widget.car,
+                            languageCode: widget.languageCode,
                           );
-                        },
-                  ),
+                        } else {
+                          return const SizedBox(
+                            height: 400,
+                            child: Center(child: CircularProgressIndicator()),
+                          );
+                        }
+                      },
                 ),
               ),
             ],
+          ),
+          Positioned(
+            bottom: 10,
+            left: 0, // Add this to ensure the Row starts at the left edge
+            right: 0, // Add this to ensure the Row extends to the right edge
+            child: Padding(
+              padding: const EdgeInsets.symmetric(
+                horizontal: 16.0,
+              ), // Padding for the whole row
+              child: Row(
+                children: <Widget>[
+                  Expanded(
+                    child: ElevatedButton(
+                      onPressed: () {},
+                      style: ButtonStyle(
+                        backgroundColor: WidgetStateProperty.all(
+                          Constants.colorPrimary,
+                        ),
+                      ),
+                      child: const Text(
+                        "Jaň etmek",
+                        style: TextStyle(color: Colors.white),
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ),
+                  ),
+                  const SizedBox(width: 6),
+                  Expanded(
+                    child: ElevatedButton(
+                      style: ButtonStyle(
+                        backgroundColor: WidgetStateProperty.all(
+                          Colors.greenAccent,
+                        ),
+                      ),
+                      onPressed: () {},
+                      child: const Text(
+                        "SMS ugratmak",
+                        style: TextStyle(color: Colors.white),
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
           ),
           ValueListenableBuilder<ScrollState>(
             valueListenable: _scrollStateNotifier,

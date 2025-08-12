@@ -1,6 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 
 import '../../components/dot_tab.dart';
 import '../../components/download_button.dart';
@@ -34,7 +33,6 @@ class _ImageViewScreenState extends State<ImageViewScreen>
   @override
   void initState() {
     super.initState();
-    SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
 
     _tabController = TabController(
       length: widget.imageUrls.length,
@@ -85,7 +83,6 @@ class _ImageViewScreenState extends State<ImageViewScreen>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      extendBody: false,
       extendBodyBehindAppBar: true,
       backgroundColor: Colors.black,
       appBar: AppBar(

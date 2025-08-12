@@ -1,28 +1,48 @@
-class ScrollState {
-  final double fabTop;
-  final bool fabVisible;
-  final bool showTitle;
+import 'package:flutter/material.dart';
 
-  const ScrollState({
-    required this.fabTop,
-    required this.fabVisible,
-    required this.showTitle,
-  });
+class ScrollState {
+  final bool showTitle;
+  final bool background;
+
+  const ScrollState({required this.showTitle, required this.background});
 
   static const double expandedHeight = 250.0;
-  static const double offset = 0.0;
+  static const double offset = 30.0;
 
   static const ScrollState initial = ScrollState(
-    fabTop: expandedHeight - offset,
-    fabVisible: true,
     showTitle: false,
+    background: false,
   );
 
-  ScrollState copyWith({double? fabTop, bool? fabVisible, bool? showTitle}) {
+  static void onScroll(
+    ValueNotifier<ScrollState> scrollStateNotifier,
+    ScrollController scrollController,
+  ) {
+    if (!scrollController.hasClients) return;
+
+    final ScrollState newState = scrollStateNotifier.value.copyWith(
+      showTitle:
+          scrollController.offset >=
+          ScrollState.expandedHeight - kToolbarHeight * 2,
+      background:
+          scrollController.offset >=
+          ScrollState.expandedHeight - kToolbarHeight,
+    );
+
+    if (scrollStateNotifier.value != newState) {
+      scrollStateNotifier.value = newState;
+    }
+  }
+
+  ScrollState copyWith({
+    double? fabTop,
+    bool? fabVisible,
+    bool? showTitle,
+    bool? background,
+  }) {
     return ScrollState(
-      fabTop: fabTop ?? this.fabTop,
-      fabVisible: fabVisible ?? this.fabVisible,
       showTitle: showTitle ?? this.showTitle,
+      background: background ?? this.background,
     );
   }
 }
